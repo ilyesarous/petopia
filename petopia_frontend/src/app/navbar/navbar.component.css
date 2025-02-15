@@ -1,0 +1,32 @@
+.navbar {
+  height: 60px;
+  background-color: white;
+  padding: 10px 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.navbar .navbar-brand {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+.navbar .icon:hover {
+  cursor: pointer;
+}
+
+.navbar .textLink{
+    color: #495057; 
+    text-decoration: none;
+}
+.navbar .textLink:hover{
+    font-weight: 700;
+    color: black;
+    transition: 0.2s ease;
+}
+
+.isSelected{
+    color: black;
+    font-weight: 700;
+}

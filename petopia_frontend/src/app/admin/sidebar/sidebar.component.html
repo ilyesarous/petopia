@@ -1,0 +1,21 @@
+<div class="sidebar">
+  <div class="d-flex flex-row align-items-center gap-2">
+    <img src="../../../assets/images/logo.png" alt="logo" width="50" />
+    <h3>Petopia</h3>
+  </div>
+  <hr />
+  <ul *ngFor="let item of items">
+    <li
+      class="selected"
+      [ngClass]="{ isSelected: item.name === selectedItem }"
+      (click)="selectedItem = item.name"
+    >
+      <a
+        class="d-flex flex-row gap-2 align-items-center"
+        routerLink="{{ item.route }}"
+        routerLinkActive="active"
+        ><i class="{{ item.icon }}"></i> {{ item.name }}</a
+      >
+    </li>
+  </ul>
+</div>

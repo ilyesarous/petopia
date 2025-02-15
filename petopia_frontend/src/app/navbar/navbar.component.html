@@ -1,59 +1,36 @@
-<nav class="navbar navbar-expand-lg bg-body-tertiary">
-  <div class="container-fluid">
-    <img
-      class="navbar-brand"
-      src="../../assets/images/logo.png"
-      alt="logo"
-      width="60"
-    />
-    <button
-      class="navbar-toggler"
-      type="button"
-      data-bs-toggle="collapse"
-      data-bs-target="#navbarSupportedContent"
-      aria-controls="navbarSupportedContent"
-      aria-expanded="false"
-      aria-label="Toggle navigation"
-    >
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <div class="d-flex justify-content-evenly w-100">
-        <ul class="navbar-nav mb-2 mb-lg-0 d-flex gap-4">
-          <li class="nav-item">
-            <a
-              class="nav-link active"
-              aria-current="page"
-              routerLink="#"
-              routerLinkActive="active"
-              >Home</a
-            >
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" routerLink="#" routerLinkActive="active"
-              >Events</a
-            >
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" routerLink="#" routerLinkActive="active"
-              >Store</a
-            >
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" routerLink="#" routerLinkActive="active">Vet</a>
-          </li>
-        </ul>
-      </div>
-
-      <div class="d-flex align-items-center gap-2">
-        <p class="fs-5 m-0">name</p>
-        <img
-          class="navbar-brand"
-          src="../../assets/images/profile.png"
-          alt="profile"
-          width="50"
-        />
-      </div>
+<nav class="navbar">
+  <div class="d-flex flex-row align-items-center gap-2">
+    <img src="../../../assets/images/logo.png" alt="logo" width="50" />
+    <h3>Petopia</h3>
+  </div>
+  <div class="d-flex flex-row align-items-center gap-4">
+    <div *ngFor="let page of pages">
+      <a
+        class="textLink"
+        [ngClass]="{ isSelected: page.name === selectedItem }"
+        (click)="selectedItem = page.name"
+        routerLink="{{ page.link }}"
+        routerLinkActive="active"
+        >{{ page.name }}</a
+      >
     </div>
+  </div>
+  <div class="d-flex align-items-center gap-3">
+    <div *ngFor="let item of list">
+      <i class="{{ item.icon }} d-flex align-items-center icon fs-5">
+        <span
+          class="p-1 translate-middle badge rounded-circle bg-danger"
+          style="font-size: 5px"
+        >
+          <span class="visually-hidden"></span>
+        </span>
+      </i>
+    </div>
+    <img
+      src="../../../assets/images/profile.png"
+      alt="profile"
+      class="rounded-circle"
+      width="40"
+    />
   </div>
 </nav>
