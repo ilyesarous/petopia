@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.Date;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -22,4 +23,12 @@ public class Pet_Growth {
     private Double height;
     @Enumerated(EnumType.STRING)
     private health_type health_status;
+
+//    @ManyToOne(cascade = CascadeType.ALL)
+//    private Pet pet;
+
+
+    //Classe Pet
+//    @OneToMany(cascade = CascadeType.ALL, mappedBy = "pet")
+//    private Set<Pet> PetList;
 }
