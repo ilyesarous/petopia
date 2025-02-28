@@ -1,9 +1,6 @@
 package tn.esprit.petopia_backend.entities.vet;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,4 +16,7 @@ public class Medicament_Prescription {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int idMedicament_Prescription;
     private String medicament;
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    private Diagnosis diagnosis;
 }

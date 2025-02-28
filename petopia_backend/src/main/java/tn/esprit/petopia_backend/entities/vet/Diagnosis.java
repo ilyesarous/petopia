@@ -1,16 +1,14 @@
 package tn.esprit.petopia_backend.entities.vet;
 
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -23,4 +21,7 @@ public class Diagnosis {
     private int idDiagnosis;
     private String diagnosis_description;
     private LocalDate diagnosis_date;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "diagnosis")
+    private Set<Medicament_Prescription> Medicament_PrescriptionList;
 }
