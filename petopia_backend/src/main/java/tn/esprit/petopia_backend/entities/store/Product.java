@@ -29,5 +29,6 @@ public class Product {
     private int availableQuantity;
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
     private List<CartProduct> cartProducts = new ArrayList<>();
 }

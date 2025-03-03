@@ -10,5 +10,6 @@ public interface IProductService {
     void deleteById(int id);
     Product updateProduct(Product product);
     List<Product> findAll();
-    void updateAvailableQuantity(int idProduct, int quantity);
+    void decreaseAvailableQuantity(int idProduct, int quantity);
+    void increaseAvailableQuantity(int idProduct, int quantity);
 }

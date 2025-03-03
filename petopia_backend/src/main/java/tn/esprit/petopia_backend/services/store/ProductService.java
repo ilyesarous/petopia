@@ -35,11 +35,21 @@ public class ProductService implements IProductService {
         return repository.save(product);
     }
 
-    public void updateAvailableQuantity(int idProduct, int quantity) {
+    public void decreaseAvailableQuantity(int idProduct, int quantity) {
         if (repository.findById(idProduct).isEmpty())
             throw new RuntimeException("Product not found");
         Product product = repository.findById(idProduct).get();
+        if (product.getAvailableQuantity() - quantity <= 0)
+            throw new RuntimeException("not enough quantity available");
         product.setAvailableQuantity(product.getAvailableQuantity() - quantity);
+        repository.save(product);
+    }
+
+    public void increaseAvailableQuantity(int idProduct, int quantity) {
+        if (repository.findById(idProduct).isEmpty())
+            throw new RuntimeException("Product not found");
+        Product product = repository.findById(idProduct).get();
+        product.setAvailableQuantity(product.getAvailableQuantity() + quantity);
         repository.save(product);
     }
 

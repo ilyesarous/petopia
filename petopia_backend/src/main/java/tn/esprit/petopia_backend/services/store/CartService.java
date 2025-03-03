@@ -15,33 +15,19 @@ import java.util.List;
 @AllArgsConstructor
 public class CartService implements ICartService {
     private CartRepository repository;
-    private CartProductRepository cartProductRepository;
+    private CartProductService cartProductService;
     private ProductService productService;
 
     @Override
     public Cart addProductToCart(int idCart, int productId, int quantity) {
         Cart cart = repository.findById(idCart).orElse(new Cart());
         Product product = productService.findById(productId);
-        CartProduct cartProduct = cart.getCartProducts().stream()
-                .filter(cp -> cp.getProduct().getProduct_id()== productId)
-                .findFirst()
-                .orElse(null);
-
-        if (cartProduct != null) {
-            cartProduct.setQuantity(cartProduct.getQuantity() + quantity);
-        } else {
-            cartProduct = new CartProduct();
-            cartProduct.setCart(cart);
-            cartProduct.setProduct(product);
-            cartProduct.setQuantity(quantity);
-            cart.getCartProducts().add(cartProduct);
-        }
-        productService.updateAvailableQuantity(productId, quantity);
+        cartProductService.increaseQuantity(cart, productId, quantity);
         cart.setTotal_price(cart.getTotal_price() + (product.getProduct_price() * quantity));
 
         return repository.save(cart);
     }
-
+//TODO: add total to cartProduct, create cartProductService
     @Override
     public Cart findById(int id) {
         return repository.findById(id).orElse(null);
@@ -51,24 +37,15 @@ public class CartService implements ICartService {
     public void deleteProductById(int idCart, int idProduct) {
         Cart cart = repository.findById(idCart).get();
         Product product = productService.findById(idProduct);
-
-        CartProduct cartProduct = cart.getCartProducts().stream()
-                .filter(cp -> cp.getProduct().getProduct_id()== idProduct)
-                .findFirst()
-                .get();
-        if (cartProduct.getQuantity() > 0) {
-            cartProduct.setQuantity(cartProduct.getQuantity() - 1);
-            for(CartProduct cp : cart.getCartProducts()) {
-                if (cp.getId() == cartProduct.getId()) {
-                    cp = cartProduct;
-                }
-            }
-        }else{
-            cart.getCartProducts().remove(cartProduct);
-            cartProductRepository.deleteById(cartProduct.getId());
-        }
+        cartProductService.decreaseQuantity(cart, idProduct);
         cart.setTotal_price(cart.getTotal_price() - product.getProduct_price());
         repository.save(cart);
+    }
+
+    @Override
+    public String checkout(int idCart) {
+        Cart cart = repository.findById(idCart).get();
+        return "votre total est: " + cart.getTotal_price();
     }
 
     @Override

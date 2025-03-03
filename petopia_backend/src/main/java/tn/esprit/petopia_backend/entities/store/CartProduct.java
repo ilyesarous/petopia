@@ -20,18 +20,8 @@ public class CartProduct {
     @JsonIgnore
     private Cart cart;
     @ManyToOne
-    @JsonIgnore
     private Product product;
     private int quantity;
-
-    @Override
-    public String toString() {
-        return "CartProduct{" +
-                "id=" + id +
-                ", cart=" + cart +
-                ", product=" + product +
-                ", quantity=" + quantity +
-                '}';
-    }
+    private float total;
 }
 

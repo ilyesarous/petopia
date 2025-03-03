@@ -11,4 +11,5 @@ public interface ICartService {
     void deleteProductById(int idCart, int idProduct);
     Cart updateCart(Cart cart);
     List<Cart> findAll();
+    String checkout(int idCart);
 }

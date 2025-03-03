@@ -29,6 +29,11 @@ public class CartController {
         return cartService.addProductToCart(idCart, idProduct, quantity);
     }
 
+    @GetMapping("/{idCart}/checkout")
+    public String checkout(@PathVariable int idCart) {
+        return cartService.checkout(idCart);
+    }
+
     @PutMapping("update")
     public Cart updateCart(@RequestBody Cart cart) {
         return cartService.updateCart(cart);
