@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import tn.esprit.petopia_backend.entities.User;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -28,22 +29,13 @@ public class Consultations {
     @Enumerated(EnumType.STRING)
     private status_type statusT;
 
-    //relation * consultation * to 1 pet
-//    @ManyToOne(cascade = CascadeType.ALL)
-//    private Pet pet;
+    //relation consultation * to 1 user client eli bech yekou ell rdv
+    @ManyToOne(cascade = CascadeType.ALL)
+    private User userclient;
 
-    //relation consultation * to 1 user
-//    @ManyToOne(cascade = CascadeType.ALL)
-//    private User user;
-
-    //classe pet
-    //    @OneToMany(cascade = CascadeType.ALL, mappedBy = "pet")
-    //    private Set<Pet> PetList;
-
-    //classe user
-    //    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
-    //    private Set<User> UserList;
-
+    //relation consultation * to 1 user vet
+    @ManyToOne(cascade = CascadeType.ALL)
+    private User uservet;
 
     public int getIdConsultation() {
         return idConsultation;
