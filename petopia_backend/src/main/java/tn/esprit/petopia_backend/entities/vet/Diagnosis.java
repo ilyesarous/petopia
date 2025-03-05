@@ -23,12 +23,15 @@ public class Diagnosis {
     private String diagnosis_description;
     private LocalDate diagnosis_date;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "diagnosis")
-    private Set<Medicament_Prescription> Medicament_PrescriptionList;
+    //@OneToMany(cascade = CascadeType.ALL, mappedBy = "diagnosis")
+    //private Set<Medicament_Prescription> Medicament_PrescriptionList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "diagnosis", orphanRemoval = false)
+    private Set<Medicament_Prescription> medicamentPrescriptions;
+
 
     //relation * diagnosis andd 1 pet
-    @ManyToOne(cascade = CascadeType.ALL)
-    private Pet petdiagnosis;
+    //@ManyToOne(cascade = CascadeType.ALL)
+    //private Pet petdiagnosis;
 
     public int getIdDiagnosis() {
         return idDiagnosis;
@@ -54,19 +57,19 @@ public class Diagnosis {
         this.diagnosis_date = diagnosis_date;
     }
 
-    public Set<Medicament_Prescription> getMedicament_PrescriptionList() {
-        return Medicament_PrescriptionList;
+    public Set<Medicament_Prescription> getMedicamentPrescriptions() {
+        return medicamentPrescriptions;
     }
 
-    public void setMedicament_PrescriptionList(Set<Medicament_Prescription> medicament_PrescriptionList) {
-        Medicament_PrescriptionList = medicament_PrescriptionList;
+    public void setMedicamentPrescriptions(Set<Medicament_Prescription> medicamentPrescriptions) {
+        this.medicamentPrescriptions = medicamentPrescriptions;
     }
 
-    public Pet getPetdiagnosis() {
-        return petdiagnosis;
-    }
-
-    public void setPetdiagnosis(Pet petdiagnosis) {
-        this.petdiagnosis = petdiagnosis;
-    }
+//    public Pet getPetdiagnosis() {
+//        return petdiagnosis;
+//    }
+//
+//    public void setPetdiagnosis(Pet petdiagnosis) {
+//        this.petdiagnosis = petdiagnosis;
+//    }
 }

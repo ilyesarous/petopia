@@ -29,13 +29,29 @@ public class Consultations {
     @Enumerated(EnumType.STRING)
     private status_type statusT;
 
-    //relation consultation * to 1 user client eli bech yekou ell rdv
-    @ManyToOne(cascade = CascadeType.ALL)
-    private User userclient;
-
-    //relation consultation * to 1 user vet
-    @ManyToOne(cascade = CascadeType.ALL)
-    private User uservet;
+//    //relation consultation * to 1 user client eli bech yekou ell rdv
+//    @ManyToOne(cascade = CascadeType.ALL)
+//    private User userclient;
+//
+//    //relation consultation * to 1 user vet
+//    @ManyToOne(cascade = CascadeType.ALL)
+//    private User uservet;
+//
+//    public User getUserclient() {
+//        return userclient;
+//    }
+//
+//    public void setUserclient(User userclient) {
+//        this.userclient = userclient;
+//    }
+//
+//    public User getUservet() {
+//        return uservet;
+//    }
+//
+//    public void setUservet(User uservet) {
+//        this.uservet = uservet;
+//    }
 
     public int getIdConsultation() {
         return idConsultation;

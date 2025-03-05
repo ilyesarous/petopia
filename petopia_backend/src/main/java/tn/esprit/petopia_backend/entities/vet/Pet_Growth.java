@@ -25,9 +25,9 @@ public class Pet_Growth {
     @Enumerated(EnumType.STRING)
     private health_type health_status;
 
-    //relation * pet growth andd 1 pet
-    @ManyToOne(cascade = CascadeType.ALL)
-    private Pet petgrowth;
+//    //relation * pet growth andd 1 pet
+//    @ManyToOne(cascade = CascadeType.ALL)
+//    private Pet petgrowth;
 
     public int getIdPet_Growth() {
         return idPet_Growth;
@@ -69,11 +69,11 @@ public class Pet_Growth {
         this.health_status = health_status;
     }
 
-    public Pet getPetgrowth() {
-        return petgrowth;
-    }
-
-    public void setPetgrowth(Pet petgrowth) {
-        this.petgrowth = petgrowth;
-    }
+//    public Pet getPetgrowth() {
+//        return petgrowth;
+//    }
+//
+//    public void setPetgrowth(Pet petgrowth) {
+//        this.petgrowth = petgrowth;
+//    }
 }

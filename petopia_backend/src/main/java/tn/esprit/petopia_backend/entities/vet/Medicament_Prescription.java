@@ -1,5 +1,6 @@
 package tn.esprit.petopia_backend.entities.vet;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -19,6 +20,7 @@ public class Medicament_Prescription {
 
     //relation * Medicament_Prescription fi wesett 1 diagnosis
     @ManyToOne(cascade = CascadeType.ALL)
+    @JsonIgnore //pour éviter la récursion infinie en JSON.
     private Diagnosis diagnosis;
 
     public int getIdMedicament_Prescription() {

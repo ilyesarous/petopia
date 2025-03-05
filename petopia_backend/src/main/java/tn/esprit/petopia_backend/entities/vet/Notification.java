@@ -23,9 +23,9 @@ public class Notification {
     private boolean seen;
     private Date notif_date;
 
-    //relation notif * to 1 user
-    @ManyToOne(cascade = CascadeType.ALL)
-    private User notif;
+//    //relation notif * to 1 user
+//    @ManyToOne(cascade = CascadeType.ALL)
+//    private User notif;
 
     public int getIdNotification() {
         return idNotification;
@@ -59,11 +59,11 @@ public class Notification {
         this.notif_date = notif_date;
     }
 
-    public User getNotif() {
-        return notif;
-    }
-
-    public void setNotif(User notif) {
-        this.notif = notif;
-    }
+//    public User getNotif() {
+//        return notif;
+//    }
+//
+//    public void setNotif(User notif) {
+//        this.notif = notif;
+//    }
 }
