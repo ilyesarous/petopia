@@ -11,7 +11,6 @@ import tn.esprit.petopia_backend.services.pet.PetService;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:4200")
-
 public class PetController {
 
     private final PetService petService;
