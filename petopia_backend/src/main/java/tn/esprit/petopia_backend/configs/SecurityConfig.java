@@ -46,10 +46,10 @@ public class SecurityConfig {
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .authorizeHttpRequests(request -> request
                         .requestMatchers("/auth/**").permitAll()
-                        .requestMatchers("/admin/**").hasRole("ADMIN")
-                        .requestMatchers("/user/**").hasRole("USER")
-                        .requestMatchers("/vet/**").hasRole("VET")
-                        .requestMatchers("/partner/**").hasRole("PARTNER")
+                        .requestMatchers("/admin/**").hasAuthority("ROLE_ADMIN")
+                        .requestMatchers("/user/**").hasAuthority("ROLE_USER")
+                        .requestMatchers("/vet/**").hasAuthority("ROLE_VET")
+                        .requestMatchers("/partner/**").hasAuthority("ROLE_PARTNER")
                         .anyRequest().authenticated())
                 .logout(logout -> logout
                         .logoutUrl("/auth/logout")

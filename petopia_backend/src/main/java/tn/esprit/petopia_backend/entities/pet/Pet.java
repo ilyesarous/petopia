@@ -1,4 +1,4 @@
-package tn.esprit.petopia_backend.entities.user;
+package tn.esprit.petopia_backend.entities.pet;
 
 import tn.esprit.petopia_backend.entities.user.User;
 import jakarta.persistence.*;

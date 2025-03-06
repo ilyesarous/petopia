@@ -1,8 +1,10 @@
 package tn.esprit.petopia_backend.controller.user;
 
 
+import tn.esprit.petopia_backend.entities.pet.Pet;
 import tn.esprit.petopia_backend.entities.user.User;
 import tn.esprit.petopia_backend.dto.ReqRes;
+import tn.esprit.petopia_backend.services.pet.PetService;
 import tn.esprit.petopia_backend.services.user.EmailService;
 import tn.esprit.petopia_backend.services.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +22,6 @@ public class UserController {
     private EmailService emailService;
     @Autowired
     private UserService usersManagementService;
-
 
     @PostMapping("/auth/register")
     public ResponseEntity<ReqRes> regeister(@RequestBody ReqRes reg) {
