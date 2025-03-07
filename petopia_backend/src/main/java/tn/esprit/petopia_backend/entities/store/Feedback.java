@@ -1,13 +1,11 @@
 package tn.esprit.petopia_backend.entities.store;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import tn.esprit.petopia_backend.entities.user.User;
 
 @Entity
 @Getter
@@ -20,4 +18,6 @@ public class Feedback {
     private int feedback_id;
     private String description;
     private int stars_number;
+    @ManyToOne
+    private User user;
 }

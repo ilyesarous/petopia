@@ -6,4 +6,5 @@ import tn.esprit.petopia_backend.entities.store.Feedback;
 
 @Repository
 public interface FeedbackRepository extends JpaRepository<Feedback, Integer> {
+
 }

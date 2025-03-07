@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import tn.esprit.petopia_backend.entities.user.User;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,6 +28,9 @@ public class Product {
     private ProductCategory category;
     private boolean isLiked;
     private int availableQuantity;
+
+    @ManyToOne
+    private User user;
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore

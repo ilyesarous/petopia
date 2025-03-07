@@ -9,32 +9,36 @@ import tn.esprit.petopia_backend.services.store.ProductService;
 import java.util.List;
 
 @RestController
-@RequestMapping("product")
 @AllArgsConstructor
 public class ProductController {
     private ProductService productService;
 
-    @GetMapping
+    @GetMapping("partner/product/get/{id}")
+    public List<Product> findAllById(@PathVariable int id) {
+        return productService.findProductsById(id);
+    }
+
+    @GetMapping("user/product")
     public List<Product> findAll() {
         return productService.findAll();
     }
 
-    @GetMapping("{id}")
+    @GetMapping("user/product/{id}")
     public Product findById(@PathVariable int id) {
         return productService.findById(id);
     }
 
-    @PostMapping("add")
+    @PostMapping("partner/product/add")
     public Product addProduct(@RequestBody Product product) {
         return productService.addProduct(product);
     }
 
-    @PutMapping("update")
+    @PutMapping("partner/product/update")
     public Product updateProduct(@RequestBody Product product) {
         return productService.updateProduct(product);
     }
 
-    @DeleteMapping("delete/{id}")
+    @DeleteMapping("partner/product/delete/{id}")
     public void deleteProduct(@PathVariable int id) {
         productService.deleteById(id);
     }
