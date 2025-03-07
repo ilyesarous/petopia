@@ -26,9 +26,9 @@ public class Consultations {
     private LocalTime end_time;
     @Enumerated(EnumType.STRING)
     private consultation_type consultationT;
-    private Double consultation_price;
+    private Double consultation_price = 50.0;
     @Enumerated(EnumType.STRING)
-    private status_type statusT;
+    private status_type statusT = status_type.waiting;
 
     //relation consultation * to 1 user client eli bech yekou ell rdv
     //@ManyToOne(cascade = CascadeType.ALL)
