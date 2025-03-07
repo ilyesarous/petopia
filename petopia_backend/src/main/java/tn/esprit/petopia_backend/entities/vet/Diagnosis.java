@@ -22,7 +22,19 @@ public class Diagnosis {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int idDiagnosis;
     private String diagnosis_description;
+
+    @Temporal(TemporalType.DATE)
     private LocalDate diagnosis_date;
+
+    @PrePersist
+    protected void onCreate() {
+        diagnosis_date = LocalDate.now(); // Initialise la date avec la date et l'heure actuelles lors de la création
+    }
+
+    @PreUpdate
+    protected void onUpdate() {
+        diagnosis_date = LocalDate.now(); // Met à jour la date avec la date et l'heure actuelles lors de la mise à jour
+    }
 
     //@OneToMany(cascade = CascadeType.ALL, mappedBy = "diagnosis")
     //private Set<Medicament_Prescription> Medicament_PrescriptionList;
