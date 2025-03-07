@@ -9,6 +9,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import tn.esprit.petopia_backend.entities.pet.Pet;
+import tn.esprit.petopia_backend.entities.reclamation.Reclamation;
 
 import java.util.Collection;
 import java.util.List;
