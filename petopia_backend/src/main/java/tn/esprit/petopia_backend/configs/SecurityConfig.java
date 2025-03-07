@@ -50,6 +50,7 @@ public class SecurityConfig {
                         .requestMatchers("/user/**").hasAuthority("ROLE_USER")
                         .requestMatchers("/vet/**").hasAuthority("ROLE_VET")
                         .requestMatchers("/partner/**").hasAuthority("ROLE_PARTNER")
+                        .requestMatchers("/shelter/**").hasAuthority("ROLE_SHELTER")
                         .anyRequest().authenticated())
                 .logout(logout -> logout
                         .logoutUrl("/auth/logout")
