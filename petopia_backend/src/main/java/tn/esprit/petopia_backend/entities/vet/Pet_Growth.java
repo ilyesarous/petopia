@@ -5,7 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import tn.esprit.petopia_backend.entities.Pet;
+import tn.esprit.petopia_backend.entities.pet.Pet;
 
 import java.util.Date;
 import java.util.Set;
@@ -19,15 +19,30 @@ public class Pet_Growth {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int idPet_Growth;
-    private Date measurement_date;
     private Double weight;
     private Double height;
     @Enumerated(EnumType.STRING)
     private health_type health_status;
 
-//    //relation * pet growth andd 1 pet
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date measurement_date;
+    @PrePersist
+    protected void onCreate() {
+        measurement_date = new Date(); // Initialise la date avec la date et l'heure actuelles lors de la création
+    }
+
+    @PreUpdate
+    protected void onUpdate() {
+        measurement_date = new Date(); // Met à jour la date avec la date et l'heure actuelles lors de la mise à jour
+    }
+
+    //relation * pet growth andd 1 pet
 //    @ManyToOne(cascade = CascadeType.ALL)
 //    private Pet petgrowth;
+    //@ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "petgrowth_id_pet")
+    private Pet petgrowth;
 
     public int getIdPet_Growth() {
         return idPet_Growth;
@@ -69,11 +84,11 @@ public class Pet_Growth {
         this.health_status = health_status;
     }
 
-//    public Pet getPetgrowth() {
-//        return petgrowth;
-//    }
-//
-//    public void setPetgrowth(Pet petgrowth) {
-//        this.petgrowth = petgrowth;
-//    }
+    public Pet getPetgrowth() {
+        return petgrowth;
+    }
+
+    public void setPetgrowth(Pet petgrowth) {
+        this.petgrowth = petgrowth;
+    }
 }

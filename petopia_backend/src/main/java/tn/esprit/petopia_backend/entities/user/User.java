@@ -1,5 +1,6 @@
 package tn.esprit.petopia_backend.entities.user;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,10 +10,13 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import tn.esprit.petopia_backend.entities.pet.Pet;
+import tn.esprit.petopia_backend.entities.vet.Consultations;
+import tn.esprit.petopia_backend.entities.vet.Notification;
 import tn.esprit.petopia_backend.entities.reclamation.Reclamation;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -36,10 +40,30 @@ public class User implements UserDetails {
     private Integer nb_points = 0;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
     private List<Pet> listPets;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Reclamation> listReclamation;
+
+    //1 user client inajem yekou barchaa consultationett
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "userclient")
+    @JsonIgnore
+    private Set<Consultations> consultationList;
+
+    //1 user vet andou barchaa consultationett
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "uservet")
+    @JsonIgnore
+    private Set<Consultations> consultationsvetList;
+
+    //1 user  andou barchaa notif
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
+    @JsonIgnore
+    private Set<Notification> notificationsList;
+
+    public Integer getId_user() {
+        return id_user;
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

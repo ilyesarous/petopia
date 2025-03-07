@@ -6,7 +6,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import tn.esprit.petopia_backend.entities.Pet;
+import tn.esprit.petopia_backend.entities.pet.Pet;
+
 
 import java.time.LocalDate;
 import java.util.Set;
@@ -30,8 +31,12 @@ public class Diagnosis {
 
 
     //relation * diagnosis andd 1 pet
-    //@ManyToOne(cascade = CascadeType.ALL)
-    //private Pet petdiagnosis;
+//    @ManyToOne(cascade = CascadeType.ALL)
+//    private Pet petdiagnosis;
+    //@ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "petdiagnosis_id_pet")
+    private Pet petdiagnosis;
 
     public int getIdDiagnosis() {
         return idDiagnosis;
@@ -65,11 +70,11 @@ public class Diagnosis {
         this.medicamentPrescriptions = medicamentPrescriptions;
     }
 
-//    public Pet getPetdiagnosis() {
-//        return petdiagnosis;
-//    }
-//
-//    public void setPetdiagnosis(Pet petdiagnosis) {
-//        this.petdiagnosis = petdiagnosis;
-//    }
+    public Pet getPetdiagnosis() {
+        return petdiagnosis;
+    }
+
+    public void setPetdiagnosis(Pet petdiagnosis) {
+        this.petdiagnosis = petdiagnosis;
+    }
 }

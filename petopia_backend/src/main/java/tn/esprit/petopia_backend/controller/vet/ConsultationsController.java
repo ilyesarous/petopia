@@ -1,41 +1,57 @@
 package tn.esprit.petopia_backend.controller.vet;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+import tn.esprit.petopia_backend.entities.user.User;
 import tn.esprit.petopia_backend.entities.vet.Consultations;
 import tn.esprit.petopia_backend.services.vet.IConsultationsService;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/Consultations")
+//@RequestMapping("/user/Consultations") //njidd kelmett auth
 @CrossOrigin
 public class ConsultationsController {
 
     @Autowired
     IConsultationsService consultationsService;
 
-    @PostMapping("/addConsultations")
-    Consultations addConsultations(@RequestBody Consultations consultations){
+    @PostMapping("/user/Consultations/addConsultations")
+    public Consultations addConsultations(@RequestBody Consultations consultations){
+        System.out.println("***********controller***********");
+        System.out.println(consultations.toString());
         return consultationsService.addConsultations(consultations);
     }
 
-    @PutMapping("/updateConsultations")
+
+//    @PostMapping("/vet/addConsultations")
+//    Consultations addConsultationsvet(@RequestBody Consultations consultations){
+//        return consultationsService.addConsultations(consultations);
+//    }
+//    @PostMapping("/user/Consultations/addConsultations")
+//    Consultations addConsultationsuser(@RequestBody Consultations consultations){
+//        return consultationsService.addConsultations(consultations);
+//    }
+    //nestagnaa ala hediiii
+//@RequestMapping("/Consultations") //njidd kelmett auth
+
+    @PutMapping("/user/Consultations/updateConsultations")
     Consultations updateConsultations(@RequestBody Consultations consultations){
         return consultationsService.updateConsultations(consultations);
     }
 
-    @DeleteMapping("/deleteConsultations/{idConsultations}")
+    @DeleteMapping("/auth/Consultations/deleteConsultations/{idConsultations}")
     void deleteConsultations(@PathVariable int idConsultations){
         consultationsService.deleteConsultations(idConsultations);
     }
 
-    @GetMapping("/retriveAllConsultations")
+    @GetMapping("/auth/Consultations/retriveAllConsultations")
     List<Consultations> retriveAllBloc(){
         return consultationsService.retriveAllConsultations();
     }
 
-    @GetMapping("/retriveConsultations/{idConsultations}")
+    @GetMapping("/auth/Consultations/retriveConsultations/{idConsultations}")
     Consultations retriveConsultations(@PathVariable int idConsultations){
         return consultationsService.retriveConsultations(idConsultations);
     }

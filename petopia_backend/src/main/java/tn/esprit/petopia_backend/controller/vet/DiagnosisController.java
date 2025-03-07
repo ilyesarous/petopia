@@ -8,7 +8,7 @@ import tn.esprit.petopia_backend.services.vet.IDiagnosisService;
 import java.util.List;
 
 @RestController
-@RequestMapping("/Diagnosis")
+@RequestMapping("/auth/Diagnosis")
 public class DiagnosisController {
 
     @Autowired
