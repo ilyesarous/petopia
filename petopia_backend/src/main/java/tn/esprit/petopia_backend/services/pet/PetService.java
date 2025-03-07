@@ -20,13 +20,25 @@ public class PetService {
     public Pet addPet(Pet pet) {
         return petRepository.save(pet);
     }
-    public Pet updatePet(Pet pet) {
-        return petRepository.save(pet);
-
-    }
 
 
     //AMAL ADDED THIS!!
+    public Pet updatePet(Pet pet) {
+        if(!petRepository.existsById(pet.getIdPet())){
+            throw new RuntimeException("Pet not found");
+        }
+        return petRepository.save(pet);
+    }
+
+    public Pet getPetById(Integer id) {
+        return petRepository.findById(id).orElse(null);
+    }
+    public void deletePet(Integer id) {
+        if(!petRepository.existsById(id)){
+            throw new RuntimeException("Pet not found");
+        }
+        petRepository.deleteById(id);
+    }
     public List<Pet> getPetsByShelterId(Integer shelterId) {
         return petRepository.findByShelterId(shelterId);
     }

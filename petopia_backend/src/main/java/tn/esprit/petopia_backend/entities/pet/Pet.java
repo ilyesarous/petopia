@@ -1,5 +1,6 @@
 package tn.esprit.petopia_backend.entities.pet;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import tn.esprit.petopia_backend.entities.adoptions.Shelter;
 import tn.esprit.petopia_backend.entities.user.User;
 import jakarta.persistence.*;
@@ -48,5 +49,6 @@ public class Pet {
     private String healthStatus =null;
 
     @ManyToOne
+    @JsonIgnore
     private Shelter shelter;
 }

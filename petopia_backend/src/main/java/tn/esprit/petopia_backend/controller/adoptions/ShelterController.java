@@ -2,8 +2,11 @@ package tn.esprit.petopia_backend.controller.adoptions;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import tn.esprit.petopia_backend.entities.adoptions.Shelter;
+import tn.esprit.petopia_backend.entities.user.User;
 import tn.esprit.petopia_backend.services.adoptions.IShelterService;
 import java.util.List;
 
@@ -21,8 +24,15 @@ public class ShelterController {
     @PostMapping("/addShelter")
     @PreAuthorize("hasAuthority('ROLE_SHELTER')")
     public ResponseEntity<Shelter> createShelter(@RequestBody Shelter shelter) {
-        return ResponseEntity.ok(shelterService.createShelter(shelter));
+        // Extract userId from token (e.g. from SecurityContextHolder)
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User user = (User) authentication.getPrincipal(); // cast to your entity class
+        Integer userId = user.getId_user();
+
+        Shelter savedShelter = shelterService.createShelter(shelter, userId);
+        return ResponseEntity.ok(savedShelter);
     }
+
 
     // Only a shelter can update its details
     @PutMapping("/updateShelter/{id}")
