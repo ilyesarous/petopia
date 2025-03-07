@@ -8,6 +8,7 @@ import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import tn.esprit.petopia_backend.entities.adoptions.Shelter;
 import tn.esprit.petopia_backend.entities.pet.Pet;
 
 import java.util.Collection;
@@ -39,6 +40,11 @@ public class User implements UserDetails {
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Reclamation> listReclamation;
+
+    //SHELTER
+    @OneToOne
+    private Shelter shelter;
+
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
