@@ -21,10 +21,6 @@ public class Pet {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int idPet;
 
-    @ManyToOne
-    @JoinColumn(name = "id_user", nullable = false)
-    private User user;
-
     private String petName;
     private int petAge;
     private String petImage;
@@ -32,4 +28,28 @@ public class Pet {
     private String location=null;
     private float attitudeX ;
     private float attitudeY ;
+
+    @Enumerated(EnumType.STRING)
+    private Species species;
+
+    @Enumerated(EnumType.STRING)
+    private PetStatus status=null;
+    @Enumerated(EnumType.STRING)
+    private Gender gender;
+
+    @Enumerated(EnumType.STRING)
+    private Size size;
+
+    private String healthStatus =null;
+
+    @ManyToOne
+    @JsonIgnore
+    private Shelter shelter;
+    @ManyToOne
+    @JoinColumn(name = "id_user", nullable = false)
+    private User user;
+
+    @OneToOne
+    @JsonIgnore
+    private Preferences preferences;
 }
