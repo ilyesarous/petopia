@@ -5,7 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="d82146aa-c391-488d-a5e9-d2774f899f12" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/petopia_backend/src/main/java/tn/esprit/petopia_backend/entities/vet/Consultations.java" beforeDir="false" afterPath="$PROJECT_DIR$/petopia_backend/src/main/java/tn/esprit/petopia_backend/entities/vet/Consultations.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/petopia_backend/src/main/java/tn/esprit/petopia_backend/controller/vet/DiagnosisController.java" beforeDir="false" afterPath="$PROJECT_DIR$/petopia_backend/src/main/java/tn/esprit/petopia_backend/controller/vet/DiagnosisController.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -69,7 +70,7 @@
       <updated>1741090144466</updated>
       <workItem from="1741090145655" duration="91000" />
       <workItem from="1741358893889" duration="7204000" />
-      <workItem from="1741378513137" duration="7867000" />
+      <workItem from="1741378513137" duration="10661000" />
     </task>
     <servers />
   </component>
