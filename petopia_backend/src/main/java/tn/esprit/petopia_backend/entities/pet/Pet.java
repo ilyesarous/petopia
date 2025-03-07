@@ -1,7 +1,5 @@
 package tn.esprit.petopia_backend.entities.pet;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import tn.esprit.petopia_backend.entities.matching.Preferences;
 import tn.esprit.petopia_backend.entities.user.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -22,6 +20,7 @@ public class Pet {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int idPet;
+
     private String petName;
     private int petAge;
     private String petImage;
@@ -29,6 +28,23 @@ public class Pet {
     private String location=null;
     private float attitudeX ;
     private float attitudeY ;
+
+    @Enumerated(EnumType.STRING)
+    private Species species;
+
+    @Enumerated(EnumType.STRING)
+    private PetStatus status=null;
+    @Enumerated(EnumType.STRING)
+    private Gender gender;
+
+    @Enumerated(EnumType.STRING)
+    private Size size;
+
+    private String healthStatus =null;
+
+    @ManyToOne
+    @JsonIgnore
+    private Shelter shelter;
     @ManyToOne
     @JoinColumn(name = "id_user", nullable = false)
     private User user;
