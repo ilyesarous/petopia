@@ -41,7 +41,7 @@ public class ConsultationsController {
         return consultationsService.updateConsultations(consultations);
     }
 
-    @DeleteMapping("/auth/Consultations/deleteConsultations/{idConsultations}")
+    @DeleteMapping("/vet/Consultations/deleteConsultations/{idConsultations}")
     void deleteConsultations(@PathVariable int idConsultations){
         consultationsService.deleteConsultations(idConsultations);
     }
