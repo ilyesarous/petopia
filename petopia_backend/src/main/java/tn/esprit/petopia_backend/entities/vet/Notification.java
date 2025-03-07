@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import tn.esprit.petopia_backend.entities.User;
 
 import java.util.Date;
 import java.util.Set;
@@ -22,11 +23,47 @@ public class Notification {
     private boolean seen;
     private Date notif_date;
 
-    // relation notification * to 1 user
-//    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
-//    private Set<User> UserList;
+//    //relation notif * to 1 user
+//    @ManyToOne(cascade = CascadeType.ALL)
+//    private User notif;
 
-    //classe user
-//    @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
-//    private Set<Notification> NotificationList;
+    public int getIdNotification() {
+        return idNotification;
+    }
+
+    public void setIdNotification(int idNotification) {
+        this.idNotification = idNotification;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
+    public boolean isSeen() {
+        return seen;
+    }
+
+    public void setSeen(boolean seen) {
+        this.seen = seen;
+    }
+
+    public Date getNotif_date() {
+        return notif_date;
+    }
+
+    public void setNotif_date(Date notif_date) {
+        this.notif_date = notif_date;
+    }
+
+//    public User getNotif() {
+//        return notif;
+//    }
+//
+//    public void setNotif(User notif) {
+//        this.notif = notif;
+//    }
 }
