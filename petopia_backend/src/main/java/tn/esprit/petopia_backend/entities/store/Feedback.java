@@ -18,6 +18,9 @@ public class Feedback {
     private int feedback_id;
     private String description;
     private int stars_number;
+    private String sentiment;
     @ManyToOne
     private User user;
+    @ManyToOne
+    private Product product;
 }

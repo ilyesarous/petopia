@@ -18,6 +18,11 @@ public class ProductService implements IProductService {
 
     @Override
     public Product addProduct(Product product) {
+        User user = userService.getUsersById(product.getUser().getId_user()).getOurUsers();
+        if (user == null) {
+            throw new RuntimeException("User not found");
+        }
+        product.setUser(user);
         return repository.save(product);
     }
 

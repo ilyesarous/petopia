@@ -29,6 +29,9 @@ public class Product {
     private boolean isLiked;
     private int availableQuantity;
 
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
+    private List<Feedback> feedbacks;
     @ManyToOne
     private User user;
 

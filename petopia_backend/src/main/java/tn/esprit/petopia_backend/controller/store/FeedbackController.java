@@ -12,22 +12,27 @@ import java.util.List;
 @AllArgsConstructor
 public class FeedbackController {
     private FeedbackService feedbackService;
-    @GetMapping
-    public List<Feedback> findAll() {
-        return feedbackService.findAll();
-    }
+
     @GetMapping("{id}")
     public Feedback findById(@PathVariable int id) {
         return feedbackService.findById(id);
     }
+
+    @GetMapping("get/{id}")
+    public List<Feedback> findByProduct(@PathVariable int id) {
+        return feedbackService.findAllByProduct(id);
+    }
+
     @PostMapping("add")
     public String addProduct(@RequestBody Feedback feedback) {
         return feedbackService.addFeedback(feedback);
     }
+
     @PutMapping("update")
     public Feedback updateProduct(@RequestBody Feedback feedback) {
         return feedbackService.updateFeedback(feedback);
     }
+
     @DeleteMapping("delete/{id}")
     public void deleteProduct(@PathVariable int id) {
         feedbackService.deleteById(id);
