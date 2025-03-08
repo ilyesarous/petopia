@@ -6,7 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import tn.esprit.petopia_backend.entities.Pet;
+import tn.esprit.petopia_backend.entities.pet.Pet;
 
 import java.time.LocalDate;
 import java.util.Set;

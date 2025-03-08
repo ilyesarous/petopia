@@ -16,6 +16,9 @@ import tn.esprit.petopia_backend.entities.community.Reaction;
 import tn.esprit.petopia_backend.entities.community.Story;
 import tn.esprit.petopia_backend.entities.pet.Pet;
 import tn.esprit.petopia_backend.entities.reclamation.Reclamation;
+import tn.esprit.petopia_backend.entities.store.Cart;
+import tn.esprit.petopia_backend.entities.store.Feedback;
+import tn.esprit.petopia_backend.entities.store.Product;
 
 import java.util.Collection;
 import java.util.List;
@@ -47,6 +50,16 @@ public class User implements UserDetails {
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Reclamation> listReclamation;
+
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
+    private Cart cart;
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
+    private List<Product> products;
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
+    private List<Feedback> feedbacks;
 
     //SHELTER
     @OneToOne

@@ -12,11 +12,12 @@ import java.util.List;
 public class PetService {
 
     @Autowired
-    private final PetRepository petRepository ;
+    private final PetRepository petRepository;
 
     public PetService(PetRepository petRepository) {
         this.petRepository = petRepository;
     }
+
     public Pet addPet(Pet pet) {
         return petRepository.save(pet);
     }
@@ -24,7 +25,7 @@ public class PetService {
 
     //AMAL ADDED THIS!!
     public Pet updatePet(Pet pet) {
-        if(!petRepository.existsById(pet.getIdPet())){
+        if (!petRepository.existsById(pet.getIdPet())) {
             throw new RuntimeException("Pet not found");
         }
         return petRepository.save(pet);
@@ -33,12 +34,14 @@ public class PetService {
     public Pet getPetById(Integer id) {
         return petRepository.findById(id).orElse(null);
     }
+
     public void deletePet(Integer id) {
-        if(!petRepository.existsById(id)){
+        if (!petRepository.existsById(id)) {
             throw new RuntimeException("Pet not found");
         }
         petRepository.deleteById(id);
     }
+
     public List<Pet> getPetsByShelterId(Integer shelterId) {
         return petRepository.findByShelterId(shelterId);
     }

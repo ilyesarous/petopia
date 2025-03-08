@@ -8,26 +8,36 @@ import tn.esprit.petopia_backend.services.store.FeedbackService;
 import java.util.List;
 
 @RestController
-@RequestMapping("feedback")
+@RequestMapping("user/feedback")
 @AllArgsConstructor
 public class FeedbackController {
     private FeedbackService feedbackService;
-    @GetMapping
-    public List<Feedback> findAll() {
-        return feedbackService.findAll();
-    }
+
     @GetMapping("{id}")
     public Feedback findById(@PathVariable int id) {
         return feedbackService.findById(id);
     }
+
+    @GetMapping("getByProduct/{id}")
+    public List<Feedback> findByProduct(@PathVariable int id) {
+        return feedbackService.findAllByProduct(id);
+    }
+
+    @GetMapping("get/{idProduct}")
+    public List<String> findSentimentsByProduct(@PathVariable int idProduct) {
+        return feedbackService.getSentimentById( idProduct);
+    }
+
     @PostMapping("add")
-    public Feedback addProduct(@RequestBody Feedback feedback) {
+    public String addProduct(@RequestBody Feedback feedback) {
         return feedbackService.addFeedback(feedback);
     }
+
     @PutMapping("update")
     public Feedback updateProduct(@RequestBody Feedback feedback) {
         return feedbackService.updateFeedback(feedback);
     }
+
     @DeleteMapping("delete/{id}")
     public void deleteProduct(@PathVariable int id) {
         feedbackService.deleteById(id);

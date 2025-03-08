@@ -2,6 +2,7 @@ package tn.esprit.petopia_backend.controller.store;
 
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+import tn.esprit.petopia_backend.entities.store.AddToCart;
 import tn.esprit.petopia_backend.entities.store.Cart;
 import tn.esprit.petopia_backend.entities.store.Product;
 import tn.esprit.petopia_backend.services.store.CartService;
@@ -9,7 +10,7 @@ import tn.esprit.petopia_backend.services.store.CartService;
 import java.util.List;
 
 @RestController
-@RequestMapping("cart")
+@RequestMapping("user/cart")
 @AllArgsConstructor
 public class CartController {
     private CartService cartService;
@@ -21,17 +22,17 @@ public class CartController {
 
     @GetMapping("{id}")
     public Cart findById(@PathVariable int id) {
-        return cartService.findById(id);
+        return cartService.findCartByUser(id);
     }
 
-    @PostMapping("add/{idCart}/{idProduct}/{quantity}")
-    public Cart addCart(@PathVariable int idProduct, @PathVariable int quantity, @PathVariable int idCart) {
-        return cartService.addProductToCart(idCart, idProduct, quantity);
+    @PostMapping("add")
+    public Cart addCart(@RequestBody AddToCart addToCart) {
+        return cartService.addProductToCart(addToCart.getId_user(), addToCart.getIdProduct(), addToCart.getQuantity());
     }
 
-    @GetMapping("/{idCart}/checkout")
-    public String checkout(@PathVariable int idCart) {
-        return cartService.checkout(idCart);
+    @GetMapping("/checkout")
+    public String checkout(@RequestBody int idUser) {
+        return cartService.checkout(idUser);
     }
 
     @PutMapping("update")
@@ -39,8 +40,8 @@ public class CartController {
         return cartService.updateCart(cart);
     }
 
-    @DeleteMapping("delete/{idCart}/{idProduct}")
-    public void deleteCart(@PathVariable int idCart, @PathVariable int idProduct) {
-        cartService.deleteProductById(idCart, idProduct);
+    @DeleteMapping("delete/{idUser}/{idProduct}")
+    public void deleteCart(@PathVariable int idUser, @PathVariable int idProduct) {
+        cartService.deleteProductById(idUser, idProduct);
     }
 }
