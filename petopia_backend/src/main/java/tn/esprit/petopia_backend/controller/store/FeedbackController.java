@@ -18,9 +18,14 @@ public class FeedbackController {
         return feedbackService.findById(id);
     }
 
-    @GetMapping("get/{id}")
+    @GetMapping("getByProduct/{id}")
     public List<Feedback> findByProduct(@PathVariable int id) {
         return feedbackService.findAllByProduct(id);
+    }
+
+    @GetMapping("get/{idProduct}")
+    public List<String> findSentimentsByProduct(@PathVariable int idProduct) {
+        return feedbackService.getSentimentById( idProduct);
     }
 
     @PostMapping("add")

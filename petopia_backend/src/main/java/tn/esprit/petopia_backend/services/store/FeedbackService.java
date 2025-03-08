@@ -12,6 +12,7 @@ import edu.stanford.nlp.util.CoreMap;
 import edu.stanford.nlp.ling.CoreAnnotations;
 import edu.stanford.nlp.sentiment.SentimentCoreAnnotations;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
@@ -49,13 +50,22 @@ public class FeedbackService implements IFeedbackService {
     }
 
     @Override
+    public List<String> getSentimentById( int idProduct) {
+        List<String> sentiments = new ArrayList<>();
+        findAllByProduct(idProduct).forEach(f -> sentiments.add(f.getSentiment()));
+        return sentiments;
+    }
+
+    @Override
     public void deleteById(int id) {
         repository.deleteById(id);
     }
 
     @Override
     public Feedback updateFeedback(Feedback feedback) {
-        return repository.save(feedback);
+        Feedback feedback1 = findById(feedback.getFeedback_id());
+        feedback1.setDescription(feedback.getDescription());
+        return repository.save(feedback1);
     }
 
     @Override

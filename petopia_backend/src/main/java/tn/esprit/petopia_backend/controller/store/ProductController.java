@@ -33,6 +33,11 @@ public class ProductController {
         return productService.addProduct(product);
     }
 
+    @PostMapping("user/product/add")
+    public Product addProductSecondHand(@RequestBody Product product) {
+        return productService.addProduct(product);
+    }
+
     @PutMapping("partner/product/update")
     public Product updateProduct(@RequestBody Product product) {
         return productService.updateProduct(product);

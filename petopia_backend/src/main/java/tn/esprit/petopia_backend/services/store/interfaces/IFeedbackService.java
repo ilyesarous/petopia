@@ -11,4 +11,5 @@ public interface IFeedbackService {
     void deleteById(int id);
     Feedback updateFeedback(Feedback feedback);
     List<Feedback> findAllByProduct(int idProduct);
+    List<String> getSentimentById( int idProduct);
 }
