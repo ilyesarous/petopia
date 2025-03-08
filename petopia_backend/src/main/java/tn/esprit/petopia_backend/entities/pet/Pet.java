@@ -76,9 +76,7 @@ public class Pet {
     @ManyToOne
     @JsonIgnore
     private Shelter shelter;
-    @ManyToOne
-    @JoinColumn(name = "id_user", nullable = false)
-    private User user;
+
 
     @OneToOne
     @JsonIgnore
