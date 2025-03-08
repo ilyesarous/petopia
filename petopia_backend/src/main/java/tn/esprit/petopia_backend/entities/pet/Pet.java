@@ -1,6 +1,9 @@
 package tn.esprit.petopia_backend.entities.pet;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import tn.esprit.petopia_backend.entities.adoptions.Shelter;
+import tn.esprit.petopia_backend.entities.matching.Preferences;
 import tn.esprit.petopia_backend.entities.user.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -56,4 +59,28 @@ public class Pet {
     public int getIdPet() {
         return idPet;
     }
+
+    @Enumerated(EnumType.STRING)
+    private Species species;
+
+    @Enumerated(EnumType.STRING)
+    private PetStatus status=null;
+    @Enumerated(EnumType.STRING)
+    private Gender gender;
+
+    @Enumerated(EnumType.STRING)
+    private Size size;
+
+    private String healthStatus =null;
+
+    @ManyToOne
+    @JsonIgnore
+    private Shelter shelter;
+    @ManyToOne
+    @JoinColumn(name = "id_user", nullable = false)
+    private User user;
+
+    @OneToOne
+    @JsonIgnore
+    private Preferences preferences;
 }
