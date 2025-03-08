@@ -11,6 +11,8 @@ import { SidebarComponent } from './admin/sidebar/sidebar.component';
 import { MainComponent } from './admin/main/main.component';
 import { NavbarAdminComponent } from './admin/navbar-admin/navbar-admin.component';
 import { ComponentWrapperComponent } from './component-wrapper/component-wrapper.component';
+import { DashPrincipaleComponent } from './admin/vet/dash-principale/dash-principale.component';
+import { ChatbotComponent } from './admin/vet/chatbot/chatbot.component';
 
 @NgModule({
   declarations: [
@@ -22,7 +24,9 @@ import { ComponentWrapperComponent } from './component-wrapper/component-wrapper
     SidebarComponent,
     MainComponent,
     NavbarAdminComponent,
-    ComponentWrapperComponent
+    ComponentWrapperComponent,
+    DashPrincipaleComponent,
+    ChatbotComponent
   ],
   imports: [
     BrowserModule,
