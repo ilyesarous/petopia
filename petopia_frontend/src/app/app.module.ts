@@ -13,6 +13,7 @@ import { NavbarAdminComponent } from './admin/navbar-admin/navbar-admin.componen
 import { ComponentWrapperComponent } from './component-wrapper/component-wrapper.component';
 import { DashPrincipaleComponent } from './admin/vet/dash-principale/dash-principale.component';
 import { ChatbotComponent } from './admin/vet/chatbot/chatbot.component';
+import { AppDogBreedRecognitionRedirectButtonComponent } from './admin/vet/app-dog-breed-recognition-redirect-button/app-dog-breed-recognition-redirect-button.component';
 
 @NgModule({
   declarations: [
@@ -26,7 +27,8 @@ import { ChatbotComponent } from './admin/vet/chatbot/chatbot.component';
     NavbarAdminComponent,
     ComponentWrapperComponent,
     DashPrincipaleComponent,
-    ChatbotComponent
+    ChatbotComponent,
+    AppDogBreedRecognitionRedirectButtonComponent
   ],
   imports: [
     BrowserModule,
