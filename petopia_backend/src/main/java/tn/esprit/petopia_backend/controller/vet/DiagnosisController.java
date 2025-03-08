@@ -35,7 +35,20 @@ public class DiagnosisController {
     }
 
     @GetMapping("/auth/Diagnosis/retrieveDiagnosis/{idDiagnosis}")
+//    public Diagnosis retrieveDiagnosis(@PathVariable int idDiagnosis) {
+//        return diagnosisService.retrieveDiagnosis(idDiagnosis);
+//    }
+
     public Diagnosis retrieveDiagnosis(@PathVariable int idDiagnosis) {
-        return diagnosisService.retrieveDiagnosis(idDiagnosis);
+        Diagnosis diagnosis = diagnosisService.retrieveDiagnosis(idDiagnosis);
+        if (diagnosis != null) {
+            try {
+                QRCodeGenerator.generateQRCode(diagnosis);
+                System.out.println("QR Code généré avec succès : " + diagnosis.getIdDiagnosis());
+            } catch (Exception e) {
+                e.printStackTrace(); // Affiche l'erreur dans la console
+            }
+        }
+        return diagnosis;
     }
 }
