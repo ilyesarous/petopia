@@ -5,7 +5,6 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="d82146aa-c391-488d-a5e9-d2774f899f12" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/petopia_backend/src/main/java/tn/esprit/petopia_backend/entities/pet/Pet.java" beforeDir="false" afterPath="$PROJECT_DIR$/petopia_backend/src/main/java/tn/esprit/petopia_backend/entities/pet/Pet.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/petopia_backend/src/main/java/tn/esprit/petopia_backend/entities/user/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/petopia_backend/src/main/java/tn/esprit/petopia_backend/entities/user/User.java" afterDir="false" />
@@ -13,6 +12,7 @@
       <change beforePath="$PROJECT_DIR$/petopia_backend/src/main/java/tn/esprit/petopia_backend/entities/vet/Diagnosis.java" beforeDir="false" afterPath="$PROJECT_DIR$/petopia_backend/src/main/java/tn/esprit/petopia_backend/entities/vet/Diagnosis.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/petopia_backend/src/main/java/tn/esprit/petopia_backend/entities/vet/Notification.java" beforeDir="false" afterPath="$PROJECT_DIR$/petopia_backend/src/main/java/tn/esprit/petopia_backend/entities/vet/Notification.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/petopia_backend/src/main/java/tn/esprit/petopia_backend/entities/vet/Pet_Growth.java" beforeDir="false" afterPath="$PROJECT_DIR$/petopia_backend/src/main/java/tn/esprit/petopia_backend/entities/vet/Pet_Growth.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/petopia_backend/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/petopia_backend/src/main/resources/application.properties" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -42,12 +42,12 @@
     &quot;assignee&quot;: &quot;Amal3111&quot;
   }
 }</component>
-  <component name="GithubPullRequestsUISettings">{
-  &quot;selectedUrlAndAccountId&quot;: {
-    &quot;url&quot;: &quot;https://github.com/ilyesarous/petopia.git&quot;,
-    &quot;accountId&quot;: &quot;cafc1331-951d-4220-90c6-e3d1aae236de&quot;
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "https://github.com/ilyesarous/petopia.git",
+    "accountId": "e8b76a12-cd5d-46b0-aa0a-449e0ba14cbc"
   }
-}</component>
+}]]></component>
   <component name="KubernetesApiPersistence">{}</component>
   <component name="KubernetesApiProvider">{
   &quot;isMigrated&quot;: true
@@ -67,28 +67,28 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RequestMappingsPanelOrder0": "0",
-    "RequestMappingsPanelOrder1": "1",
-    "RequestMappingsPanelWidth0": "75",
-    "RequestMappingsPanelWidth1": "75",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "Spring Boot.PetopiaBackendApplication.executor": "Run",
-    "WebServerToolWindowFactoryState": "false",
-    "git-widget-placeholder": "adoption",
-    "ignore.virus.scanning.warn.message": "true",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Users/khalil/OneDrive/Bureau/petopia/petopia",
-    "node.js.detected.package.eslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
+    &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,
+    &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
+    &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;Spring Boot.PetopiaBackendApplication.executor&quot;: &quot;Run&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;event&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/khalil/OneDrive/Bureau/petopia/petopia&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RunManager">
     <configuration name="PetopiaBackendApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
       <module name="petopia_backend" />
@@ -117,6 +117,7 @@
       <workItem from="1741090145655" duration="91000" />
       <workItem from="1741355382691" duration="509000" />
       <workItem from="1741357098932" duration="3726000" />
+      <workItem from="1741439040254" duration="5496000" />
     </task>
     <servers />
   </component>

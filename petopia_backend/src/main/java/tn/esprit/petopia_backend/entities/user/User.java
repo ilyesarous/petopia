@@ -9,13 +9,17 @@ import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import tn.esprit.petopia_backend.entities.event.Event;
+
 import tn.esprit.petopia_backend.entities.adoptions.Shelter;
 import tn.esprit.petopia_backend.entities.community.Comment;
 import tn.esprit.petopia_backend.entities.community.Post;
 import tn.esprit.petopia_backend.entities.community.Reaction;
 import tn.esprit.petopia_backend.entities.community.Story;
+import tn.esprit.petopia_backend.entities.event.Participation;
 import tn.esprit.petopia_backend.entities.pet.Pet;
 import tn.esprit.petopia_backend.entities.reclamation.Reclamation;
+
 
 import java.util.Collection;
 import java.util.List;
@@ -52,6 +56,17 @@ public class User implements UserDetails {
     @OneToOne
     @JsonIgnore
     private Shelter shelter;
+
+
+
+    @OneToMany(mappedBy = "organisateur")
+    @JsonIgnore
+    private List<Event> eventList;
+
+    // Une liste des participations de cet utilisateur
+    @OneToMany(mappedBy = "participant", cascade = CascadeType.ALL)
+    @JsonIgnore
+    private List<Participation> participations;
 
 
     @Override
