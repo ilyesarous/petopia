@@ -1,5 +1,8 @@
 package tn.esprit.petopia_backend.entities.pet;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import tn.esprit.petopia_backend.entities.adoptions.Shelter;
+import tn.esprit.petopia_backend.entities.matching.Preferences;
 import tn.esprit.petopia_backend.entities.user.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -47,9 +50,13 @@ public class Pet {
     private Shelter shelter;
     @ManyToOne
     @JoinColumn(name = "id_user", nullable = false)
-    private User user;
+     private User user;
 
-    @OneToOne
+
+//    @OneToOne
+//    @JsonIgnore
+//    private Preferences preferences;
+    @OneToOne(mappedBy = "pet", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
     private Preferences preferences;
 }

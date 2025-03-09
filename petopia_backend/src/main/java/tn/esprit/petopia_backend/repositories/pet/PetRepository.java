@@ -4,6 +4,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import tn.esprit.petopia_backend.entities.pet.Pet;
+import tn.esprit.petopia_backend.entities.user.User;
 
 import java.util.List;
 
@@ -18,4 +19,9 @@ public interface PetRepository extends JpaRepository<Pet,Integer>
 
     @Query("SELECT p FROM Pet p WHERE p.status = ?1")
     List<Pet> findByStatus(tn.esprit.petopia_backend.entities.pet.PetStatus status);
+
+
+
+
+
 }
