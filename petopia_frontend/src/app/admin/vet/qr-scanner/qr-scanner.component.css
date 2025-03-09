@@ -1,0 +1,72 @@
+/* Style pour les boutons */
+button {
+    background-color: #F83182; /* Rose */
+    color: white; /* Texte blanc */
+    border: none; /* Pas de bordure */
+    padding: 10px 20px; /* Espacement intérieur */
+    border-radius: 25px; /* Boutons arrondis */
+    font-size: 16px; /* Taille de police */
+    cursor: pointer; /* Curseur en forme de main */
+    margin: 5px; /* Marge entre les boutons */
+    transition: background-color 0.3s ease, transform 0.2s ease; /* Animation */
+  }
+  
+  /* Effet au survol des boutons */
+  button:hover {
+    background-color: #FE9A7A; /* Rose plus foncé */
+    transform: scale(1.05); /* Légèrement agrandi */
+  }
+  
+  /* Effet au clic des boutons */
+  button:active {
+    transform: scale(0.95); /* Légèrement réduit */
+  }
+  
+  /* Style pour le cadre de la caméra */
+  video {
+    border: 5px solid #F83182; /* Bordure rose */
+    border-radius: 15px; /* Coins arrondis */
+    box-shadow: 0 4px 15px rgba(248, 49, 130, 0.5); /* Ombre rose */
+    margin-top: 20px; /* Marge au-dessus de la vidéo */
+    background-color: hsl(0, 100%, 94%); /* Fond noir pour la caméra */
+  }
+
+  /* Style pour le titre des résultats */
+  h3 {
+    background: linear-gradient(45deg, #FE9A7A, #FF617C); /* Dégradé jaune-orange à rose */
+    -webkit-background-clip: text; /* Applique le dégradé au texte */
+    -webkit-text-fill-color: transparent; /* Rend le texte transparent */
+    font-size: 28px;
+    margin-bottom: 15px;
+    font-family: 'Arial', sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+  }
+
+  
+  /* Style pour le texte des résultats */
+p {
+    color: #333; /* Texte foncé */
+    font-size: 18px; /* Taille de police */
+    font-weight: bold; /* Texte en gras */
+    background-color: white; /* Fond blanc */
+    padding: 15px; /* Espacement intérieur */
+    border-radius: 10px; /* Coins arrondis */
+    box-shadow: 0 4px 10px rgba(248, 49, 130, 0.2); /* Ombre rose légère */
+    font-family: 'Courier New', monospace; /* Police à largeur fixe */
+    line-height: 1.6; /* Espacement entre les lignes */
+    white-space: pre-wrap; /* Conserve les sauts de ligne et les espaces */
+    text-align: left; /* Alignement du texte à gauche */
+    border: 2px solid #F83182; /* Bordure rose */
+  }
+  
+  /* Style pour les mots-clés dans le texte (optionnel) */
+  p strong {
+    color: #FF617C; /* Orange pour les mots-clés */
+  }
+  
+  /* Style pour les valeurs dans le texte (optionnel) */
+  p em {
+    color: #FE9A7A; /* Jaune pour les valeurs */
+  }

@@ -16,6 +16,7 @@ import { ChatbotComponent } from './admin/vet/chatbot/chatbot.component';
 import { AppDogBreedRecognitionRedirectButtonComponent } from './admin/vet/app-dog-breed-recognition-redirect-button/app-dog-breed-recognition-redirect-button.component';
 import { GameComponent } from './admin/vet/tic-tac-toe-game/game/game.component';
 import { BoardComponent } from './admin/vet/tic-tac-toe-game/board/board.component';
+import { QrScannerComponent } from './admin/vet/qr-scanner/qr-scanner.component';
 
 @NgModule({
   declarations: [
@@ -32,7 +33,8 @@ import { BoardComponent } from './admin/vet/tic-tac-toe-game/board/board.compone
     ChatbotComponent,
     AppDogBreedRecognitionRedirectButtonComponent,
     GameComponent,
-    BoardComponent
+    BoardComponent,
+    QrScannerComponent
   ],
   imports: [
     BrowserModule,
