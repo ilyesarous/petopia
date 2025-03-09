@@ -21,6 +21,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonModule } from '@angular/material/button';
 import { NotificationListComponent } from './admin/vet/notifications/notification-list/notification-list.component';
 import { HttpClientModule } from '@angular/common/http';
+import { NotificationStatsComponent } from './admin/vet/notifications/notification-stats/notification-stats.component';
 
 @NgModule({
   declarations: [
@@ -39,7 +40,8 @@ import { HttpClientModule } from '@angular/common/http';
     GameComponent,
     BoardComponent,
     QrScannerComponent,
-    NotificationListComponent
+    NotificationListComponent,
+    NotificationStatsComponent
   ],
   imports: [
     BrowserModule,

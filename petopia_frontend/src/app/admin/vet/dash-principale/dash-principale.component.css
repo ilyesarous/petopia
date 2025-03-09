@@ -25,3 +25,8 @@ button {
     display: flex; /* Active Flexbox */
     gap: 10px; /* Ajoute un espace de 10px entre les boutons */
   }
+  
+  app-notification-stats {
+    flex: 1 1 300px; /* Le graphique prendra une largeur flexible */
+    max-width: 400px;
+  }

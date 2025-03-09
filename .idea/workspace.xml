@@ -5,15 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="d82146aa-c391-488d-a5e9-d2774f899f12" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/petopia_backend/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/petopia_backend/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/petopia_backend/src/main/java/tn/esprit/petopia_backend/controller/vet/NotificationController.java" beforeDir="false" afterPath="$PROJECT_DIR$/petopia_backend/src/main/java/tn/esprit/petopia_backend/controller/vet/NotificationController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/petopia_frontend/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/petopia_frontend/package-lock.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/petopia_frontend/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/petopia_frontend/package.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/petopia_frontend/src/app/admin/vet/dash-principale/dash-principale.component.css" beforeDir="false" afterPath="$PROJECT_DIR$/petopia_frontend/src/app/admin/vet/dash-principale/dash-principale.component.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/petopia_frontend/src/app/admin/vet/dash-principale/dash-principale.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/petopia_frontend/src/app/admin/vet/dash-principale/dash-principale.component.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/petopia_frontend/src/app/admin/vet/dash-principale/dash-principale.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/petopia_frontend/src/app/admin/vet/dash-principale/dash-principale.component.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/petopia_frontend/src/app/app-routing.module.ts" beforeDir="false" afterPath="$PROJECT_DIR$/petopia_frontend/src/app/app-routing.module.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/petopia_frontend/src/app/app.module.ts" beforeDir="false" afterPath="$PROJECT_DIR$/petopia_frontend/src/app/app.module.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -122,7 +118,7 @@
       <workItem from="1741357098932" duration="3726000" />
       <workItem from="1741447530772" duration="1666000" />
       <workItem from="1741468998718" duration="9162000" />
-      <workItem from="1741485945102" duration="5703000" />
+      <workItem from="1741485945102" duration="6292000" />
     </task>
     <servers />
   </component>

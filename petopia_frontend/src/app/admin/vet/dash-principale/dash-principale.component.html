@@ -7,6 +7,12 @@
     <button routerLink="/notifications">Notification</button>
 </div>
 
+    <!-- Ajouter le graphique des notifications ici -->
+    <app-notification-stats
+      [seenCount]="seenCount"
+      [unseenCount]="unseenCount">
+    </app-notification-stats>
+
 <br>
 <br>
 

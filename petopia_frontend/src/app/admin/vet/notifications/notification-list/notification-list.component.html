@@ -28,17 +28,17 @@
           <td>{{ notification.user.role }}</td>
           <td>
             <button *ngIf="!notification.seen" (click)="markAsSeen(notification.idNotification)" (click)="$event.stopPropagation()" class="action-button mark-as-seen">
-              Mark as Seen
+              👀
             </button>
             <button (click)="deleteNotification(notification.idNotification)" (click)="$event.stopPropagation()" class="action-button delete">
-              Delete
+                🗑️
             </button>
           </td>
         </tr>
       </tbody>
     </table>
   </div>
-  
+
   <!-- Notification Details Section -->
   <div *ngIf="selectedNotification" class="notification-details">
     <button (click)="selectedNotification = null" class="close-button">Close</button>
