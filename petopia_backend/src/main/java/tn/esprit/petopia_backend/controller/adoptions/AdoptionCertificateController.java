@@ -20,7 +20,7 @@ public class AdoptionCertificateController {
 
     @PostMapping("/addAdoptionCertificates/{adoptionId}")
     @PreAuthorize("hasAuthority('ROLE_SHELTER')")
-    public ResponseEntity<AdoptionCertificate> createCertificate(
+    public ResponseEntity<?> createCertificate(
             @PathVariable Integer adoptionId,
             @RequestBody Map<String, String> signatureRequest) {
 
@@ -29,8 +29,15 @@ public class AdoptionCertificateController {
         AdoptionCertificate createdCertificate = certificateService
                 .createCertificateFromAdoption(adoptionId, shelterSignature);
 
+        if (createdCertificate == null) {
+            return ResponseEntity
+                    .badRequest()
+                    .body(Map.of("message", "Adoption must be approved first."));
+        }
+
         return ResponseEntity.ok(createdCertificate);
     }
+
 
 
     @PutMapping("/userSignCertificate/{certificateId}")

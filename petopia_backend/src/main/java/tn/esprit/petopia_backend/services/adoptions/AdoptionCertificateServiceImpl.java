@@ -25,7 +25,6 @@ public class AdoptionCertificateServiceImpl implements IAdoptionCertificateServi
     @Override
     @Transactional
     public AdoptionCertificate createCertificateFromAdoption(Integer adoptionId, String shelterSignature) {
-
         Adoption adoption = adoptionRepository.findById(adoptionId)
                 .orElseThrow(() -> new RuntimeException("Adoption not found"));
 
@@ -41,24 +40,27 @@ public class AdoptionCertificateServiceImpl implements IAdoptionCertificateServi
         certificate.setIssued_date(LocalDateTime.now());
         certificate.setUser_signature(null);
 
+        certificate.setAdoption(adoption);
+
         return certificateRepository.save(certificate);
     }
+
 
 
     @Override
     @Transactional
     public AdoptionCertificate userSignCertificate(Integer certificateId, String userSignature) {
 
-        AdoptionCertificate existingCertificate = certificateRepository.findById(certificateId)
+        AdoptionCertificate certificate = certificateRepository.findById(certificateId)
                 .orElseThrow(() -> new RuntimeException("Certificate not found"));
 
-        if (existingCertificate.getUser_signature() != null) {
-            throw new RuntimeException("Certificate already signed by user.");
+        if (certificate.getUser_signature() != null) {
+            throw new RuntimeException("User has already signed this certificate.");
         }
 
-        existingCertificate.setUser_signature(userSignature);
+        certificate.setUser_signature(userSignature);
 
-        return certificateRepository.save(existingCertificate);
+        return certificateRepository.save(certificate);
     }
 
     @Override

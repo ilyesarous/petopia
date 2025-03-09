@@ -23,8 +23,10 @@ public class Pet {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int idPet;
 
+
+    //lezmhaa tkoun null khater shelter ynajmch yaddi pet khaliwha true!!
     @ManyToOne
-    @JoinColumn(name = "id_user", nullable = false)
+    @JoinColumn(name = "id_user", nullable = true)
     private User user;
 
     private String petName;

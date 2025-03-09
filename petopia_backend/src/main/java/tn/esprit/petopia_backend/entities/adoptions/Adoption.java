@@ -1,5 +1,6 @@
 package tn.esprit.petopia_backend.entities.adoptions;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import tn.esprit.petopia_backend.entities.pet.Pet;
@@ -25,6 +26,7 @@ public class Adoption {
     private User requester;
 
     @ManyToOne
+    @JsonIgnore
     private Shelter shelter;
 
     private LocalDateTime request_date;
@@ -36,4 +38,9 @@ public class Adoption {
     private String motivation_letter;
 
     private String cinimage;
+
+    @OneToOne(mappedBy = "adoption", cascade = CascadeType.ALL)
+    @JsonIgnore
+    private AdoptionCertificate adoptionCertificate;
+
 }
