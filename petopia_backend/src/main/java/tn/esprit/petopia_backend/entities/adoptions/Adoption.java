@@ -18,7 +18,6 @@ public class Adoption {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id_request;
 
-    // Many adoption requests can refer to a pet (if you allow multiple pending requests)
     @ManyToOne
     private Pet pet;
 

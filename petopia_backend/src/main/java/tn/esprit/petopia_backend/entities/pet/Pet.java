@@ -24,7 +24,7 @@ public class Pet {
     private int idPet;
 
     @ManyToOne
-    @JoinColumn(name = "id_user", nullable = true)
+    @JoinColumn(name = "id_user", nullable = false)
     private User user;
 
     private String petName;
