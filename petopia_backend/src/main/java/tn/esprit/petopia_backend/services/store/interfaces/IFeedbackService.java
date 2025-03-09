@@ -1,13 +1,15 @@
 package tn.esprit.petopia_backend.services.store.interfaces;
 
 import tn.esprit.petopia_backend.entities.store.Feedback;
+import tn.esprit.petopia_backend.entities.store.Product;
 
 import java.util.List;
 
 public interface IFeedbackService {
-    Feedback addFeedback(Feedback feedback);
+    String addFeedback(Feedback feedback);
     Feedback findById(int id);
     void deleteById(int id);
     Feedback updateFeedback(Feedback feedback);
-    List<Feedback> findAll();
+    List<Feedback> findAllByProduct(int idProduct);
+    List<String> getSentimentById( int idProduct);
 }

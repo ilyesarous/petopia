@@ -8,33 +8,33 @@ import tn.esprit.petopia_backend.services.vet.IDiagnosisService;
 import java.util.List;
 
 @RestController
-@RequestMapping("/Diagnosis")
+//@RequestMapping("/auth/Diagnosis")
 public class DiagnosisController {
 
     @Autowired
     IDiagnosisService diagnosisService;
 
-    @PostMapping("/addDiagnosis")
+    @PostMapping("/vet/Diagnosis/addDiagnosis")
     public Diagnosis addDiagnosis(@RequestBody Diagnosis diagnosis) {
         return diagnosisService.addDiagnosis(diagnosis);
     }
 
-    @PutMapping("/updateDiagnosis")
+    @PutMapping("/vet/Diagnosis/updateDiagnosis")
     public Diagnosis updateDiagnosis(@RequestBody Diagnosis diagnosis) {
         return diagnosisService.updateDiagnosis(diagnosis);
     }
 
-    @DeleteMapping("/deleteDiagnosis/{idDiagnosis}")
+    @DeleteMapping("/vet/Diagnosis/deleteDiagnosis/{idDiagnosis}")
     public void deleteDiagnosis(@PathVariable int idDiagnosis) {
         diagnosisService.deleteDiagnosis(idDiagnosis);
     }
 
-    @GetMapping("/retrieveAllDiagnosis")
+    @GetMapping("/auth/Diagnosis/retrieveAllDiagnosis")
     public List<Diagnosis> retrieveAllDiagnosis() {
         return diagnosisService.retrieveAllDiagnosis();
     }
 
-    @GetMapping("/retrieveDiagnosis/{idDiagnosis}")
+    @GetMapping("/auth/Diagnosis/retrieveDiagnosis/{idDiagnosis}")
     public Diagnosis retrieveDiagnosis(@PathVariable int idDiagnosis) {
         return diagnosisService.retrieveDiagnosis(idDiagnosis);
     }

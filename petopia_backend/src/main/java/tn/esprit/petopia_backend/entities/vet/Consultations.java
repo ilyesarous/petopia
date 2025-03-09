@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import tn.esprit.petopia_backend.entities.pet.Pet;
 import tn.esprit.petopia_backend.entities.user.User;
 
 import java.time.LocalDate;
@@ -25,33 +26,69 @@ public class Consultations {
     private LocalTime end_time;
     @Enumerated(EnumType.STRING)
     private consultation_type consultationT;
-    private Double consultation_price;
+    private Double consultation_price = 50.0;
     @Enumerated(EnumType.STRING)
-    private status_type statusT;
+    private status_type statusT = status_type.waiting;
 
-//    //relation consultation * to 1 user client eli bech yekou ell rdv
-//    @ManyToOne(cascade = CascadeType.ALL)
-//    private User userclient;
-//
-//    //relation consultation * to 1 user vet
-//    @ManyToOne(cascade = CascadeType.ALL)
-//    private User uservet;
-//
-//    public User getUserclient() {
-//        return userclient;
-//    }
-//
-//    public void setUserclient(User userclient) {
-//        this.userclient = userclient;
-//    }
-//
-//    public User getUservet() {
-//        return uservet;
-//    }
-//
-//    public void setUservet(User uservet) {
-//        this.uservet = uservet;
-//    }
+    //relation consultation * to 1 user client eli bech yekou ell rdv
+    //@ManyToOne(cascade = CascadeType.ALL)
+    //@ManyToOne(fetch = FetchType.LAZY
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "userclient_id_user", nullable = false)
+    private User userclient;
+
+    //relation consultation * to 1 user vet
+    //@ManyToOne(cascade = CascadeType.ALL)
+    //@ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "uservet_id_user", nullable = false)
+    private User uservet;
+
+    //relation consultation * to 1 pet
+    //@ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "petconsultation_id_pet", nullable = false) // Clé étrangère dans la table notification
+    private Pet petconsultation;
+
+    @Override
+    public String toString() {
+        return "Consultations{" +
+                "idConsultation=" + idConsultation +
+                ", consultation_date=" + consultation_date +
+                ", start_time=" + start_time +
+                ", end_time=" + end_time +
+                ", consultationT=" + consultationT +
+                ", consultation_price=" + consultation_price +
+                ", statusT=" + statusT +
+                ", userclient=" + userclient +
+                ", uservet=" + uservet +
+                ", petconsultation=" + petconsultation +
+                '}';
+    }
+
+    public Pet getPetconsultation() {
+        return petconsultation;
+    }
+
+    public void setPetconsultation(Pet petconsultation) {
+        this.petconsultation = petconsultation;
+    }
+
+    public User getUserclient() {
+        return userclient;
+    }
+
+    public void setUserclient(User userclient) {
+        this.userclient = userclient;
+    }
+
+    public User getUservet() {
+        return uservet;
+    }
+
+    public void setUservet(User uservet) {
+        this.uservet = uservet;
+    }
 
     public int getIdConsultation() {
         return idConsultation;

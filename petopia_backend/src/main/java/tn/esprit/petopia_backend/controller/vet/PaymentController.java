@@ -12,7 +12,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/api/payment")
+@RequestMapping("/auth/api/payment")
 public class PaymentController {
 
     @PostMapping("/create-checkout-session")
@@ -25,8 +25,8 @@ public class PaymentController {
         SessionCreateParams params = SessionCreateParams.builder()
                 .addPaymentMethodType(SessionCreateParams.PaymentMethodType.CARD)
                 .setMode(SessionCreateParams.Mode.PAYMENT)
-                .setSuccessUrl("http://localhost:8082/petopia/api/payment/success")
-                .setCancelUrl("http://localhost:8082/petopia/api/payment/cancel")
+                .setSuccessUrl("http://localhost:8082/petopia/auth/api/payment/success")
+                .setCancelUrl("http://localhost:8082/petopia/auth/api/payment/cancel")
                 .addLineItem(
                         SessionCreateParams.LineItem.builder()
                                 .setPriceData(

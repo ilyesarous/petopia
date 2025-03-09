@@ -8,7 +8,7 @@ import tn.esprit.petopia_backend.services.vet.INotificationService;
 import java.util.List;
 
 @RestController
-@RequestMapping("/Notification")
+@RequestMapping("/auth/Notification")
 public class NotificationController {
 
     @Autowired
