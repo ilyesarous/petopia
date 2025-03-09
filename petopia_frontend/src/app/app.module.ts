@@ -17,6 +17,10 @@ import { AppDogBreedRecognitionRedirectButtonComponent } from './admin/vet/app-d
 import { GameComponent } from './admin/vet/tic-tac-toe-game/game/game.component';
 import { BoardComponent } from './admin/vet/tic-tac-toe-game/board/board.component';
 import { QrScannerComponent } from './admin/vet/qr-scanner/qr-scanner.component';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatButtonModule } from '@angular/material/button';
+import { NotificationListComponent } from './admin/vet/notifications/notification-list/notification-list.component';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -34,11 +38,15 @@ import { QrScannerComponent } from './admin/vet/qr-scanner/qr-scanner.component'
     AppDogBreedRecognitionRedirectButtonComponent,
     GameComponent,
     BoardComponent,
-    QrScannerComponent
+    QrScannerComponent,
+    NotificationListComponent
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    MatMenuModule,
+    MatButtonModule,
+    HttpClientModule
   ],
   providers: [],
   bootstrap: [AppComponent]

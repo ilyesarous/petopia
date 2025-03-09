@@ -1,0 +1,61 @@
+<div *ngIf="notifications.length > 0; else noNotifications">
+    <h2>Notifications</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Notification ID</th>
+          <th>Message</th>
+          <th>Date</th>
+          <th>Status</th>
+          <th>User ID</th>
+          <th>User Name</th>
+          <th>User Role</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let notification of notifications" (click)="selectNotification(notification.idNotification)"
+            [class.selected]="selectedNotification?.idNotification === notification.idNotification">
+          <td>{{ notification.idNotification }}</td>
+          <td>{{ notification.message }}</td>
+          <td>{{ notification.notif_date | date:'medium' }}</td>
+          <td>
+            <span *ngIf="notification.seen">✅</span>
+            <span *ngIf="!notification.seen">🔴</span>
+          </td>
+          <td>{{ notification.user.id_user }}</td>
+          <td>{{ notification.user.name }}</td>
+          <td>{{ notification.user.role }}</td>
+          <td>
+            <button *ngIf="!notification.seen" (click)="markAsSeen(notification.idNotification)" (click)="$event.stopPropagation()" class="action-button mark-as-seen">
+              Mark as Seen
+            </button>
+            <button (click)="deleteNotification(notification.idNotification)" (click)="$event.stopPropagation()" class="action-button delete">
+              Delete
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  
+  <!-- Notification Details Section -->
+  <div *ngIf="selectedNotification" class="notification-details">
+    <button (click)="selectedNotification = null" class="close-button">Close</button>
+    <h3>Notification Details</h3>
+    <p><strong>Notification ID:</strong> {{ selectedNotification.idNotification }}</p>
+    <p><strong>Message:</strong> {{ selectedNotification.message }}</p>
+    <p><strong>Date:</strong> {{ selectedNotification.notif_date | date:'medium' }}</p>
+    <p><strong>Status:</strong> {{ selectedNotification.seen ? '✅ Seen' : '🔴 Unseen' }}</p>
+    <h4>User Details</h4>
+    <p><strong>User ID:</strong> {{ selectedNotification.user.id_user }}</p>
+    <p><strong>Name:</strong> {{ selectedNotification.user.name }}</p>
+    <p><strong>Email:</strong> {{ selectedNotification.user.email }}</p>
+    <p><strong>Role:</strong> {{ selectedNotification.user.role }}</p>
+  </div>
+  
+  <ng-template #noNotifications>
+    <p>No notifications available.</p>
+  </ng-template>
+  
+  <button routerLink="/dashboard/vet" class="back-button">Back</button>
