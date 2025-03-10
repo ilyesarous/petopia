@@ -24,6 +24,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { NotificationStatsComponent } from './admin/vet/notifications/notification-stats/notification-stats.component';
 import { ConsultationListComponent } from './admin/vet/consultations/consultation-list/consultation-list.component';
 import { NgxPaginationModule } from 'ngx-pagination';
+import { DiagnosisListComponent } from './admin/vet/diagnoses/diagnosis-list/diagnosis-list.component';
 
 @NgModule({
   declarations: [
@@ -44,7 +45,8 @@ import { NgxPaginationModule } from 'ngx-pagination';
     QrScannerComponent,
     NotificationListComponent,
     NotificationStatsComponent,
-    ConsultationListComponent
+    ConsultationListComponent,
+    DiagnosisListComponent
   ],
   imports: [
     BrowserModule,
