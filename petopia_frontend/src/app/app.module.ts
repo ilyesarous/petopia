@@ -25,6 +25,7 @@ import { NotificationStatsComponent } from './admin/vet/notifications/notificati
 import { ConsultationListComponent } from './admin/vet/consultations/consultation-list/consultation-list.component';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { DiagnosisListComponent } from './admin/vet/diagnoses/diagnosis-list/diagnosis-list.component';
+import { PetGrowthListComponent } from './admin/vet/pet-growth/pet-growth-list/pet-growth-list.component';
 
 @NgModule({
   declarations: [
@@ -46,7 +47,8 @@ import { DiagnosisListComponent } from './admin/vet/diagnoses/diagnosis-list/dia
     NotificationListComponent,
     NotificationStatsComponent,
     ConsultationListComponent,
-    DiagnosisListComponent
+    DiagnosisListComponent,
+    PetGrowthListComponent
   ],
   imports: [
     BrowserModule,

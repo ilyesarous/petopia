@@ -8,6 +8,7 @@ import { GameComponent } from './admin/vet/tic-tac-toe-game/game/game.component'
 import { NotificationListComponent } from './admin/vet/notifications/notification-list/notification-list.component';
 import { ConsultationListComponent } from './admin/vet/consultations/consultation-list/consultation-list.component';
 import { DiagnosisListComponent } from './admin/vet/diagnoses/diagnosis-list/diagnosis-list.component';
+import { PetGrowthListComponent } from './admin/vet/pet-growth/pet-growth-list/pet-growth-list.component';
 
 const routes: Routes = [
   { path: 'home', component: ComponentWrapperComponent },
@@ -18,6 +19,7 @@ const routes: Routes = [
   { path: 'notifications' , component: NotificationListComponent},
   { path: 'consultations' , component: ConsultationListComponent},
   { path: 'diagnosis' , component: DiagnosisListComponent},
+  { path: 'pet-growth' , component: PetGrowthListComponent},
   { path: '**', component: PageNotFoundComponent }
 ];
 

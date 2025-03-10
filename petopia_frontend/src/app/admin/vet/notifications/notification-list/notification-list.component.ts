@@ -12,6 +12,10 @@ export class NotificationListComponent implements OnInit {
   notifications: Notification[] = [];
   selectedNotification: Notification | null = null; // Notification sélectionnée
 
+  // var pagination
+  p: number = 1; // Page actuelle
+  itemsPerPage: number = 3; // Nombre d'éléments par page
+
   constructor(private notificationService: NotificationService) { }
 
   ngOnInit(): void {

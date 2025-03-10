@@ -14,7 +14,8 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let notification of notifications" (click)="selectNotification(notification.idNotification)"
+        <tr *ngFor="let notification of notifications | paginate: { itemsPerPage: itemsPerPage, currentPage: p }"
+         (click)="selectNotification(notification.idNotification)"
             [class.selected]="selectedNotification?.idNotification === notification.idNotification">
           <td>{{ notification.idNotification }}</td>
           <td>{{ notification.message }}</td>
@@ -37,6 +38,8 @@
         </tr>
       </tbody>
     </table>
+    <!-- Pagination Controls -->
+  <pagination-controls (pageChange)="p = $event"></pagination-controls>
   </div>
 
   <!-- Notification Details Section -->
