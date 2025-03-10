@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { NotificationService } from 'src/app/services/vet/notification.service';
+import { NotificationService } from 'src/app/services/vet/notifications/notification.service';
 
 @Component({
   selector: 'app-dash-principale',

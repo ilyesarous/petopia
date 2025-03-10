@@ -1,0 +1,74 @@
+<div *ngIf="consultations.length > 0; else noConsultations">
+    <h2>Consultations</h2>
+    
+    <button (click)="toggleSortDirection()" class="sort-button">
+        Sort by Date ({{ sortDirection === 'asc' ? 'Ascending' : 'Descending' }})
+    </button>
+
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Date</th>
+          <th>Start Time</th>
+          <th>End Time</th>
+          <th>Type</th>
+          <th>Price</th>
+          <th>Status</th>
+          <th>Client</th>
+          <th>Vet</th>
+          <th>Pet</th>
+          <th>Pet breed</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let consultation of consultations | paginate: { itemsPerPage: itemsPerPage, currentPage: p }"
+          (click)="selectConsultation(consultation.idConsultation)"
+          [class.selected]="selectedConsultation?.idConsultation === consultation.idConsultation">
+          <td>{{ consultation.idConsultation }}</td>
+          <td>{{ consultation.consultation_date }}</td>
+          <td>{{ consultation.start_time }}</td>
+          <td>{{ consultation.end_time }}</td>
+          <td>{{ consultation.consultationT }}</td>
+          <td>{{ consultation.consultation_price }}</td>
+          <td>{{ consultation.statusT }}</td>
+          <td>{{ consultation.userclient.name }}</td>
+          <td>{{ consultation.uservet.name }}</td>
+          <td>{{ consultation.petconsultation.petName }}</td>
+          <td>{{ consultation.petconsultation.breed }}</td>
+        </tr>
+      </tbody>
+    </table>
+    <!-- Pagination Controls -->
+  <pagination-controls (pageChange)="p = $event"></pagination-controls>
+  
+  </div>
+  
+  <!-- Zone de détails de la consultation -->
+  <div *ngIf="selectedConsultation" class="consultation-details">
+    <button (click)="selectedConsultation = null" class="close-button">Close</button>
+    <h3>Consultation Details</h3>
+    <p><strong>ID:</strong> {{ selectedConsultation.idConsultation }}</p>
+    <p><strong>Date:</strong> {{ selectedConsultation.consultation_date }}</p>
+    <p><strong>Start Time:</strong> {{ selectedConsultation.start_time }}</p>
+    <p><strong>End Time:</strong> {{ selectedConsultation.end_time }}</p>
+    <p><strong>Type:</strong> {{ selectedConsultation.consultationT }}</p>
+    <p><strong>Price:</strong> {{ selectedConsultation.consultation_price }}</p>
+    <p><strong>Status:</strong> {{ selectedConsultation.statusT }}</p>
+    <h4>Client Details</h4>
+    <p><strong>Name:</strong> {{ selectedConsultation.userclient.name }}</p>
+    <p><strong>Email:</strong> {{ selectedConsultation.userclient.email }}</p>
+    <p><strong>Role:</strong> {{ selectedConsultation.userclient.role }}</p>
+    <h4>Vet Details</h4>
+    <p><strong>Name:</strong> {{ selectedConsultation.uservet.name }}</p>
+    <p><strong>Email:</strong> {{ selectedConsultation.uservet.email }}</p>
+    <h4>Pet Details</h4>
+    <p><strong>Name:</strong> {{ selectedConsultation.petconsultation.petName }}</p>
+    <p><strong>Breed:</strong> {{ selectedConsultation.petconsultation.breed }}</p>
+  </div>
+  
+  <ng-template #noConsultations>
+    <p>No consultations available.</p>
+  </ng-template>
+
+  <button routerLink="/dashboard/vet" class="back-button">Back</button>

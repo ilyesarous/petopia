@@ -22,6 +22,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { NotificationListComponent } from './admin/vet/notifications/notification-list/notification-list.component';
 import { HttpClientModule } from '@angular/common/http';
 import { NotificationStatsComponent } from './admin/vet/notifications/notification-stats/notification-stats.component';
+import { ConsultationListComponent } from './admin/vet/consultations/consultation-list/consultation-list.component';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 @NgModule({
   declarations: [
@@ -41,14 +43,16 @@ import { NotificationStatsComponent } from './admin/vet/notifications/notificati
     BoardComponent,
     QrScannerComponent,
     NotificationListComponent,
-    NotificationStatsComponent
+    NotificationStatsComponent,
+    ConsultationListComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     MatMenuModule,
     MatButtonModule,
-    HttpClientModule
+    HttpClientModule,
+    NgxPaginationModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

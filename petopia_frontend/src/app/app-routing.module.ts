@@ -6,6 +6,7 @@ import { ComponentWrapperComponent } from './component-wrapper/component-wrapper
 import { DashPrincipaleComponent } from './admin/vet/dash-principale/dash-principale.component';
 import { GameComponent } from './admin/vet/tic-tac-toe-game/game/game.component';
 import { NotificationListComponent } from './admin/vet/notifications/notification-list/notification-list.component';
+import { ConsultationListComponent } from './admin/vet/consultations/consultation-list/consultation-list.component';
 
 const routes: Routes = [
   { path: 'home', component: ComponentWrapperComponent },
@@ -13,7 +14,8 @@ const routes: Routes = [
   { path: 'dashboard', component: DashbordComponent },
   { path: 'dashboard/vet', component: DashPrincipaleComponent },
   { path: 'tic-tac-toe', component:  GameComponent },
-  {path: 'notifications' , component: NotificationListComponent},
+  { path: 'notifications' , component: NotificationListComponent},
+  { path: 'consultations' , component: ConsultationListComponent},
   { path: '**', component: PageNotFoundComponent }
 ];
 
