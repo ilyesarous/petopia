@@ -5,10 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="d82146aa-c391-488d-a5e9-d2774f899f12" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/petopia_frontend/src/app/admin/vet/notifications/notification-list/notification-list.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/petopia_frontend/src/app/admin/vet/notifications/notification-list/notification-list.component.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/petopia_frontend/src/app/admin/vet/notifications/notification-list/notification-list.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/petopia_frontend/src/app/admin/vet/notifications/notification-list/notification-list.component.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/petopia_frontend/src/app/app.module.ts" beforeDir="false" afterPath="$PROJECT_DIR$/petopia_frontend/src/app/app.module.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/petopia_frontend/src/app/admin/vet/dash-principale/dash-principale.component.css" beforeDir="false" afterPath="$PROJECT_DIR$/petopia_frontend/src/app/admin/vet/dash-principale/dash-principale.component.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/petopia_frontend/src/app/admin/vet/dash-principale/dash-principale.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/petopia_frontend/src/app/admin/vet/dash-principale/dash-principale.component.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/petopia_frontend/src/app/admin/vet/dash-principale/dash-principale.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/petopia_frontend/src/app/admin/vet/dash-principale/dash-principale.component.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -119,7 +118,7 @@
       <workItem from="1741485945102" duration="7103000" />
       <workItem from="1741564738909" duration="2763000" />
       <workItem from="1741625621310" duration="2015000" />
-      <workItem from="1741636132025" duration="1276000" />
+      <workItem from="1741636132025" duration="1892000" />
     </task>
     <servers />
   </component>
