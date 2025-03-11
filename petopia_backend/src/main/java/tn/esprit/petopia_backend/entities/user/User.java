@@ -14,6 +14,7 @@ import tn.esprit.petopia_backend.entities.community.Comment;
 import tn.esprit.petopia_backend.entities.community.Post;
 import tn.esprit.petopia_backend.entities.community.Reaction;
 import tn.esprit.petopia_backend.entities.community.Story;
+import tn.esprit.petopia_backend.entities.payment.PaymentRequest;
 import tn.esprit.petopia_backend.entities.pet.Pet;
 import tn.esprit.petopia_backend.entities.vet.Consultations;
 import tn.esprit.petopia_backend.entities.vet.Notification;
@@ -88,6 +89,9 @@ public class User implements UserDetails {
     @JsonIgnore
     private Shelter shelter;
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
+    private List<PaymentRequest> paymentRequests;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
