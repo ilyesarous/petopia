@@ -24,6 +24,7 @@ public class Product {
     private String product_name;
     private String product_description;
     private float product_price;
+    private float cuppon_price = 0;
     @Enumerated(EnumType.STRING)
     private ProductCategory category;
     private boolean isLiked;
@@ -34,6 +35,9 @@ public class Product {
     private List<Feedback> feedbacks;
     @ManyToOne
     private User user;
+
+    @ManyToOne
+    private Brand brand;
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
