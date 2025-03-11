@@ -11,6 +11,21 @@ import { SidebarComponent } from './admin/sidebar/sidebar.component';
 import { MainComponent } from './admin/main/main.component';
 import { NavbarAdminComponent } from './admin/navbar-admin/navbar-admin.component';
 import { ComponentWrapperComponent } from './component-wrapper/component-wrapper.component';
+import { DashPrincipaleComponent } from './admin/vet/dash-principale/dash-principale.component';
+import { ChatbotComponent } from './admin/vet/chatbot/chatbot.component';
+import { AppDogBreedRecognitionRedirectButtonComponent } from './admin/vet/app-dog-breed-recognition-redirect-button/app-dog-breed-recognition-redirect-button.component';
+import { GameComponent } from './admin/vet/tic-tac-toe-game/game/game.component';
+import { BoardComponent } from './admin/vet/tic-tac-toe-game/board/board.component';
+import { QrScannerComponent } from './admin/vet/qr-scanner/qr-scanner.component';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatButtonModule } from '@angular/material/button';
+import { NotificationListComponent } from './admin/vet/notifications/notification-list/notification-list.component';
+import { HttpClientModule } from '@angular/common/http';
+import { NotificationStatsComponent } from './admin/vet/notifications/notification-stats/notification-stats.component';
+import { ConsultationListComponent } from './admin/vet/consultations/consultation-list/consultation-list.component';
+import { NgxPaginationModule } from 'ngx-pagination';
+import { DiagnosisListComponent } from './admin/vet/diagnoses/diagnosis-list/diagnosis-list.component';
+import { PetGrowthListComponent } from './admin/vet/pet-growth/pet-growth-list/pet-growth-list.component';
 
 @NgModule({
   declarations: [
@@ -22,11 +37,26 @@ import { ComponentWrapperComponent } from './component-wrapper/component-wrapper
     SidebarComponent,
     MainComponent,
     NavbarAdminComponent,
-    ComponentWrapperComponent
+    ComponentWrapperComponent,
+    DashPrincipaleComponent,
+    ChatbotComponent,
+    AppDogBreedRecognitionRedirectButtonComponent,
+    GameComponent,
+    BoardComponent,
+    QrScannerComponent,
+    NotificationListComponent,
+    NotificationStatsComponent,
+    ConsultationListComponent,
+    DiagnosisListComponent,
+    PetGrowthListComponent
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    MatMenuModule,
+    MatButtonModule,
+    HttpClientModule,
+    NgxPaginationModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -1,0 +1,93 @@
+.game {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    background-color: #FFFFFF; /* Fond blanc */
+    color: #333333; /* Texte en noir pour contraster avec le fond blanc */
+    font-family: 'Arial', sans-serif;
+    text-align: center;
+    padding: 20px;
+  }
+  
+  h1 {
+    font-size: 48px;
+    margin-bottom: 20px;
+    color: #F83182; /* Couleur vive pour le titre */
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1); /* Ombre légère */
+  }
+  
+  h2 {
+    font-size: 24px;
+    margin: 10px 0;
+  }
+  
+  .winner-message {
+    color: #F83182; /* Couleur pour le message du gagnant */
+    font-weight: bold;
+    animation: pop 0.5s ease; /* Animation pour le message du gagnant */
+  }
+  
+  .player-turn {
+    color: #FF617C; /* Couleur pour le tour du joueur */
+  }
+  
+  .draw-message {
+    color: #FE9A7A; /* Couleur pour le message de match nul */
+    font-weight: bold;
+  }
+  
+  .new-game-button {
+    margin-top: 20px;
+    padding: 10px 20px;
+    font-size: 18px;
+    font-weight: bold;
+    color: #FFFFFF; /* Texte en blanc */
+    background-color: #FF617C; /* Couleur de fond du bouton */
+    border: none;
+    border-radius: 25px; /* Coins arrondis */
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Ombre du bouton */
+  }
+  
+  .new-game-button:hover {
+    background-color: #F83182; /* Changement de couleur au survol */
+    transform: scale(1.05); /* Effet de zoom au survol */
+  }
+  
+  .new-game-button:active {
+    transform: scale(0.95); /* Effet de clic */
+  }
+  
+  /* Animation pour le message du gagnant */
+  @keyframes pop {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+    100% { transform: scale(1); }
+  }
+
+  button {
+    background-color: #F83182; /* Rose */
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  button:hover {
+    background-color: #D9276E; /* Rose foncé au survol */
+    transform: scale(1.05);
+  }
+  
+  button:active {
+    background-color: #B71E5B; /* Encore plus foncé lors du clic */
+    transform: scale(0.98);
+  }
+  

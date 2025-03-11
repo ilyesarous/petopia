@@ -47,7 +47,7 @@ public class ConsultationsController {
     }
 
     @GetMapping("/auth/Consultations/retriveAllConsultations")
-    List<Consultations> retriveAllBloc(){
+    List<Consultations> retriveAllConsultations(){
         return consultationsService.retriveAllConsultations();
     }
 
