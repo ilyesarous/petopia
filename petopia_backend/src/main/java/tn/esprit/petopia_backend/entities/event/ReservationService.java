@@ -23,11 +23,9 @@ public class ReservationService {
     private Date dateReservation;
 
     @ManyToOne
-    @JoinColumn(name = "id_serviceAnimal")
     private ServiceAnimal serviceAnimal;
 
     @ManyToOne
-    @JoinColumn(name = "id_utilisateur")
     private User utilisateur;
 }
 

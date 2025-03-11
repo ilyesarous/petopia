@@ -1,5 +1,6 @@
 package tn.esprit.petopia_backend.entities.event;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -28,5 +29,6 @@ public class ServiceAnimal {
     private ServiceType typeService;
 
     @OneToMany(mappedBy = "serviceAnimal", cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<ReservationService> reservations;
 }

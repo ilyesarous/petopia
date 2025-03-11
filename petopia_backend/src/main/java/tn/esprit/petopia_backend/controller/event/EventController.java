@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import tn.esprit.petopia_backend.entities.event.Event;
+import tn.esprit.petopia_backend.services.event.EventServiceImplement;
 import tn.esprit.petopia_backend.services.event.IEventService;
 
 import java.util.List;
@@ -13,7 +14,7 @@ import java.util.List;
 public class EventController {
 
     @Autowired
-    private IEventService eventService;
+    private EventServiceImplement eventService;
 
 
     // http://localhost:8082/petopia/admin/events/getEtudiants
