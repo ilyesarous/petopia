@@ -5,8 +5,8 @@ import tn.esprit.petopia_backend.entities.adoptions.AdoptionStatus;
 import java.util.List;
 
 public interface IAdoptionService {
-    Adoption createAdoption(Adoption adoption);
-    Adoption updateAdoption(Adoption adoption);
+    Adoption createAdoption(Adoption adoption, Integer userId);
+    Adoption updateAdoption(Integer id, Adoption adoption);
     void deleteAdoption(Integer id);
     Adoption getAdoptionById(Integer id);
     List<Adoption> getAllAdoptions();

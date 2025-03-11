@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import tn.esprit.petopia_backend.entities.adoptions.AdoptionCertificate;
 import tn.esprit.petopia_backend.services.adoptions.IAdoptionCertificateService;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/adoptionCertificates")
@@ -17,17 +18,40 @@ public class AdoptionCertificateController {
         this.certificateService = certificateService;
     }
 
-    @PostMapping("/addAdoptionCertificates")
+    @PostMapping("/addAdoptionCertificates/{adoptionId}")
     @PreAuthorize("hasAuthority('ROLE_SHELTER')")
-    public ResponseEntity<AdoptionCertificate> createCertificate(@RequestBody AdoptionCertificate certificate) {
-        return ResponseEntity.ok(certificateService.createCertificate(certificate));
+    public ResponseEntity<?> createCertificate(
+            @PathVariable Integer adoptionId,
+            @RequestBody Map<String, String> signatureRequest) {
+
+        String shelterSignature = signatureRequest.get("shelter_signature");
+
+        AdoptionCertificate createdCertificate = certificateService
+                .createCertificateFromAdoption(adoptionId, shelterSignature);
+
+        if (createdCertificate == null) {
+            return ResponseEntity
+                    .badRequest()
+                    .body(Map.of("message", "Adoption must be approved first."));
+        }
+
+        return ResponseEntity.ok(createdCertificate);
     }
 
-    @PutMapping("/updateAdoptionCertificates/{id}")
-    @PreAuthorize("hasAuthority('ROLE_SHELTER')")
-    public ResponseEntity<AdoptionCertificate> updateCertificate(@PathVariable Integer id, @RequestBody AdoptionCertificate certificate) {
-        certificate.setId_certificate(id);
-        return ResponseEntity.ok(certificateService.updateCertificate(certificate));
+
+
+    @PutMapping("/userSignCertificate/{certificateId}")
+    @PreAuthorize("hasAuthority('ROLE_USER')")
+    public ResponseEntity<AdoptionCertificate> userSignCertificate(
+            @PathVariable Integer certificateId,
+            @RequestBody Map<String, String> signatureRequest) {
+
+        String userSignature = signatureRequest.get("user_signature");
+
+        AdoptionCertificate updatedCertificate = certificateService
+                .userSignCertificate(certificateId, userSignature);
+
+        return ResponseEntity.ok(updatedCertificate);
     }
 
     @DeleteMapping("/deleteAdoptionCertificates/{id}")

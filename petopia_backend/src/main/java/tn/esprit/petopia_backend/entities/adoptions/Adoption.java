@@ -1,5 +1,6 @@
 package tn.esprit.petopia_backend.entities.adoptions;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import tn.esprit.petopia_backend.entities.pet.Pet;
@@ -18,7 +19,6 @@ public class Adoption {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id_request;
 
-    // Many adoption requests can refer to a pet (if you allow multiple pending requests)
     @ManyToOne
     private Pet pet;
 
@@ -26,6 +26,7 @@ public class Adoption {
     private User requester;
 
     @ManyToOne
+    @JsonIgnore
     private Shelter shelter;
 
     private LocalDateTime request_date;
@@ -37,4 +38,9 @@ public class Adoption {
     private String motivation_letter;
 
     private String cinimage;
+
+    @OneToOne(mappedBy = "adoption", cascade = CascadeType.ALL)
+    @JsonIgnore
+    private AdoptionCertificate adoptionCertificate;
+
 }

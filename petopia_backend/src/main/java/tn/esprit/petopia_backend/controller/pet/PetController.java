@@ -57,6 +57,7 @@ public class PetController {
         return ResponseEntity.ok(updatedPet);
     }
 
+
     // Endpoint for deleting a pet (only accessible by shelters)
     @DeleteMapping("/pet/delete/{id}")
     @PreAuthorize("hasAuthority('ROLE_SHELTER')")
