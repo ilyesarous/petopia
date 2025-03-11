@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import tn.esprit.petopia_backend.entities.pet.Pet;
+import tn.esprit.petopia_backend.entities.user.User;
 
 import java.util.List;
 import java.util.Optional;
