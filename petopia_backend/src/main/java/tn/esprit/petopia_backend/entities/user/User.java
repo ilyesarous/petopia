@@ -38,7 +38,7 @@ public class User implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id_user;
     private String name;
-    private String phone_number;
+    private String phoneNumber;
     private String email;
     private String password;
     private Boolean locked = false;
