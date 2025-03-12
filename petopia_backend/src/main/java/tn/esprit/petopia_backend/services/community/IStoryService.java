@@ -10,4 +10,5 @@ public interface IStoryService {
     Story getStoryById(Long storyId);
     Story updateStory(Long storyId, Story story);
     void deleteStory(Long storyId);
+    void deleteExpiredStories();
 }

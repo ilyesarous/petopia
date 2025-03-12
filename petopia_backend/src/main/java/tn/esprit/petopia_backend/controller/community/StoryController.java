@@ -43,4 +43,9 @@ public class StoryController {
         storyService.deleteStory(id);
         return ResponseEntity.noContent().build();
     }
+
+    @PostMapping("/test-delete")
+    public void testDeleteExpiredStories() {
+        storyService.deleteExpiredStories();
+    }
 }
