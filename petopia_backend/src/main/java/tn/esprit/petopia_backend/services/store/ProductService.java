@@ -1,6 +1,9 @@
 package tn.esprit.petopia_backend.services.store;
 
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import tn.esprit.petopia_backend.entities.store.Brand;
 import tn.esprit.petopia_backend.entities.store.Product;
@@ -74,7 +77,8 @@ public class ProductService implements IProductService {
     }
 
     @Override
-    public List<Product> findAll() {
-        return repository.findAll();
+    public Page<Product> findAll(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return repository.findAll(pageable);
     }
 }

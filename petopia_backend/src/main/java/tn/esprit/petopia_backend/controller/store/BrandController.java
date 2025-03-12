@@ -8,12 +8,11 @@ import tn.esprit.petopia_backend.services.store.BrandServcie;
 import java.util.List;
 
 @RestController
-@RequestMapping("admin/brand")
 @AllArgsConstructor
 public class BrandController {
     private BrandServcie brandServcie;
 
-    @GetMapping
+    @GetMapping("user/brand")
     public List<Brand> getAllBrands() {
         return brandServcie.getAllBrands();
     }
@@ -23,12 +22,12 @@ public class BrandController {
         return brandServcie.getBrandById(id);
     }
 
-    @PostMapping("add")
+    @PostMapping("admin/brand/add")
     public Brand addBrand(@RequestBody Brand brand) {
         return brandServcie.addBrand(brand);
     }
 
-    @DeleteMapping("delete/{id}")
+    @DeleteMapping("admin/brand/delete/{id}")
     public void deleteBrand(@PathVariable int id) {
         brandServcie.deleteBrandById(id);
     }
