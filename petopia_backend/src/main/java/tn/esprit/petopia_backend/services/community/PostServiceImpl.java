@@ -9,6 +9,7 @@ import tn.esprit.petopia_backend.repositories.community.PostRepository;
 import tn.esprit.petopia_backend.repositories.user.UserRepository;
 
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -22,12 +23,10 @@ public class PostServiceImpl implements IPostService {
 
     @Override
     public Post createPost(Post post, Integer userId) {
-        // Fetch the user from the database
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("Utilisateur non trouvé"));
-
-        // Assign the user to the post
         post.setUser(user);
+        post.setDate(LocalDateTime.now());
 
         return postRepository.save(post);
     }
@@ -50,7 +49,7 @@ public class PostServiceImpl implements IPostService {
             Post post = optionalPost.get();
             post.setContent(postDetails.getContent());
             post.setImage(postDetails.getImage());
-            post.setDate(postDetails.getDate());
+            post.setDate(LocalDateTime.now());
             post.setPostType(postDetails.getPostType());
             return postRepository.save(post);
         }
