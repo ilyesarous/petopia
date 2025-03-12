@@ -17,6 +17,7 @@ public class ParticipationController {
     private ParticipationServiceImplement participationService;
 
     // Récupérer toutes les participations
+    // http://localhost:8082/petopia/user/participations/getAllParticipations
     @GetMapping("/getAllParticipations")
     public List<Participation> getAllParticipations() {
         return participationService.getAllParticipations();
@@ -31,6 +32,7 @@ public class ParticipationController {
     }
 
     //Ajouter une nouvelle participation
+    // http://localhost:8082/petopia/user/participations/addParticipation
     @PostMapping("/addParticipation")
     public ResponseEntity<Participation> createParticipation(@RequestBody Participation participation) {
         Participation createdParticipation = participationService.createParticipation(participation);
