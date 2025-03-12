@@ -8,8 +8,9 @@ import java.util.List;
 public interface ICartService {
     Cart addProductToCart(int idCart, int idProduct, int quantity);
     Cart findCartByUser(int idUser);
-    void deleteProductById(int idCart, int idProduct);
+    void decreaseProductQuantityById(int idCart, int idProduct);
     Cart updateCart(Cart cart);
     List<Cart> findAll();
     String checkout(int idCart);
+    void clearCart(int idUser);
 }

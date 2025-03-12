@@ -42,6 +42,10 @@ public class CartController {
 
     @DeleteMapping("delete/{idUser}/{idProduct}")
     public void deleteCart(@PathVariable int idUser, @PathVariable int idProduct) {
-        cartService.deleteProductById(idUser, idProduct);
+        cartService.decreaseProductQuantityById(idUser, idProduct);
+    }
+    @DeleteMapping("clear/{idUser}")
+    public void clearCart(@PathVariable int idUser) {
+        cartService.clearCart(idUser);
     }
 }
