@@ -30,6 +30,7 @@ public class EventController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
+    // http://localhost:8082/petopia/admin/events/addEvent
     @PostMapping("/addEvent")
     public Event createEvent(@RequestBody Event event) {
         return eventService.createEvent(event);
