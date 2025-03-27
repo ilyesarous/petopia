@@ -14,18 +14,18 @@ import java.nio.file.Path;
 public class QRCodeGenerator {
 
     public static void generateQRCode(Diagnosis diagnosis) throws WriterException, IOException {
-        String qrCodePath = "D:\\4_PI_Cloud\\Phase4";
+        String qrCodePath = "D:\\4_PI_Cloud\\Phase4\\QRCode_DiagnosisDetail";
         String qrCodeName = qrCodePath+"\\"+diagnosis.getIdDiagnosis()+"-QRCODE.png";
         var qrCodeWriter = new QRCodeWriter();
         BitMatrix bitMatrix = qrCodeWriter.encode(
                 "ID: "+diagnosis.getIdDiagnosis()+ "\n"+
-                        "diagnosis_date: "+diagnosis.getDiagnosis_date()+ "\n"+
-                        "diagnosis description: "+diagnosis.getDiagnosis_description()+ "\n"+
-                        "pet name: "+diagnosis.getPetdiagnosis().getPetName()+ "\n"+
-                        "pet breed: "+diagnosis.getPetdiagnosis().getBreed()+ "\n"+
-                        "pet location: "+diagnosis.getPetdiagnosis().getLocation(), BarcodeFormat.QR_CODE, 400, 400);
+                        "Diagnosis Date: "+diagnosis.getDiagnosis_date()+ "\n"+
+                        "Diagnosis Description: "+diagnosis.getDiagnosis_description()+ "\n"+
+                        "Pet Name: "+diagnosis.getPetdiagnosis().getPetName()+ "\n"+
+                        "Pet Breed: "+diagnosis.getPetdiagnosis().getBreed()+ "\n"+
+                        "Pet Location: "+diagnosis.getPetdiagnosis().getLocation() , BarcodeFormat.QR_CODE, 400, 400);
         Path path = FileSystems.getDefault().getPath(qrCodeName);
         MatrixToImageWriter.writeToPath(bitMatrix, "PNG", path);
-
     }
+
 }
