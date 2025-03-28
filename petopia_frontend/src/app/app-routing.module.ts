@@ -9,6 +9,9 @@ import { NotificationListComponent } from './admin/vet/notifications/notificatio
 import { ConsultationListComponent } from './admin/vet/consultations/consultation-list/consultation-list.component';
 import { DiagnosisListComponent } from './admin/vet/diagnoses/diagnosis-list/diagnosis-list.component';
 import { PetGrowthListComponent } from './admin/vet/pet-growth/pet-growth-list/pet-growth-list.component';
+import { DashPrincipaleHomeVetComponent } from './home/vet/dash-principale-home-vet/dash-principale-home-vet.component';
+import { PetGrowthVetComponent } from './home/vet/pet-growth-vet/pet-growth-vet.component';
+
 
 const routes: Routes = [
   { path: 'home', component: ComponentWrapperComponent },
@@ -20,6 +23,8 @@ const routes: Routes = [
   { path: 'consultations' , component: ConsultationListComponent},
   { path: 'diagnosis' , component: DiagnosisListComponent},
   { path: 'pet-growth' , component: PetGrowthListComponent},
+  { path: 'home/vet', component: DashPrincipaleHomeVetComponent },
+  { path: 'vet/pet-growth/:id', component: PetGrowthVetComponent },
   { path: '**', component: PageNotFoundComponent }
 ];
 

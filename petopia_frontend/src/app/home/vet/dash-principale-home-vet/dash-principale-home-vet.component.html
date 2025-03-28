@@ -1,0 +1,44 @@
+<!-- dash-principale.component.html -->
+<div class="container mt-5" style="max-width: 800px;">
+    <h2 class="text-center mb-4" style="color: #F83182; font-weight: 600;">
+        <i class="fas fa-paw me-2"></i>Pet Growth Tracking
+    </h2>
+    
+    <div class="card border-0 shadow-lg" style="border-radius: 15px; overflow: hidden;">
+        <div class="card-header py-3 text-white" style="background: linear-gradient(135deg, #F83182 0%, #FF617C 100%);">
+            <h5 class="mb-0"><i class="fas fa-search me-2"></i>Find Pet Records</h5>
+        </div>
+        
+        <div class="card-body p-4">
+            <div class="form-group mb-4">
+                <label for="petId" class="form-label" style="color: #FF617C; font-weight: 500;">
+                    <i class="fas fa-id-card me-2"></i>Enter Pet ID:
+                </label>
+                <input type="number" 
+                       class="form-control form-control-lg" 
+                       id="petId" 
+                       [(ngModel)]="petId" 
+                       placeholder="e.g. 12345"
+                       style="border: 2px solid #FE9A7A; border-radius: 10px; padding: 12px;">
+            </div>
+            
+            <button class="btn w-100 py-3" 
+                    (click)="navigateToPetGrowth()"
+                    style="background-color: #F83182; color: white; border: none; border-radius: 10px;
+                           font-weight: 600; font-size: 1.1rem; transition: all 0.3s;">
+                <i class="fas fa-chart-line me-2"></i>View Growth History
+                <i class="fas fa-arrow-right ms-2"></i>
+            </button>
+        </div>
+    </div>
+</div>
+
+<br>
+<app-qr-scanner></app-qr-scanner>
+
+<br>
+<!-- <app-vet-calendar></app-vet-calendar> -->
+
+
+<app-chatbot></app-chatbot>
+

@@ -26,6 +26,15 @@ import { ConsultationListComponent } from './admin/vet/consultations/consultatio
 import { NgxPaginationModule } from 'ngx-pagination';
 import { DiagnosisListComponent } from './admin/vet/diagnoses/diagnosis-list/diagnosis-list.component';
 import { PetGrowthListComponent } from './admin/vet/pet-growth/pet-growth-list/pet-growth-list.component';
+import { DashPrincipaleHomeVetComponent } from './home/vet/dash-principale-home-vet/dash-principale-home-vet.component';
+import { PetGrowthVetComponent } from './home/vet/pet-growth-vet/pet-growth-vet.component';
+import { FormsModule } from '@angular/forms';
+import { NgApexchartsModule } from 'ng-apexcharts';
+import { ReactiveFormsModule } from '@angular/forms';
+//import { VetCalendarComponent } from './home/vet/vet-calendar/vet-calendar.component';
+import { FullCalendarModule } from '@fullcalendar/angular';
+//import { ConsultationDetailsModalComponent } from './home/vet/consultation-details-modal/consultation-details-modal.component';
+
 
 @NgModule({
   declarations: [
@@ -48,7 +57,9 @@ import { PetGrowthListComponent } from './admin/vet/pet-growth/pet-growth-list/p
     NotificationStatsComponent,
     ConsultationListComponent,
     DiagnosisListComponent,
-    PetGrowthListComponent
+    PetGrowthListComponent,
+    DashPrincipaleHomeVetComponent,
+    PetGrowthVetComponent
   ],
   imports: [
     BrowserModule,
@@ -57,6 +68,10 @@ import { PetGrowthListComponent } from './admin/vet/pet-growth/pet-growth-list/p
     MatButtonModule,
     HttpClientModule,
     NgxPaginationModule,
+    FormsModule,
+    NgApexchartsModule,
+    ReactiveFormsModule,
+    FullCalendarModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

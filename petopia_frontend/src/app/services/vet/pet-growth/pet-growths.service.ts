@@ -20,4 +20,20 @@ export class PetGrowthsService {
     return this.http.get<PetGrowth>(`${this.apiUrl}/retrievePetGrowth/${idPet_Growth}`);
   }
 
+  getPetGrowthsByPetId(petId: number): Observable<PetGrowth[]> {
+    return this.http.get<PetGrowth[]>(`${this.apiUrl}/retrievePetGrowthsByPetId/${petId}`);
+  }
+
+  addPetGrowth(growth: any): Observable<PetGrowth> {
+    return this.http.post<PetGrowth>(`${this.apiUrl}/addPetGrowth`, growth);
+  }
+
+  updatePetGrowth(id: number, growth: any): Observable<PetGrowth> {
+    return this.http.put<PetGrowth>(`${this.apiUrl}/updatePetGrowth/${id}`, growth);
+  }
+
+  deletePetGrowth(id: number): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/deletePetGrowth/${id}`);
+  }
+
 }
