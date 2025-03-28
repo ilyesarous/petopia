@@ -31,9 +31,9 @@ import { PetGrowthVetComponent } from './home/vet/pet-growth-vet/pet-growth-vet.
 import { FormsModule } from '@angular/forms';
 import { NgApexchartsModule } from 'ng-apexcharts';
 import { ReactiveFormsModule } from '@angular/forms';
-//import { VetCalendarComponent } from './home/vet/vet-calendar/vet-calendar.component';
 import { FullCalendarModule } from '@fullcalendar/angular';
-//import { ConsultationDetailsModalComponent } from './home/vet/consultation-details-modal/consultation-details-modal.component';
+import { VetCalendarComponent } from './home/vet/vet-calendar/vet-calendar.component';
+import { ConsultationDetailsModalComponent } from './home/vet/consultation-details-modal/consultation-details-modal.component';
 
 
 @NgModule({
@@ -59,7 +59,9 @@ import { FullCalendarModule } from '@fullcalendar/angular';
     DiagnosisListComponent,
     PetGrowthListComponent,
     DashPrincipaleHomeVetComponent,
-    PetGrowthVetComponent
+    PetGrowthVetComponent,
+    VetCalendarComponent,
+    ConsultationDetailsModalComponent
   ],
   imports: [
     BrowserModule,
