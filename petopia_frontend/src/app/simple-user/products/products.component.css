@@ -7,7 +7,7 @@
 }
 .discount {
   position: relative;
-  background-color: #fa0;
+  background: linear-gradient(to bottom, #fe9a7a, #ff617c, #f83182);
   font-weight: 700;
   color: #fff;
   text-align: center;
