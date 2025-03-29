@@ -12,7 +12,7 @@
     >
       <a
         class="d-flex flex-row gap-2 align-items-center"
-        routerLink="{{ item.route }}"
+        [routerLink]="item.route"
         routerLinkActive="active"
         ><i class="{{ item.icon }}"></i> {{ item.name }}</a
       >
