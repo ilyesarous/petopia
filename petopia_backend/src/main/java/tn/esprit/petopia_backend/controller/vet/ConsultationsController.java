@@ -46,7 +46,7 @@ public class ConsultationsController {
     }
 
 
-    @PatchMapping("/auth/Consultations/updateConsultationsStatus/{id}")
+    @PutMapping("/auth/Consultations/updateConsultationsStatus/{id}")
     @ResponseBody
     public ResponseEntity<Consultations> updateConsultationStatus(
             @PathVariable int id,

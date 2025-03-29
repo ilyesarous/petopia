@@ -30,7 +30,7 @@ export class ConsultationService {
   }
 
   updateConsultationStatus(id: number, status: string): Observable<any> {
-    return this.http.patch(
+    return this.http.put(
       `${this.apiUrl}/updateConsultationsStatus/${id}`, 
       { statusT: status },
       this.httpOptions
