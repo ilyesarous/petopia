@@ -5,28 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="d82146aa-c391-488d-a5e9-d2774f899f12" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/petopia_frontend/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/petopia_frontend/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/petopia_frontend/src/app/app-routing.module.ts" beforeDir="false" afterPath="$PROJECT_DIR$/petopia_frontend/src/app/app-routing.module.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/petopia_frontend/src/app/app.module.ts" beforeDir="false" afterPath="$PROJECT_DIR$/petopia_frontend/src/app/app.module.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/petopia_frontend/src/app/home/vet/consultation-details-modal/consultation-details-modal.component.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/petopia_frontend/src/app/home/vet/consultation-details-modal/consultation-details-modal.component.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/petopia_frontend/src/app/home/vet/consultation-details-modal/consultation-details-modal.component.spec.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/petopia_frontend/src/app/home/vet/consultation-details-modal/consultation-details-modal.component.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/petopia_frontend/src/app/home/vet/dash-principale-home-vet/dash-principale-home-vet.component.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/petopia_frontend/src/app/home/vet/dash-principale-home-vet/dash-principale-home-vet.component.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/petopia_frontend/src/app/home/vet/dash-principale-home-vet/dash-principale-home-vet.component.spec.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/petopia_frontend/src/app/home/vet/dash-principale-home-vet/dash-principale-home-vet.component.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/petopia_frontend/src/app/home/vet/pet-growth-vet/pet-growth-vet.component.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/petopia_frontend/src/app/home/vet/pet-growth-vet/pet-growth-vet.component.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/petopia_frontend/src/app/home/vet/pet-growth-vet/pet-growth-vet.component.spec.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/petopia_frontend/src/app/home/vet/pet-growth-vet/pet-growth-vet.component.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/petopia_frontend/src/app/home/vet/vet-calendar/vet-calendar.component.css" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/petopia_frontend/src/app/home/vet/vet-calendar/vet-calendar.component.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/petopia_frontend/src/app/home/vet/vet-calendar/vet-calendar.component.spec.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/petopia_frontend/src/app/home/vet/vet-calendar/vet-calendar.component.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/petopia_frontend/src/app/simple-user/navbar/navbar.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/petopia_frontend/src/app/simple-user/navbar/navbar.component.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -45,7 +24,7 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="event" />
+        <entry key="$PROJECT_DIR$" value="vet" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -81,30 +60,30 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
-    &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,
-    &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
-    &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;Spring Boot.PetopiaBackendApplication.executor&quot;: &quot;Run&quot;,
-    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;vet&quot;,
-    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/khalil/OneDrive/Bureau/petopia/petopia&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;spring.configuration.checksum&quot;: &quot;591a282545f343f9a5d6292da4f53932&quot;,
-    &quot;ts.external.directory.path&quot;: &quot;D:\\petopia\\petopia_frontend\\node_modules\\typescript\\lib&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RequestMappingsPanelOrder0": "0",
+    "RequestMappingsPanelOrder1": "1",
+    "RequestMappingsPanelWidth0": "75",
+    "RequestMappingsPanelWidth1": "75",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "Spring Boot.PetopiaBackendApplication.executor": "Run",
+    "WebServerToolWindowFactoryState": "false",
+    "git-widget-placeholder": "main",
+    "ignore.virus.scanning.warn.message": "true",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "C:/Users/khalil/OneDrive/Bureau/petopia/petopia",
+    "node.js.detected.package.eslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "spring.configuration.checksum": "591a282545f343f9a5d6292da4f53932",
+    "ts.external.directory.path": "D:\\petopia\\petopia_frontend\\node_modules\\typescript\\lib",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RunManager">
     <configuration name="PetopiaBackendApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
       <module name="petopia_backend" />

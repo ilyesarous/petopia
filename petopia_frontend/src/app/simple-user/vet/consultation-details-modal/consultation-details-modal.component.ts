@@ -25,6 +25,7 @@ export class ConsultationDetailsModalComponent {
   }
 
   updateStatus() {
+    console.log('Selected Status:', this.selectedStatus);
     if (this.selectedStatus && this.consultation) {
       this.statusUpdated.emit(this.selectedStatus);
       this.close();
