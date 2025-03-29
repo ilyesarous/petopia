@@ -3,14 +3,14 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { NavbarComponent } from './navbar/navbar.component';
+import { NavbarComponent } from './simple-user/navbar/navbar.component';
 import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
-import { HomeComponent } from './home/home.component';
+import { HomeComponent } from './simple-user/home/home.component';
 import { DashbordComponent } from './admin/dashbord/dashbord.component';
 import { SidebarComponent } from './admin/sidebar/sidebar.component';
 import { MainComponent } from './admin/main/main.component';
 import { NavbarAdminComponent } from './admin/navbar-admin/navbar-admin.component';
-import { ComponentWrapperComponent } from './component-wrapper/component-wrapper.component';
+import { ComponentWrapperComponent } from './simple-user/component-wrapper/component-wrapper.component';
 import { DashPrincipaleComponent } from './admin/vet/dash-principale/dash-principale.component';
 import { ChatbotComponent } from './admin/vet/chatbot/chatbot.component';
 import { AppDogBreedRecognitionRedirectButtonComponent } from './admin/vet/app-dog-breed-recognition-redirect-button/app-dog-breed-recognition-redirect-button.component';
@@ -26,12 +26,17 @@ import { ConsultationListComponent } from './admin/vet/consultations/consultatio
 import { NgxPaginationModule } from 'ngx-pagination';
 import { DiagnosisListComponent } from './admin/vet/diagnoses/diagnosis-list/diagnosis-list.component';
 import { PetGrowthListComponent } from './admin/vet/pet-growth/pet-growth-list/pet-growth-list.component';
+import { CommonModule } from '@angular/common';
+import { CanvasJSAngularChartsModule } from '@canvasjs/angular-charts';
+import { ChartComponent } from './admin/chart/chart.component';
+import { ProductsComponent } from './simple-user/products/products.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     NavbarComponent,
     PageNotFoundComponent,
+    HomeComponent,
     HomeComponent,
     DashbordComponent,
     SidebarComponent,
@@ -48,7 +53,9 @@ import { PetGrowthListComponent } from './admin/vet/pet-growth/pet-growth-list/p
     NotificationStatsComponent,
     ConsultationListComponent,
     DiagnosisListComponent,
-    PetGrowthListComponent
+    PetGrowthListComponent,
+    ChartComponent,
+    ProductsComponent
   ],
   imports: [
     BrowserModule,
@@ -57,6 +64,8 @@ import { PetGrowthListComponent } from './admin/vet/pet-growth/pet-growth-list/p
     MatButtonModule,
     HttpClientModule,
     NgxPaginationModule,
+    CommonModule,
+    CanvasJSAngularChartsModule
   ],
   providers: [],
   bootstrap: [AppComponent]
