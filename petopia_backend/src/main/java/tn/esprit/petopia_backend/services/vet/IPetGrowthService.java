@@ -9,4 +9,5 @@ public interface IPetGrowthService {
     void deletePetGrowth(int idPet_Growth);
     List<Pet_Growth> retrieveAllPetGrowths();
     Pet_Growth retrievePetGrowth(int idPet_Growth);
+    List<Pet_Growth> retrievePetGrowthsByPetId(int petId);
 }

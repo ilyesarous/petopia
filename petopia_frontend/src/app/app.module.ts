@@ -26,6 +26,12 @@ import { ConsultationListComponent } from './admin/vet/consultations/consultatio
 import { NgxPaginationModule } from 'ngx-pagination';
 import { DiagnosisListComponent } from './admin/vet/diagnoses/diagnosis-list/diagnosis-list.component';
 import { PetGrowthListComponent } from './admin/vet/pet-growth/pet-growth-list/pet-growth-list.component';
+import { DashPrincipaleHomeVetComponent } from './simple-user/vet/dash-principale-home-vet/dash-principale-home-vet.component';
+import { PetGrowthVetComponent } from './simple-user/vet/pet-growth-vet/pet-growth-vet.component';
+import { NgApexchartsModule } from 'ng-apexcharts';
+import { FullCalendarModule } from '@fullcalendar/angular';
+import { VetCalendarComponent } from './simple-user/vet/vet-calendar/vet-calendar.component';
+import { ConsultationDetailsModalComponent } from './simple-user/vet/consultation-details-modal/consultation-details-modal.component';
 import { CommonModule } from '@angular/common';
 import { CanvasJSAngularChartsModule } from '@canvasjs/angular-charts';
 import { ChartComponent } from './admin/chart/chart.component';
@@ -64,6 +70,11 @@ import { AdoptPetComponent } from './simple-user/adoption/adopt-pet/adopt-pet.co
     ConsultationListComponent,
     DiagnosisListComponent,
     PetGrowthListComponent,
+    DashPrincipaleHomeVetComponent,
+    PetGrowthVetComponent,
+    VetCalendarComponent,
+    ConsultationDetailsModalComponent,
+    PetGrowthListComponent,
     ChartComponent,
     ProductsComponent,
     PetAdoptionListComponent,
@@ -77,11 +88,13 @@ import { AdoptPetComponent } from './simple-user/adoption/adopt-pet/adopt-pet.co
     MatButtonModule,
     HttpClientModule,
     NgxPaginationModule,
+    FormsModule,
+    NgApexchartsModule,
+    ReactiveFormsModule,
+    FullCalendarModule,
     CommonModule,
     CanvasJSAngularChartsModule,
-    ReactiveFormsModule,
     FontAwesomeModule,
-    FormsModule
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }

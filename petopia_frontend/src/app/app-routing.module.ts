@@ -9,6 +9,8 @@ import { NotificationListComponent } from './admin/vet/notifications/notificatio
 import { ConsultationListComponent } from './admin/vet/consultations/consultation-list/consultation-list.component';
 import { DiagnosisListComponent } from './admin/vet/diagnoses/diagnosis-list/diagnosis-list.component';
 import { PetGrowthListComponent } from './admin/vet/pet-growth/pet-growth-list/pet-growth-list.component';
+import { PetGrowthVetComponent } from './simple-user/vet/pet-growth-vet/pet-growth-vet.component';
+import { DashPrincipaleHomeVetComponent } from './simple-user/vet/dash-principale-home-vet/dash-principale-home-vet.component';
 import { ChartComponent } from './admin/chart/chart.component';
 import { ProductsComponent } from './simple-user/products/products.component';
 import { PetAdoptionListComponent } from './simple-user/adoption/pet-adoption-list/pet-adoption-list.component';
@@ -18,9 +20,11 @@ import { AdoptPetComponent } from './simple-user/adoption/adopt-pet/adopt-pet.co
 
 const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
-  { path: 'home', component: ComponentWrapperComponent, 
+  { path: 'home', component: ComponentWrapperComponent,
     children: [
       {path: 'products', component: ProductsComponent},
+      { path: 'vet', component: DashPrincipaleHomeVetComponent },
+      { path: 'vet/pet-growth/:id', component: PetGrowthVetComponent },
       {path: 'adoption', component: PetAdoptionListComponent},
       {path: 'adoption/pets/:id', component: PetAdoptDetailsComponent },
       {path: 'adoption/form/:idPet', component: AdoptPetComponent}
@@ -28,7 +32,7 @@ const routes: Routes = [
 
     ]
   },
-  { path: 'dashboard', component: DashbordComponent, 
+  { path: 'dashboard', component: DashbordComponent,
     children: [
       {path: 'user', component: ChartComponent},
       { path: 'vet', component: DashPrincipaleComponent },

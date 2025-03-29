@@ -1,60 +1,52 @@
-<p>Welcome to vet dashboard</p>
+      <div class="dashboard-layout">
+        <!-- Graphique des notifications à gauche -->
+        <div class="graph-container">
+          <app-notification-stats
+            [seenCount]="seenCount"
+            [unseenCount]="unseenCount">
+          </app-notification-stats>
+        </div>
 
-<div class="button-container">
-    <button routerLink="/dashboard/consultations">Consultation</button>
-    <button routerLink="/dashboard/diagnosis">Diagnosis</button>
-    <button routerLink="/dashboard/pet-growth">Pet Growth</button>
-    <button routerLink="/dashboard/notifications">Notification</button>
-</div>
+        <!-- Carrés de statistiques à droite -->
+        <div class="stats-container">
+          <div class="dashboard-card" routerLink="/dashboard/notifications">
+            <p>{{"🔔"}}</p>
+            <h3>Notifications</h3>
+            <p>{{ totalNotifications }}</p>
+          </div>
+          <div class="dashboard-card" routerLink="/dashboard/diagnosis">
+            <p>{{"🩺"}}</p>
+            <h3>Diagnoses</h3>
+            <p>{{ totalDiagnoses }}</p>
+          </div>
+          <div class="dashboard-card" routerLink="/dashboard/pet-growth">
+            <p>{{"🐾 📈"}}</p>
+            <h3>Pet Growths</h3>
+            <p>{{ totalPetGrowths }}</p>
+          </div>
+          <div class="dashboard-card" routerLink="/dashboard/consultations">
+            <p>{{"🐶👩‍⚕️"}}</p>
+            <h3>Consultations</h3>
+            <p>{{ totalConsultations }}</p>
+          </div>
+        </div>
+      </div>
 
-<div class="dashboard-layout">
-  <!-- Graphique des notifications à gauche -->
-  <div class="graph-container">
-    <app-notification-stats
-      [seenCount]="seenCount"
-      [unseenCount]="unseenCount">
-    </app-notification-stats>
-  </div>
+      <br>
+      <br>
 
-  <!-- Carrés de statistiques à droite -->
-  <div class="stats-container">
-    <div class="dashboard-card">
-      <p>{{"🔔"}}</p>
-      <h3>Notifications</h3>
-      <p>{{ totalNotifications }}</p>
-    </div>
-    <div class="dashboard-card">
-      <p>{{"🩺"}}</p>
-      <h3>Diagnoses</h3>
-      <p>{{ totalDiagnoses }}</p>
-    </div>
-    <div class="dashboard-card">
-      <p>{{"🐾 📈"}}</p>
-      <h3>Pet Growths</h3>
-      <p>{{ totalPetGrowths }}</p>
-    </div>
-    <div class="dashboard-card">
-      <p>{{"🐶👩‍⚕️"}}</p>
-      <h3>Consultations</h3>
-      <p>{{ totalConsultations }}</p>
-    </div>
-  </div>
-</div>
+      <app-app-dog-breed-recognition-redirect-button></app-app-dog-breed-recognition-redirect-button>
 
-<br>
-<br>
+      <br>
+      <br>
 
-<app-app-dog-breed-recognition-redirect-button></app-app-dog-breed-recognition-redirect-button>
+      <button routerLink="/dashboard/tic-tac-toe">Tic Tac Toe Game 🎮</button>
 
-<br>
-<br>
+      <br>
+      <br>
 
-<button routerLink="/tic-tac-toe">Tic Tac Toe Game 🎮</button>
+      <app-qr-scanner></app-qr-scanner>
 
-<br>
-<br>
+      <app-chatbot></app-chatbot>
 
-<app-qr-scanner></app-qr-scanner>
-
-<app-chatbot></app-chatbot>
 
