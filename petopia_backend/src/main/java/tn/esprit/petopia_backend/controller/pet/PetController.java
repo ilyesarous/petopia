@@ -30,7 +30,9 @@ public class PetController {
 
     @Autowired
     private MatchesService matchesService;
+    @Autowired
     private final PetService petService;
+    @Autowired
     private final IShelterService shelterService;
     public PetController(PetService petService,IShelterService shelterService) {
         this.petService = petService;
@@ -44,7 +46,6 @@ public class PetController {
         return "Pet added successfully";
     }
 
-    //Amalllllllll zedt hedhi
 
     @PostMapping("/shelter/pet/add")
     @PreAuthorize("hasAuthority('ROLE_SHELTER')")

@@ -24,50 +24,57 @@ public class ShelterServiceImpl implements IShelterService {
     @Override
     @Transactional
     public Shelter createShelter(Shelter shelter, Integer userIdFromToken) {
-        // Retrieve the managed User from the DB.
         User managedUser = userRepository.findById(userIdFromToken)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
-        // Save the Shelter first. This ensures that Shelter is in a persistent state.
+        if (managedUser.getShelter() != null) {
+            throw new RuntimeException("User already has a shelter. Update the existing one instead.");
+        }
+
         Shelter savedShelter = shelterRepository.save(shelter);
 
-        // Now update both sides of the relationship.
         savedShelter.setUser(managedUser);
         managedUser.setShelter(savedShelter);
 
-        // Save the updated User so that the association is persisted.
         userRepository.save(managedUser);
 
-        // Optionally, if needed, you can update savedShelter again if your mapping requires it.
         return savedShelter;
     }
+
 
 
     @Override
     @Transactional
     public Shelter updateShelter(Shelter shelter) {
-        // Load the existing shelter from the DB
         Shelter existingShelter = shelterRepository.findById(shelter.getId_shelter())
                 .orElseThrow(() -> new RuntimeException("Shelter not found"));
 
-        // Preserve the user association if the incoming update has null for user
         if (shelter.getUser() == null) {
             shelter.setUser(existingShelter.getUser());
         }
 
-        // You might also want to update other fields selectively if needed.
-        // For example:
-        existingShelter.setShelter_name(shelter.getShelter_name());
-        existingShelter.setLocation(shelter.getLocation());
-        existingShelter.setEmail(shelter.getEmail());
-        existingShelter.setPhone_number(shelter.getPhone_number());
-        existingShelter.setDescription(shelter.getDescription());
-        existingShelter.setWebsite(shelter.getWebsite());
-        // Preserve the existing user
-        // Optionally update pets if needed
+        if (shelter.getShelter_name() != null) {
+            existingShelter.setShelter_name(shelter.getShelter_name());
+        }
+        if (shelter.getLocation() != null) {
+            existingShelter.setLocation(shelter.getLocation());
+        }
+        if (shelter.getEmail() != null) {
+            existingShelter.setEmail(shelter.getEmail());
+        }
+        if (shelter.getPhone_number() != null) {
+            existingShelter.setPhone_number(shelter.getPhone_number());
+        }
+        if (shelter.getDescription() != null) {
+            existingShelter.setDescription(shelter.getDescription());
+        }
+        if (shelter.getWebsite() != null) {
+            existingShelter.setWebsite(shelter.getWebsite());
+        }
 
         return shelterRepository.save(existingShelter);
     }
+
 
     @Override
     public void deleteShelter(Integer id) {

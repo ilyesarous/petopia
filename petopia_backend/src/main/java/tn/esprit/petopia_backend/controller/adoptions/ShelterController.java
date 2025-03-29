@@ -1,5 +1,6 @@
 package tn.esprit.petopia_backend.controller.adoptions;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
@@ -20,21 +21,32 @@ public class ShelterController {
         this.shelterService = shelterService;
     }
 
-    // Only a shelter (i.e. a user with ROLE_SHELTER) can add its shelter details
     @PostMapping("/addShelter")
     @PreAuthorize("hasAuthority('ROLE_SHELTER')")
-    public ResponseEntity<Shelter> createShelter(@RequestBody Shelter shelter) {
-        // Extract userId from token (e.g. from SecurityContextHolder)
+    public ResponseEntity<?> createShelter(@RequestBody Shelter shelter) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        User user = (User) authentication.getPrincipal(); // cast to your entity class
+        Object principal = authentication.getPrincipal();
+
+        if (!(principal instanceof User)) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized access.");
+        }
+
+        User user = (User) principal;
         Integer userId = user.getId_user();
 
-        Shelter savedShelter = shelterService.createShelter(shelter, userId);
-        return ResponseEntity.ok(savedShelter);
+        try {
+            Shelter createdShelter = shelterService.createShelter(shelter, userId);
+            return ResponseEntity.status(HttpStatus.CREATED).body(createdShelter);
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("An error occurred while creating the shelter: " + e.getMessage());
+        }
     }
 
 
-    // Only a shelter can update its details
+
     @PutMapping("/updateShelter/{id}")
     @PreAuthorize("hasAuthority('ROLE_SHELTER')")
     public ResponseEntity<Shelter> updateShelter(@PathVariable Integer id, @RequestBody Shelter shelter) {
@@ -42,29 +54,32 @@ public class ShelterController {
         return ResponseEntity.ok(shelterService.updateShelter(shelter));
     }
 
-    // Only a shelter can delete its details
     @DeleteMapping("/deleteShelter/{id}")
     @PreAuthorize("hasAuthority('ROLE_SHELTER')")
-    public ResponseEntity<Void> deleteShelter(@PathVariable Integer id) {
-        shelterService.deleteShelter(id);
-        return ResponseEntity.ok().build();
+    public ResponseEntity<String> deleteShelter(@PathVariable Integer id) {
+        try {
+            shelterService.deleteShelter(id);
+            return ResponseEntity.ok("Shelter deleted successfully");
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Shelter not found: " + e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred while deleting the shelter.");
+        }
     }
 
-    // Accessible by shelter or admin to view a specific shelter
+
     @GetMapping("/getShelter/{id}")
     @PreAuthorize("hasAnyAuthority('ROLE_SHELTER','ROLE_ADMIN')")
     public ResponseEntity<Shelter> getShelterById(@PathVariable Integer id) {
         return ResponseEntity.ok(shelterService.getShelterById(id));
     }
 
-    // Only admin can view all shelters
     @GetMapping("/getAllShelters")
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<List<Shelter>> getAllShelters() {
         return ResponseEntity.ok(shelterService.getAllShelters());
     }
 
-    // Accessible by shelter or admin: retrieve shelter by associated user id
     @GetMapping("/user/{userId}")
     @PreAuthorize("hasAnyAuthority('ROLE_SHELTER','ROLE_ADMIN')")
     public ResponseEntity<Shelter> getShelterByUserId(@PathVariable Integer userId) {
