@@ -1,4 +1,5 @@
 package tn.esprit.petopia_backend.entities.adoptions;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import tn.esprit.petopia_backend.entities.pet.Pet;
@@ -32,5 +33,6 @@ public class Shelter {
     private User user;
 
     @OneToMany(mappedBy = "shelter", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
     private List<Pet> pets;
 }

@@ -20,10 +20,10 @@
     color: #495057; 
     text-decoration: none;
 }
-.navbar .textLink:hover{
-    font-weight: 700;
-    color: black;
-    transition: 0.2s ease;
+.navbar .textLink:hover {
+  font-weight: 700;
+  color: #ff6b9d;
+  transform: scale(1.05);
 }
 
 .isSelected{

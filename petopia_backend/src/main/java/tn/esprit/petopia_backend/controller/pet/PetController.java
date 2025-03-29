@@ -105,6 +105,11 @@ public class PetController {
     public ResponseEntity<List<Pet>> getPetsByStatus(@PathVariable PetStatus status) {
         return ResponseEntity.ok(petService.getPetsByStatus(status));
     }
+    @GetMapping("/pet/unassigned")
+    @PreAuthorize("hasAnyAuthority('ROLE_USER','ROLE_SHELTER','ROLE_ADMIN')")
+    public ResponseEntity<List<Pet>> getUnassignedPets() {
+        return ResponseEntity.ok(petService.getUnassignedPets());
+    }
 
     // anas bdet tekhdem hmd welyeeeyyyyy
 

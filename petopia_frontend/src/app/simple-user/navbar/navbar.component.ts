@@ -18,6 +18,8 @@ export class NavbarComponent {
     {id: 3, name: 'Community Hub', link: '#'},
     {id: 4, name: 'Events', link: '#'},
     {id: 5, name: 'Vet', link: '#'},
+    {id: 6, name: 'Adoption', link: 'adoption'},
+
   ]
 
 }

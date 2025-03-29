@@ -11,6 +11,9 @@ import { DiagnosisListComponent } from './admin/vet/diagnoses/diagnosis-list/dia
 import { PetGrowthListComponent } from './admin/vet/pet-growth/pet-growth-list/pet-growth-list.component';
 import { ChartComponent } from './admin/chart/chart.component';
 import { ProductsComponent } from './simple-user/products/products.component';
+import { PetAdoptionListComponent } from './simple-user/adoption/pet-adoption-list/pet-adoption-list.component';
+import { PetAdoptDetailsComponent } from './simple-user/adoption/pet-adopt-details/pet-adopt-details.component';
+import { AdoptPetComponent } from './simple-user/adoption/adopt-pet/adopt-pet.component';
 
 
 const routes: Routes = [
@@ -18,6 +21,11 @@ const routes: Routes = [
   { path: 'home', component: ComponentWrapperComponent, 
     children: [
       {path: 'products', component: ProductsComponent},
+      {path: 'adoption', component: PetAdoptionListComponent},
+      {path: 'adoption/pets/:id', component: PetAdoptDetailsComponent },
+      {path: 'adoption/form/:idPet', component: AdoptPetComponent}
+
+
     ]
   },
   { path: 'dashboard', component: DashbordComponent, 

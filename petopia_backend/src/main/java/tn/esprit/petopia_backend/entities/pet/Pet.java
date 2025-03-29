@@ -75,7 +75,6 @@ public class Pet {
     private String healthStatus =null;
 
     @ManyToOne
-    @JsonIgnore
     private Shelter shelter;
 
 

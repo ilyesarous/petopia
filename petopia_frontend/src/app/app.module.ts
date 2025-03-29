@@ -20,7 +20,7 @@ import { QrScannerComponent } from './admin/vet/qr-scanner/qr-scanner.component'
 import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonModule } from '@angular/material/button';
 import { NotificationListComponent } from './admin/vet/notifications/notification-list/notification-list.component';
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { NotificationStatsComponent } from './admin/vet/notifications/notification-stats/notification-stats.component';
 import { ConsultationListComponent } from './admin/vet/consultations/consultation-list/consultation-list.component';
 import { NgxPaginationModule } from 'ngx-pagination';
@@ -30,6 +30,16 @@ import { CommonModule } from '@angular/common';
 import { CanvasJSAngularChartsModule } from '@canvasjs/angular-charts';
 import { ChartComponent } from './admin/chart/chart.component';
 import { ProductsComponent } from './simple-user/products/products.component';
+import { PetAdoptionListComponent } from './simple-user/adoption/pet-adoption-list/pet-adoption-list.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { AuthInterceptor } from './interceptors/auth.interceptor';
+import { PetAdoptDetailsComponent } from './simple-user/adoption/pet-adopt-details/pet-adopt-details.component';
+
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { faCoffee, faUser, faHome } from '@fortawesome/free-solid-svg-icons';
+import { AdoptPetComponent } from './simple-user/adoption/adopt-pet/adopt-pet.component';
+
 
 @NgModule({
   declarations: [
@@ -55,7 +65,10 @@ import { ProductsComponent } from './simple-user/products/products.component';
     DiagnosisListComponent,
     PetGrowthListComponent,
     ChartComponent,
-    ProductsComponent
+    ProductsComponent,
+    PetAdoptionListComponent,
+    PetAdoptDetailsComponent,
+    AdoptPetComponent
   ],
   imports: [
     BrowserModule,
@@ -65,9 +78,18 @@ import { ProductsComponent } from './simple-user/products/products.component';
     HttpClientModule,
     NgxPaginationModule,
     CommonModule,
-    CanvasJSAngularChartsModule
+    CanvasJSAngularChartsModule,
+    ReactiveFormsModule,
+    FontAwesomeModule,
+    FormsModule
   ],
-  providers: [],
+  providers: [
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }
+  ],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+  constructor() {
+    library.add(faCoffee, faUser, faHome); 
+  }
+ }
