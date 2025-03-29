@@ -2,9 +2,12 @@ package tn.esprit.petopia_backend.controller.adoptions;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import tn.esprit.petopia_backend.entities.adoptions.Adoption;
 import tn.esprit.petopia_backend.entities.adoptions.AdoptionStatus;
+import tn.esprit.petopia_backend.entities.user.User;
 import tn.esprit.petopia_backend.services.adoptions.IAdoptionService;
 import java.util.List;
 
@@ -18,22 +21,25 @@ public class AdoptionController {
         this.adoptionService = adoptionService;
     }
 
-    // Only a user can add an adoption request
     @PostMapping("/addAdoption")
     @PreAuthorize("hasAuthority('ROLE_USER')")
     public ResponseEntity<Adoption> createAdoption(@RequestBody Adoption adoption) {
-        return ResponseEntity.ok(adoptionService.createAdoption(adoption));
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User user = (User) authentication.getPrincipal(); // authenticated user
+        Integer userId = user.getId_user();
+
+        Adoption createdAdoption = adoptionService.createAdoption(adoption, userId);
+        return ResponseEntity.ok(createdAdoption);
     }
 
-    // Only a shelter can update the adoption status
+
     @PutMapping("/updateAdoption/{id}")
     @PreAuthorize("hasAuthority('ROLE_SHELTER')")
     public ResponseEntity<Adoption> updateAdoption(@PathVariable Integer id, @RequestBody Adoption adoption) {
-        adoption.setId_request(id);
-        return ResponseEntity.ok(adoptionService.updateAdoption(adoption));
+        Adoption updatedAdoption = adoptionService.updateAdoption(id, adoption);
+        return ResponseEntity.ok(updatedAdoption);
     }
 
-    // Only a shelter can delete an adoption
     @DeleteMapping("/deleteAdoption/{id}")
     @PreAuthorize("hasAuthority('ROLE_SHELTER')")
     public ResponseEntity<Void> deleteAdoption(@PathVariable Integer id) {

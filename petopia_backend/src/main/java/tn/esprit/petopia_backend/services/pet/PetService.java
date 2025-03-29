@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tn.esprit.petopia_backend.entities.pet.Pet;
 import tn.esprit.petopia_backend.entities.pet.PetStatus;
+import tn.esprit.petopia_backend.entities.user.User;
 import tn.esprit.petopia_backend.repositories.pet.PetRepository;
 
 import java.util.List;
@@ -54,4 +55,9 @@ public class PetService {
     public List<Pet> getPetsByStatus(PetStatus status) {
         return petRepository.findByStatus(status);
     }
+
+
+
+
+
 }

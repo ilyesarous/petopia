@@ -1,6 +1,7 @@
 package tn.esprit.petopia_backend.entities.reclamation;
 
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -23,6 +24,7 @@ public class Reclamation {
 
     @ManyToOne
     @JoinColumn(name = "id_user", nullable = false)
+    @JsonBackReference
     private User user;
 
     private String type;

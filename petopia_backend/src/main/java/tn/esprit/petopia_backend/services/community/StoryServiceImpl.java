@@ -1,5 +1,6 @@
 package tn.esprit.petopia_backend.services.community;
 
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import tn.esprit.petopia_backend.entities.community.Story;
 import tn.esprit.petopia_backend.entities.user.User;
@@ -64,5 +65,13 @@ public class StoryServiceImpl implements IStoryService {
             throw new RuntimeException("Story not found");
         }
         storyRepository.deleteById(storyId);
+    }
+
+    @Scheduled(fixedRate = 3600000)
+    public void deleteExpiredStories() {
+        LocalDateTime expirationTime = LocalDateTime.now().minusHours(24);
+        List<Story> expiredStories = storyRepository.findByCreatedAtBefore(expirationTime);
+        storyRepository.deleteAll(expiredStories);
+        System.out.println(expiredStories.size() + " expired stories deleted.");
     }
 }

@@ -40,11 +40,9 @@ public class CartService implements ICartService {
 
         return repository.save(cart);
     }
-//TODO: add total to cartProduct, create cartProductService
-
 
     @Override
-    public void deleteProductById(int idUser, int idProduct) {
+    public void decreaseProductQuantityById(int idUser, int idProduct) {
         Cart cart = findCartByUser(idUser);
         Product product = productService.findById(idProduct);
         cartProductService.decreaseQuantity(cart, idProduct);
@@ -52,6 +50,16 @@ public class CartService implements ICartService {
         repository.save(cart);
     }
 
+    @Override
+    public void clearCart(int idUser){
+        Cart cart = findCartByUser(idUser);
+        for (CartProduct cp : cart.getCartProducts()){
+            cp.getProduct().setAvailableQuantity(cp.getProduct().getAvailableQuantity() + cp.getQuantity());
+        }
+        cart.setTotal_price(0);
+        cart.getCartProducts().clear();
+        repository.save(cart);
+    }
     @Override
     public String checkout(int idUser) {
         Cart cart = findCartByUser(idUser);

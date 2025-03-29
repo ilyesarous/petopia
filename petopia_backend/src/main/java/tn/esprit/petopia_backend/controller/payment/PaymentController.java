@@ -1,11 +1,13 @@
-package tn.esprit.petopia_backend.controller.vet;
+package tn.esprit.petopia_backend.controller.payment;
 
 import com.stripe.exception.StripeException;
 import com.stripe.model.checkout.Session;
 import com.stripe.param.checkout.SessionCreateParams;
+import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import tn.esprit.petopia_backend.entities.vet.PaymentRequest;
+import tn.esprit.petopia_backend.entities.payment.PaymentRequest;
+import tn.esprit.petopia_backend.services.payment.PaymentService;
 
 
 import java.util.HashMap;
@@ -13,7 +15,10 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/auth/api/payment")
+@AllArgsConstructor
 public class PaymentController {
+
+    private PaymentService paymentService;
 
     @PostMapping("/create-checkout-session")
     public ResponseEntity<Map<String, Object>> createCheckoutSession(@RequestBody PaymentRequest paymentRequest) throws StripeException {
@@ -43,7 +48,7 @@ public class PaymentController {
                                 .build()
                 )
                 .build();
-
+        paymentService.savePayment(paymentRequest);
         // Création de la session Stripe
         Session session = Session.create(params);
 
