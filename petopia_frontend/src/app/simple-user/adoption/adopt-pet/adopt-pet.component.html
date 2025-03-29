@@ -1,0 +1,34 @@
+<div class="container my-5 adoption-form-container">
+    <h2 class="text-center mb-4">Adoption Request</h2>
+    <form [formGroup]="adoptionForm" (ngSubmit)="onSubmit()">
+      <div class="mb-3">
+        <label for="motivation" class="form-label">Why do you want to adopt this pet?</label>
+        <textarea 
+          id="motivation" 
+          class="form-control" 
+          rows="5" 
+          formControlName="motivation_letter" 
+          placeholder="Write your motivation here..."></textarea>
+          
+
+        <div *ngIf="adoptionForm.get('motivation_letter')?.invalid && adoptionForm.get('motivation_letter')?.touched">
+          <div *ngIf="adoptionForm.get('motivation_letter')?.errors?.['required']">
+            Motivation letter is required.
+          </div>
+          <div *ngIf="adoptionForm.get('motivation_letter')?.errors?.['minlength']">
+            Motivation letter should be at least 20 characters long.
+          </div>
+        </div>
+      </div>
+      <div class="mb-3">
+        <label for="cinImage" class="form-label">Upload your CIN image</label>
+        <input 
+          type="file" 
+          id="cinImage" 
+          class="form-control" 
+          (change)="onFileSelected($event)">
+      </div>
+      <button type="submit" class="btn btn-primary" >Add Adoption</button>
+    </form>
+  </div>
+  
