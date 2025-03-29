@@ -9,9 +9,8 @@ import { NotificationListComponent } from './admin/vet/notifications/notificatio
 import { ConsultationListComponent } from './admin/vet/consultations/consultation-list/consultation-list.component';
 import { DiagnosisListComponent } from './admin/vet/diagnoses/diagnosis-list/diagnosis-list.component';
 import { PetGrowthListComponent } from './admin/vet/pet-growth/pet-growth-list/pet-growth-list.component';
-import { DashPrincipaleHomeVetComponent } from './home/vet/dash-principale-home-vet/dash-principale-home-vet.component';
-import { PetGrowthVetComponent } from './home/vet/pet-growth-vet/pet-growth-vet.component';
-
+import { PetGrowthVetComponent } from './simple-user/vet/pet-growth-vet/pet-growth-vet.component';
+import { DashPrincipaleHomeVetComponent } from './simple-user/vet/dash-principale-home-vet/dash-principale-home-vet.component';
 import { ChartComponent } from './admin/chart/chart.component';
 import { ProductsComponent } from './simple-user/products/products.component';
 

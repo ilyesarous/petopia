@@ -15,7 +15,7 @@ export class DashPrincipaleHomeVetComponent {
 
   navigateToPetGrowth() {
     if (this.petId) {
-      this.router.navigate(['/vet/pet-growth', this.petId]);
+      this.router.navigate(['home/vet/pet-growth', this.petId]);
     }
   }
 

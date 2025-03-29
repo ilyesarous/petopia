@@ -6,8 +6,27 @@
   <component name="ChangeListManager">
     <list default="true" id="d82146aa-c391-488d-a5e9-d2774f899f12" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/petopia_frontend/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/petopia_frontend/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/petopia_frontend/src/app/app-routing.module.ts" beforeDir="false" afterPath="$PROJECT_DIR$/petopia_frontend/src/app/app-routing.module.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/petopia_frontend/src/app/app.module.ts" beforeDir="false" afterPath="$PROJECT_DIR$/petopia_frontend/src/app/app.module.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/petopia_frontend/src/app/home/vet/consultation-details-modal/consultation-details-modal.component.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/petopia_frontend/src/app/home/vet/consultation-details-modal/consultation-details-modal.component.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/petopia_frontend/src/app/home/vet/consultation-details-modal/consultation-details-modal.component.spec.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/petopia_frontend/src/app/home/vet/consultation-details-modal/consultation-details-modal.component.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/petopia_frontend/src/app/home/vet/dash-principale-home-vet/dash-principale-home-vet.component.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/petopia_frontend/src/app/home/vet/dash-principale-home-vet/dash-principale-home-vet.component.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/petopia_frontend/src/app/home/vet/dash-principale-home-vet/dash-principale-home-vet.component.spec.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/petopia_frontend/src/app/home/vet/dash-principale-home-vet/dash-principale-home-vet.component.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/petopia_frontend/src/app/home/vet/pet-growth-vet/pet-growth-vet.component.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/petopia_frontend/src/app/home/vet/pet-growth-vet/pet-growth-vet.component.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/petopia_frontend/src/app/home/vet/pet-growth-vet/pet-growth-vet.component.spec.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/petopia_frontend/src/app/home/vet/pet-growth-vet/pet-growth-vet.component.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/petopia_frontend/src/app/home/vet/vet-calendar/vet-calendar.component.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/petopia_frontend/src/app/home/vet/vet-calendar/vet-calendar.component.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/petopia_frontend/src/app/home/vet/vet-calendar/vet-calendar.component.spec.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/petopia_frontend/src/app/home/vet/vet-calendar/vet-calendar.component.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/petopia_frontend/src/app/simple-user/navbar/navbar.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/petopia_frontend/src/app/simple-user/navbar/navbar.component.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -37,12 +56,12 @@
     &quot;assignee&quot;: &quot;Amal3111&quot;
   }
 }</component>
-  <component name="GithubPullRequestsUISettings"><![CDATA[{
-  "selectedUrlAndAccountId": {
-    "url": "https://github.com/ilyesarous/petopia.git",
-    "accountId": "d1b61b08-de23-440d-a978-afe73e4981db"
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/ilyesarous/petopia.git&quot;,
+    &quot;accountId&quot;: &quot;d1b61b08-de23-440d-a978-afe73e4981db&quot;
   }
-}]]></component>
+}</component>
   <component name="KubernetesApiPersistence">{}</component>
   <component name="KubernetesApiProvider">{
   &quot;isMigrated&quot;: true
@@ -73,7 +92,7 @@
     &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
     &quot;Spring Boot.PetopiaBackendApplication.executor&quot;: &quot;Run&quot;,
     &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;vet&quot;,
     &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
     &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
     &quot;last_opened_file_path&quot;: &quot;C:/Users/khalil/OneDrive/Bureau/petopia/petopia&quot;,
@@ -82,6 +101,7 @@
     &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
     &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
     &quot;spring.configuration.checksum&quot;: &quot;591a282545f343f9a5d6292da4f53932&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;D:\\petopia\\petopia_frontend\\node_modules\\typescript\\lib&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
 }</component>
@@ -120,6 +140,7 @@
       <workItem from="1741625621310" duration="2015000" />
       <workItem from="1741636132025" duration="1892000" />
       <workItem from="1742862997142" duration="1017000" />
+      <workItem from="1743220297230" duration="328000" />
     </task>
     <servers />
   </component>

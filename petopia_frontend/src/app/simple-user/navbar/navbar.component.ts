@@ -17,7 +17,7 @@ export class NavbarComponent {
     {id: 2, name: 'Store', link: 'products'},
     {id: 3, name: 'Community Hub', link: '#'},
     {id: 4, name: 'Events', link: '#'},
-    {id: 5, name: 'Vet', link: '#'},
+    {id: 5, name: 'Vet', link: 'vet'},
   ]
 
 }
