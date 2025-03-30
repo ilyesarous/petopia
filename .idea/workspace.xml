@@ -6,11 +6,9 @@
   <component name="ChangeListManager">
     <list default="true" id="d82146aa-c391-488d-a5e9-d2774f899f12" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/petopia_frontend/src/app/app-routing.module.ts" beforeDir="false" afterPath="$PROJECT_DIR$/petopia_frontend/src/app/app-routing.module.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/petopia_frontend/src/app/app.module.ts" beforeDir="false" afterPath="$PROJECT_DIR$/petopia_frontend/src/app/app.module.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/petopia_frontend/src/app/models/vet/diagnosis.ts" beforeDir="false" afterPath="$PROJECT_DIR$/petopia_frontend/src/app/models/vet/diagnosis.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/petopia_frontend/src/app/services/vet/diagnoses/diagnosis.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/petopia_frontend/src/app/services/vet/diagnoses/diagnosis.service.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/petopia_frontend/src/app/simple-user/vet/treatment-pets/treatment-pets.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/petopia_frontend/src/app/simple-user/vet/treatment-pets/treatment-pets.component.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/petopia_backend/src/main/java/tn/esprit/petopia_backend/controller/vet/ConsultationsController.java" beforeDir="false" afterPath="$PROJECT_DIR$/petopia_backend/src/main/java/tn/esprit/petopia_backend/controller/vet/ConsultationsController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/petopia_backend/src/main/java/tn/esprit/petopia_backend/services/vet/ConsultationsServiceImplement.java" beforeDir="false" afterPath="$PROJECT_DIR$/petopia_backend/src/main/java/tn/esprit/petopia_backend/services/vet/ConsultationsServiceImplement.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/petopia_backend/src/main/java/tn/esprit/petopia_backend/services/vet/IConsultationsService.java" beforeDir="false" afterPath="$PROJECT_DIR$/petopia_backend/src/main/java/tn/esprit/petopia_backend/services/vet/IConsultationsService.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -126,7 +124,7 @@
       <workItem from="1742862997142" duration="1017000" />
       <workItem from="1743220297230" duration="328000" />
       <workItem from="1743293338442" duration="8468000" />
-      <workItem from="1743361698632" duration="4993000" />
+      <workItem from="1743361698632" duration="10438000" />
     </task>
     <servers />
   </component>
