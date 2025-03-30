@@ -5,9 +5,11 @@ import org.springframework.stereotype.Service;
 import tn.esprit.petopia_backend.entities.store.Cart;
 import tn.esprit.petopia_backend.entities.store.CartProduct;
 import tn.esprit.petopia_backend.entities.store.Product;
+import tn.esprit.petopia_backend.entities.user.User;
 import tn.esprit.petopia_backend.repositories.store.CartProductRepository;
 import tn.esprit.petopia_backend.repositories.store.CartRepository;
 import tn.esprit.petopia_backend.services.store.interfaces.ICartService;
+import tn.esprit.petopia_backend.services.user.UserService;
 
 import java.util.List;
 
@@ -17,25 +19,31 @@ public class CartService implements ICartService {
     private CartRepository repository;
     private CartProductService cartProductService;
     private ProductService productService;
+    private UserService userService;
 
     @Override
-    public Cart addProductToCart(int idCart, int productId, int quantity) {
-        Cart cart = repository.findById(idCart).orElse(new Cart());
+    public Cart findCartByUser(int idUser) {
+        User user = userService.getUsersById(idUser).getOurUsers();
+        return repository.findCartByUser(user);
+    }
+
+    @Override
+    public Cart addProductToCart(int idUser, int productId, int quantity) {
+        Cart cart = findCartByUser(idUser);
+        if (cart == null) {
+            cart = new Cart();
+            cart.setUser(userService.getUsersById(idUser).getOurUsers());
+        }
         Product product = productService.findById(productId);
         cartProductService.increaseQuantity(cart, productId, quantity);
         cart.setTotal_price(cart.getTotal_price() + (product.getProduct_price() * quantity));
 
         return repository.save(cart);
     }
-//TODO: add total to cartProduct, create cartProductService
-    @Override
-    public Cart findById(int id) {
-        return repository.findById(id).orElse(null);
-    }
 
     @Override
-    public void deleteProductById(int idCart, int idProduct) {
-        Cart cart = repository.findById(idCart).get();
+    public void decreaseProductQuantityById(int idUser, int idProduct) {
+        Cart cart = findCartByUser(idUser);
         Product product = productService.findById(idProduct);
         cartProductService.decreaseQuantity(cart, idProduct);
         cart.setTotal_price(cart.getTotal_price() - product.getProduct_price());
@@ -43,8 +51,18 @@ public class CartService implements ICartService {
     }
 
     @Override
-    public String checkout(int idCart) {
-        Cart cart = repository.findById(idCart).get();
+    public void clearCart(int idUser){
+        Cart cart = findCartByUser(idUser);
+        for (CartProduct cp : cart.getCartProducts()){
+            cp.getProduct().setAvailableQuantity(cp.getProduct().getAvailableQuantity() + cp.getQuantity());
+        }
+        cart.setTotal_price(0);
+        cart.getCartProducts().clear();
+        repository.save(cart);
+    }
+    @Override
+    public String checkout(int idUser) {
+        Cart cart = findCartByUser(idUser);
         return "votre total est: " + cart.getTotal_price();
     }
 

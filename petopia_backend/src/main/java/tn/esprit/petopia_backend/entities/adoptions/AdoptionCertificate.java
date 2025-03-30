@@ -1,5 +1,6 @@
 package tn.esprit.petopia_backend.entities.adoptions;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import tn.esprit.petopia_backend.entities.pet.Pet;
@@ -25,6 +26,7 @@ public class AdoptionCertificate {
     private Pet pet;
 
     @OneToOne
+    @JsonIgnore
     private Shelter shelter;
 
     private LocalDateTime issued_date;
@@ -34,5 +36,10 @@ public class AdoptionCertificate {
 
     @Column(columnDefinition = "TEXT")
     private String shelter_signature;
+
+    @OneToOne
+    @JsonIgnore
+    private Adoption adoption;
+
 }
 

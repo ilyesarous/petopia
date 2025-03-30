@@ -7,9 +7,10 @@ import java.util.List;
 
 public interface ICartService {
     Cart addProductToCart(int idCart, int idProduct, int quantity);
-    Cart findById(int id);
-    void deleteProductById(int idCart, int idProduct);
+    Cart findCartByUser(int idUser);
+    void decreaseProductQuantityById(int idCart, int idProduct);
     Cart updateCart(Cart cart);
     List<Cart> findAll();
     String checkout(int idCart);
+    void clearCart(int idUser);
 }

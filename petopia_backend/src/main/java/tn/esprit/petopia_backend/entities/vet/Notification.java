@@ -20,12 +20,28 @@ public class Notification {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int idNotification;
     private String message;
-    private boolean seen;
+    private boolean seen = false;
+
+    @Temporal(TemporalType.TIMESTAMP)
     private Date notif_date;
 
-//    //relation notif * to 1 user
+    @PrePersist
+    protected void onCreate() {
+        notif_date = new Date(); // Initialise la date avec la date et l'heure actuelles lors de la création
+    }
+
+    @PreUpdate
+    protected void onUpdate() {
+        notif_date = new Date(); // Met à jour la date avec la date et l'heure actuelles lors de la mise à jour
+    }
+
+    //relation notif * to 1 user
 //    @ManyToOne(cascade = CascadeType.ALL)
 //    private User notif;
+    //@ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "notification_id_user", nullable = false) // Clé étrangère dans la table notification
+    private User user;
 
     public int getIdNotification() {
         return idNotification;
@@ -59,11 +75,11 @@ public class Notification {
         this.notif_date = notif_date;
     }
 
-//    public User getNotif() {
-//        return notif;
-//    }
-//
-//    public void setNotif(User notif) {
-//        this.notif = notif;
-//    }
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
 }

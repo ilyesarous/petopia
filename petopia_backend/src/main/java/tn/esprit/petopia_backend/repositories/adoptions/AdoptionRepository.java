@@ -6,11 +6,14 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import tn.esprit.petopia_backend.entities.adoptions.Adoption;
 import tn.esprit.petopia_backend.entities.adoptions.AdoptionStatus;
+import tn.esprit.petopia_backend.entities.pet.Pet;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface AdoptionRepository extends JpaRepository<Adoption, Integer> {
+
     @Query("SELECT a FROM Adoption a WHERE a.requester.id_user = ?1")
     List<Adoption> findByRequesterId(Integer requesterId);
 
@@ -22,4 +25,6 @@ public interface AdoptionRepository extends JpaRepository<Adoption, Integer> {
 
     @Query("SELECT a FROM Adoption a WHERE a.status = ?1")
     List<Adoption> findByStatus(tn.esprit.petopia_backend.entities.adoptions.AdoptionStatus status);
+
+
 }

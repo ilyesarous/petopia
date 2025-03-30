@@ -40,41 +40,132 @@ public class UserService {
     private RevokedTokenRepository revokedTokenRepository;
     private static final String CHARACTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()-_+=<>?";
     private static final int PASSWORD_LENGTH = 12;
-    public ReqRes register(ReqRes registrationRequest){
+    public ReqRes register(ReqRes registrationRequest) {
         ReqRes resp = new ReqRes();
 
         try {
+            if (usersRepo.findByEmail(registrationRequest.getEmail()).isPresent()) {
+                resp.setStatusCode(400);
+                resp.setError("This email is already registered.");
+                return resp;
+            }
+            if (checkPhoneNumberExists(registrationRequest.getPhone_number())) {
+                resp.setStatusCode(400);
+                resp.setError("This phone number is already registered.");
+                return resp;
+            }
             User ourUser = new User();
             ourUser.setEmail(registrationRequest.getEmail());
-            ourUser.setPhone_number(registrationRequest.getPhone_number());
+            ourUser.setPhoneNumber(registrationRequest.getPhone_number());
             ourUser.setName(registrationRequest.getName());
             UserRole role = UserRole.valueOf(registrationRequest.getRole().toUpperCase());
             ourUser.setRole(role);
             ourUser.setPassword(passwordEncoder.encode(registrationRequest.getPassword()));
+
             User ourUsersResult = usersRepo.save(ourUser);
-            if (ourUsersResult.getId_user()>0) {
-                resp.setOurUsers((ourUsersResult));
+            if (ourUsersResult.getId_user() > 0) {
+                resp.setOurUsers(ourUsersResult);
                 resp.setMessage("User Saved Successfully");
                 resp.setStatusCode(200);
+                resp.setUserId(String.valueOf(ourUsersResult.getId_user()));
             }
 
-        }catch (Exception e){
+        } catch (Exception e) {
             resp.setStatusCode(500);
-            resp.setError(e.getMessage());
+            resp.setError("Internal Server Error: " + e.getMessage());
         }
         return resp;
     }
+    public String getHtmlTemplate(String name, String email, String password, String userId) {
+        String activationUrl = "http://localhost:2007/auth/activate?userId=" + userId; // Change localhost to your domain
+        return "<!DOCTYPE html>\n" +
+                "<html lang=\"en\">\n" +
+                "<head>\n" +
+                "    <meta charset=\"UTF-8\">\n" +
+                "    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n" +
+                "    <title>Welcome Email</title>\n" +
+                "    <style>\n" +
+                "        body {\n" +
+                "            font-family: Arial, sans-serif;\n" +
+                "            background-color: #f4f4f4;\n" +
+                "            margin: 0;\n" +
+                "            padding: 0;\n" +
+                "        }\n" +
+                "        .container {\n" +
+                "            max-width: 600px;\n" +
+                "            margin: 20px auto;\n" +
+                "            background-color: #ffffff;\n" +
+                "            padding: 20px;\n" +
+                "            border-radius: 8px;\n" +
+                "            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);\n" +
+                "        }\n" +
+                "        h1 {\n" +
+                "            color: #333333;\n" +
+                "        }\n" +
+                "        p {\n" +
+                "            color: #555555;\n" +
+                "            line-height: 1.6;\n" +
+                "        }\n" +
+                "        .credentials {\n" +
+                "            background-color: #f9f9f9;\n" +
+                "            padding: 10px;\n" +
+                "            border-radius: 4px;\n" +
+                "            margin-top: 20px;\n" +
+                "        }\n" +
+                "        .credentials p {\n" +
+                "            margin: 5px 0;\n" +
+                "        }\n" +
+                "        .activate-btn {\n" +
+                "            display: inline-block;\n" +
+                "            background-color: #4CAF50;\n" +
+                "            color: white;\n" +
+                "            padding: 10px 20px;\n" +
+                "            text-decoration: none;\n" +
+                "            border-radius: 5px;\n" +
+                "            margin-top: 20px;\n" +
+                "        }\n" +
+                "    </style>\n" +
+                "</head>\n" +
+                "<body>\n" +
+                "    <div class=\"container\">\n" +
+                "        <h1>Welcome to Petopia</h1>\n" +
+                "        <p>Dear " + name + ",</p>\n" +
+                "        <p>Your account has been created successfully. Here are your credentials:</p>\n" +
+                "        <div class=\"credentials\">\n" +
+                "            <p><strong>Email:</strong> " + email + "</p>\n" +
+                "            <p><strong>Password:</strong> " + password + "</p>\n" +
+                "        </div>\n" +
+                "        <p>Please click the button below to activate your account:</p>\n" +
+                "        <a href=\"" + activationUrl + "\" class=\"activate-btn\">Click here to activate your account</a>\n" +
+                "        <p>Best Regards,<br>Petopia</p>\n" +
+                "    </div>\n" +
+                "</body>\n" +
+                "</html>";
+    }
 
+
+    public boolean checkPhoneNumberExists(String phoneNumber) {
+        return usersRepo.findByPhoneNumber(phoneNumber).isPresent();
+    }
     public ReqRes login(ReqRes loginRequest) {
         ReqRes response = new ReqRes();
         try {
             System.out.println("Login Request: " + loginRequest.getEmail());
             System.out.println("Password Provided: " + loginRequest.getPassword());
 
-            var user = usersRepo.findByEmail(loginRequest.getEmail()).orElseThrow(() -> new UsernameNotFoundException("User not found"));
+            var user = usersRepo.findByEmail(loginRequest.getEmail())
+                    .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+
+            if (!user.getLocked()) {
+                response.setStatusCode(403); // Forbidden status code
+                response.setError("This user is not activated. Check your email or contact support.");
+                return response;
+            }
 
             if (!passwordEncoder.matches(loginRequest.getPassword(), user.getPassword())) {
-                throw new BadCredentialsException("Invalid password");
+                response.setStatusCode(401); // Unauthorized status code
+                response.setError("Invalid password. Please try again.");
+                return response;
             }
 
             var jwt = jwtUtils.generateToken(user, Long.valueOf(user.getId_user()));
@@ -88,12 +179,12 @@ public class UserService {
             response.setMessage("Successfully Logged In");
             response.setUserId(String.valueOf(user.getId_user()));
 
-        } catch (UsernameNotFoundException | BadCredentialsException e) {
+        } catch (UsernameNotFoundException e) {
             response.setStatusCode(404);
-            response.setMessage("Email or password invalid. Please try again.");
+            response.setError("User not found.");
         } catch (Exception e) {
             response.setStatusCode(500);
-            response.setMessage("An error occurred during login. Please try again.");
+            response.setError("An error occurred during login. Please try again.");
         }
         return response;
     }
@@ -254,15 +345,6 @@ public class UserService {
         response.setEmail(user.getEmail());
         response.setPassword(newPassword);
 
-        // Send email
-        String subject = "Password Reset Notification";
-        String text = "Dear " + user.getUsername() + ",\n\nYour password has been reset successfully. " +
-                "Here are your new credentials:\n\n" +
-                "Email: " + user.getEmail() + "\n" +
-                "Password: " + newPassword + "\n\n" +
-                "Please keep this information safe.\n\nBest Regards,\nYour Company";
-        emailService.sendSimpleMessage(user.getEmail(), subject, text);
-
         return response;
     }
 
@@ -279,6 +361,9 @@ public class UserService {
     }
     public boolean checkEmailExists(String email) {
         return usersRepo.findByEmail(email).isPresent();
+    }
+    public boolean checkphoneexists(String phone_number) {
+        return usersRepo.findByPhoneNumber(phone_number).isPresent();
     }
 
 

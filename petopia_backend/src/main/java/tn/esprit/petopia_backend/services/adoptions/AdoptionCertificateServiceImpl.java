@@ -1,28 +1,65 @@
 package tn.esprit.petopia_backend.services.adoptions;
 
 
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
+import tn.esprit.petopia_backend.entities.adoptions.Adoption;
 import tn.esprit.petopia_backend.entities.adoptions.AdoptionCertificate;
+import tn.esprit.petopia_backend.entities.adoptions.AdoptionStatus;
 import tn.esprit.petopia_backend.repositories.adoptions.AdoptionCertificateRepository;
+import tn.esprit.petopia_backend.repositories.adoptions.AdoptionRepository;
 import tn.esprit.petopia_backend.services.adoptions.IAdoptionCertificateService;
+
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
 public class AdoptionCertificateServiceImpl implements IAdoptionCertificateService {
 
     private final AdoptionCertificateRepository certificateRepository;
-
-    public AdoptionCertificateServiceImpl(AdoptionCertificateRepository certificateRepository) {
+    private final AdoptionRepository adoptionRepository;
+    public AdoptionCertificateServiceImpl(AdoptionCertificateRepository certificateRepository,AdoptionRepository adoptionRepository) {
         this.certificateRepository = certificateRepository;
+        this.adoptionRepository = adoptionRepository;
     }
-
     @Override
-    public AdoptionCertificate createCertificate(AdoptionCertificate certificate) {
+    @Transactional
+    public AdoptionCertificate createCertificateFromAdoption(Integer adoptionId, String shelterSignature) {
+        Adoption adoption = adoptionRepository.findById(adoptionId)
+                .orElseThrow(() -> new RuntimeException("Adoption not found"));
+
+        if (adoption.getStatus() != AdoptionStatus.APPROVED) {
+            throw new RuntimeException("Cannot create certificate: Adoption not approved.");
+        }
+
+        AdoptionCertificate certificate = new AdoptionCertificate();
+        certificate.setPet(adoption.getPet());
+        certificate.setUser(adoption.getRequester());
+        certificate.setShelter(adoption.getShelter());
+        certificate.setShelter_signature(shelterSignature);
+        certificate.setIssued_date(LocalDateTime.now());
+        certificate.setUser_signature(null);
+
+        certificate.setAdoption(adoption);
+
         return certificateRepository.save(certificate);
     }
 
+
+
     @Override
-    public AdoptionCertificate updateCertificate(AdoptionCertificate certificate) {
+    @Transactional
+    public AdoptionCertificate userSignCertificate(Integer certificateId, String userSignature) {
+
+        AdoptionCertificate certificate = certificateRepository.findById(certificateId)
+                .orElseThrow(() -> new RuntimeException("Certificate not found"));
+
+        if (certificate.getUser_signature() != null) {
+            throw new RuntimeException("User has already signed this certificate.");
+        }
+
+        certificate.setUser_signature(userSignature);
+
         return certificateRepository.save(certificate);
     }
 

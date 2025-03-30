@@ -5,14 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="d82146aa-c391-488d-a5e9-d2774f899f12" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/petopia_backend/src/main/java/tn/esprit/petopia_backend/entities/pet/Pet.java" beforeDir="false" afterPath="$PROJECT_DIR$/petopia_backend/src/main/java/tn/esprit/petopia_backend/entities/pet/Pet.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/petopia_backend/src/main/java/tn/esprit/petopia_backend/entities/user/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/petopia_backend/src/main/java/tn/esprit/petopia_backend/entities/user/User.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/petopia_backend/src/main/java/tn/esprit/petopia_backend/entities/vet/Consultations.java" beforeDir="false" afterPath="$PROJECT_DIR$/petopia_backend/src/main/java/tn/esprit/petopia_backend/entities/vet/Consultations.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/petopia_backend/src/main/java/tn/esprit/petopia_backend/entities/vet/Diagnosis.java" beforeDir="false" afterPath="$PROJECT_DIR$/petopia_backend/src/main/java/tn/esprit/petopia_backend/entities/vet/Diagnosis.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/petopia_backend/src/main/java/tn/esprit/petopia_backend/entities/vet/Notification.java" beforeDir="false" afterPath="$PROJECT_DIR$/petopia_backend/src/main/java/tn/esprit/petopia_backend/entities/vet/Notification.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/petopia_backend/src/main/java/tn/esprit/petopia_backend/entities/vet/Pet_Growth.java" beforeDir="false" afterPath="$PROJECT_DIR$/petopia_backend/src/main/java/tn/esprit/petopia_backend/entities/vet/Pet_Growth.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -31,7 +24,7 @@
   <component name="Git.Settings">
     <option name="RECENT_BRANCH_BY_REPOSITORY">
       <map>
-        <entry key="$PROJECT_DIR$" value="main" />
+        <entry key="$PROJECT_DIR$" value="vet" />
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -45,7 +38,7 @@
   <component name="GithubPullRequestsUISettings">{
   &quot;selectedUrlAndAccountId&quot;: {
     &quot;url&quot;: &quot;https://github.com/ilyesarous/petopia.git&quot;,
-    &quot;accountId&quot;: &quot;cafc1331-951d-4220-90c6-e3d1aae236de&quot;
+    &quot;accountId&quot;: &quot;d1b61b08-de23-440d-a978-afe73e4981db&quot;
   }
 }</component>
   <component name="KubernetesApiPersistence">{}</component>
@@ -78,7 +71,7 @@
     "RunOnceActivity.git.unshallow": "true",
     "Spring Boot.PetopiaBackendApplication.executor": "Run",
     "WebServerToolWindowFactoryState": "false",
-    "git-widget-placeholder": "adoption",
+    "git-widget-placeholder": "main",
     "ignore.virus.scanning.warn.message": "true",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "C:/Users/khalil/OneDrive/Bureau/petopia/petopia",
@@ -86,6 +79,8 @@
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
+    "spring.configuration.checksum": "591a282545f343f9a5d6292da4f53932",
+    "ts.external.directory.path": "D:\\petopia\\petopia_frontend\\node_modules\\typescript\\lib",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
@@ -101,8 +96,8 @@
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-jdk-9823dce3aa75-125ca727e0f0-intellij.indexing.shared.core-IU-243.23654.153" />
-        <option value="bundled-js-predefined-d6986cc7102b-822845ee3bb5-JavaScript-IU-243.23654.153" />
+        <option value="bundled-jdk-9823dce3aa75-125ca727e0f0-intellij.indexing.shared.core-IU-243.24978.46" />
+        <option value="bundled-js-predefined-d6986cc7102b-76f8388c3a79-JavaScript-IU-243.24978.46" />
       </set>
     </attachedChunks>
   </component>
@@ -117,6 +112,14 @@
       <workItem from="1741090145655" duration="91000" />
       <workItem from="1741355382691" duration="509000" />
       <workItem from="1741357098932" duration="3726000" />
+      <workItem from="1741447530772" duration="1666000" />
+      <workItem from="1741468998718" duration="9162000" />
+      <workItem from="1741485945102" duration="7103000" />
+      <workItem from="1741564738909" duration="2763000" />
+      <workItem from="1741625621310" duration="2015000" />
+      <workItem from="1741636132025" duration="1892000" />
+      <workItem from="1742862997142" duration="1017000" />
+      <workItem from="1743220297230" duration="328000" />
     </task>
     <servers />
   </component>

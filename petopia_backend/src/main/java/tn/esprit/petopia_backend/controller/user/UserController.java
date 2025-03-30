@@ -1,9 +1,12 @@
 package tn.esprit.petopia_backend.controller.user;
 
 
+import jakarta.mail.MessagingException;
+import org.springframework.http.HttpStatus;
 import tn.esprit.petopia_backend.entities.pet.Pet;
 import tn.esprit.petopia_backend.entities.user.User;
 import tn.esprit.petopia_backend.dto.ReqRes;
+import tn.esprit.petopia_backend.repositories.user.UserRepository;
 import tn.esprit.petopia_backend.services.pet.PetService;
 import tn.esprit.petopia_backend.services.user.EmailService;
 import tn.esprit.petopia_backend.services.user.UserService;
@@ -14,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.UUID;
 
 @RestController
@@ -23,23 +27,38 @@ public class UserController {
     private EmailService emailService;
     @Autowired
     private UserService usersManagementService;
+    @Autowired
+    private UserRepository userRepository;
 
     @PostMapping("/auth/register")
-    public ResponseEntity<ReqRes> regeister(@RequestBody ReqRes reg) {
+    public ResponseEntity<ReqRes> register(@RequestBody ReqRes reg) throws MessagingException {
         ReqRes response = usersManagementService.register(reg);
+        String userId = response.getUserId();
+        System.out.println(userId);
+        if (response.getStatusCode() == 200) {
+            String subject = "Welcome to Petopia";
+            String htmlContent = usersManagementService.getHtmlTemplate(reg.getName(), reg.getEmail(), reg.getPassword(), userId);
 
-        if (response.getStatusCode() == 200) {  // Assuming 200 means success
-            String subject = "Welcome to Our Platform";
-            String text = "Dear " + reg.getName() + ",\n\nYour account has been created successfully. " +
-                    "Here are your credentials:\n\n" +
-                    "Email: " + reg.getEmail() + "\n" +
-                    "Password: " + reg.getPassword() + "\n\n" +
-                    "Please keep this information safe.\n\nBest Regards,\nYour Company";
-            emailService.sendSimpleMessage(reg.getEmail(), subject, text);
+            emailService.sendHtmlMessage(reg.getEmail(), subject, htmlContent);
         }
 
         return ResponseEntity.ok(response);
     }
+
+    @GetMapping("/auth/activate")
+    public ResponseEntity<String> activateAccount(@RequestParam String userId) {
+        Optional<User> userOpt = userRepository.findById(Integer.parseInt(userId));
+        if (userOpt.isPresent()) {
+            User user = userOpt.get();
+            user.setLocked(true);
+            userRepository.save(user);
+            return ResponseEntity.ok("Your account has been activated successfully.");
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found.");
+        }
+    }
+
+
 
     @PostMapping("/auth/login")
     public ResponseEntity<ReqRes> login(@RequestBody ReqRes req) {
@@ -61,6 +80,12 @@ public class UserController {
     @GetMapping("/admin/get-all-users")
     public ResponseEntity<ReqRes> getAllUsers(){
         return ResponseEntity.ok(usersManagementService.getAllUsers());
+
+    }
+
+    @GetMapping("/user/get-user/{userId}")
+    public ResponseEntity<ReqRes> getuserByID(@PathVariable Integer userId){
+        return ResponseEntity.ok(usersManagementService.getUsersById(userId));
 
     }
 

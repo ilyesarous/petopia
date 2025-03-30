@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import tn.esprit.petopia_backend.entities.pet.Pet;
 
+
 import java.time.LocalDate;
 import java.util.Set;
 
@@ -21,7 +22,19 @@ public class Diagnosis {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int idDiagnosis;
     private String diagnosis_description;
+
+    @Temporal(TemporalType.DATE)
     private LocalDate diagnosis_date;
+
+    @PrePersist
+    protected void onCreate() {
+        diagnosis_date = LocalDate.now(); // Initialise la date avec la date et l'heure actuelles lors de la création
+    }
+
+    @PreUpdate
+    protected void onUpdate() {
+        diagnosis_date = LocalDate.now(); // Met à jour la date avec la date et l'heure actuelles lors de la mise à jour
+    }
 
     //@OneToMany(cascade = CascadeType.ALL, mappedBy = "diagnosis")
     //private Set<Medicament_Prescription> Medicament_PrescriptionList;
@@ -30,8 +43,12 @@ public class Diagnosis {
 
 
     //relation * diagnosis andd 1 pet
-    //@ManyToOne(cascade = CascadeType.ALL)
-    //private Pet petdiagnosis;
+//    @ManyToOne(cascade = CascadeType.ALL)
+//    private Pet petdiagnosis;
+    //@ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "petdiagnosis_id_pet")
+    private Pet petdiagnosis;
 
     public int getIdDiagnosis() {
         return idDiagnosis;
@@ -65,11 +82,11 @@ public class Diagnosis {
         this.medicamentPrescriptions = medicamentPrescriptions;
     }
 
-//    public Pet getPetdiagnosis() {
-//        return petdiagnosis;
-//    }
-//
-//    public void setPetdiagnosis(Pet petdiagnosis) {
-//        this.petdiagnosis = petdiagnosis;
-//    }
+    public Pet getPetdiagnosis() {
+        return petdiagnosis;
+    }
+
+    public void setPetdiagnosis(Pet petdiagnosis) {
+        this.petdiagnosis = petdiagnosis;
+    }
 }

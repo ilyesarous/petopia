@@ -5,8 +5,8 @@ import tn.esprit.petopia_backend.entities.adoptions.AdoptionCertificate;
 import java.util.List;
 
 public interface IAdoptionCertificateService {
-    AdoptionCertificate createCertificate(AdoptionCertificate certificate);
-    AdoptionCertificate updateCertificate(AdoptionCertificate certificate);
+    AdoptionCertificate createCertificateFromAdoption(Integer adoptionId, String shelterSignature);
+    AdoptionCertificate userSignCertificate(Integer certificateId, String userSignature);
     void deleteCertificate(Integer id);
     AdoptionCertificate getCertificateById(Integer id);
     List<AdoptionCertificate> getAllCertificates();
