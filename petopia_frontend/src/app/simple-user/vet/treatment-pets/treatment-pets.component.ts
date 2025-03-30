@@ -65,7 +65,7 @@ export class TreatmentPetsComponent implements OnInit {
 
   navigateToDiagnosis() {
     if (this.petId) {
-      this.router.navigate(['home/vet/treatment-pets', this.petId]);
+      this.router.navigate(['home/vet/treatment-specific-pet', this.petId]);
     }
   }
 
@@ -84,7 +84,7 @@ export class TreatmentPetsComponent implements OnInit {
     switch (type) {
       case 'Preventive': return '#F83182';
       case 'Maintenance': return '#FFA3B3';
-      case 'Emergency': return '#FE9A7A';
+      case 'Emergency': return '#f71100';
       case 'Diagnostic': return '#FF617C';
       default: return '#F83182';
     }

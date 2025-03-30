@@ -22,6 +22,22 @@ export class DiagnosisService {
 
   getDiagnosisByPetId(petId: number): Observable<Diagnosis[]> {
       return this.http.get<Diagnosis[]>(`${this.apiUrl}/retrieveDiagnosisByPetId/${petId}`);
-    }
+  }
+
+addDiagnosis(diagnosis: any): Observable<any> {
+  return this.http.post<any>(`${this.apiUrl}/addDiagnosis`, diagnosis, {
+    headers: { 'Content-Type': 'application/json' }
+  });
+}
+
+updateDiagnosis(diagnosis: any): Observable<any> {
+  return this.http.put<any>(`${this.apiUrl}/updateDiagnosis`, diagnosis, {
+    headers: { 'Content-Type': 'application/json' }
+  });
+}
+  
+  deleteDiagnosis(idDiagnosis: number): Observable<void> {
+    return this.http.delete<void>(`${this.apiUrl}/deleteDiagnosis/${idDiagnosis}`);
+  }
 
 }

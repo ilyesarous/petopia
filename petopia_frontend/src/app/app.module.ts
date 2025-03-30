@@ -40,6 +40,8 @@ import { CanvasJSAngularChartsModule } from '@canvasjs/angular-charts';
 import { ChartComponent } from './admin/chart/chart.component';
 import { ProductsComponent } from './simple-user/products/products.component';
 import { TreatmentPetsComponent } from './simple-user/vet/treatment-pets/treatment-pets.component';
+import { TreatmentSpecificPetsComponent } from './simple-user/vet/treatment-specific-pets/treatment-specific-pets.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [
@@ -72,6 +74,7 @@ import { TreatmentPetsComponent } from './simple-user/vet/treatment-pets/treatme
     ChartComponent,
     ProductsComponent,
     TreatmentPetsComponent,
+    TreatmentSpecificPetsComponent,
   ],
   imports: [
     BrowserModule,
@@ -85,7 +88,8 @@ import { TreatmentPetsComponent } from './simple-user/vet/treatment-pets/treatme
     ReactiveFormsModule,
     FullCalendarModule,
     CommonModule,
-    CanvasJSAngularChartsModule
+    CanvasJSAngularChartsModule,
+    BrowserAnimationsModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
