@@ -14,17 +14,17 @@ public class DiagnosisController {
     @Autowired
     IDiagnosisService diagnosisService;
 
-    @PostMapping("/vet/Diagnosis/addDiagnosis")
+    @PostMapping("/auth/Diagnosis/addDiagnosis")//vet
     public Diagnosis addDiagnosis(@RequestBody Diagnosis diagnosis) {
         return diagnosisService.addDiagnosis(diagnosis);
     }
 
-    @PutMapping("/vet/Diagnosis/updateDiagnosis")
+    @PutMapping("/auth/Diagnosis/updateDiagnosis")//vet
     public Diagnosis updateDiagnosis(@RequestBody Diagnosis diagnosis) {
         return diagnosisService.updateDiagnosis(diagnosis);
     }
 
-    @DeleteMapping("/vet/Diagnosis/deleteDiagnosis/{idDiagnosis}")
+    @DeleteMapping("/auth/Diagnosis/deleteDiagnosis/{idDiagnosis}")//vet
     public void deleteDiagnosis(@PathVariable int idDiagnosis) {
         diagnosisService.deleteDiagnosis(idDiagnosis);
     }
