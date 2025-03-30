@@ -20,4 +20,8 @@ export class DiagnosisService {
     return this.http.get<Diagnosis>(`${this.apiUrl}/retrieveDiagnosis/${idDiagnosis}`);
   }
 
+  getDiagnosisByPetId(petId: number): Observable<Diagnosis[]> {
+      return this.http.get<Diagnosis[]>(`${this.apiUrl}/retrieveDiagnosisByPetId/${petId}`);
+    }
+
 }

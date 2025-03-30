@@ -13,6 +13,7 @@ import { PetGrowthVetComponent } from './simple-user/vet/pet-growth-vet/pet-grow
 import { DashPrincipaleHomeVetComponent } from './simple-user/vet/dash-principale-home-vet/dash-principale-home-vet.component';
 import { ChartComponent } from './admin/chart/chart.component';
 import { ProductsComponent } from './simple-user/products/products.component';
+import { TreatmentPetsComponent } from './simple-user/vet/treatment-pets/treatment-pets.component';
 
 
 const routes: Routes = [
@@ -22,6 +23,8 @@ const routes: Routes = [
       {path: 'products', component: ProductsComponent},
       { path: 'vet', component: DashPrincipaleHomeVetComponent },
       { path: 'vet/pet-growth/:id', component: PetGrowthVetComponent },
+      { path: 'vet/treatment-pets', component: TreatmentPetsComponent },
+      { path: 'vet/treatment-pets/:id', component: TreatmentPetsComponent },
     ]
   },
   { path: 'dashboard', component: DashbordComponent,

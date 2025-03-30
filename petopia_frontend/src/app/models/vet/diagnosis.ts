@@ -2,6 +2,7 @@ export class Diagnosis {
     idDiagnosis!: number;
     diagnosis_description!: string;
     diagnosis_date!: string;
+    diagnosisT!: string;
     medicamentPrescriptions!: Medicament_Prescription[];
     petdiagnosis!: Pet;
   }

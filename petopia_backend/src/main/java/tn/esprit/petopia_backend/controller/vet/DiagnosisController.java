@@ -51,4 +51,9 @@ public class DiagnosisController {
         }
         return diagnosis;
     }
+
+    @GetMapping("/auth/Diagnosis/retrieveDiagnosisByPetId/{petId}")
+    public List<Diagnosis> retrieveDiagnosisByPetId(@PathVariable int petId) {
+        return diagnosisService.retrieveDiagnosisByPetId(petId);
+    }
 }

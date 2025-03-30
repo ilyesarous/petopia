@@ -1,0 +1,167 @@
+<div class="container" @fadeIn >
+    <div class="header" @fadeInGrow>
+      <div class="header-content">
+        <div class="title-wrapper">
+          <i class="fas fa-heartbeat icon"></i>
+          <h1>Treatments and Procedures</h1>
+        </div>
+      </div>
+      <div class="divider"></div>
+    </div>
+  <br>
+  <!-- Search Card -->
+  <div class="search-card-container">
+    <div class="search-card">
+        <div class="search-card-header" style="background: linear-gradient(135deg, #F83182 0%, #FF617C 100%);">
+            <h5><i class="fas fa-search me-2"></i>Find Pet Diagnosis</h5>
+        </div>
+
+        <div class="search-card-body">
+            <div class="form-group">
+                <label for="petId">
+                    <i class="fas fa-id-card me-2" style="color: #FF617C; font-weight: 500;"></i>Enter Pet ID:
+                </label>
+                <input type="number" 
+                       id="petId" 
+                       [(ngModel)]="petId" 
+                       placeholder="e.g. 12345"
+                       style="border: 2px solid #FE9A7A; border-radius: 10px; padding: 12px;">
+            </div>
+            
+            <button class="search-button" (click)="navigateToDiagnosis()" style="background-color: #F83182; color: white; border: none; border-radius: 10px;
+                         font-weight: 600; font-size: 1.1rem; transition: all 0.3s;">
+                View Diagnosis
+                <i class="fas fa-arrow-right ms-2"></i>
+            </button>
+        </div>
+    </div>
+  </div>
+
+  <!-- Treatment List Section -->
+  <div class="treatment-section">
+    <div class="section-header">
+      <h3>Treatment List</h3>
+    </div>
+    
+    <!-- Filters -->
+    <div class="filters-container" @fadeIn>
+      <div class="search-filter">
+        <i class="fas fa-search"></i>
+        <input type="text" [(ngModel)]="searchTerm" (input)="applyFilters()" 
+               placeholder="Search by pet name...">
+      </div>
+      
+      <div class="filter-group">
+        <div class="type-filter">
+          <label>Filter by type:</label>
+          <select [(ngModel)]="selectedType" (change)="applyFilters()">
+            <option *ngFor="let type of diagnosisTypes" [value]="type">
+              {{ type === 'all' ? 'All Types' : type }}
+            </option>
+          </select>
+        </div>
+        
+        <div class="date-filter">
+          <label>Sort by date:</label>
+          <select [(ngModel)]="sortOrder" (change)="toggleSortOrder()">
+            <option value="desc">Newest First</option>
+            <option value="asc">Oldest First</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <!-- Table -->
+    <div class="table-container" @fadeIn>
+        <table class="diagnosis-table">
+            <thead>
+                <tr>
+                    <th>Pet Name</th>
+                    <th>Breed</th>
+                    <th>Diagnosis Type</th>
+                    <th>Description</th>
+                    <th>Date</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let diagnosis of filteredDiagnoses"
+                (click)="selectDiagnosis(diagnosis.idDiagnosis)"
+                    [class.selected]="selectedDiagnosis?.idDiagnosis === diagnosis.idDiagnosis">
+                    <td>
+                      <div class="pet-info">
+                        <i class="fas fa-paw"></i>
+                        {{ diagnosis.petdiagnosis.petName }}
+                      </div>
+                    </td>
+                    <td>{{diagnosis.petdiagnosis.breed}}</td>
+                    <td>
+                    <span class="badge" [style.background]="getBadgeColor(diagnosis.diagnosisT)">
+                        {{diagnosis.diagnosisT}}
+                    </span>
+                    </td>
+                    <td class="description-cell">{{diagnosis.diagnosis_description}}</td>
+                    <td>{{diagnosis.diagnosis_date | date}}</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- No results message -->
+        <div *ngIf="filteredDiagnoses.length === 0" class="no-results-message" @fadeIn>
+          <div class="message-content">
+            <i class="fas fa-info-circle"></i> 
+            <p>No diagnoses match your search criteria.</p>
+          </div>
+        </div>
+    </div>
+
+    <!-- Diagnosis Details Panel -->
+    <div *ngIf="selectedDiagnosis" class="details-panel" @fadeInOut>
+        <div class="panel-header">
+          <h3>Diagnosis Details</h3>
+          <button (click)="selectedDiagnosis = null" class="close-button">
+            <i class="fas fa-times"></i>
+          </button>
+        </div>
+        
+        <div class="panel-content">
+          <div class="detail-row">
+            <span class="detail-label">ID:</span>
+            <span class="detail-value">{{ selectedDiagnosis.idDiagnosis }}</span>
+          </div>
+          
+          <div class="detail-row">
+            <span class="detail-label">Description:</span>
+            <span class="detail-value">{{ selectedDiagnosis.diagnosis_description }}</span>
+          </div>
+          
+          <div class="detail-row">
+            <span class="detail-label">Date:</span>
+            <span class="detail-value">{{ selectedDiagnosis.diagnosis_date | date }}</span>
+          </div>
+          
+          <div class="section-divider"></div>
+          
+          <h4 class="section-title">Pet Details</h4>
+          <div class="detail-row">
+            <span class="detail-label">Name:</span>
+            <span class="detail-value">{{ selectedDiagnosis.petdiagnosis.petName }}</span>
+          </div>
+          
+          <div class="detail-row">
+            <span class="detail-label">Breed:</span>
+            <span class="detail-value">{{ selectedDiagnosis.petdiagnosis.breed }}</span>
+          </div>
+          
+          <div class="section-divider"></div>
+          
+          <h4 class="section-title">Medicament Prescriptions</h4>
+          <ul class="prescription-list">
+            <li *ngFor="let prescription of selectedDiagnosis.medicamentPrescriptions">
+              <i class="fas fa-pills"></i> {{ prescription.medicament }}
+            </li>
+          </ul>
+          
+        </div>
+    </div>
+  </div>
+</div>
