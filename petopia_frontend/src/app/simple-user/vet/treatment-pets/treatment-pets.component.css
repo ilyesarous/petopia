@@ -491,7 +491,6 @@ body {
   transform: translateX(-50%);
   width: 80px;
   height: 4px;
-  background: linear-gradient(90deg, #F83182, #FF617C);
   border-radius: 2px;
 }
 
@@ -500,10 +499,11 @@ body {
   align-items: center;
   justify-content: center;
   gap: 15px;
+  color: #FFA3B3;
 }
 
 .icon {
   font-size: 2.5rem;
-  color: #F83182;
+  color: #FFA3B3;
   margin-bottom: 0.8rem;
 }
