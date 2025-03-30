@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -89,4 +90,5 @@ public class UserController {
         boolean exists = usersManagementService.checkEmailExists(email);
         return ResponseEntity.ok(exists);
     }
+
 }

@@ -6,12 +6,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
+import tn.esprit.petopia_backend.entities.matching.ChatMessage;
 import tn.esprit.petopia_backend.entities.matching.MatchStatus;
 import tn.esprit.petopia_backend.entities.matching.Matches;
 import tn.esprit.petopia_backend.entities.pet.Pet;
 import tn.esprit.petopia_backend.entities.pet.PetStatus;
 import tn.esprit.petopia_backend.entities.user.User;
 import tn.esprit.petopia_backend.services.matching.MatchesService;
+import tn.esprit.petopia_backend.services.matching.MessagingService;
 import tn.esprit.petopia_backend.services.pet.PetService;
 
 import java.util.Collections;
@@ -27,6 +29,9 @@ public class MatchesController {
 
     @Autowired // Ajouté ici pour que Spring injecte PetService
     private PetService petService;
+
+    @Autowired
+    private MessagingService messagingService;
 
     @DeleteMapping("/deleteMatches/{idMatches}")
     @PreAuthorize("hasAuthority('ROLE_USER')")
@@ -53,6 +58,7 @@ public class MatchesController {
     public void init() {
         System.out.println("MatchesController initialisé - petService: " + (petService != null ? "non null" : "null"));
         System.out.println("MatchesController initialisé - matchesService: " + (matchesService != null ? "non null" : "null"));
+        System.out.println("MatchesController initialisé - messagingService: " + (messagingService != null ? "non null" : "null"));
     }
 
     @PostMapping("/create")
@@ -151,6 +157,15 @@ public class MatchesController {
         // Mettre à jour le statut à ACCEPTED
         match.setStatus(MatchStatus.ACCEPTED);
         Matches updatedMatch = matchesService.updateMatches(match);
+
+        // Initialiser la discussion
+        ChatMessage welcomeMessage = new ChatMessage();
+        welcomeMessage.setMatchId(idMatch);
+        welcomeMessage.setSenderId(user.getId_user()); // Utilisateur qui accepte
+        welcomeMessage.setReceiverId(match.getPet_1().getUser().getId_user()); // Propriétaire de pet_1
+        welcomeMessage.setContent("Salut ! Le match a été accepté, discutons !");
+
+        messagingService.sendMessage(welcomeMessage);
         return ResponseEntity.ok(updatedMatch);
     }}
 

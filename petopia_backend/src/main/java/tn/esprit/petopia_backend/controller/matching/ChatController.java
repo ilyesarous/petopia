@@ -26,7 +26,7 @@ public class ChatController {
             SimpMessageHeaderAccessor headerAccessor
     ) {
         // Add username in web socket session
-        headerAccessor.getSessionAttributes().put("username", chatMessage.getSender());
+        headerAccessor.getSessionAttributes().put("username", chatMessage.getSenderId());
         return chatMessage;
         // Créer un message de bienvenue
         //  return new ChatMessage("Welcome " + chatMessage.getSender(), "Server", MessageType.JOIN);

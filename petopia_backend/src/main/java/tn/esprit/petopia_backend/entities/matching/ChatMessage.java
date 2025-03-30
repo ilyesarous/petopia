@@ -1,74 +1,31 @@
 package tn.esprit.petopia_backend.entities.matching;
 
-import lombok.Builder;
+import jakarta.persistence.*;
+import lombok.*;
 
-//@Getter
-//@Setter
-//@AllArgsConstructor
-//@NoArgsConstructor
+import java.time.LocalDateTime;
+
+
+@AllArgsConstructor
+@NoArgsConstructor
+@Entity
+@Getter
+@Setter
 @Builder
 public class ChatMessage {
-    private String content;
-    private String sender;
-    private MessageType type;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    private int matchId;
+    private int senderId; // ID de l'utilisateur qui envoie
+    private int receiverId; // ID de l'utilisateur qui reçoit
+    private String content; // Contenu du message
+    private LocalDateTime timestamp; // Date et heure d'envoi
 
-    public ChatMessage(String sender, String content, MessageType type) {
-        this.sender = sender;
-        this.content = content;
-        this.type = type;
+    @PrePersist
+    public void prePersist() {
+        this.timestamp = LocalDateTime.now();
     }
 
-    public String getSender() {
-        return sender;
-    }
-
-    public void setSender(String sender) {
-        this.sender = sender;
-    }
-
-    public String getContent() {
-        return content;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
-    }
-
-    public MessageType getType() {
-        return type;
-    }
-
-    public void setType(MessageType type) {
-        this.type = type;
-    }
-    // Builder static method
-    public static ChatMessageBuilder builder() {
-        return new ChatMessageBuilder();
-    }
-
-    public static class ChatMessageBuilder {
-        private String sender;
-        private String content;
-        private MessageType type;
-
-        public ChatMessageBuilder sender(String sender) {
-            this.sender = sender;
-            return this;
-        }
-
-        public ChatMessageBuilder content(String content) {
-            this.content = content;
-            return this;
-        }
-
-        public ChatMessageBuilder type(MessageType type) {
-            this.type = type;
-            return this;
-        }
-
-        public ChatMessage build() {
-            return new ChatMessage(sender, content, type);
-        }
-    }
 }
 

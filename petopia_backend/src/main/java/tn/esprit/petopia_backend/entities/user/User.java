@@ -37,8 +37,12 @@ public class User implements UserDetails {
     private UserRole role;
     private Integer nb_points = 0;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Pet> listPets;
+//    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+//    private List<Pet> listPets;
+      @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+      @JsonIgnore
+      private List<Pet> listPets;
+
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Reclamation> listReclamation;

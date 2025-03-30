@@ -46,6 +46,8 @@ public class SecurityConfig {
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .authorizeHttpRequests(request -> request
                         .requestMatchers("/auth/**").permitAll()
+                        .requestMatchers("/chat/**").permitAll()
+                        .requestMatchers("/ws/**").permitAll()
                         .requestMatchers("/admin/**").hasAuthority("ROLE_ADMIN")
                         .requestMatchers("/user/**").hasAuthority("ROLE_USER")
                         .requestMatchers("/vet/**").hasAuthority("ROLE_VET")
@@ -105,4 +107,7 @@ public class SecurityConfig {
         source.registerCorsConfiguration("/**", configuration);
         return source;
     }
+
+
+
 }

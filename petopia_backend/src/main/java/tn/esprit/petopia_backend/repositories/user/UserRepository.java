@@ -1,5 +1,6 @@
 package tn.esprit.petopia_backend.repositories.user;
 
+import tn.esprit.petopia_backend.entities.pet.Pet;
 import tn.esprit.petopia_backend.entities.user.User;
 import tn.esprit.petopia_backend.entities.user.UserRole;
 import org.springframework.data.jpa.repository.JpaRepository;
