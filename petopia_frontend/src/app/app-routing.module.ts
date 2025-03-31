@@ -16,6 +16,8 @@ import { ProductsComponent } from './simple-user/products/products.component';
 import { TreatmentPetsComponent } from './simple-user/vet/treatment-pets/treatment-pets.component';
 import { TreatmentSpecificPetsComponent } from './simple-user/vet/treatment-specific-pets/treatment-specific-pets.component';
 import { NotificationVetComponent } from './simple-user/vet/notification-vet/notification-vet.component';
+import { VetCalendarComponent } from './simple-user/vet/vet-calendar/vet-calendar.component';
+import { GrowthTrakingChoseIdComponent } from './simple-user/vet/growth-traking-chose-id/growth-traking-chose-id.component';
 
 
 const routes: Routes = [
@@ -27,7 +29,10 @@ const routes: Routes = [
       { path: 'vet/pet-growth/:id', component: PetGrowthVetComponent },
       { path: 'vet/treatment-pets', component: TreatmentPetsComponent },
       { path: 'vet/treatment-specific-pet/:id', component: TreatmentSpecificPetsComponent},
-      { path: 'vet/notification-vet', component: NotificationVetComponent}
+      { path: 'vet/notification-vet', component: NotificationVetComponent},
+      { path: 'vet/vet-calendar', component: VetCalendarComponent},
+      { path: 'vet/growth-traking-chose-id', component: GrowthTrakingChoseIdComponent}
+
     ]
   },
   { path: 'dashboard', component: DashbordComponent,

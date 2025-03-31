@@ -43,6 +43,7 @@ import { TreatmentPetsComponent } from './simple-user/vet/treatment-pets/treatme
 import { TreatmentSpecificPetsComponent } from './simple-user/vet/treatment-specific-pets/treatment-specific-pets.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NotificationVetComponent } from './simple-user/vet/notification-vet/notification-vet.component';
+import { GrowthTrakingChoseIdComponent } from './simple-user/vet/growth-traking-chose-id/growth-traking-chose-id.component';
 
 @NgModule({
   declarations: [
@@ -77,6 +78,7 @@ import { NotificationVetComponent } from './simple-user/vet/notification-vet/not
     TreatmentPetsComponent,
     TreatmentSpecificPetsComponent,
     NotificationVetComponent,
+    GrowthTrakingChoseIdComponent,
   ],
   imports: [
     BrowserModule,
