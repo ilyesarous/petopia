@@ -8,30 +8,41 @@
         </div>
     </div>
 
-    <div class="stats-container">
-        <div class="stat-card patients">
-            <h3>Total Patients</h3>
-            <div class="stat-card patients">11</div>
+    <div class="stats-grid-container">
+        <div class="stats-row">
+            <!-- Première ligne (3 cartes) -->
+            <div class="stat-card patients">
+                <h3>🐕‍🦺 Total Patients 🐈‍⬛</h3>
+                <div class="stat-card patients">11</div>
+            </div>
+    
+            <div class="stat-card appointments">
+                <h3>🗓️ Today's Appointments</h3>
+                <div class="stat-card appointments">{{totalAppointments}}</div>
+            </div>
+    
+            <div class="stat-card treatments">
+                <h3>💵 Revenue</h3>
+                <div class="stat-card treatments">$11</div>
+            </div>
         </div>
-
-        <div class="stat-card appointments">
-            <h3>Today's Appointments</h3>
-            <div class="stat-card appointments">{{totalAppointments}}</div>
-        </div>
-
-        <div class="stat-card revenue">
-            <h3>Revenue</h3>
-            <div class="stat-card revenue">$11</div>
-        </div>
-
-        <div class="stat-card treatments" routerLink="/home/vet/treatment-pets">
-            <h3>🩺 Treatments and Procedures</h3>
-            <div class="stat-card treatments">Click to view</div>
-        </div>
-
-        <div class="stat-card appointments" routerLink="/home/vet/growth-traking-chose-id">
-            <h3>📊 Pet Growth Tracking</h3>
-            <div class="stat-card appointments">Click to view</div>
+    
+        <div class="stats-row">
+            <!-- Deuxième ligne (3 cartes) -->
+            <div class="stat-card patients" routerLink="/home/vet/treatment-pets">
+                <h3>🩺 Treatments and Procedures</h3>
+                <div class="stat-card patients">Click to view</div>
+            </div>
+    
+            <div class="stat-card appointments" routerLink="/home/vet/growth-traking-chose-id">
+                <h3>📊 Pet Growth Tracking</h3>
+                <div class="stat-card appointments">Click to view</div>
+            </div>
+    
+            <div class="stat-card treatments" (click)="redirectToUrlDogBreedRecognition()">
+                <h3>🐕 Dog Breed Recognition</h3>
+                <div class="stat-card treatments">Click to view</div>
+            </div>
         </div>
     </div>
 
@@ -104,6 +115,5 @@
     <app-qr-scanner></app-qr-scanner>
 
 </div>
-
 
 <app-chatbot></app-chatbot>

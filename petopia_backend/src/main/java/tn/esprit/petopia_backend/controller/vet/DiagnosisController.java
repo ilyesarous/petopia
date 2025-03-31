@@ -1,10 +1,17 @@
 package tn.esprit.petopia_backend.controller.vet;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import tn.esprit.petopia_backend.entities.vet.Diagnosis;
 import tn.esprit.petopia_backend.services.vet.IDiagnosisService;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 
 @RestController
@@ -35,10 +42,6 @@ public class DiagnosisController {
     }
 
     @GetMapping("/auth/Diagnosis/retrieveDiagnosis/{idDiagnosis}")
-//    public Diagnosis retrieveDiagnosis(@PathVariable int idDiagnosis) {
-//        return diagnosisService.retrieveDiagnosis(idDiagnosis);
-//    }
-
     public Diagnosis retrieveDiagnosis(@PathVariable int idDiagnosis) {
         Diagnosis diagnosis = diagnosisService.retrieveDiagnosis(idDiagnosis);
         if (diagnosis != null) {
@@ -50,6 +53,26 @@ public class DiagnosisController {
             }
         }
         return diagnosis;
+    }
+
+    @GetMapping("/auth/Diagnosis/diagnosis/qrcode/{filename}")
+    public ResponseEntity<byte[]> getQrCode(@PathVariable String filename) throws IOException {
+        try {
+            Path path = Paths.get("D:/4_PI_Cloud/Phase4/QRCode_DiagnosisDetail/" + filename);
+
+            if (!Files.exists(path)) {
+                return ResponseEntity.notFound().build();
+            }
+
+            byte[] image = Files.readAllBytes(path);
+            return ResponseEntity.ok()
+                    .contentType(MediaType.IMAGE_PNG)
+                    .body(image);
+
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(("Error: " + e.getMessage()).getBytes());
+        }
     }
 
     @GetMapping("/auth/Diagnosis/retrieveDiagnosisByPetId/{petId}")

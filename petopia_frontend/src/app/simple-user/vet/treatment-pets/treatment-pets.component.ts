@@ -35,11 +35,15 @@ import { Router } from '@angular/router';
 export class TreatmentPetsComponent implements OnInit {
   diagnoses: Diagnosis[] = [];
   filteredDiagnoses: Diagnosis[] = [];
-  selectedDiagnosis: Diagnosis | null = null;
+  //selectedDiagnosis: Diagnosis | null = null;
   searchTerm: string = '';
   selectedType: string = 'all';
   petId: number | null = null;
   sortOrder: 'asc' | 'desc' = 'desc';
+  qrCodeError = false;
+
+  selectedDiagnosis: any;
+  qrCodeUrl: string = "";
 
   // Diagnosis types
   diagnosisTypes: string[] = ['all', 'Preventive', 'Maintenance', 'Emergency', 'Diagnostic'];
@@ -48,6 +52,20 @@ export class TreatmentPetsComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadDiagnoses();
+  }
+
+  selectDiagnosis(id: number) {
+    this.diagnosisService.getDiagnosisById(id).subscribe(
+      (diagnosis) => {
+        this.selectedDiagnosis = diagnosis;
+        // Utilisez le bon endpoint avec le bon port (8082)
+        this.qrCodeUrl = `http://localhost:8082/petopia/auth/Diagnosis/diagnosis/qrcode/${diagnosis.idDiagnosis}-QRCODE.png`;
+        
+        // Ajoutez un timestamp pour éviter le cache
+        this.qrCodeUrl += '?t=' + new Date().getTime();
+      },
+      (error) => console.error('Error loading diagnosis:', error)
+    );
   }
 
   loadDiagnoses(): void {
@@ -68,7 +86,7 @@ export class TreatmentPetsComponent implements OnInit {
       this.router.navigate(['home/vet/treatment-specific-pet', this.petId]);
     }
   }
-
+/*
   selectDiagnosis(idDiagnosis: number): void {
     this.diagnosisService.getDiagnosisById(idDiagnosis).subscribe(
       (data: Diagnosis) => {
@@ -79,6 +97,7 @@ export class TreatmentPetsComponent implements OnInit {
       }
     );
   }
+    */
 
   getBadgeColor(type: string): string {
     switch (type) {

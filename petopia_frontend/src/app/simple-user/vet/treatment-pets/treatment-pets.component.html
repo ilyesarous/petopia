@@ -160,6 +160,25 @@
               <i class="fas fa-pills"></i> {{ prescription.medicament }}
             </li>
           </ul>
+
+          <div class="section-divider"></div>
+            <h4 class="section-title">QR Code</h4>
+            <div class="qr-code-container">
+              <img *ngIf="qrCodeUrl" 
+                  [src]="qrCodeUrl" 
+                  (error)="qrCodeError = true"
+                  alt="Diagnosis QR Code" 
+                  class="qr-code-image">
+              
+              <div *ngIf="qrCodeError" class="qr-code-error">
+                <i class="fas fa-exclamation-circle"></i>
+                <p>QR Code not available</p>
+              </div>
+              
+              <p *ngIf="!qrCodeError" class="qr-code-instruction">
+                Scan this QR code to view diagnosis details
+              </p>
+            </div>
           
         </div>
     </div>

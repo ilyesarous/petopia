@@ -18,6 +18,7 @@ import { TreatmentSpecificPetsComponent } from './simple-user/vet/treatment-spec
 import { NotificationVetComponent } from './simple-user/vet/notification-vet/notification-vet.component';
 import { VetCalendarComponent } from './simple-user/vet/vet-calendar/vet-calendar.component';
 import { GrowthTrakingChoseIdComponent } from './simple-user/vet/growth-traking-chose-id/growth-traking-chose-id.component';
+import { AppDogBreedRecognitionRedirectButtonComponent } from './admin/vet/app-dog-breed-recognition-redirect-button/app-dog-breed-recognition-redirect-button.component';
 
 
 const routes: Routes = [
@@ -44,6 +45,7 @@ const routes: Routes = [
       { path: 'diagnosis' , component: DiagnosisListComponent},
       { path: 'notifications' , component: NotificationListComponent},
       { path: 'pet-growth' , component: PetGrowthListComponent},
+      { path: 'dog-breed-recognition' , component: AppDogBreedRecognitionRedirectButtonComponent}
     ]
   },
   { path: '**', component: PageNotFoundComponent }

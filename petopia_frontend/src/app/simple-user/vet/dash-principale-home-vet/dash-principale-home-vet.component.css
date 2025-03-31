@@ -60,12 +60,6 @@
     margin-bottom: 5px;
 }
 
-/* Couleurs des cartes */
-.patients { border-top: 4px solid #F83182; }
-.appointments { border-top: 4px solid #ff7088; }
-.revenue { border-top: 4px solid #ff247f; }
-.treatments { border-top: 4px solid #fd67bf;}
-
 /* Conteneur principal */
 .content-container {
     display: grid; 
@@ -205,4 +199,52 @@
 .no-appointments img {
     margin-bottom: 10px;
     opacity: 0.6;
+}
+
+/* Conteneur principal */
+.stats-grid-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+/* Ligne de cartes */
+.stats-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+}
+
+/* Style des cartes (conservez vos styles existants) */
+.stat-card {
+    background: white;
+    border-radius: 12px;
+    padding: 15px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.stat-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+/* Couleurs des bordures (conservez vos couleurs existantes) */
+.patients { border-top: 4px solid #F83182; }
+.appointments { border-top: 4px solid #FF7088; }
+.treatments { border-top: 4px solid #fd67bf; } /* Changé en vert pour les traitements */
+
+/* Contenu des cartes */
+.stat-card h3 {
+    color: #2E2E3A;
+    font-size: 16px;
+    margin-bottom: 10px;
+}
+
+.stat-card .value {
+    font-size: 24px;
+    font-weight: bold;
+    color: #2E2E3A;
 }

@@ -72,4 +72,8 @@ export class DashPrincipaleHomeVetComponent implements OnInit {
   toggleNotifications() {
     this.notificationState.toggleNotifications(true);
   }
+
+  redirectToUrlDogBreedRecognition() {
+    window.location.href = 'http://localhost:8501';
+  }
 }
