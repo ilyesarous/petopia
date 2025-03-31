@@ -16,13 +16,7 @@ public class NotificationServiceImplement implements INotificationService{
     private NotificationRepository notificationRepository;
     @Autowired
     private UserRepository userRepository;
-    /*
-    @Override
-    public Notification addNotification(Notification notification) {
-        return notificationRepository.save(notification);
-    }
 
-     */
     @Override
     public Notification addNotification(Notification notification) {
         if (notification.getUser() != null) {

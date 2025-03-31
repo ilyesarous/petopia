@@ -42,6 +42,7 @@ import { ProductsComponent } from './simple-user/products/products.component';
 import { TreatmentPetsComponent } from './simple-user/vet/treatment-pets/treatment-pets.component';
 import { TreatmentSpecificPetsComponent } from './simple-user/vet/treatment-specific-pets/treatment-specific-pets.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { NotificationVetComponent } from './simple-user/vet/notification-vet/notification-vet.component';
 
 @NgModule({
   declarations: [
@@ -75,6 +76,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     ProductsComponent,
     TreatmentPetsComponent,
     TreatmentSpecificPetsComponent,
+    NotificationVetComponent,
   ],
   imports: [
     BrowserModule,

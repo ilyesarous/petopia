@@ -15,6 +15,7 @@ import { ChartComponent } from './admin/chart/chart.component';
 import { ProductsComponent } from './simple-user/products/products.component';
 import { TreatmentPetsComponent } from './simple-user/vet/treatment-pets/treatment-pets.component';
 import { TreatmentSpecificPetsComponent } from './simple-user/vet/treatment-specific-pets/treatment-specific-pets.component';
+import { NotificationVetComponent } from './simple-user/vet/notification-vet/notification-vet.component';
 
 
 const routes: Routes = [
@@ -26,6 +27,7 @@ const routes: Routes = [
       { path: 'vet/pet-growth/:id', component: PetGrowthVetComponent },
       { path: 'vet/treatment-pets', component: TreatmentPetsComponent },
       { path: 'vet/treatment-specific-pet/:id', component: TreatmentSpecificPetsComponent},
+      { path: 'vet/notification-vet', component: NotificationVetComponent}
     ]
   },
   { path: 'dashboard', component: DashbordComponent,
