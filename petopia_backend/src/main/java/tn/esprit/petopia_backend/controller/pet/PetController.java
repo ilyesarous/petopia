@@ -13,7 +13,10 @@ import tn.esprit.petopia_backend.entities.user.User;
 import tn.esprit.petopia_backend.services.adoptions.IShelterService;
 import tn.esprit.petopia_backend.services.pet.PetService;
 
+import java.util.Base64;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:4200")
@@ -27,10 +30,28 @@ public class PetController {
     }
 
     @PostMapping("/user/pet/add")
-    public String createPet(@RequestBody Pet pet) {
+    public ResponseEntity<Map<String, String>> addPet(@RequestBody Pet pet) {
         petService.addPet(pet);
-        return "Pet added successfully";
+        Map<String, String> response = new HashMap<>();
+        response.put("message", "Pet added successfully");
+        return ResponseEntity.ok(response);
     }
+
+    @GetMapping("/user/pet/all")
+    public ResponseEntity<List<Pet>> getAllPets() {
+        List<Pet> pets = petService.getallPets();
+        pets.forEach(pet -> {
+            if (pet.getPetImageBytes() != null) {
+                String base64Image = "data:image/png;base64," + Base64.getEncoder().encodeToString(pet.getPetImageBytes());
+                pet.setPetImage(base64Image);
+            }
+        });
+        if (pets.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(pets);
+    }
+
 
     //Amalllllllll zedt hedhi
 
@@ -50,16 +71,16 @@ public class PetController {
         return ResponseEntity.ok("Pet added for shelter successfully");
     }
     @PutMapping("/pet/update/{id}")
-    @PreAuthorize("hasAuthority('ROLE_SHELTER')")
+    @PreAuthorize("hasAnyAuthority('ROLE_SHELTER','ROLE_USER')")
     public ResponseEntity<Pet> updatePet(@PathVariable Integer id, @RequestBody Pet pet) {
         pet.setIdPet(id);
         Pet updatedPet = petService.updatePet(pet);
         return ResponseEntity.ok(updatedPet);
     }
 
-    // Endpoint for deleting a pet (only accessible by shelters)
+    // Endpoint for deleting a pet (only accessible by shelters hhhhhhhhhhhh jadet 3lik ken enty tkhdem beha)
     @DeleteMapping("/pet/delete/{id}")
-    @PreAuthorize("hasAuthority('ROLE_SHELTER')")
+    @PreAuthorize("hasAnyAuthority('ROLE_SHELTER','ROLE_USER')")
     public ResponseEntity<Void> deletePet(@PathVariable Integer id) {
         petService.deletePet(id);
         return ResponseEntity.ok().build();

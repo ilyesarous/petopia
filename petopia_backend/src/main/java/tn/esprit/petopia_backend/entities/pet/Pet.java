@@ -14,6 +14,7 @@ import tn.esprit.petopia_backend.entities.vet.Consultations;
 import tn.esprit.petopia_backend.entities.vet.Diagnosis;
 import tn.esprit.petopia_backend.entities.vet.Pet_Growth;
 
+import java.util.Base64;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
@@ -23,23 +24,34 @@ import java.util.Set;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name="Pet")
+@Table(name = "Pet")
 public class Pet {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int idPet;
+    private String petName;
+    private int petAge;
+    @Lob
+    @Column(columnDefinition = "LONGBLOB")
+    private byte[] petImageBytes;
+    private String breed;
+    private String location;
+    private float attitudeX;
+    private float attitudeY;
+    @Transient
+    private String petImage;
+    public void setPetImage(String imageData) {
+        if (imageData != null && imageData.startsWith("data:image")) {
+            this.petImageBytes = Base64.getDecoder().decode(imageData.substring(imageData.indexOf(",") + 1));
+        } else {
+            this.petImageBytes = Base64.getDecoder().decode(imageData);
+        }
+    }
+
 
     @ManyToOne
     @JoinColumn(name = "id_user", nullable = false)
     private User user;
-
-    private String petName;
-    private int petAge;
-    private String petImage;
-    private String breed;
-    private String location=null;
-    private float attitudeX ;
-    private float attitudeY ;
 
     //1 pet inajem yekou barchaa diagnosis
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "petdiagnosis")
@@ -64,7 +76,7 @@ public class Pet {
     private Species species;
 
     @Enumerated(EnumType.STRING)
-    private PetStatus status=null;
+    private PetStatus status=PetStatus.AVAILABLE;
     @Enumerated(EnumType.STRING)
     private Gender gender;
 
@@ -81,4 +93,5 @@ public class Pet {
     @OneToOne
     @JsonIgnore
     private Preferences preferences;
+
 }

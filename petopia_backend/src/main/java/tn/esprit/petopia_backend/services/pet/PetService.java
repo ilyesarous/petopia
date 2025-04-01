@@ -17,6 +17,10 @@ public class PetService {
     public PetService(PetRepository petRepository) {
         this.petRepository = petRepository;
     }
+    public List<Pet> getallPets(){
+        return petRepository.findAll();
+    }
+
 
     public Pet addPet(Pet pet) {
         return petRepository.save(pet);
