@@ -3,6 +3,31 @@ import { DiagnosisService } from 'src/app/services/vet/diagnoses/diagnosis.servi
 import { Diagnosis } from 'src/app/models/vet/diagnosis';
 import { trigger, transition, style, animate } from '@angular/animations';
 import { ActivatedRoute } from '@angular/router';
+import { PetGrowthsService } from 'src/app/services/vet/pet-growth/pet-growths.service';
+import { PetGrowth } from 'src/app/models/vet/pet-growth';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+
+export type ChartOptions = {
+  series: any[];
+  chart: any;
+  xaxis: any;
+  yaxis: any;
+  stroke: any;
+  fill: any;
+  tooltip: any;
+  colors: string[];
+};
+
+export type BubbleChartOptions = {
+  series: any[];
+  chart: any;
+  dataLabels: any;
+  fill: any;
+  xaxis: any;
+  yaxis: any;
+  tooltip: any;
+  colors: string[];
+};
 
 @Component({
   selector: 'app-treatment-specific-pets-user',
@@ -45,18 +70,32 @@ export class TreatmentSpecificPetsUserComponent implements OnInit {
   qrCodeUrl: string = "";
   petName: string = "";
 
+  // Variables pour les graphiques de croissance
+  petGrowths: PetGrowth[] = [];
+  weightChartOptions: Partial<ChartOptions> | any;
+  heightChartOptions: Partial<BubbleChartOptions> | any;
+  private colorPalette = {
+    pink: '#F83182',
+    orange: '#FF617C',
+    yellow: '#FE9A7A',
+    pinkGradient: ['#F83182', '#FF617C'],
+    orangeGradient: ['#FF617C', '#FE9A7A']
+  };
+
   // Diagnosis types
   diagnosisTypes: string[] = ['all', 'Preventive', 'Maintenance', 'Emergency', 'Diagnostic'];
 
   constructor(
     private diagnosisService: DiagnosisService, 
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private petGrowthService: PetGrowthsService
   ) { }
 
   ngOnInit(): void {
     this.route.params.subscribe(params => {
-      this.petId = +params['id']; // Récupère l'ID du pet depuis l'URL
+      this.petId = +params['id'];
       this.loadDiagnoses();
+      this.loadPetGrowthData();
     });
   }
 
@@ -132,6 +171,153 @@ export class TreatmentSpecificPetsUserComponent implements OnInit {
       const dateB = new Date(b.diagnosis_date).getTime();
       return this.sortOrder === 'asc' ? dateA - dateB : dateB - dateA;
     });
+  }
+
+  loadPetGrowthData() {
+    if (this.petId) {
+      this.petGrowthService.getPetGrowthsByPetId(this.petId).subscribe(
+        (data: PetGrowth[]) => {
+          this.petGrowths = data;
+          if (data.length > 0) {
+            this.initWeightChart();
+            this.initHeightChart();
+          }
+        },
+        (error) => {
+          console.error('Error loading pet growth data:', error);
+        }
+      );
+    }
+  }
+
+  private initWeightChart(): void {
+    const dates = this.petGrowths.map(g => 
+      new Date(g.measurement_date).toLocaleDateString()
+    );
+    const weights = this.petGrowths.map(g => g.weight);
+
+    this.weightChartOptions = {
+      series: [{
+        name: 'Weight (kg)',
+        data: weights
+      }],
+      chart: {
+        type: 'area',
+        height: 350,
+        zoom: {
+          enabled: false
+        }
+      },
+      dataLabels: {
+        enabled: false
+      },
+      stroke: {
+        curve: 'smooth',
+        width: 2,
+        colors: [this.colorPalette.pink]
+      },
+      fill: {
+        type: 'gradient',
+        gradient: {
+          shadeIntensity: 1,
+          opacityFrom: 0.7,
+          opacityTo: 0.3,
+          stops: [0, 100],
+          colorStops: [
+            {
+              offset: 0,
+              color: this.colorPalette.pink,
+              opacity: 1
+            },
+            {
+              offset: 100,
+              color: this.colorPalette.orange,
+              opacity: 1
+            }
+          ]
+        }
+      },
+      colors: [this.colorPalette.pink],
+      xaxis: {
+        categories: dates,
+        title: {
+          text: 'Date'
+        }
+      },
+      yaxis: {
+        title: {
+          text: 'Weight (kg)'
+        }
+      },
+      tooltip: {
+        y: {
+          formatter: (val: number) => `${val} kg`
+        },
+        style: {
+          background: this.colorPalette.pink,
+          color: '#fff'
+        }
+      }
+    };
+  }
+
+  private initHeightChart(): void {
+    const heightData = this.petGrowths.map(g => ({
+      x: new Date(g.measurement_date).getTime(),
+      y: g.height,
+      z: 20
+    }));
+
+    this.heightChartOptions = {
+      series: [{
+        name: 'Height (cm)',
+        data: heightData
+      }],
+      chart: {
+        type: 'bubble',
+        height: 350,
+        zoom: {
+          enabled: false
+        }
+      },
+      dataLabels: {
+        enabled: false
+      },
+      fill: {
+        opacity: 0.8,
+        colors: [this.colorPalette.orange]
+      },
+      colors: [this.colorPalette.orange],
+      xaxis: {
+        type: 'datetime',
+        title: {
+          text: 'Date'
+        },
+        labels: {
+          formatter: (value: string) => new Date(value).toLocaleDateString()
+        }
+      },
+      yaxis: {
+        title: {
+          text: 'Height (cm)'
+        }
+      },
+      tooltip: {
+        custom: ({ seriesIndex, dataPointIndex, w }: any) => {
+          const data = w.globals.initialSeries[seriesIndex].data[dataPointIndex];
+          const date = new Date(data.x).toLocaleDateString();
+          return `
+            <div class="apexcharts-tooltip-custom" 
+                 style="background: ${this.colorPalette.yellow}; color: #fff; padding: 5px 10px; border-radius: 5px;">
+              <span>Date: ${date}</span><br/>
+              <span>Height: ${data.y} cm</span>
+            </div>`;
+        }
+      },
+      markers: {
+        colors: [this.colorPalette.yellow]
+      }
+    };
   }
 
 }

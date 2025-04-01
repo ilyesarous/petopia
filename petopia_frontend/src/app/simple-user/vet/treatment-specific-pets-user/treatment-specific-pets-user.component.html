@@ -1,9 +1,86 @@
-<div class="container" @fadeIn >
+<div class="container" @fadeIn>
+  <!-- Pet Growth Graph Section -->
+  <div class="growth-section">
+    <div class="header-content pt-0">  <!-- Ajout de pt-0 pour padding-top: 0 -->
+      <div class="title-wrapper">
+        <i class="fas fa-heartbeat icon"></i>
+        <h1>{{petName}} Pet Growth</h1>
+        <i class="fas fa-heartbeat icon"></i>
+      </div>
+    </div>
+<br>
+  <div class="row">
+    <!-- Weight Chart -->
+    <div class="col-lg-6 mb-4">
+      <div class="card h-100 border-0 shadow-sm">
+        <div class="card-header text-white" style="background-color: #FF617C;">
+          <div class="d-flex justify-content-between align-items-center">
+            <h5 class="mb-0"><i class="fas fa-weight me-2"></i> Weight Evolution</h5>
+            <span class="badge bg-white text-dark">{{ petGrowths.length }} measures</span>
+          </div>
+        </div>
+        <div class="card-body">
+          <div id="chart" *ngIf="petGrowths.length > 0">
+            <apx-chart 
+              [series]="weightChartOptions.series"
+              [chart]="weightChartOptions.chart"
+              [xaxis]="weightChartOptions.xaxis"
+              [yaxis]="weightChartOptions.yaxis"
+              [stroke]="weightChartOptions.stroke"
+              [fill]="weightChartOptions.fill"
+              [colors]="weightChartOptions.colors"
+              [tooltip]="weightChartOptions.tooltip"
+              [dataLabels]="weightChartOptions.dataLabels">
+            </apx-chart>
+          </div>
+          <div *ngIf="petGrowths.length === 0" class="text-center py-4">
+            <p class="text-muted">No data available</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Height Chart -->
+    <div class="col-lg-6 mb-4">
+      <div class="card h-100 border-0 shadow-sm">
+        <div class="card-header text-white" style="background-color: #FE9A7A;">
+          <div class="d-flex justify-content-between align-items-center">
+            <h5 class="mb-0"><i class="fas fa-ruler-vertical me-2"></i> Evolution of Size</h5>
+            <span class="badge bg-white text-dark">{{ petGrowths.length }} measures</span>
+          </div>
+        </div>
+        <div class="card-body">
+          <div id="height-chart" *ngIf="petGrowths.length > 0">
+            <apx-chart 
+              [series]="heightChartOptions.series"
+              [chart]="heightChartOptions.chart"
+              [xaxis]="heightChartOptions.xaxis"
+              [yaxis]="heightChartOptions.yaxis"
+              [dataLabels]="heightChartOptions.dataLabels"
+              [fill]="heightChartOptions.fill"
+              [colors]="heightChartOptions.colors"
+              [tooltip]="heightChartOptions.tooltip">
+            </apx-chart>
+          </div>
+          <div *ngIf="petGrowths.length === 0" class="text-center py-4">
+            <p class="text-muted">No data available</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<br>
+  <!-- Treatments and Procedures Section -->
     <div class="header" @fadeInGrow>
       <div class="header-content">
         <div class="title-wrapper">
           <i class="fas fa-heartbeat icon"></i>
           <h1>Treatments and Procedures for {{petName}}</h1>
+          <i class="fas fa-heartbeat icon"></i>
         </div>
       </div>
       <div class="divider"></div>
@@ -12,9 +89,6 @@
 
   <!-- Treatment List Section -->
   <div class="treatment-section">
-    <div class="section-header">
-      <h3>Treatment List</h3>
-    </div>
     
     <!-- Filters -->
     <div class="filters-container" @fadeIn>
@@ -151,4 +225,5 @@
         </div>
     </div>
   </div>
+
 </div>
