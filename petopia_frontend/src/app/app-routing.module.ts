@@ -21,6 +21,7 @@ import { AppDogBreedRecognitionRedirectButtonComponent } from './admin/vet/app-d
 import { DashPrincipaleUserComponent } from './simple-user/vet/dash-principale-user/dash-principale-user.component';
 import { AppointmentUserComponent } from './simple-user/vet/appointment-user/appointment-user.component';
 import { GameComponent } from './simple-user/vet/tic-tac-toe/game/game.component';
+import { TreatmentSpecificPetsUserComponent } from './simple-user/vet/treatment-specific-pets-user/treatment-specific-pets-user.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
@@ -37,6 +38,7 @@ const routes: Routes = [
       { path: 'vet/dash-principale-user', component: DashPrincipaleUserComponent},
       { path: 'vet/appointment-user' , component : AppointmentUserComponent},
       { path: 'vet/tic-tac-toe', component:  GameComponent },
+      { path: 'vet/treatment-specific-pets-user/:id', component: TreatmentSpecificPetsUserComponent}
     ]
   },
   { path: 'dashboard', component: DashbordComponent,

@@ -43,7 +43,7 @@
         
         <div class="pets-grid">
             <!-- Animal 1 -->
-            <div class="pet-card" routerLink="/home/vet">
+            <div class="pet-card" [routerLink]="['/home/vet/treatment-specific-pets-user', 1]">
                 <div class="pet-image-container">
                     <img src="assets/images/logo.png" alt="Rex" class="pet-image">
                 </div>
@@ -56,7 +56,7 @@
             </div>
     
             <!-- Animal 2 -->
-            <div class="pet-card" routerLink="/home/vet">
+            <div class="pet-card" [routerLink]="['/home/vet/treatment-specific-pets-user', 2]">
                 <div class="pet-image-container">
                     <img src="assets/images/logo.png" alt="Luna" class="pet-image">
                 </div>

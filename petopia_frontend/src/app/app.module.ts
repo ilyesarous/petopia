@@ -46,6 +46,7 @@ import { DashPrincipaleUserComponent } from './simple-user/vet/dash-principale-u
 import { AppointmentUserComponent } from './simple-user/vet/appointment-user/appointment-user.component';
 import { GameComponent } from './simple-user/vet/tic-tac-toe/game/game.component';
 import { BoardComponent } from './simple-user/vet/tic-tac-toe/board/board.component';
+import { TreatmentSpecificPetsUserComponent } from './simple-user/vet/treatment-specific-pets-user/treatment-specific-pets-user.component';
 
 
 @NgModule({
@@ -84,6 +85,7 @@ import { BoardComponent } from './simple-user/vet/tic-tac-toe/board/board.compon
     GrowthTrakingChoseIdComponent,
     DashPrincipaleUserComponent,
     AppointmentUserComponent,
+    TreatmentSpecificPetsUserComponent,
   ],
   imports: [
     BrowserModule,
