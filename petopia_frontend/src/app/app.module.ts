@@ -14,8 +14,6 @@ import { ComponentWrapperComponent } from './simple-user/component-wrapper/compo
 import { DashPrincipaleComponent } from './admin/vet/dash-principale/dash-principale.component';
 import { ChatbotComponent } from './admin/vet/chatbot/chatbot.component';
 import { AppDogBreedRecognitionRedirectButtonComponent } from './admin/vet/app-dog-breed-recognition-redirect-button/app-dog-breed-recognition-redirect-button.component';
-import { GameComponent } from './admin/vet/tic-tac-toe-game/game/game.component';
-import { BoardComponent } from './admin/vet/tic-tac-toe-game/board/board.component';
 import { QrScannerComponent } from './admin/vet/qr-scanner/qr-scanner.component';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonModule } from '@angular/material/button';
@@ -46,6 +44,9 @@ import { NotificationVetComponent } from './simple-user/vet/notification-vet/not
 import { GrowthTrakingChoseIdComponent } from './simple-user/vet/growth-traking-chose-id/growth-traking-chose-id.component';
 import { DashPrincipaleUserComponent } from './simple-user/vet/dash-principale-user/dash-principale-user.component';
 import { AppointmentUserComponent } from './simple-user/vet/appointment-user/appointment-user.component';
+import { GameComponent } from './simple-user/vet/tic-tac-toe/game/game.component';
+import { BoardComponent } from './simple-user/vet/tic-tac-toe/board/board.component';
+
 
 @NgModule({
   declarations: [

@@ -7,6 +7,8 @@ import { Component } from '@angular/core';
 })
 export class DashPrincipaleUserComponent {
 
-  
+  redirectToUrlDogBreedRecognition() {
+    window.location.href = 'http://localhost:8501';
+  }
 
 }
