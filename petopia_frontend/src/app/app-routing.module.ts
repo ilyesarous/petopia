@@ -19,6 +19,8 @@ import { NotificationVetComponent } from './simple-user/vet/notification-vet/not
 import { VetCalendarComponent } from './simple-user/vet/vet-calendar/vet-calendar.component';
 import { GrowthTrakingChoseIdComponent } from './simple-user/vet/growth-traking-chose-id/growth-traking-chose-id.component';
 import { AppDogBreedRecognitionRedirectButtonComponent } from './admin/vet/app-dog-breed-recognition-redirect-button/app-dog-breed-recognition-redirect-button.component';
+import { DashPrincipaleUserComponent } from './simple-user/vet/dash-principale-user/dash-principale-user.component';
+import { AppointmentUserComponent } from './simple-user/vet/appointment-user/appointment-user.component';
 
 
 const routes: Routes = [
@@ -32,8 +34,9 @@ const routes: Routes = [
       { path: 'vet/treatment-specific-pet/:id', component: TreatmentSpecificPetsComponent},
       { path: 'vet/notification-vet', component: NotificationVetComponent},
       { path: 'vet/vet-calendar', component: VetCalendarComponent},
-      { path: 'vet/growth-traking-chose-id', component: GrowthTrakingChoseIdComponent}
-
+      { path: 'vet/growth-traking-chose-id', component: GrowthTrakingChoseIdComponent},
+      { path: 'vet/dash-principale-user', component: DashPrincipaleUserComponent},
+      { path: 'vet/appointment-user' , component : AppointmentUserComponent}
     ]
   },
   { path: 'dashboard', component: DashbordComponent,

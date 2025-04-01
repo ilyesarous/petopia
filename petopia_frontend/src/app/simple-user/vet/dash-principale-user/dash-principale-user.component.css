@@ -1,0 +1,35 @@
+.dashboard {
+    font-family: Arial, sans-serif;
+    padding: 20px;
+    background-color: #F5F5F7;
+    color: #2E2E3A;
+}
+
+.header h1 {
+    font-size: 24px;
+    margin-bottom: 20px;
+    color: #F83182;
+}
+
+.header {
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+.welcome-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.welcome-text {
+    margin: 0; /* Supprime les marges par défaut */
+    font-size: 24px;
+    color: #F83182;
+}
+
+.notification-container {
+    display: flex;
+    align-items: center;
+}
