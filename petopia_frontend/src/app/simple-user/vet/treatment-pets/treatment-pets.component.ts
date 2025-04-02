@@ -3,6 +3,9 @@ import { DiagnosisService } from 'src/app/services/vet/diagnoses/diagnosis.servi
 import { Diagnosis } from 'src/app/models/vet/diagnosis';
 import { trigger, transition, style, animate } from '@angular/animations';
 import { Router } from '@angular/router';
+import { jsPDF } from 'jspdf';
+import html2canvas from 'html2canvas';
+import { Medicament_Prescription } from 'src/app/models/vet/diagnosis';
 
 @Component({
   selector: 'app-treatment-pets',
@@ -128,6 +131,117 @@ export class TreatmentPetsComponent implements OnInit {
       const dateA = new Date(a.diagnosis_date).getTime();
       const dateB = new Date(b.diagnosis_date).getTime();
       return this.sortOrder === 'asc' ? dateA - dateB : dateB - dateA;
+    });
+  }
+
+  //PDF generator function
+
+  generatePDF() {
+    const element = document.createElement('div');
+    element.style.position = 'absolute';
+    element.style.left = '-9999px';
+    element.innerHTML = `
+      <div style="font-family: Arial, sans-serif; max-width: 800px; margin: 0 auto; padding: 20px; color: #333;">
+        <!-- En-tête avec logo -->
+        <div style="display: flex; align-items: center; margin-bottom: 20px; border-bottom: 2px solid #F83182; padding-bottom: 15px;">
+          <img src="assets/images/logo.png" style="height: 60px; margin-right: 15px;" alt="Petopia Logo">
+          <div>
+            <h1 style="color: #F83182; margin: 0; font-size: 24px;">Petopia Veterinary Prescription</h1>
+            <p style="color: #FF617C; margin: 0; font-size: 14px;">Professional Animal Care</p>
+          </div>
+        </div>
+        
+        <!-- Titre du document -->
+        <h2 style="color: #F83182; text-align: center; margin-bottom: 25px;">VETERINARY DIAGNOSIS & PRESCRIPTION</h2>
+        
+        <!-- Informations du diagnostic -->
+        <div style="background-color: #FFF5F7; padding: 15px; border-radius: 10px; margin-bottom: 20px;">
+          <h3 style="color: #FF617C; border-bottom: 1px dashed #FE9A7A; padding-bottom: 5px; margin-top: 0;">Diagnosis Details</h3>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+            <div>
+              <p><strong>Diagnosis ID:</strong> ${this.selectedDiagnosis.idDiagnosis}</p>
+              <p><strong>Date:</strong> ${new Date(this.selectedDiagnosis.diagnosis_date).toLocaleDateString()}</p>
+            </div>
+            <div>
+              <p><strong>Type:</strong> <span style="color: ${this.getBadgeColor(this.selectedDiagnosis.diagnosisT)}; font-weight: bold;">${this.selectedDiagnosis.diagnosisT}</span></p>
+            </div>
+          </div>
+          <p><strong>Description:</strong></p>
+          <p style="background-color: white; padding: 10px; border-radius: 5px; border-left: 3px solid #F83182;">
+            ${this.selectedDiagnosis.diagnosis_description}
+          </p>
+        </div>
+        
+        <!-- Informations sur l'animal -->
+        <div style="background-color: #FFF5F7; padding: 15px; border-radius: 10px; margin-bottom: 20px;">
+          <h3 style="color: #FF617C; border-bottom: 1px dashed #FE9A7A; padding-bottom: 5px; margin-top: 0;">Pet Information</h3>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+            <div>
+              <p><strong>Name:</strong> ${this.selectedDiagnosis.petdiagnosis.petName}</p>
+              <p><strong>Species:</strong> ${this.selectedDiagnosis.petdiagnosis.species}</p>
+              <p><strong>Age:</strong> ${this.selectedDiagnosis.petdiagnosis.petAge} years</p>
+            </div>
+            <div>
+              <p><strong>Breed:</strong> ${this.selectedDiagnosis.petdiagnosis.breed}</p>
+              <p><strong>Gender:</strong> ${this.selectedDiagnosis.petdiagnosis.gender}</p>
+              <p><strong>Health Status:</strong> ${this.selectedDiagnosis.petdiagnosis.healthStatus}</p>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Prescriptions -->
+        <div style="background-color: #FFF5F7; padding: 15px; border-radius: 10px; margin-bottom: 20px;">
+          <h3 style="color: #FF617C; border-bottom: 1px dashed #FE9A7A; padding-bottom: 5px; margin-top: 0;">Medication Prescriptions</h3>
+          ${this.selectedDiagnosis.medicamentPrescriptions.length > 0 ? 
+            '<ul style="list-style-type: none; padding-left: 5px;">' + 
+            this.selectedDiagnosis.medicamentPrescriptions.map((p: Medicament_Prescription) => 
+              `<li style="margin-bottom: 8px;">
+                <span style="color: #F83182; font-weight: bold;">•</span> 
+                <span style="font-weight: bold;">${p.medicament}</span>
+              </li>`
+            ).join('') + '</ul>' : 
+            '<p style="font-style: italic;">No medications prescribed</p>'}
+        </div>
+        
+        <!-- Signature -->
+        <div style="margin-top: 40px; text-align: right;">
+          <div style="border-top: 1px solid #F83182; display: inline-block; padding-top: 5px;">
+            <p style="margin: 0; font-weight: bold; color: #FF617C;">Dr. Veterinarian Name</p>
+            <p style="margin: 0; font-size: 12px;">Licensed Veterinarian</p>
+            <p style="margin: 0; font-size: 12px;">Petopia Veterinary Clinic</p>
+          </div>
+        </div>
+        
+        <!-- Pied de page -->
+        <div style="margin-top: 50px; font-size: 10px; text-align: center; color: #999; border-top: 1px solid #eee; padding-top: 10px;">
+          <p>Generated by Petopia Veterinary System on ${new Date().toLocaleDateString()}</p>
+        </div>
+      </div>
+    `;
+    
+    document.body.appendChild(element);
+    
+    html2canvas(element).then(canvas => {
+      const imgData = canvas.toDataURL('image/png');
+      const pdf = new jsPDF('p', 'mm', 'a4');
+      const imgWidth = 190;
+      const pageHeight = 280;
+      const imgHeight = canvas.height * imgWidth / canvas.width;
+      let heightLeft = imgHeight;
+      let position = 10;
+      
+      pdf.addImage(imgData, 'PNG', 10, position, imgWidth, imgHeight);
+      heightLeft -= pageHeight;
+      
+      while (heightLeft >= 0) {
+        position = heightLeft - imgHeight;
+        pdf.addPage();
+        pdf.addImage(imgData, 'PNG', 10, position, imgWidth, imgHeight);
+        heightLeft -= pageHeight;
+      }
+      
+      pdf.save(`Petopia_Diagnosis_${this.selectedDiagnosis.idDiagnosis}_${this.selectedDiagnosis.petdiagnosis.petName}.pdf`);
+      document.body.removeChild(element);
     });
   }
 

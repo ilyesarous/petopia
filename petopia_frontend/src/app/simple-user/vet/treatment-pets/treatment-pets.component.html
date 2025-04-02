@@ -116,13 +116,27 @@
 
     <!-- Diagnosis Details Panel -->
     <div *ngIf="selectedDiagnosis" class="details-panel" @fadeInOut>
-        <div class="panel-header">
+      <!--
+      <div class="panel-header">
           <h3>Diagnosis Details</h3>
           <button (click)="selectedDiagnosis = null" class="close-button">
             <i class="fas fa-times"></i>
           </button>
         </div>
-        
+       -->  
+       <div class="panel-header">
+        <div style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
+          <h3>Diagnosis Details</h3>
+          <button (click)="generatePDF()" class="pdf-button">
+            <i class="fas fa-file-pdf"></i> Generate PDF
+          </button>
+        </div>
+        <button (click)="selectedDiagnosis = null" class="close-button">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+
+      
         <div class="panel-content">
           <div class="detail-row">
             <span class="detail-label">ID:</span>

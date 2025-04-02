@@ -540,3 +540,28 @@ body {
   text-align: center;
   font-style: italic;
 }
+
+.pdf-button {
+  background: linear-gradient(135deg, #F83182 0%, #FF617C 100%);
+  color: white;
+  border: none;
+  padding: 8px 15px;
+  border-radius: 20px;
+  font-size: 14px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 5px rgba(248, 49, 130, 0.3);
+}
+
+.pdf-button:hover {
+  background: linear-gradient(135deg, #FF617C 0%, #F83182 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(248, 49, 130, 0.4);
+}
+
+.pdf-button i {
+  font-size: 16px;
+}
