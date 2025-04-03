@@ -12,21 +12,19 @@ import { PetGrowthListComponent } from './admin/vet/pet-growth/pet-growth-list/p
 import { PetGrowthVetComponent } from './simple-user/vet/pet-growth-vet/pet-growth-vet.component';
 import { DashPrincipaleHomeVetComponent } from './simple-user/vet/dash-principale-home-vet/dash-principale-home-vet.component';
 import { ChartComponent } from './admin/chart/chart.component';
-import { ProductsComponent } from './simple-user/products/products.component';
 import {LoginComponent} from "./components/login/login.component";
 import {SignupComponent} from "./components/signup/signup.component";
 import {AuthGuard} from "./auth.guard";
+import { ProductsComponent } from './simple-user/products/products.component';
 
 
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
-  { path: 'home', component: ComponentWrapperComponent, canActivate: [AuthGuard] ,
-    children: [
-      { path: 'products', component: ProductsComponent },
-      { path: 'vet', component: DashPrincipaleHomeVetComponent },
-      { path: 'vet/pet-growth/:id', component: PetGrowthVetComponent },
-    ]
-  },
+  { path: 'home', component: ComponentWrapperComponent, canActivate: [AuthGuard]},
+  { path: 'vet', component: DashPrincipaleHomeVetComponent },
+  { path: 'vet/pet-growth/:id', component: PetGrowthVetComponent },
+  { path: 'products', component: ProductsComponent, canActivate: [AuthGuard] },
+
   { path: 'dashboard', component: DashbordComponent, canActivate: [AuthGuard],
     children: [
       {path: 'user', component: ChartComponent},
@@ -48,4 +46,4 @@ const routes: Routes = [
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule]
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}

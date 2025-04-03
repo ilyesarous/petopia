@@ -18,8 +18,8 @@
     role = this.roleSubject.asObservable();
 
 
-    private baseUrl = 'http://localhost:888/auth';
-    private baseUrlAdmin = 'http://localhost:888/admin';
+    private baseUrl = 'http://localhost:8082/petopia/auth';
+    private baseUrlAdmin = 'http://localhost:8082/petopia/admin';
 
     constructor(private http: HttpClient) {}
 
