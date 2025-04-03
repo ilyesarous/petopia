@@ -1,3 +1,98 @@
-<div class="content">
-    <router-outlet/>
+<div class="dashboard-container">
+    <div class="welcome-section">
+        <h2>Welcome Back!</h2>
+        <p class="welcome-message">Here's what's happening with your pets</p>
+    </div>
+
+    <div class="dashboard-cards">
+        <!-- Pet Summary Card -->
+        <div class="dashboard-card pet-summary">
+            <div class="card-header">
+                <i class="fas fa-paw"></i>
+                <h3>My Pets</h3>
+            </div>
+            <div class="card-body">
+                <div class="pet-stats">
+                    <div class="stat-item">
+                        <span class="stat-value">3</span>
+                        <span class="stat-label">Total Pets</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-value">1</span>
+                        <span class="stat-label">Upcoming Care</span>
+                    </div>
+                </div>
+                <button routerLink="/ListPets" class="card-button">
+                    View All Pets <i class="fas fa-arrow-right"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Quick Actions Card -->
+        <div class="dashboard-card quick-actions">
+            <div class="card-header">
+                <i class="fas fa-bolt"></i>
+                <h3>Quick Actions</h3>
+            </div>
+            <div class="card-body">
+                <div class="action-buttons">
+                    <button routerLink="/pet" class="action-button">
+                        <i class="fas fa-plus"></i> Add New Pet
+                    </button>
+                    <button routerLink="/ListReclamationFront" class="action-button">
+                        <i class="fas fa-comment-alt"></i> My Requests
+                    </button>
+                    <button routerLink="/profileUser" class="action-button">
+                        <i class="fas fa-user-cog"></i> Edit Profile
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Recent Activity Card -->
+        <div class="dashboard-card recent-activity">
+            <div class="card-header">
+                <i class="fas fa-history"></i>
+                <h3>Recent Activity</h3>
+            </div>
+            <div class="card-body">
+                <ul class="activity-list">
+                    <li>
+                        <i class="fas fa-check-circle"></i>
+                        <span>Vet visit completed for Max</span>
+                    </li>
+                    <li>
+                        <i class="fas fa-bell"></i>
+                        <span>Vaccination due for Bella in 3 days</span>
+                    </li>
+                    <li>
+                        <i class="fas fa-comment"></i>
+                        <span>New message from your vet</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Pet Care Tips Section -->
+    <div class="dashboard-card tips-section">
+        <div class="card-header">
+            <i class="fas fa-lightbulb"></i>
+            <h3>Pet Care Tips</h3>
+        </div>
+        <div class="card-body">
+            <div class="tip-items">
+                <button class="action-button">
+                    <i class="fas fa-book-open"></i> Read Care Guides
+                </button>
+                <button class="action-button">
+                    <i class="fas fa-video"></i> Watch Tutorials
+                </button>
+                <button class="action-button">
+                    <i class="fas fa-store"></i> Shop Recommended Products
+                </button>
+            </div>
+        </div>
+    </div>
 </div>
+

@@ -13,18 +13,21 @@ import { PetGrowthVetComponent } from './simple-user/vet/pet-growth-vet/pet-grow
 import { DashPrincipaleHomeVetComponent } from './simple-user/vet/dash-principale-home-vet/dash-principale-home-vet.component';
 import { ChartComponent } from './admin/chart/chart.component';
 import { ProductsComponent } from './simple-user/products/products.component';
+import {LoginComponent} from "./components/login/login.component";
+import {SignupComponent} from "./components/signup/signup.component";
+import {AuthGuard} from "./auth.guard";
 
 
 const routes: Routes = [
-  { path: '', redirectTo: '/home', pathMatch: 'full' },
-  { path: 'home', component: ComponentWrapperComponent,
+  { path: '', redirectTo: '/login', pathMatch: 'full' },
+  { path: 'home', component: ComponentWrapperComponent, canActivate: [AuthGuard] ,
     children: [
-      {path: 'products', component: ProductsComponent},
+      { path: 'products', component: ProductsComponent },
       { path: 'vet', component: DashPrincipaleHomeVetComponent },
       { path: 'vet/pet-growth/:id', component: PetGrowthVetComponent },
     ]
   },
-  { path: 'dashboard', component: DashbordComponent,
+  { path: 'dashboard', component: DashbordComponent, canActivate: [AuthGuard],
     children: [
       {path: 'user', component: ChartComponent},
       { path: 'vet', component: DashPrincipaleComponent },
@@ -35,7 +38,10 @@ const routes: Routes = [
       { path: 'pet-growth' , component: PetGrowthListComponent},
     ]
   },
+  { path: 'signup', component: SignupComponent },
+  { path: 'login', component: LoginComponent },
   { path: '**', component: PageNotFoundComponent }
+
 ];
 
 @NgModule({

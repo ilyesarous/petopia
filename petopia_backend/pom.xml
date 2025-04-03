@@ -50,6 +50,11 @@
 			<artifactId>stanford-corenlp</artifactId>
 			<version>4.5.4</version>
 		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-oauth2-client</artifactId>
+		</dependency>
+
 
 		<dependency>
 			<groupId>edu.stanford.nlp</groupId>
