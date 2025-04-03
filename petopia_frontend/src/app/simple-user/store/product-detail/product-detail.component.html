@@ -1,0 +1,68 @@
+<div class="product-detail-container" *ngIf="product">
+  <div class="product-gallery">
+    <div class="main-image">
+      <img
+        [src]="getImageUrl(product.product_image)"
+        [alt]="product.product_name"
+      />
+    </div>
+    
+  </div>
+
+  <div class="product-info">
+    <div class="header">
+      <h1>{{ product.product_name }}</h1>
+      <div class="rating">
+        <i
+          *ngFor="let star of [1, 2, 3, 4, 5]"
+          class="bi bi-star{{ star <= product.rating ? '-fill' : '' }}"
+        ></i>
+        <span>({{ product.review_count }} reviews)</span>
+      </div>
+    </div>
+
+    <div class="price-section">
+      <span class="current-price">${{ product.product_price }}</span>
+      <span *ngIf="product.old_price" class="original-price"
+        >${{ product.old_price }}</span
+      >
+      <div *ngIf="product.cuppon_price" class="discount-badge">
+        Save {{ product.cuppon_price }}%
+      </div>
+    </div>
+
+    <div class="description">
+      <h3>Description</h3>
+      <p>{{ product.product_description }}</p>
+    </div>
+
+    <div class="actions">
+      <div class="quantity-selector">
+        <button (click)="decreaseQuantity()">-</button>
+        <span>{{ quantity }}</span>
+        <button (click)="increaseQuantity()">+</button>
+      </div>
+      <button class="add-to-cart" (click)="addToCart()">
+        <i class="bi bi-cart"></i> Add to Cart
+      </button>
+      <button class="wishlist-btn" (click)="toggleWishlist()">
+        <i class="bi bi-heart{{ product.liked ? '-fill' : '' }}"></i>
+      </button>
+    </div>
+
+    <div class="delivery-info">
+      <div class="info-item">
+        <i class="bi bi-truck"></i>
+        <span>Free delivery on orders over $50</span>
+      </div>
+      <div class="info-item">
+        <i class="bi bi-arrow-left-right"></i>
+        <span>30-day returns</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div>
+  <app-feedbacks />
+</div>

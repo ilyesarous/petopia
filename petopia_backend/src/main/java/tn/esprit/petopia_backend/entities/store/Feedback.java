@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import tn.esprit.petopia_backend.entities.user.User;
 
+import java.util.Date;
+
 @Entity
 @Getter
 @Setter
@@ -19,6 +21,8 @@ public class Feedback {
     private String description;
     private int stars_number;
     private String sentiment;
+    private Date createdAt;
+    private Date updatedAt;
     @ManyToOne
     private User user;
     @ManyToOne
