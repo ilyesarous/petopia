@@ -38,7 +38,17 @@ import { ConsultationDetailsModalComponent } from './simple-user/vet/consultatio
 import { CommonModule } from '@angular/common';
 import { CanvasJSAngularChartsModule } from '@canvasjs/angular-charts';
 import { ChartComponent } from './admin/chart/chart.component';
-import { ProductsComponent } from './simple-user/products/products.component';
+import { ProductsComponent } from './simple-user/store/products/products.component';
+import { ProductCardComponent } from './simple-user/store/product-card/product-card.component';
+import { CarouselComponent } from './simple-user/store/carousel/carousel.component';
+
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { BrandsComponent } from './simple-user/store/brands/brands.component';
+import { ProductDetailComponent } from './simple-user/store/product-detail/product-detail.component';
+import { FavoriteComponent } from './simple-user/store/favorite/favorite.component';
+import { StoreDashComponent } from './admin/store/store-dash/store-dash.component';
+import { AddProductComponent } from './admin/store/add-product/add-product.component';
+import { FeedbacksComponent } from './simple-user/store/feedbacks/feedbacks.component';
 
 @NgModule({
   declarations: [
@@ -70,6 +80,14 @@ import { ProductsComponent } from './simple-user/products/products.component';
     PetGrowthListComponent,
     ChartComponent,
     ProductsComponent,
+    ProductCardComponent,
+    CarouselComponent,
+    BrandsComponent,
+    ProductDetailComponent,
+    FavoriteComponent,
+    StoreDashComponent,
+    AddProductComponent,
+    FeedbacksComponent,
   ],
   imports: [
     BrowserModule,
@@ -83,7 +101,8 @@ import { ProductsComponent } from './simple-user/products/products.component';
     ReactiveFormsModule,
     FullCalendarModule,
     CommonModule,
-    CanvasJSAngularChartsModule
+    CanvasJSAngularChartsModule,
+    BrowserAnimationsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

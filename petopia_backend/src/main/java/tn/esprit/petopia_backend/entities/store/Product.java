@@ -24,6 +24,9 @@ public class Product {
     private String product_name;
     private String product_description;
     private float product_price;
+    private float old_price;
+    private float rating;
+    private int review_count;
     private float cuppon_price = 0;
     @Enumerated(EnumType.STRING)
     private ProductCategory category;

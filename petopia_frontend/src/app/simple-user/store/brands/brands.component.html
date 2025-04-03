@@ -1,0 +1,10 @@
+<div class="stories-preview-container">
+    <!-- Individual Story Circle -->
+    <div class="story-circle" *ngFor="let story of stories; let i = index" 
+         (click)="openStory(i)">
+      <div class="story-border" [class.seen]="story.seen">
+        <img [src]="story.profileImage" [alt]="story.profileName" class="story-image">
+      </div>
+      <span class="story-username">{{story.profileName}}</span>
+    </div>
+  </div>
