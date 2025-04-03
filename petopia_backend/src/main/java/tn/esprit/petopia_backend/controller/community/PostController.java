@@ -42,9 +42,14 @@ public class PostController {
     }
 
     @GetMapping("/getAll")
-    public ResponseEntity<List<Post>> getAllPosts() {
+    public ResponseEntity<List<Post>> getAllPosts(@RequestParam(required = false) PostType postType) {
+        if (postType != null) {
+            List<Post> filteredPosts = postService.getPostsByType(postType);
+            return ResponseEntity.ok(filteredPosts);
+        }
         return ResponseEntity.ok(postService.getAllPosts());
     }
+
 
     @PutMapping("/update/{id}")
     public ResponseEntity<Post> updatePost(@PathVariable Long id, @RequestBody Post postDetails) {
