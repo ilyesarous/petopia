@@ -1,0 +1,75 @@
+<div class="container">
+  <div class="search-icons-container">
+    <div style="width: 60px"></div>
+    <!-- Search Box (left side) -->
+    <div class="search-container" style="flex-grow: 1; max-width: 800px">
+      <div class="search-box">
+        <i class="bi bi-search search-icon"></i>
+        <input
+          class="form-control search-input"
+          type="text"
+          placeholder="Search for products..."
+          [(ngModel)]="searchQuery"
+          (keyup.enter)="onSearch()"
+        />
+        <button class="search-btn" (click)="onSearch()">Search</button>
+      </div>
+      <div class="search-tags mt-2" *ngIf="recentSearches.length > 0">
+        <span class="search-tags-label">Recent searches:</span>
+        <span
+          class="search-tag"
+          *ngFor="let term of recentSearches"
+          (click)="applySearch(term)"
+        >
+          {{ term }}
+          <i class="bi bi-x" (click)="removeRecentSearch(term, $event)"></i>
+        </span>
+      </div>
+    </div>
+
+    <!-- Icons Container (right side) -->
+    <div class="icons-container">
+      <button class="icon-btn" (click)="viewFavorites()" title="Favorites">
+        <i class="bi bi-heart"></i>
+        <span class="icon-badge" *ngIf="favoriteCount > 0">
+          {{ favoriteCount }}
+        </span>
+      </button>
+      <button class="icon-btn" (click)="viewCart()" title="Cart">
+        <i class="bi bi-cart"></i>
+        <span class="icon-badge" *ngIf="cartItemCount > 0">{{
+          cartItemCount
+        }}</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Caroussel -->
+  <div class="row mt-4">
+    <div class="col-md-12">
+      <app-carousel></app-carousel>
+    </div>
+  </div>
+  <!-- Brands -->
+  <div class="row mt-4 mb-5">
+    <div class="col-md-12">
+      <app-brands></app-brands>
+    </div>
+  </div>
+  <!-- Products -->
+  <div class="row">
+    <h2 class="mb-4">Products</h2>
+    <div class="col-md-3 mt-3" *ngFor="let product of filteredProducts">
+      <app-product-card [product]="product"></app-product-card>
+    </div>
+
+    <!-- No results message -->
+    <div
+      *ngIf="filteredProducts.length === 0 && searchQuery"
+      class="col-12 text-center py-5"
+    >
+      <h4>No products found for "{{ searchQuery }}"</h4>
+      <button class="btn btn-link" (click)="clearSearch()">Clear search</button>
+    </div>
+  </div>
+</div>

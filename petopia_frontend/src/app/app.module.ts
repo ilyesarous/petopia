@@ -35,7 +35,20 @@ import { ConsultationDetailsModalComponent } from './simple-user/vet/consultatio
 import { CommonModule } from '@angular/common';
 import { CanvasJSAngularChartsModule } from '@canvasjs/angular-charts';
 import { ChartComponent } from './admin/chart/chart.component';
-import { ProductsComponent } from './simple-user/products/products.component';
+import { ProductsComponent } from './simple-user/store/products/products.component';
+import { ProductCardComponent } from './simple-user/store/product-card/product-card.component';
+import { CarouselComponent } from './simple-user/store/carousel/carousel.component';
+
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { BrandsComponent } from './simple-user/store/brands/brands.component';
+import { ProductDetailComponent } from './simple-user/store/product-detail/product-detail.component';
+import { FavoriteComponent } from './simple-user/store/favorite/favorite.component';
+import { StoreDashComponent } from './admin/store/store-dash/store-dash.component';
+import { AddProductComponent } from './admin/store/add-product/add-product.component';
+import { FeedbacksComponent } from './simple-user/store/feedbacks/feedbacks.component';
+import {LoginComponent} from "./components/login/login.component";
+import {FooterComponent} from "./components/footer/footer.component";
+import {SignupComponent} from "./components/signup/signup.component";
 import { PetAdoptionListComponent } from './simple-user/adoption/pet-adoption-list/pet-adoption-list.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AuthInterceptor } from './interceptors/auth.interceptor';
@@ -82,7 +95,17 @@ import { ShelterAdoptionRequestsComponent } from './shelter/shelter-adoption-req
     PetGrowthListComponent,
     ChartComponent,
     ProductsComponent,
-    PetAdoptionListComponent,
+    ProductCardComponent,
+    CarouselComponent,
+    BrandsComponent,
+    ProductDetailComponent,
+    FavoriteComponent,
+    StoreDashComponent,
+    AddProductComponent,
+    FeedbacksComponent,
+    LoginComponent,
+    FooterComponent,
+    SignupComponent,
     PetAdoptDetailsComponent,
     AdoptPetComponent,
     ShelterInfoComponent,
@@ -104,6 +127,7 @@ import { ShelterAdoptionRequestsComponent } from './shelter/shelter-adoption-req
     FullCalendarModule,
     CommonModule,
     CanvasJSAngularChartsModule,
+    BrowserAnimationsModule,
     FontAwesomeModule,
   ],
   providers: [

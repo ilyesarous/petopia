@@ -1,0 +1,14 @@
+server:
+  port: 888  # Change the port if necessary
+
+spring:
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: 358354739948-aq59q36bohvfflinhg04gvn6sgmp4c34.apps.googleusercontent.com
+            client-secret: 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
+            scope:
+              - profile
+              - email

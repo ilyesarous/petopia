@@ -1,0 +1,55 @@
+<div class="wishlist-container">
+    <div class="wishlist-header">
+      <div class="header-content">
+        <button class="back-btn" routerLink="/products">
+          <i class="bi bi-arrow-left"></i>
+        </button>
+        <h2>Your Wishlist <span *ngIf="wishlistItems.length > 0">({{ wishlistItems.length }})</span></h2>
+      </div>
+      <button *ngIf="wishlistItems.length > 0" class="clear-btn" (click)="clearWishlist()">
+        <i class="bi bi-trash"></i> Clear All
+      </button>
+    </div>
+  
+    <div *ngIf="wishlistItems.length === 0" class="empty-wishlist">
+      <div class="heart-animation">
+        <i class="bi bi-heart"></i>
+      </div>
+      <h3>Your wishlist is empty</h3>
+      <p>Tap the <i class="bi bi-heart-fill" style="color: #f83182;"></i> icon to save items you love</p>
+      <button class="btn-shop" routerLink="/products">
+        <i class="bi bi-arrow-left"></i> Continue Shopping
+      </button>
+    </div>
+  
+    <div class="wishlist-grid">
+      <div *ngFor="let product of wishlistItems" class="wishlist-item" @fadeIn>
+        <div class="item-image" (click)="viewProduct(product.product_id)">
+          <img [src]="product.product_image" [alt]="product.product_name" loading="lazy">
+          <button class="remove-btn" (click)="removeFromWishlist(product); $event.stopPropagation()">
+            <i class="bi bi-x"></i>
+          </button>
+          <div *ngIf="product.cuppon_price" class="discount-badge">
+            -{{ product.cuppon_price }}%
+          </div>
+        </div>
+        <div class="item-details">
+          <h3 (click)="viewProduct(product.product_id)">{{ product.product_name }}</h3>
+          <div class="price-section">
+            <div class="price">{{ product.product_price | currency }}</div>
+            <div *ngIf="product.old_price" class="original-price">{{ product.old_price | currency }}</div>
+          </div>
+          <div class="rating">
+            <i *ngFor="let star of [1,2,3,4,5]" 
+               class="bi bi-star{{ star <= (product.rating || 0) ? '-fill' : '' }}"></i>
+            <span class="review-count">({{ product.review_count || 0 }})</span>
+          </div>
+          <div class="action-buttons">
+            <button class="add-to-cart" (click)="$event.stopPropagation()">
+              <i class="bi bi-cart-plus"></i> Add to Cart
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
