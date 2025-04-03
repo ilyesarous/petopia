@@ -25,11 +25,11 @@ import {AuthGuard} from "./auth.guard";
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
   { path: 'home', component: ComponentWrapperComponent, canActivate: [AuthGuard]},
-  { path: 'products', component: ProductsComponent },
-  { path: 'products/:id', component: ProductDetailComponent },
-  { path: 'favorites', component: FavoriteComponent },
-  { path: 'vet', component: DashPrincipaleHomeVetComponent },
-  { path: 'vet/pet-growth/:id', component: PetGrowthVetComponent },
+  { path: 'products', component: ProductsComponent, canActivate: [AuthGuard]},
+  { path: 'products/:id', component: ProductDetailComponent, canActivate: [AuthGuard] },
+  { path: 'favorites', component: FavoriteComponent, canActivate: [AuthGuard]},
+  { path: 'vet', component: DashPrincipaleHomeVetComponent, canActivate: [AuthGuard] },
+  { path: 'vet/pet-growth/:id', component: PetGrowthVetComponent, canActivate: [AuthGuard] },
 
   { path: 'dashboard', component: DashbordComponent, canActivate: [AuthGuard],
     children: [

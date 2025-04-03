@@ -101,7 +101,7 @@ export class ProductsComponent implements OnInit {
   // Add these methods
   viewFavorites() {
     // Navigate to favorites page or show favorites modal
-    this.router.navigate(['home/favorites']);
+    this.router.navigate(['favorites']);
     console.log('View favorites clicked');
   }
 

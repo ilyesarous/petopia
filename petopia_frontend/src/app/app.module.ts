@@ -49,7 +49,6 @@ import { FavoriteComponent } from './simple-user/store/favorite/favorite.compone
 import { StoreDashComponent } from './admin/store/store-dash/store-dash.component';
 import { AddProductComponent } from './admin/store/add-product/add-product.component';
 import { FeedbacksComponent } from './simple-user/store/feedbacks/feedbacks.component';
-import { ProductsComponent } from './simple-user/products/products.component';
 import {LoginComponent} from "./components/login/login.component";
 import {FooterComponent} from "./components/footer/footer.component";
 import {SignupComponent} from "./components/signup/signup.component";

@@ -29,7 +29,7 @@ export class ProductCardComponent {
   }
 
   showProductDetails(productId: number) {
-    this.router.navigate(['home/products', productId]);
+    this.router.navigate(['products', productId]);
   }
 
 }

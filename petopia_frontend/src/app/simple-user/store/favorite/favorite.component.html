@@ -1,7 +1,7 @@
 <div class="wishlist-container">
     <div class="wishlist-header">
       <div class="header-content">
-        <button class="back-btn" routerLink="/home/products">
+        <button class="back-btn" routerLink="/products">
           <i class="bi bi-arrow-left"></i>
         </button>
         <h2>Your Wishlist <span *ngIf="wishlistItems.length > 0">({{ wishlistItems.length }})</span></h2>
@@ -17,7 +17,7 @@
       </div>
       <h3>Your wishlist is empty</h3>
       <p>Tap the <i class="bi bi-heart-fill" style="color: #f83182;"></i> icon to save items you love</p>
-      <button class="btn-shop" routerLink="/home/products">
+      <button class="btn-shop" routerLink="/products">
         <i class="bi bi-arrow-left"></i> Continue Shopping
       </button>
     </div>
