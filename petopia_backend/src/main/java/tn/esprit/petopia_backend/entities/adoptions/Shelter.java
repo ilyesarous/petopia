@@ -30,6 +30,7 @@ public class Shelter {
 
 
     @OneToOne(mappedBy = "shelter", cascade = CascadeType.ALL)
+    @JsonIgnore
     private User user;
 
     @OneToMany(mappedBy = "shelter", cascade = CascadeType.ALL, orphanRemoval = true)

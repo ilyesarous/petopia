@@ -42,17 +42,19 @@ public class ShelterServiceImpl implements IShelterService {
     }
 
 
-
     @Override
     @Transactional
-    public Shelter updateShelter(Shelter shelter) {
+    public Shelter updateShelter(Shelter shelter, Integer userIdFromToken) {
+        // First validate the shelter exists
         Shelter existingShelter = shelterRepository.findById(shelter.getId_shelter())
                 .orElseThrow(() -> new RuntimeException("Shelter not found"));
 
-        if (shelter.getUser() == null) {
-            shelter.setUser(existingShelter.getUser());
+        // Verify the shelter belongs to the user making the request
+        if (!existingShelter.getUser().getId_user().equals(userIdFromToken)) {
+            throw new RuntimeException("You can only update your own shelter.");
         }
 
+        // Update only non-null fields
         if (shelter.getShelter_name() != null) {
             existingShelter.setShelter_name(shelter.getShelter_name());
         }

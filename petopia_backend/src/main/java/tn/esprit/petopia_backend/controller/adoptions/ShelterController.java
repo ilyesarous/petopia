@@ -13,6 +13,8 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/shelters")
+@CrossOrigin(origins = "http://localhost:4200")
+
 public class ShelterController {
 
     private final IShelterService shelterService;
@@ -49,11 +51,35 @@ public class ShelterController {
 
     @PutMapping("/updateShelter/{id}")
     @PreAuthorize("hasAuthority('ROLE_SHELTER')")
-    public ResponseEntity<Shelter> updateShelter(@PathVariable Integer id, @RequestBody Shelter shelter) {
-        shelter.setId_shelter(id);
-        return ResponseEntity.ok(shelterService.updateShelter(shelter));
-    }
+    public ResponseEntity<?> updateShelter(@PathVariable Integer id, @RequestBody Shelter shelter) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Object principal = authentication.getPrincipal();
 
+        if (!(principal instanceof User)) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized access.");
+        }
+
+        User user = (User) principal;
+
+        try {
+            // Verify the shelter exists and belongs to the authenticated user
+            Shelter existingShelter = shelterService.getShelterById(id);
+            if (!existingShelter.getUser().getId_user().equals(user.getId_user())) {
+                return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                        .body("You can only update your own shelter.");
+            }
+
+            shelter.setId_shelter(id);
+            // Pass the user ID from token to service layer for additional validation
+            Shelter updatedShelter = shelterService.updateShelter(shelter, user.getId_user());
+            return ResponseEntity.ok(updatedShelter);
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("An error occurred while updating the shelter: " + e.getMessage());
+        }
+    }
     @DeleteMapping("/deleteShelter/{id}")
     @PreAuthorize("hasAuthority('ROLE_SHELTER')")
     public ResponseEntity<String> deleteShelter(@PathVariable Integer id) {
