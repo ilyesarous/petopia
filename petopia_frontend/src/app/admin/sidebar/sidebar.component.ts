@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import {AuthService} from "../../services/user/auth.service";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-sidebar',
@@ -7,16 +9,42 @@ import { Component } from '@angular/core';
 })
 export class SidebarComponent {
 
-  selectedItem: string = 'Home'; 
-  
+    isAuthenticated: boolean = false;
+    username: string = '';
+    role: string = '';
+
+  constructor(private authService: AuthService, private router: Router) {
+  }
+
+  ngOnInit() {
+    this.authService.isAuthenticated.subscribe((status) => {
+      this.isAuthenticated = status;
+    });
+    this.authService.username.subscribe((username) => {
+      this.username = username;
+    });
+    this.authService.role.subscribe((role) => {
+      this.role = role;
+    });
+  }
+
+
+  selectedItem: string = '';
+
   items: any[] = [
     { name: 'Home', route: '/dashboard', icon: 'bi bi-house' },
-    { name: 'Users', route: '#', icon: 'bi bi-person'},
+    { name: 'Users', route: 'user', icon: 'bi bi-person'},
     { name: 'Shop', route: '#', icon: 'bi bi-cart'},
-    { name: 'Vet', route: '#', icon: 'bi bi-activity'},
+    { name: 'Vet', route: 'vet', icon: 'bi bi-activity'},
     { name: 'Event', route: '#', icon: 'bi bi-calendar3'},
     { name: 'Community Hub', route: '#', icon: 'bi bi-people'},
     { name: 'Settings', route: '#', icon: 'bi bi-gear'},
   ];
+
+  logout() {
+    this.authService.logout();
+    this.router.navigate(['/login']);
+  }
+
 
 }

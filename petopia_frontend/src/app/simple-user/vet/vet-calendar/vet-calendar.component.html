@@ -1,0 +1,28 @@
+<div class="calendar-container">
+    <div class="header">
+      <h1>Mon Calendrier de Consultations</h1>
+      <div class="legend">
+        <div class="legend-item">
+          <span class="color-box" style="background-color: #F83182;"></span>
+          <span>waiting</span>
+        </div>
+        <div class="legend-item">
+          <span class="color-box" style="background-color: #FE9A7A;"></span>
+          <span>accepted</span>
+        </div>
+        <div class="legend-item">
+          <span class="color-box" style="background-color: #FF0000;"></span>
+          <span>refused</span>
+        </div>
+      </div>
+    </div>
+    
+    <full-calendar [options]="calendarOptions"></full-calendar>
+</div>
+
+<app-consultation-details-modal 
+  [visible]="showModal"
+  [consultation]="selectedConsultation"
+  (closeModal)="showModal = false"
+  (statusUpdated)="onStatusUpdated($event)">
+</app-consultation-details-modal>

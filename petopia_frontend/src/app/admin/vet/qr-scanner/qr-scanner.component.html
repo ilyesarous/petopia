@@ -1,0 +1,14 @@
+<div>
+    <button (click)="startScanning()">Start Scanning</button>
+    <button (click)="stopScanning()">Stop Scanning</button>
+  </div>
+  
+  <video id="video" width="300" height="200"></video>
+
+  <br>
+  <br>
+
+  <div *ngIf="scannedResult">
+    <h3>Scanned Result:</h3>
+    <p>{{ scannedResult }}</p>
+  </div>

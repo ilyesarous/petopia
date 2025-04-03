@@ -1,21 +1,39 @@
 <div class="sidebar">
-  <div class="d-flex flex-row align-items-center gap-2">
-    <img src="../../../assets/images/logo.png" alt="logo" width="50" />
-    <h3>Petopia</h3>
+  <!-- Logo & Brand Name -->
+  <div class="d-flex flex-row align-items-center gap-2 sidebar-header">
+    <img src="../../../assets/images/logo.png" alt="Petopia Logo" width="50" />
+    <h3 class="m-0">Petopia</h3>
   </div>
-  <hr />
-  <ul *ngFor="let item of items">
+
+  <hr class="sidebar-divider" />
+
+  <!-- Navigation Items -->
+  <ul class="sidebar-nav">
     <li
-      class="selected"
-      [ngClass]="{ isSelected: item.name === selectedItem }"
-      (click)="selectedItem = item.name"
+            *ngFor="let item of items"
+            [ngClass]="{ 'selected': item.name === selectedItem }"
+            (click)="selectedItem = item.name"
     >
       <a
-        class="d-flex flex-row gap-2 align-items-center"
-        routerLink="{{ item.route }}"
-        routerLinkActive="active"
-        ><i class="{{ item.icon }}"></i> {{ item.name }}</a
+              class="d-flex flex-row gap-2 align-items-center sidebar-link"
+              [routerLink]="item.route"
+              routerLinkActive="active"
       >
+        <i [class]="item.icon"></i>
+        <span>{{ item.name }}</span>
+      </a>
     </li>
   </ul>
+
+  <!-- Logout Button (Conditional) -->
+  <div class="sidebar-footer" *ngIf="isAuthenticated">
+    <a
+            class="d-flex flex-row gap-2 align-items-center sidebar-link logout-btn"
+            routerLink="/"
+            (click)="logout(); selectedItem = ''"
+    >
+      <i class="fas fa-sign-out-alt"></i>
+      <span>Logout</span>
+    </a>
+  </div>
 </div>

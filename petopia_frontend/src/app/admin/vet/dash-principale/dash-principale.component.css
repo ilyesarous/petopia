@@ -1,0 +1,114 @@
+button {
+    background-color: #F83182;
+    color: rgb(0, 0, 0);
+    border: none;
+    padding: 12px 24px;
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+    box-shadow: 0px 4px 6px rgba(252, 98, 157, 0.699);
+  }
+  
+  button:hover {
+    background-color: #fa0068;
+    transform: scale(1.05);
+  }
+  
+  button:active {
+    background-color: #B71E5B;
+    transform: scale(0.98);
+  }
+  
+  .button-container {
+    display: flex; /* Active Flexbox */
+    gap: 10px; /* Ajoute un espace de 10px entre les boutons */
+  }
+  
+  app-notification-stats {
+    flex: 1 1 300px; /* Le graphique prendra une largeur flexible */
+    max-width: 400px;
+  }
+
+  .dashboard-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    padding: 20px;
+  }
+  
+  .dashboard-card {
+    flex: 1 1 200px; /* Flex-grow, flex-shrink, flex-basis */
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 20px;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .dashboard-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  }
+  
+  .dashboard-card h3 {
+    color: #F83182; /* Rose */
+    margin-bottom: 10px;
+  }
+  
+  .dashboard-card p {
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+  }
+
+  .dashboard-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* Deux colonnes de largeur égale */
+    gap: 20px; /* Espace entre les éléments */
+    padding: 20px;
+  }
+  
+  .graph-container {
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .stats-container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* Deux colonnes */
+    grid-template-rows: repeat(2, 1fr); /* Deux lignes */
+    gap: 20px; /* Espace entre les carrés */
+  }
+  
+  .dashboard-card {
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 20px;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .dashboard-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  }
+  
+  .dashboard-card h3 {
+    color: #F83182; /* Rose */
+    margin-bottom: 10px;
+  }
+  
+  .dashboard-card p {
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+  }

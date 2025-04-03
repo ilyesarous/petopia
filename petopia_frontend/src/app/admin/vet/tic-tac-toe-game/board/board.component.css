@@ -1,0 +1,36 @@
+.board {
+    display: grid;
+    grid-template-columns: repeat(3, 100px);
+    grid-template-rows: repeat(3, 100px);
+    gap: 10px;
+    background-color: #F83182; /* Couleur de fond du tableau */
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  }
+  
+  .square {
+    width: 100px;
+    height: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 36px;
+    font-weight: bold;
+    color: #FFFFFF; /* Couleur du texte (blanc) */
+    background-color: #FF617C; /* Couleur de fond des cases */
+    border: 2px solid #FE9A7A; /* Bordure des cases */
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+  }
+  
+  .square:hover {
+    background-color: #FE9A7A; /* Changement de couleur au survol */
+    transform: scale(1.05); /* Effet de zoom au survol */
+  }
+  
+  .square:active {
+    transform: scale(0.95); /* Effet de clic */
+  }
+  

@@ -56,7 +56,7 @@ public class UserController {
                     reg.getEmail(),
                     new Date()
             );
-            notificationService.notifyNewSignup(notification);
+            notificationService.notifyNewSignup(notification);  
         }
 
         return ResponseEntity.ok(response);
