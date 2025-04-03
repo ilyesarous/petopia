@@ -16,6 +16,11 @@ import { ProductsComponent } from './simple-user/products/products.component';
 import { PetAdoptionListComponent } from './simple-user/adoption/pet-adoption-list/pet-adoption-list.component';
 import { PetAdoptDetailsComponent } from './simple-user/adoption/pet-adopt-details/pet-adopt-details.component';
 import { AdoptPetComponent } from './simple-user/adoption/adopt-pet/adopt-pet.component';
+import { ShelterInfoComponent } from './shelter/shelter-info/shelter-info.component';
+import { ShelterPetListComponent } from './shelter/shelter-pet-list/shelter-pet-list.component';
+import { ShelterAddPetComponent } from './shelter/shelter-add-pet/shelter-add-pet.component';
+import { ShelterUpdatePetComponent } from './shelter/shelter-update-pet/shelter-update-pet.component';
+import { ShelterAdoptionRequestsComponent } from './shelter/shelter-adoption-requests/shelter-adoption-requests.component';
 
 
 const routes: Routes = [
@@ -27,8 +32,13 @@ const routes: Routes = [
       { path: 'vet/pet-growth/:id', component: PetGrowthVetComponent },
       {path: 'adoption', component: PetAdoptionListComponent},
       {path: 'adoption/pets/:id', component: PetAdoptDetailsComponent },
-      {path: 'adoption/form/:idPet', component: AdoptPetComponent}
-
+      {path: 'adoption/form/:idPet', component: AdoptPetComponent},
+      //TODO-AMAL
+      { path: 'shelter/info', component: ShelterInfoComponent },
+      { path: 'shelter/pets', component: ShelterPetListComponent },
+      { path: 'shelter/pets/add', component: ShelterAddPetComponent },
+      { path: 'shelter/pets/edit/:id', component: ShelterUpdatePetComponent },
+      { path: 'shelter/adoption-requests', component: ShelterAdoptionRequestsComponent }
 
     ]
   },

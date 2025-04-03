@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { AdoptionService } from 'src/app/services/adoptions/adoption.service';
+import { AdoptionService } from 'src/app/services/adoptions/adoption/adoption.service';
 import { faPaw, faCommentDots, faCamera, faHeart } from '@fortawesome/free-solid-svg-icons';
 
 @Component({

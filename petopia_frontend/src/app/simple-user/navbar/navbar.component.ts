@@ -20,6 +20,12 @@ export class NavbarComponent {
     {id: 5, name: 'Vet', link: 'vet'},
     {id: 6, name: 'Adoption', link: 'adoption'},
 
+
+     //TODO-AMAL
+     {id: 7, name: 'Info', link: 'shelter/info'},
+     {id:8 , name: 'Pets', link: 'shelter/pets'},
+     {id:9 , name: 'Adoption Requests', link: 'shelter/adoption-requests'},
+
   ]
 
 }
