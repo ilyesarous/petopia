@@ -29,6 +29,23 @@
     color: #F83182;
 }
 
+
+.right-elements {
+    display: flex;
+    align-items: center;
+    gap: 1rem; /* Espace entre les éléments */
+}
+
+.game-icon {
+    font-size: 1.5rem;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.game-icon:hover {
+    transform: scale(1.1);
+}
+
 .notification-container {
     display: flex;
     align-items: center;

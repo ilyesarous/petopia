@@ -2,8 +2,13 @@
     <div class="header">
         <div class="welcome-container">
             <h1 class="welcome-text">Welcome back</h1>
-            <div class="notification-container">
-                <app-notification-vet></app-notification-vet>
+            <div class="right-elements">
+                <div class="game-icon" routerLink="/home/vet/tic-tac-toe">
+                    🎮 
+                </div>
+                <div class="notification-container">
+                    <app-notification-vet></app-notification-vet>
+                </div>
             </div>
         </div>
     </div>
@@ -16,19 +21,14 @@
                 <div class="stat-card patients">Click to view</div>
             </div>
     
-            <div class="stat-card appointments" routerLink="/home/vet/tic-tac-toe">
-                <h3>🎮 Tic Tac Toe Game</h3>
-                <div class="stat-card appointments">Click to play</div>
+            <div class="stat-card appointments" (click)="handlePaymentClick()">
+                <h3>💳 Payment</h3>
+                <div class="stat-card appointments">Click to pay</div>
             </div>
     
             <div class="stat-card treatments" (click)="redirectToUrlDogBreedRecognition()">
                 <h3>🐕 Dog Breed Recognition</h3>
                 <div class="stat-card treatments">Click to view</div>
-            </div>
-
-            <div class="stat-card patients" (click)="handlePaymentClick()">
-                <h3>💳 Payment</h3>
-                <div class="stat-card patients">Click to pay</div>
             </div>
 
         </div>
@@ -64,10 +64,7 @@
                 </div>
             </div>
         </div>
-    </div>
-
-    <br>
-    <app-qr-scanner></app-qr-scanner>
-    
+    </div>    
 </div>
+
 <app-chatbot></app-chatbot>
