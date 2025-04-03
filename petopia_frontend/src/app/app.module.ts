@@ -47,7 +47,9 @@ import { AppointmentUserComponent } from './simple-user/vet/appointment-user/app
 import { GameComponent } from './simple-user/vet/tic-tac-toe/game/game.component';
 import { BoardComponent } from './simple-user/vet/tic-tac-toe/board/board.component';
 import { TreatmentSpecificPetsUserComponent } from './simple-user/vet/treatment-specific-pets-user/treatment-specific-pets-user.component';
-
+import { PaymentStatusPopupComponent } from './simple-user/vet/payment-status-popup/payment-status-popup.component';
+import { MatIconModule } from '@angular/material/icon';
+import { MatDialogModule } from '@angular/material/dialog';
 
 @NgModule({
   declarations: [
@@ -86,6 +88,7 @@ import { TreatmentSpecificPetsUserComponent } from './simple-user/vet/treatment-
     DashPrincipaleUserComponent,
     AppointmentUserComponent,
     TreatmentSpecificPetsUserComponent,
+    PaymentStatusPopupComponent,
   ],
   imports: [
     BrowserModule,
@@ -101,6 +104,8 @@ import { TreatmentSpecificPetsUserComponent } from './simple-user/vet/treatment-
     CommonModule,
     CanvasJSAngularChartsModule,
     BrowserAnimationsModule,
+    MatIconModule,
+    MatDialogModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

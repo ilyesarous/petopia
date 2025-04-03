@@ -26,7 +26,7 @@ public class PaymentRequest {
     @Temporal(TemporalType.TIMESTAMP)
     private Date paymentDate;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     private User user;
 
     // Getters et Setters

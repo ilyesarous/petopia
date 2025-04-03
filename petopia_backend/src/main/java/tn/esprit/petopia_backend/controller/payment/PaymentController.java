@@ -3,9 +3,11 @@ package tn.esprit.petopia_backend.controller.payment;
 import com.stripe.exception.StripeException;
 import com.stripe.model.checkout.Session;
 import com.stripe.param.checkout.SessionCreateParams;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.view.RedirectView;
 import tn.esprit.petopia_backend.entities.payment.PaymentRequest;
 import tn.esprit.petopia_backend.services.payment.PaymentService;
 
@@ -61,13 +63,25 @@ public class PaymentController {
         return ResponseEntity.ok(result);
     }
 
+//    @GetMapping("/success")
+//    public String getSuccess() {
+//        return "Payment successful";
+//    }
+//
+//    @GetMapping("/cancel")
+//    public String cancel() {
+//        return "Payment canceled";
+//    }
+
     @GetMapping("/success")
-    public String getSuccess() {
-        return "Payment successful";
+    public RedirectView getSuccessVet() {
+        String redirectUrl = "http://localhost:4200/home/vet/dash-principale-user?payment_status=success";
+        return new RedirectView(redirectUrl);
     }
 
     @GetMapping("/cancel")
-    public String cancel() {
-        return "Payment canceled";
+    public RedirectView cancelVet() {
+        String redirectUrl = "http://localhost:4200/home/vet/dash-principale-user?payment_status=cancel";
+        return new RedirectView(redirectUrl);
     }
 }
