@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import {AuthService} from "../../services/user/auth.service";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-sidebar',
@@ -6,6 +8,26 @@ import { Component } from '@angular/core';
   styleUrls: ['./sidebar.component.css']
 })
 export class SidebarComponent {
+
+    isAuthenticated: boolean = false;
+    username: string = '';
+    role: string = '';
+
+  constructor(private authService: AuthService, private router: Router) {
+  }
+
+  ngOnInit() {
+    this.authService.isAuthenticated.subscribe((status) => {
+      this.isAuthenticated = status;
+    });
+    this.authService.username.subscribe((username) => {
+      this.username = username;
+    });
+    this.authService.role.subscribe((role) => {
+      this.role = role;
+    });
+  }
+
 
   selectedItem: string = '';
 
@@ -18,5 +40,11 @@ export class SidebarComponent {
     { name: 'Community Hub', route: '#', icon: 'bi bi-people'},
     { name: 'Settings', route: '#', icon: 'bi bi-gear'},
   ];
+
+  logout() {
+    this.authService.logout();
+    this.router.navigate(['/login']);
+  }
+
 
 }

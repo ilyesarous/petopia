@@ -16,23 +16,22 @@ import { ProductsComponent } from './simple-user/store/products/products.compone
 import { ProductDetailComponent } from './simple-user/store/product-detail/product-detail.component';
 import { FavoriteComponent } from './simple-user/store/favorite/favorite.component';
 import { StoreDashComponent } from './admin/store/store-dash/store-dash.component';
+import {LoginComponent} from "./components/login/login.component";
+import {SignupComponent} from "./components/signup/signup.component";
+import {AuthGuard} from "./auth.guard";
+
+
 
 const routes: Routes = [
-  { path: '', redirectTo: '/home', pathMatch: 'full' },
-  {
-    path: 'home',
-    component: ComponentWrapperComponent,
-    children: [
-      { path: 'products', component: ProductsComponent },
-      { path: 'products/:id', component: ProductDetailComponent },
-      { path: 'favorites', component: FavoriteComponent },
-      { path: 'vet', component: DashPrincipaleHomeVetComponent },
-      { path: 'vet/pet-growth/:id', component: PetGrowthVetComponent },
-    ],
-  },
-  {
-    path: 'dashboard',
-    component: DashbordComponent,
+  { path: '', redirectTo: '/login', pathMatch: 'full' },
+  { path: 'home', component: ComponentWrapperComponent, canActivate: [AuthGuard]},
+  { path: 'products', component: ProductsComponent },
+  { path: 'products/:id', component: ProductDetailComponent },
+  { path: 'favorites', component: FavoriteComponent },
+  { path: 'vet', component: DashPrincipaleHomeVetComponent },
+  { path: 'vet/pet-growth/:id', component: PetGrowthVetComponent },
+
+  { path: 'dashboard', component: DashbordComponent, canActivate: [AuthGuard],
     children: [
       { path: 'user', component: ChartComponent },
       { path: 'store', component: StoreDashComponent },
@@ -44,11 +43,14 @@ const routes: Routes = [
       { path: 'pet-growth', component: PetGrowthListComponent },
     ],
   },
-  { path: '**', component: PageNotFoundComponent },
+  { path: 'signup', component: SignupComponent },
+  { path: 'login', component: LoginComponent },
+  { path: '**', component: PageNotFoundComponent }
+
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule],
 })
-export class AppRoutingModule {}
+export class AppRoutingModule { }
