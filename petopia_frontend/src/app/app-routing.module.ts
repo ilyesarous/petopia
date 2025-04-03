@@ -43,6 +43,7 @@ const routes: Routes = [
       { path: 'pet-growth' , component: PetGrowthListComponent},
     ]
   },
+  
   { path: '**', component: PageNotFoundComponent }
 ];
 
