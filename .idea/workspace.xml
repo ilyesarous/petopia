@@ -4,8 +4,17 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d82146aa-c391-488d-a5e9-d2774f899f12" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    <list default="true" id="d82146aa-c391-488d-a5e9-d2774f899f12" name="Changes" comment="fix: fixed app module ts">
+      <change beforePath="$PROJECT_DIR$/petopia_frontend/src/app/app-routing.module.ts" beforeDir="false" afterPath="$PROJECT_DIR$/petopia_frontend/src/app/app-routing.module.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/petopia_frontend/src/app/app.module.ts" beforeDir="false" afterPath="$PROJECT_DIR$/petopia_frontend/src/app/app.module.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/petopia_frontend/src/app/shelter/shelter-info/shelter-info.component.css" beforeDir="false" afterPath="$PROJECT_DIR$/petopia_frontend/src/app/shelter/shelter-info/shelter-info.component.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/petopia_frontend/src/app/shelter/shelter-pet-list/shelter-pet-list.component.css" beforeDir="false" afterPath="$PROJECT_DIR$/petopia_frontend/src/app/shelter/shelter-pet-list/shelter-pet-list.component.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/petopia_frontend/src/app/shelter/shelter-pet-list/shelter-pet-list.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/petopia_frontend/src/app/shelter/shelter-pet-list/shelter-pet-list.component.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/petopia_frontend/src/app/shelter/shelter-pet-list/shelter-pet-list.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/petopia_frontend/src/app/shelter/shelter-pet-list/shelter-pet-list.component.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/petopia_frontend/src/app/shelter/shelter-update-pet/shelter-update-pet.component.css" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/petopia_frontend/src/app/shelter/shelter-update-pet/shelter-update-pet.component.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/petopia_frontend/src/app/shelter/shelter-update-pet/shelter-update-pet.component.spec.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/petopia_frontend/src/app/shelter/shelter-update-pet/shelter-update-pet.component.ts" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -71,7 +80,7 @@
     "RunOnceActivity.git.unshallow": "true",
     "Spring Boot.PetopiaBackendApplication.executor": "Run",
     "WebServerToolWindowFactoryState": "false",
-    "git-widget-placeholder": "main",
+    "git-widget-placeholder": "#6 on adoption",
     "ignore.virus.scanning.warn.message": "true",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "C:/Users/khalil/OneDrive/Bureau/petopia/petopia",
@@ -121,6 +130,15 @@
       <workItem from="1742862997142" duration="1017000" />
       <workItem from="1743220297230" duration="328000" />
     </task>
+    <task id="LOCAL-00001" summary="fix: fixed app module ts">
+      <option name="closed" value="true" />
+      <created>1743725714171</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1743725714171</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -151,5 +169,9 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="fix: fixed app module ts" />
+    <option name="LAST_COMMIT_MESSAGE" value="fix: fixed app module ts" />
   </component>
 </project>

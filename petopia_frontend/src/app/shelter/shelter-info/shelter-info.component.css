@@ -1,0 +1,163 @@
+.account-settings-container {
+    display: flex;
+    background: linear-gradient(to right, #ffe8f3, #ffffff);
+    border-radius: 15px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+    padding: 20px;
+    margin: 10px 40px;
+  }
+  
+  .sidebar {
+    padding: 20px;
+    border-right: 1px solid #f2f2f2;
+  }
+  
+  .sidebar ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .sidebar ul li {
+    padding: 10px 20px;
+    margin-bottom: 10px;
+    cursor: pointer;
+    transition: 0.3s;
+    border-radius: 8px;
+  }
+  
+  .sidebar ul li.active, .sidebar ul li:hover {
+    background-color: #ffd4e6;
+  }
+  
+  .sidebar ul li i {
+    margin-right: 10px;
+  }
+  
+  .settings-main {
+    padding: 0 40px;
+    width: 100%;
+  }
+  
+  .title {
+    color: #333;
+    font-size: 28px;
+    margin-bottom: 20px;
+  }
+  
+  .profile-picture {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  
+  .profile-picture img {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    margin-right: 15px;
+    object-fit: cover;
+  }
+  
+  .change-picture-btn {
+    cursor: pointer;
+    color: #ff6b81;
+  }
+  
+  .info-form .info-group {
+    margin-bottom: 25px;
+  }
+
+  .info-group {
+    position: relative;
+    border: 1px solid #d81b60;
+    border-radius: 20px;
+    min-height: 70px;
+    display: flex;
+    align-items: center;
+    justify-content: start;
+    padding: 0 40px;
+  }
+  
+  .info-group label {
+    display: block;
+    font-weight: 600;
+    color: #d81b60;
+    font-size: 1rem;
+    position: absolute;
+    top: -15px;
+    left: 25px;
+    background-color: #ffe8f3;
+    padding: 3px 15px;
+  }
+  
+  .info-group input, .info-group textarea {
+    width: 100%;
+    padding: 8px 12px;
+    border-radius: 10px;
+    border: none;
+    background-color: transparent;
+    outline: none !important;
+  }
+  
+  .info-group input[readonly], .info-group textarea[readonly] {
+    background-color: transparent;
+    border-color: transparent;
+    color: #555;
+    font-weight: 500;
+    outline: none !important;
+  }
+  
+  .actions {
+    margin-top: 20px;
+  }
+  
+  .actions .btn-edit, .actions .btn-update, .actions .btn-cancel {
+    padding: 8px 20px;
+    border-radius: 20px;
+    border: none;
+    cursor: pointer;
+    transition: 0.3s;
+  }
+  
+  .btn-edit {
+    background-color: #ff7439;
+    color: #fff;
+    font-size: 1rem;
+    font-weight: bold;
+  }
+  
+  .btn-update {
+    background-color: #33cc77;
+    color: #fff;
+  }
+  
+  .btn-cancel {
+    background-color: #aaa;
+    color: #fff;
+    margin-left: 10px;
+  }
+  
+  .alert {
+    margin-top: 15px;
+    text-align: center;
+    font-weight: 600;
+    padding: 8px;
+    border-radius: 10px;
+  }
+  
+  .alert-success {
+    background-color: #d4edda;
+    color: #155724;
+  }
+  
+  .alert-danger {
+    background-color: #f8d7da;
+    color: #721c24;
+  }
+  .icon-pen {
+    color: #ff6b81;
+    font-size: 1.1rem;
+    vertical-align: middle;
+    border-bottom: 1px solid;
+
+  }

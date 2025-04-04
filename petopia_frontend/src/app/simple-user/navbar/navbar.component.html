@@ -25,6 +25,20 @@
           </li>
         </ng-container>
 
+        <!-- Dynamic Pages for Shelter Users -->
+        <ng-container *ngIf="isAuthenticated && role === 'ROLE_SHELTER'">
+          <li class="nav-item" *ngFor="let page of shelterPages">
+            <a class="nav-link"
+               [routerLink]="page.link"
+               routerLinkActive="active"
+               (click)="selectedItem = page.name"
+               [ngClass]="{'is-selected': selectedItem === page.name}">
+              {{ page.name }}
+            </a>
+          </li>
+        </ng-container>
+
+
         <!-- Signup & Login (for guests) -->
         <li class="nav-item" *ngIf="!isAuthenticated">
           <a class="nav-link" routerLink="/signup" routerLinkActive="active" (click)="selectedItem = 'Sign up'">Sign up</a>
@@ -47,16 +61,19 @@
           <div class="dropdown-menu" [ngClass]="{'show': isDropdownOpen}">
             <!-- User-specific links -->
             <a class="dropdown-item" routerLink="/profileUser" (click)="selectedItem = 'Profile'">
-              <i class="fas fa-user"></i> Profile
+              <i class="fas fa-user" style="color: #F83182;"></i> Profile
             </a>
-            <a class="dropdown-item" routerLink="/pet" (click)="selectedItem = 'Add Pet'">
-              <i class="fas fa-paw"></i> Add Pet
+            <a class="dropdown-item" routerLink="shelter/info" (click)="selectedItem = ' Shelter Infos'" *ngIf="role === 'ROLE_SHELTER'">
+              <i class="bi bi-house-heart-fill" style="color: #F83182;"></i> Shelter Info
             </a>
-            <a class="dropdown-item" routerLink="/ListPets" (click)="selectedItem = 'My Pets'">
-              <i class="fas fa-list"></i> My Pets
+            <a class="dropdown-item" routerLink="/pet" (click)="selectedItem = 'Add Pet'" *ngIf="role === 'ROLE_USER'">
+              <i class="fas fa-paw" style="color: #F83182;"></i> Add Pet
+            </a>
+            <a class="dropdown-item" routerLink="/ListPets" (click)="selectedItem = 'My Pets'" *ngIf="role === 'ROLE_USER'">
+              <i class="fas fa-list" style="color: #F83182;"></i> My Pets
             </a>
             <a class="dropdown-item" routerLink="/ListReclamationFront" (click)="selectedItem = 'My Requests'">
-              <i class="fas fa-comment-alt"></i> My Requests
+              <i class="fas fa-comment-alt" style="color: #F83182;"></i> My Requests
             </a>
           </div>
         </li>

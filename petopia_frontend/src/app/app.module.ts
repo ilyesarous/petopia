@@ -20,7 +20,7 @@ import { QrScannerComponent } from './admin/vet/qr-scanner/qr-scanner.component'
 import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonModule } from '@angular/material/button';
 import { NotificationListComponent } from './admin/vet/notifications/notification-list/notification-list.component';
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { NotificationStatsComponent } from './admin/vet/notifications/notification-stats/notification-stats.component';
 import { ConsultationListComponent } from './admin/vet/consultations/consultation-list/consultation-list.component';
 import { NgxPaginationModule } from 'ngx-pagination';
@@ -28,13 +28,10 @@ import { DiagnosisListComponent } from './admin/vet/diagnoses/diagnosis-list/dia
 import { PetGrowthListComponent } from './admin/vet/pet-growth/pet-growth-list/pet-growth-list.component';
 import { DashPrincipaleHomeVetComponent } from './simple-user/vet/dash-principale-home-vet/dash-principale-home-vet.component';
 import { PetGrowthVetComponent } from './simple-user/vet/pet-growth-vet/pet-growth-vet.component';
-import { FormsModule } from '@angular/forms';
 import { NgApexchartsModule } from 'ng-apexcharts';
-import { ReactiveFormsModule } from '@angular/forms';
 import { FullCalendarModule } from '@fullcalendar/angular';
 import { VetCalendarComponent } from './simple-user/vet/vet-calendar/vet-calendar.component';
 import { ConsultationDetailsModalComponent } from './simple-user/vet/consultation-details-modal/consultation-details-modal.component';
-
 import { CommonModule } from '@angular/common';
 import { CanvasJSAngularChartsModule } from '@canvasjs/angular-charts';
 import { ChartComponent } from './admin/chart/chart.component';
@@ -52,6 +49,22 @@ import { FeedbacksComponent } from './simple-user/store/feedbacks/feedbacks.comp
 import {LoginComponent} from "./components/login/login.component";
 import {FooterComponent} from "./components/footer/footer.component";
 import {SignupComponent} from "./components/signup/signup.component";
+import { PetAdoptionListComponent } from './simple-user/adoption/pet-adoption-list/pet-adoption-list.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { AuthInterceptor } from './interceptors/auth.interceptor';
+import { PetAdoptDetailsComponent } from './simple-user/adoption/pet-adopt-details/pet-adopt-details.component';
+
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { faCoffee, faUser, faHome } from '@fortawesome/free-solid-svg-icons';
+import { AdoptPetComponent } from './simple-user/adoption/adopt-pet/adopt-pet.component';
+import { ShelterInfoComponent } from './shelter/shelter-info/shelter-info.component';
+import { ShelterPetListComponent } from './shelter/shelter-pet-list/shelter-pet-list.component';
+import { ShelterAddPetComponent } from './shelter/shelter-add-pet/shelter-add-pet.component';
+import { ShelterAdoptionRequestsComponent } from './shelter/shelter-adoption-requests/shelter-adoption-requests.component';
+import { faLightbulb } from '@fortawesome/free-solid-svg-icons';
+import { faPaw, faHeart, faHandHoldingHeart, faInfoCircle,faCommentDots, faCamera,faPen } from '@fortawesome/free-solid-svg-icons';
+
 
 @NgModule({
   declarations: [
@@ -93,7 +106,14 @@ import {SignupComponent} from "./components/signup/signup.component";
     FeedbacksComponent,
     LoginComponent,
     FooterComponent,
-    SignupComponent
+    SignupComponent,
+    PetAdoptionListComponent,
+    PetAdoptDetailsComponent,
+    AdoptPetComponent,
+    ShelterInfoComponent,
+    ShelterPetListComponent,
+    ShelterAddPetComponent,
+    ShelterAdoptionRequestsComponent
   ],
   imports: [
     BrowserModule,
@@ -108,9 +128,16 @@ import {SignupComponent} from "./components/signup/signup.component";
     FullCalendarModule,
     CommonModule,
     CanvasJSAngularChartsModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    FontAwesomeModule,
   ],
-  providers: [],
+  providers: [
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }
+  ],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+  constructor() {
+    library.add(faCoffee, faUser, faHome, faLightbulb, faPaw, faHeart, faHandHoldingHeart, faInfoCircle,faPaw,faPen, faCommentDots, faCamera); 
+  }
+ }

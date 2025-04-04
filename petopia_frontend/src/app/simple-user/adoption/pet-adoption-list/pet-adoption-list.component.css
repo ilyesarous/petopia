@@ -1,0 +1,128 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+
+/* Global Styles */
+body {
+  font-family: 'Poppins', sans-serif;
+  background-color: #f5f7fa;
+  margin: 0;
+  padding: 0;
+}
+
+h2 {
+  font-weight: 600;
+}
+
+/* Carousel Section */
+.carousel-item img {
+  object-fit: cover;
+  height: 400px;
+}
+
+/* Search & Filter Container */
+.search-filter-container {
+  background: linear-gradient(135deg, #faf5f9, #ffc0c9);
+  border-radius: 15px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  padding: 1rem;
+  
+  h3 {
+    font-weight: 600;
+    margin-bottom: 20px;
+  }
+}
+
+/* Pet Card */
+.pet-card {
+  border: none;
+  border-radius: 15px;
+  overflow: hidden;
+  background-color: #fff;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+  }
+
+  .card-img-top {
+    height: 200px;
+    object-fit: cover;
+  }
+
+  .card-body {
+    color: #333;
+    text-align: center;
+  }
+}
+
+/* Buttons */
+.adopt-btn {
+  background-color: #ff6b81;
+  color: #fff;
+  border: none;
+  border-radius: 50px;
+  padding: 8px 20px;
+  font-weight: 600;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+
+  &:hover {
+    background-color: #ff4757;
+    transform: scale(1.05);
+  }
+}
+.dream-pet-search-section {
+  .dream-pet-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: linear-gradient(135deg, #ffd09a, #fad0c4);
+    border-radius: 15px;
+    padding: 2rem;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    color: #333;
+    font-family: 'Poppins', sans-serif;
+    
+    .content {
+      flex: 1;
+      padding-right: 1rem;
+      
+      .dream-pet-title {
+        font-size: 2.5rem;
+        font-weight: 600;
+        margin-bottom: 1rem;
+      }
+      
+      .dream-pet-description {
+        font-size: 1.1rem;
+        margin-bottom: 1.5rem;
+        line-height: 1.5;
+      }
+      
+      .dream-pet-btn {
+        background-color: #ffb36b;
+        color: #fff;
+        border: none;
+        border-radius: 50px;
+        padding: 10px 25px;
+        font-weight: 600;
+        font-size: 1rem;
+        transition: background-color 0.3s ease, transform 0.3s ease;
+        
+        &:hover {
+          background-color: #ff7247;
+          transform: scale(1.05);
+        }
+      }
+    }
+    
+    .illustration {
+      flex: 0 0 auto;
+      text-align: center;
+      
+      img {
+        max-width: 60%;
+      }
+    }
+  }
+}
