@@ -4,7 +4,6 @@ import { PageNotFoundComponent } from './page-not-found/page-not-found.component
 import { DashbordComponent } from './admin/dashbord/dashbord.component';
 import { ComponentWrapperComponent } from './simple-user/component-wrapper/component-wrapper.component';
 import { DashPrincipaleComponent } from './admin/vet/dash-principale/dash-principale.component';
-import { GameComponent } from './admin/vet/tic-tac-toe-game/game/game.component';
 import { NotificationListComponent } from './admin/vet/notifications/notification-list/notification-list.component';
 import { ConsultationListComponent } from './admin/vet/consultations/consultation-list/consultation-list.component';
 import { DiagnosisListComponent } from './admin/vet/diagnoses/diagnosis-list/diagnosis-list.component';
@@ -36,9 +35,9 @@ import { GrowthTrakingChoseIdComponent } from './simple-user/vet/growth-traking-
 import { AppDogBreedRecognitionRedirectButtonComponent } from './admin/vet/app-dog-breed-recognition-redirect-button/app-dog-breed-recognition-redirect-button.component';
 import { DashPrincipaleUserComponent } from './simple-user/vet/dash-principale-user/dash-principale-user.component';
 import { AppointmentUserComponent } from './simple-user/vet/appointment-user/appointment-user.component';
-import { GameComponent } from './simple-user/vet/tic-tac-toe/game/game.component';
 import { TreatmentSpecificPetsUserComponent } from './simple-user/vet/treatment-specific-pets-user/treatment-specific-pets-user.component';
 import { VideoConsultationComponent } from './simple-user/vet/video-consultation/video-consultation.component';
+import { GameComponent } from './simple-user/vet/tic-tac-toe/game/game.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
