@@ -2,9 +2,7 @@ package tn.esprit.petopia_backend.controller.vet;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
-import tn.esprit.petopia_backend.entities.user.User;
 import tn.esprit.petopia_backend.entities.vet.Consultations;
 import tn.esprit.petopia_backend.entities.vet.status_type;
 import tn.esprit.petopia_backend.services.vet.IConsultationsService;
@@ -22,29 +20,14 @@ public class ConsultationsController {
 
     @PostMapping("/auth/Consultations/addConsultations")//user
     public Consultations addConsultations(@RequestBody Consultations consultations){
-        System.out.println("***********controller***********");
         System.out.println(consultations.toString());
         return consultationsService.addConsultations(consultations);
     }
-
-
-//    @PostMapping("/vet/addConsultations")
-//    Consultations addConsultationsvet(@RequestBody Consultations consultations){
-//        return consultationsService.addConsultations(consultations);
-//    }
-//    @PostMapping("/user/Consultations/addConsultations")
-//    Consultations addConsultationsuser(@RequestBody Consultations consultations){
-//        return consultationsService.addConsultations(consultations);
-//    }
-    //nestagnaa ala hediiii
-//@RequestMapping("/Consultations") //njidd kelmett auth
-
 
     @PutMapping("/auth/Consultations/updateConsultations")
     Consultations updateConsultations(@RequestBody Consultations consultations){
         return consultationsService.updateConsultations(consultations);
     }
-
 
     @PutMapping("/auth/Consultations/updateConsultationsStatus/{id}")
     @ResponseBody
@@ -75,8 +58,6 @@ public class ConsultationsController {
 
         return ResponseEntity.badRequest().build();
     }
-
-
 
     @DeleteMapping("/auth/Consultations/deleteConsultations/{idConsultations}")//vet
     void deleteConsultations(@PathVariable int idConsultations){

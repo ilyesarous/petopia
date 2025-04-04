@@ -1,0 +1,206 @@
+.dashboard {
+    font-family: Arial, sans-serif;
+    padding: 20px;
+    background-color: #F5F5F7;
+    color: #2E2E3A;
+}
+
+.header h1 {
+    font-size: 24px;
+    margin-bottom: 20px;
+    color: #F83182;
+}
+
+.header {
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+.welcome-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.welcome-text {
+    margin: 0; /* Supprime les marges par défaut */
+    font-size: 24px;
+    color: #F83182;
+}
+
+
+.right-elements {
+    display: flex;
+    align-items: center;
+    gap: 1rem; /* Espace entre les éléments */
+}
+
+.game-icon {
+    font-size: 1.5rem;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.game-icon:hover {
+    transform: scale(1.1);
+}
+
+.notification-container {
+    display: flex;
+    align-items: center;
+}
+
+.pets-section {
+    max-width: 800px;
+    margin: 30px auto;
+    padding: 20px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.pets-title {
+    color: #FF617C;
+    margin-bottom: 25px;
+    font-size: 24px;
+    text-align: center;
+}
+
+.pets-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 25px;
+}
+
+.pet-card {
+    background-color: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    display: flex;
+    transition: transform 0.3s ease;
+}
+
+.pet-card:hover {
+    transform: translateY(-5px);
+}
+
+.pet-image-container {
+    width: 120px;
+    height: 120px;
+    overflow: hidden;
+    flex-shrink: 0;
+}
+
+.pet-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.pet-info {
+    padding: 15px;
+    flex-grow: 1;
+}
+
+.pet-name {
+    color: #2E2E3A;
+    margin: 0 0 5px 0;
+    font-size: 18px;
+}
+
+.pet-breed {
+    color: #2E2E3A;
+    margin: 0 0 5px 0;
+    font-size: 15px;
+}
+
+.pet-details {
+    color: #666;
+    margin: 0 0 10px 0;
+    font-size: 14px;
+}
+
+.pet-type-badge {
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: 15px;
+    color: white;
+    font-size: 12px;
+    font-weight: 600;
+    margin-right: 10px;
+}
+
+.pet-link {
+    color: #FF617C;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 600;
+    transition: color 0.3s;
+}
+
+.pet-link:hover {
+    color: #F83182;
+    text-decoration: underline;
+}
+
+@media (max-width: 600px) {
+    .pets-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .pet-card {
+        flex-direction: column;
+    }
+    
+    .pet-image-container {
+        width: 100%;
+        height: 150px;
+    }
+}
+
+.stats-grid-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+/* Ligne de cartes */
+.stats-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+}
+
+/* Style des cartes (conservez vos styles existants) */
+.stat-card {
+    background: white;
+    border-radius: 12px;
+    padding: 15px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.stat-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+/* Couleurs des bordures (conservez vos couleurs existantes) */
+.patients { border-top: 4px solid #F83182; }
+.appointments { border-top: 4px solid #FF7088; }
+.treatments { border-top: 4px solid #fd67bf; } /* Changé en vert pour les traitements */
+
+/* Contenu des cartes */
+.stat-card h3 {
+    color: #2E2E3A;
+    font-size: 16px;
+    margin-bottom: 10px;
+}
+
+.stat-card .value {
+    font-size: 24px;
+    font-weight: bold;
+    color: #2E2E3A;
+}

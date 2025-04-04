@@ -1,44 +1,125 @@
-<!-- dash-principale.component.html -->
-<div class="container mt-5" style="max-width: 800px;">
-    <h2 class="text-center mb-4" style="color: #F83182; font-weight: 600;">
-        <i class="fas fa-paw me-2"></i>Pet Growth Tracking
-    </h2>
-    
-    <div class="card border-0 shadow-lg" style="border-radius: 15px; overflow: hidden;">
-        <div class="card-header py-3 text-white" style="background: linear-gradient(135deg, #F83182 0%, #FF617C 100%);">
-            <h5 class="mb-0"><i class="fas fa-search me-2"></i>Find Pet Records</h5>
-        </div>
-        
-        <div class="card-body p-4">
-            <div class="form-group mb-4">
-                <label for="petId" class="form-label" style="color: #FF617C; font-weight: 500;">
-                    <i class="fas fa-id-card me-2"></i>Enter Pet ID:
-                </label>
-                <input type="number" 
-                       class="form-control form-control-lg" 
-                       id="petId" 
-                       [(ngModel)]="petId" 
-                       placeholder="e.g. 12345"
-                       style="border: 2px solid #FE9A7A; border-radius: 10px; padding: 12px;">
-            </div>
+<div class="dashboard">
+    <div class="header">
+        <div class="welcome-container">
+            <h1 class="welcome-text">Welcome back, Doctor</h1>
             
-            <button class="btn w-100 py-3" 
-                    (click)="navigateToPetGrowth()"
-                    style="background-color: #F83182; color: white; border: none; border-radius: 10px;
-                           font-weight: 600; font-size: 1.1rem; transition: all 0.3s;">
-                <i class="fas fa-chart-line me-2"></i>View Growth History
-                <i class="fas fa-arrow-right ms-2"></i>
-            </button>
+            <div class="action-buttons">
+                <button class="meet-button" routerLink="/home/vet/meet">
+                    <i class="fas fa-video"></i> Start Meet
+                </button>
+                <div class="notification-container">
+                    <app-notification-vet></app-notification-vet>
+                </div>
+            </div>
         </div>
     </div>
+
+    <div class="stats-grid-container">
+        <div class="stats-row">
+            <!-- Première ligne (3 cartes) -->
+            <div class="stat-card patients">
+                <h3>🐕‍🦺 Total Patients 🐈‍⬛</h3>
+                <div class="stat-card patients">11</div>
+            </div>
+    
+            <div class="stat-card appointments">
+                <h3>🗓️ Today's Appointments</h3>
+                <div class="stat-card appointments">{{totalAppointments}}</div>
+            </div>
+    
+            <div class="stat-card treatments">
+                <h3>💵 Revenue</h3>
+                <div class="stat-card treatments">$11</div>
+            </div>
+        </div>
+    
+        <div class="stats-row">
+            <!-- Deuxième ligne (3 cartes) -->
+            <div class="stat-card patients" routerLink="/home/vet/treatment-pets">
+                <h3>🩺 Treatments and Procedures</h3>
+                <div class="stat-card patients">Click to view</div>
+            </div>
+    
+            <div class="stat-card appointments" routerLink="/home/vet/growth-traking-chose-id">
+                <h3>📊 Pet Growth Tracking</h3>
+                <div class="stat-card appointments">Click to view</div>
+            </div>
+    
+            <div class="stat-card treatments" (click)="redirectToUrlDogBreedRecognition()">
+                <h3>🐕 Dog Breed Recognition</h3>
+                <div class="stat-card treatments">Click to view</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="content-container">
+        <div class="appointments-section">
+            <div class="section">
+                <div class="section-header">
+                    <h2>Today's Appointments</h2>
+                    <a routerLink="/home/vet/vet-calendar" class="view-link">View calendar</a>
+                </div>
+        
+                <div *ngIf="hasAppointmentsToday; else noAppointments">
+                    <div class="appointment-item" *ngFor="let appointment of todayAppointments">
+                        <div class="pet-avatar" 
+                             [style.backgroundImage]="'url(' + (appointment.petconsultation.imageUrl || defaultPetImage) + ')'">
+                            <span *ngIf="!appointment.petconsultation.imageUrl">
+                                {{getPetInitial(appointment.petconsultation.petName)}}
+                            </span>
+                        </div>
+                        
+                        <div class="pet-info">
+                            <h4>{{appointment.petconsultation.petName}}</h4>
+                            <p>{{appointment.userclient.name}}</p>
+                        </div>
+                        
+                        <div class="appointment-time">
+                            <span>🕧</span>
+                            <span>{{appointment.start_time | slice:0:5}}</span>
+                        </div>
+                        
+                        <div class="consultation-type" 
+                             [style.backgroundColor]="getConsultationColor(appointment.consultationT)">
+                            {{appointment.consultationT === 'meet' ? 'Online' : 'At Vet'}}
+                        </div>
+                    </div>
+                </div>
+        
+                <ng-template #noAppointments>
+                    <div class="no-appointments">
+                        <img src="assets/images/logo.png" alt="No appointments" width="50">
+                        <p>No appointments scheduled for today</p>
+                    </div>
+                </ng-template>
+            </div>
+        </div>
+
+        <div class="recent-patients-section">
+            <div class="section">
+                <div class="section-header">
+                    <h2>Patients List</h2>
+                    <a href="#" class="view-link">View All</a>
+                </div>
+                
+                <div class="patient-item">
+                    <div class="pet-avatar">
+                        <span>M</span>
+                    </div>
+                    
+                    <div class="pet-info">
+                        <h4>Max</h4>
+                        <p>Dog • Golden Retriever</p>
+                        <p class="last-visit">Last visit: 2 days ago</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <br>
+    <app-qr-scanner></app-qr-scanner>
+
 </div>
 
-<br>
-<app-qr-scanner></app-qr-scanner>
-
-<br>
-<app-vet-calendar></app-vet-calendar>
-
-
 <app-chatbot></app-chatbot>
-

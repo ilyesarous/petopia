@@ -14,8 +14,6 @@ import { ComponentWrapperComponent } from './simple-user/component-wrapper/compo
 import { DashPrincipaleComponent } from './admin/vet/dash-principale/dash-principale.component';
 import { ChatbotComponent } from './admin/vet/chatbot/chatbot.component';
 import { AppDogBreedRecognitionRedirectButtonComponent } from './admin/vet/app-dog-breed-recognition-redirect-button/app-dog-breed-recognition-redirect-button.component';
-import { GameComponent } from './admin/vet/tic-tac-toe-game/game/game.component';
-import { BoardComponent } from './admin/vet/tic-tac-toe-game/board/board.component';
 import { QrScannerComponent } from './admin/vet/qr-scanner/qr-scanner.component';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonModule } from '@angular/material/button';
@@ -35,6 +33,19 @@ import { ConsultationDetailsModalComponent } from './simple-user/vet/consultatio
 import { CommonModule } from '@angular/common';
 import { CanvasJSAngularChartsModule } from '@canvasjs/angular-charts';
 import { ChartComponent } from './admin/chart/chart.component';
+import { TreatmentPetsComponent } from './simple-user/vet/treatment-pets/treatment-pets.component';
+import { TreatmentSpecificPetsComponent } from './simple-user/vet/treatment-specific-pets/treatment-specific-pets.component';
+import { NotificationVetComponent } from './simple-user/vet/notification-vet/notification-vet.component';
+import { GrowthTrakingChoseIdComponent } from './simple-user/vet/growth-traking-chose-id/growth-traking-chose-id.component';
+import { DashPrincipaleUserComponent } from './simple-user/vet/dash-principale-user/dash-principale-user.component';
+import { AppointmentUserComponent } from './simple-user/vet/appointment-user/appointment-user.component';
+import { GameComponent } from './simple-user/vet/tic-tac-toe/game/game.component';
+import { BoardComponent } from './simple-user/vet/tic-tac-toe/board/board.component';
+import { TreatmentSpecificPetsUserComponent } from './simple-user/vet/treatment-specific-pets-user/treatment-specific-pets-user.component';
+import { PaymentStatusPopupComponent } from './simple-user/vet/payment-status-popup/payment-status-popup.component';
+import { MatIconModule } from '@angular/material/icon';
+import { MatDialogModule } from '@angular/material/dialog';
+import { VideoConsultationComponent } from './simple-user/vet/video-consultation/video-consultation.component';
 import { ProductsComponent } from './simple-user/store/products/products.component';
 import { ProductCardComponent } from './simple-user/store/product-card/product-card.component';
 import { CarouselComponent } from './simple-user/store/carousel/carousel.component';
@@ -96,6 +107,15 @@ import { faPaw, faHeart, faHandHoldingHeart, faInfoCircle,faCommentDots, faCamer
     PetGrowthListComponent,
     ChartComponent,
     ProductsComponent,
+    TreatmentPetsComponent,
+    TreatmentSpecificPetsComponent,
+    NotificationVetComponent,
+    GrowthTrakingChoseIdComponent,
+    DashPrincipaleUserComponent,
+    AppointmentUserComponent,
+    TreatmentSpecificPetsUserComponent,
+    PaymentStatusPopupComponent,
+    VideoConsultationComponent,
     ProductCardComponent,
     CarouselComponent,
     BrandsComponent,
@@ -130,6 +150,8 @@ import { faPaw, faHeart, faHandHoldingHeart, faInfoCircle,faCommentDots, faCamer
     CanvasJSAngularChartsModule,
     BrowserAnimationsModule,
     FontAwesomeModule,
+    MatIconModule,
+    MatDialogModule,
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }
@@ -138,6 +160,6 @@ import { faPaw, faHeart, faHandHoldingHeart, faInfoCircle,faCommentDots, faCamer
 })
 export class AppModule {
   constructor() {
-    library.add(faCoffee, faUser, faHome, faLightbulb, faPaw, faHeart, faHandHoldingHeart, faInfoCircle,faPaw,faPen, faCommentDots, faCamera); 
+    library.add(faCoffee, faUser, faHome, faLightbulb, faPaw, faHeart, faHandHoldingHeart, faInfoCircle,faPaw,faPen, faCommentDots, faCamera);
   }
  }

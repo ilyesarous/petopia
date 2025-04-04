@@ -37,4 +37,12 @@ export class ConsultationService {
     );
   }
 
+  addConsultation(consultation: any): Observable<Consultation> {
+    return this.http.post<Consultation>(`${this.apiUrl}/addConsultations`, consultation, this.httpOptions);
+  }
+
+  deleteConsultation(id: number): Observable<any> {
+    return this.http.delete(`${this.apiUrl}/deleteConsultations/${id}`, this.httpOptions);
+  }
+
 }
