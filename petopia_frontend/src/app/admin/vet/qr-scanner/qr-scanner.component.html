@@ -1,14 +1,16 @@
-<div>
-    <button (click)="startScanning()">Start Scanning</button>
-    <button (click)="stopScanning()">Stop Scanning</button>
+<div class="container">
+  <!-- Conteneur vidéo + boutons -->
+  <div class="video-container">
+      <div>
+          <button (click)="startScanning()">Start Scanning</button>
+          <button (click)="stopScanning()">Stop Scanning</button>
+      </div>
+      <video id="video" width="300" height="200"></video>
   </div>
-  
-  <video id="video" width="300" height="200"></video>
 
-  <br>
-  <br>
-
-  <div *ngIf="scannedResult">
-    <h3>Scanned Result:</h3>
-    <p>{{ scannedResult }}</p>
+  <!-- Conteneur des résultats -->
+  <div class="result-container" *ngIf="scannedResult">
+      <h3>Scanned Result:</h3>
+      <p>{{ scannedResult }}</p>
   </div>
+</div>

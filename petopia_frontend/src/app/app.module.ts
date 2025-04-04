@@ -28,10 +28,13 @@ import { DiagnosisListComponent } from './admin/vet/diagnoses/diagnosis-list/dia
 import { PetGrowthListComponent } from './admin/vet/pet-growth/pet-growth-list/pet-growth-list.component';
 import { DashPrincipaleHomeVetComponent } from './simple-user/vet/dash-principale-home-vet/dash-principale-home-vet.component';
 import { PetGrowthVetComponent } from './simple-user/vet/pet-growth-vet/pet-growth-vet.component';
+import { FormsModule } from '@angular/forms';
 import { NgApexchartsModule } from 'ng-apexcharts';
+import { ReactiveFormsModule } from '@angular/forms';
 import { FullCalendarModule } from '@fullcalendar/angular';
 import { VetCalendarComponent } from './simple-user/vet/vet-calendar/vet-calendar.component';
 import { ConsultationDetailsModalComponent } from './simple-user/vet/consultation-details-modal/consultation-details-modal.component';
+
 import { CommonModule } from '@angular/common';
 import { CanvasJSAngularChartsModule } from '@canvasjs/angular-charts';
 import { ChartComponent } from './admin/chart/chart.component';
@@ -65,6 +68,19 @@ import { ShelterAdoptionRequestsComponent } from './shelter/shelter-adoption-req
 import { faLightbulb } from '@fortawesome/free-solid-svg-icons';
 import { faPaw, faHeart, faHandHoldingHeart, faInfoCircle,faCommentDots, faCamera,faPen } from '@fortawesome/free-solid-svg-icons';
 
+import { TreatmentPetsComponent } from './simple-user/vet/treatment-pets/treatment-pets.component';
+import { TreatmentSpecificPetsComponent } from './simple-user/vet/treatment-specific-pets/treatment-specific-pets.component';
+import { NotificationVetComponent } from './simple-user/vet/notification-vet/notification-vet.component';
+import { GrowthTrakingChoseIdComponent } from './simple-user/vet/growth-traking-chose-id/growth-traking-chose-id.component';
+import { DashPrincipaleUserComponent } from './simple-user/vet/dash-principale-user/dash-principale-user.component';
+import { AppointmentUserComponent } from './simple-user/vet/appointment-user/appointment-user.component';
+import { GameComponent } from './simple-user/vet/tic-tac-toe/game/game.component';
+import { BoardComponent } from './simple-user/vet/tic-tac-toe/board/board.component';
+import { TreatmentSpecificPetsUserComponent } from './simple-user/vet/treatment-specific-pets-user/treatment-specific-pets-user.component';
+import { PaymentStatusPopupComponent } from './simple-user/vet/payment-status-popup/payment-status-popup.component';
+import { MatIconModule } from '@angular/material/icon';
+import { MatDialogModule } from '@angular/material/dialog';
+import { VideoConsultationComponent } from './simple-user/vet/video-consultation/video-consultation.component';
 
 @NgModule({
   declarations: [
@@ -114,6 +130,15 @@ import { faPaw, faHeart, faHandHoldingHeart, faInfoCircle,faCommentDots, faCamer
     ShelterPetListComponent,
     ShelterAddPetComponent,
     ShelterAdoptionRequestsComponent
+    TreatmentPetsComponent,
+    TreatmentSpecificPetsComponent,
+    NotificationVetComponent,
+    GrowthTrakingChoseIdComponent,
+    DashPrincipaleUserComponent,
+    AppointmentUserComponent,
+    TreatmentSpecificPetsUserComponent,
+    PaymentStatusPopupComponent,
+    VideoConsultationComponent,
   ],
   imports: [
     BrowserModule,
@@ -130,6 +155,8 @@ import { faPaw, faHeart, faHandHoldingHeart, faInfoCircle,faCommentDots, faCamer
     CanvasJSAngularChartsModule,
     BrowserAnimationsModule,
     FontAwesomeModule,
+    MatIconModule,
+    MatDialogModule,
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }
@@ -138,6 +165,6 @@ import { faPaw, faHeart, faHandHoldingHeart, faInfoCircle,faCommentDots, faCamer
 })
 export class AppModule {
   constructor() {
-    library.add(faCoffee, faUser, faHome, faLightbulb, faPaw, faHeart, faHandHoldingHeart, faInfoCircle,faPaw,faPen, faCommentDots, faCamera); 
+    library.add(faCoffee, faUser, faHome, faLightbulb, faPaw, faHeart, faHandHoldingHeart, faInfoCircle,faPaw,faPen, faCommentDots, faCamera);
   }
  }

@@ -1,0 +1,38 @@
+<div class="payment-popup-container" [ngClass]="{'success': data.status === 'success', 'cancel': data.status === 'cancel'}">
+    <div class="popup-header">
+      <h2>
+        <span *ngIf="data.status === 'success'">✅</span>
+        <span *ngIf="data.status === 'cancel'">❌</span>
+        {{ data.status === 'success' ? 'Payment Successful' : 'Payment Canceled' }}
+      </h2>
+      <button mat-icon-button (click)="closeDialog()">
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
+  
+    <div class="popup-content">
+      <p *ngIf="data.status === 'success'">
+        Thank you for your payment! Your transaction has been completed successfully.
+      </p>
+      <p *ngIf="data.status === 'cancel'">
+        Your payment was canceled. No amount has been charged.
+      </p>
+  
+      <!-- Détails du paiement (visible seulement pour les paiements réussis) -->
+      <div *ngIf="data.status === 'success'" class="payment-details">
+        <div class="detail-row">
+          <span class="detail-label">Amount:</span>
+          <span class="detail-value">{{ data.amount || paymentDetails.amount }} {{ paymentDetails.currency }}</span>
+        </div>
+        <div class="detail-row">
+          <span class="detail-label">Description:</span>
+          <span class="detail-value">{{ data.description || paymentDetails.description }}</span>
+        </div>
+        <div class="detail-row">
+          <span class="detail-label">Date:</span>
+          <span class="detail-value">{{ paymentDetails.date }}</span>
+        </div>
+      </div>
+  
+    </div>
+  </div>

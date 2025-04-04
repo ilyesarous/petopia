@@ -2,7 +2,6 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
     height: 100vh;
     background-color: #FFFFFF; /* Fond blanc */
     color: #333333; /* Texte en noir pour contraster avec le fond blanc */
