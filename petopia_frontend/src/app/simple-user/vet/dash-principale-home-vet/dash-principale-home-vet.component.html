@@ -4,7 +4,7 @@
             <h1 class="welcome-text">Welcome back, Doctor</h1>
             
             <div class="action-buttons">
-                <button class="meet-button" routerLink="/home/vet/meet">
+                <button class="meet-button" routerLink="/vet/meet">
                     <i class="fas fa-video"></i> Start Meet
                 </button>
                 <div class="notification-container">
@@ -35,12 +35,12 @@
     
         <div class="stats-row">
             <!-- Deuxième ligne (3 cartes) -->
-            <div class="stat-card patients" routerLink="/home/vet/treatment-pets">
+            <div class="stat-card patients" routerLink="/vet/treatment-pets">
                 <h3>🩺 Treatments and Procedures</h3>
                 <div class="stat-card patients">Click to view</div>
             </div>
     
-            <div class="stat-card appointments" routerLink="/home/vet/growth-traking-chose-id">
+            <div class="stat-card appointments" routerLink="/vet/growth-traking-chose-id">
                 <h3>📊 Pet Growth Tracking</h3>
                 <div class="stat-card appointments">Click to view</div>
             </div>
@@ -57,7 +57,7 @@
             <div class="section">
                 <div class="section-header">
                     <h2>Today's Appointments</h2>
-                    <a routerLink="/home/vet/vet-calendar" class="view-link">View calendar</a>
+                    <a routerLink="/vet/vet-calendar" class="view-link">View calendar</a>
                 </div>
         
                 <div *ngIf="hasAppointmentsToday; else noAppointments">
