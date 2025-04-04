@@ -163,8 +163,3 @@
 
   /* Rest of your mobile styles remain the same */
 }
-.navbar .textLink:hover {
-  font-weight: 700;
-  color: #ff6b9d;
-  transform: scale(1.05);
-}
