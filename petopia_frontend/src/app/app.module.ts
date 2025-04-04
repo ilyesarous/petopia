@@ -14,8 +14,6 @@ import { ComponentWrapperComponent } from './simple-user/component-wrapper/compo
 import { DashPrincipaleComponent } from './admin/vet/dash-principale/dash-principale.component';
 import { ChatbotComponent } from './admin/vet/chatbot/chatbot.component';
 import { AppDogBreedRecognitionRedirectButtonComponent } from './admin/vet/app-dog-breed-recognition-redirect-button/app-dog-breed-recognition-redirect-button.component';
-import { GameComponent } from './admin/vet/tic-tac-toe-game/game/game.component';
-import { BoardComponent } from './admin/vet/tic-tac-toe-game/board/board.component';
 import { QrScannerComponent } from './admin/vet/qr-scanner/qr-scanner.component';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonModule } from '@angular/material/button';
@@ -28,9 +26,7 @@ import { DiagnosisListComponent } from './admin/vet/diagnoses/diagnosis-list/dia
 import { PetGrowthListComponent } from './admin/vet/pet-growth/pet-growth-list/pet-growth-list.component';
 import { DashPrincipaleHomeVetComponent } from './simple-user/vet/dash-principale-home-vet/dash-principale-home-vet.component';
 import { PetGrowthVetComponent } from './simple-user/vet/pet-growth-vet/pet-growth-vet.component';
-import { FormsModule } from '@angular/forms';
 import { NgApexchartsModule } from 'ng-apexcharts';
-import { ReactiveFormsModule } from '@angular/forms';
 import { FullCalendarModule } from '@fullcalendar/angular';
 import { VetCalendarComponent } from './simple-user/vet/vet-calendar/vet-calendar.component';
 import { ConsultationDetailsModalComponent } from './simple-user/vet/consultation-details-modal/consultation-details-modal.component';
@@ -68,7 +64,6 @@ import { ShelterAdoptionRequestsComponent } from './shelter/shelter-adoption-req
 import { faLightbulb } from '@fortawesome/free-solid-svg-icons';
 import { faPaw, faHeart, faHandHoldingHeart, faInfoCircle,faCommentDots, faCamera,faPen } from '@fortawesome/free-solid-svg-icons';
 
-import { TreatmentPetsComponent } from './simple-user/vet/treatment-pets/treatment-pets.component';
 import { TreatmentSpecificPetsComponent } from './simple-user/vet/treatment-specific-pets/treatment-specific-pets.component';
 import { NotificationVetComponent } from './simple-user/vet/notification-vet/notification-vet.component';
 import { GrowthTrakingChoseIdComponent } from './simple-user/vet/growth-traking-chose-id/growth-traking-chose-id.component';
@@ -81,6 +76,7 @@ import { PaymentStatusPopupComponent } from './simple-user/vet/payment-status-po
 import { MatIconModule } from '@angular/material/icon';
 import { MatDialogModule } from '@angular/material/dialog';
 import { VideoConsultationComponent } from './simple-user/vet/video-consultation/video-consultation.component';
+import { TreatmentPetsComponent } from './simple-user/vet/treatment-pets/treatment-pets.component';
 
 @NgModule({
   declarations: [
@@ -129,7 +125,7 @@ import { VideoConsultationComponent } from './simple-user/vet/video-consultation
     ShelterInfoComponent,
     ShelterPetListComponent,
     ShelterAddPetComponent,
-    ShelterAdoptionRequestsComponent
+    ShelterAdoptionRequestsComponent,
     TreatmentPetsComponent,
     TreatmentSpecificPetsComponent,
     NotificationVetComponent,
