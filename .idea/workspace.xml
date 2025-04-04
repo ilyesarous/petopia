@@ -6,13 +6,10 @@
   <component name="ChangeListManager">
     <list default="true" id="d82146aa-c391-488d-a5e9-d2774f899f12" name="Changes" comment="fix: fixed app module ts">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Animal-Specie-Recognition-main/app.py" beforeDir="false" afterPath="$PROJECT_DIR$/Animal-Specie-Recognition-main/app.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/petopia_backend/src/main/java/tn/esprit/petopia_backend/controller/payment/PaymentController.java" beforeDir="false" afterPath="$PROJECT_DIR$/petopia_backend/src/main/java/tn/esprit/petopia_backend/controller/payment/PaymentController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/petopia_frontend/src/app/app-routing.module.ts" beforeDir="false" afterPath="$PROJECT_DIR$/petopia_frontend/src/app/app-routing.module.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/petopia_frontend/src/app/components/login/login.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/petopia_frontend/src/app/components/login/login.component.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/petopia_frontend/src/app/simple-user/vet/appointment-user/appointment-user.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/petopia_frontend/src/app/simple-user/vet/appointment-user/appointment-user.component.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/petopia_frontend/src/app/simple-user/vet/payment-status-popup/payment-status-popup.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/petopia_frontend/src/app/simple-user/vet/payment-status-popup/payment-status-popup.component.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/petopia_frontend/src/app/simple-user/vet/treatment-pets/treatment-pets.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/petopia_frontend/src/app/simple-user/vet/treatment-pets/treatment-pets.component.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/petopia_backend/src/main/java/tn/esprit/petopia_backend/controller/vet/NotificationController.java" beforeDir="false" afterPath="$PROJECT_DIR$/petopia_backend/src/main/java/tn/esprit/petopia_backend/controller/vet/NotificationController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/petopia_backend/src/main/java/tn/esprit/petopia_backend/repositories/vet/NotificationRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/petopia_backend/src/main/java/tn/esprit/petopia_backend/repositories/vet/NotificationRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/petopia_backend/src/main/java/tn/esprit/petopia_backend/services/vet/INotificationService.java" beforeDir="false" afterPath="$PROJECT_DIR$/petopia_backend/src/main/java/tn/esprit/petopia_backend/services/vet/INotificationService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/petopia_backend/src/main/java/tn/esprit/petopia_backend/services/vet/NotificationServiceImplement.java" beforeDir="false" afterPath="$PROJECT_DIR$/petopia_backend/src/main/java/tn/esprit/petopia_backend/services/vet/NotificationServiceImplement.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -128,7 +125,7 @@
       <workItem from="1742862997142" duration="1017000" />
       <workItem from="1743220297230" duration="328000" />
       <workItem from="1743794876530" duration="2541000" />
-      <workItem from="1743799296231" duration="1441000" />
+      <workItem from="1743799296231" duration="3033000" />
     </task>
     <task id="LOCAL-00001" summary="fix: fixed app module ts">
       <option name="closed" value="true" />
