@@ -26,7 +26,6 @@ import { AdoptPetComponent } from './simple-user/adoption/adopt-pet/adopt-pet.co
 import { ShelterInfoComponent } from './shelter/shelter-info/shelter-info.component';
 import { ShelterPetListComponent } from './shelter/shelter-pet-list/shelter-pet-list.component';
 import { ShelterAddPetComponent } from './shelter/shelter-add-pet/shelter-add-pet.component';
-import { ShelterUpdatePetComponent } from './shelter/shelter-update-pet/shelter-update-pet.component';
 import { ShelterAdoptionRequestsComponent } from './shelter/shelter-adoption-requests/shelter-adoption-requests.component';
 
 
@@ -58,7 +57,6 @@ const routes: Routes = [
   { path: 'shelter/info', component: ShelterInfoComponent },
   { path: 'shelter/pets', component: ShelterPetListComponent },
   { path: 'shelter/pets/add', component: ShelterAddPetComponent },
-  { path: 'shelter/pets/edit/:id', component: ShelterUpdatePetComponent },
   { path: 'shelter/adoption-requests', component: ShelterAdoptionRequestsComponent },
 
   { path: 'signup', component: SignupComponent },
