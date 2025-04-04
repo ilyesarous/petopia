@@ -63,6 +63,8 @@ import { ShelterPetListComponent } from './shelter/shelter-pet-list/shelter-pet-
 import { ShelterAddPetComponent } from './shelter/shelter-add-pet/shelter-add-pet.component';
 import { ShelterUpdatePetComponent } from './shelter/shelter-update-pet/shelter-update-pet.component';
 import { ShelterAdoptionRequestsComponent } from './shelter/shelter-adoption-requests/shelter-adoption-requests.component';
+import { faLightbulb } from '@fortawesome/free-solid-svg-icons';
+import { faPaw, faHeart, faHandHoldingHeart, faInfoCircle,faCommentDots, faCamera,faPen } from '@fortawesome/free-solid-svg-icons';
 
 
 @NgModule({
@@ -106,6 +108,7 @@ import { ShelterAdoptionRequestsComponent } from './shelter/shelter-adoption-req
     LoginComponent,
     FooterComponent,
     SignupComponent,
+    PetAdoptionListComponent,
     PetAdoptDetailsComponent,
     AdoptPetComponent,
     ShelterInfoComponent,
@@ -137,6 +140,6 @@ import { ShelterAdoptionRequestsComponent } from './shelter/shelter-adoption-req
 })
 export class AppModule {
   constructor() {
-    library.add(faCoffee, faUser, faHome); 
+    library.add(faCoffee, faUser, faHome, faLightbulb, faPaw, faHeart, faHandHoldingHeart, faInfoCircle,faPaw,faPen, faCommentDots, faCamera); 
   }
  }
