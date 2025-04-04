@@ -47,8 +47,6 @@ const routes: Routes = [
   { path: 'favorites', component: FavoriteComponent, canActivate: [AuthGuard]},
   { path: 'vet', component: DashPrincipaleHomeVetComponent, canActivate: [AuthGuard] },
   { path: 'vet/pet-growth/:id', component: PetGrowthVetComponent, canActivate: [AuthGuard] },
-  { path: 'vet', component: DashPrincipaleHomeVetComponent, canActivate: [AuthGuard] },
-  { path: 'vet/pet-growth/:id', component: PetGrowthVetComponent, canActivate: [AuthGuard] },
   { path: 'vet/treatment-pets', component: TreatmentPetsComponent, canActivate: [AuthGuard] },
   { path: 'vet/treatment-specific-pet/:id', component: TreatmentSpecificPetsComponent, canActivate: [AuthGuard]},
   { path: 'vet/notification-vet', component: NotificationVetComponent, canActivate: [AuthGuard]},
@@ -84,7 +82,6 @@ const routes: Routes = [
   { path: 'signup', component: SignupComponent },
   { path: 'login', component: LoginComponent },
   { path: '**', component: PageNotFoundComponent }
-
 ];
 
 @NgModule({
