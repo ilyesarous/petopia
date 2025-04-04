@@ -57,10 +57,10 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { faCoffee, faUser, faHome } from '@fortawesome/free-solid-svg-icons';
 import { AdoptPetComponent } from './simple-user/adoption/adopt-pet/adopt-pet.component';
-import { ShelterInfoComponent } from './shelter/shelter-info/shelter-info.component';
-import { ShelterPetListComponent } from './shelter/shelter-pet-list/shelter-pet-list.component';
-import { ShelterAddPetComponent } from './shelter/shelter-add-pet/shelter-add-pet.component';
-import { ShelterAdoptionRequestsComponent } from './shelter/shelter-adoption-requests/shelter-adoption-requests.component';
+import { ShelterInfoComponent } from './simple-user/shelter/shelter-info/shelter-info.component';
+import { ShelterPetListComponent } from './simple-user/shelter/shelter-pet-list/shelter-pet-list.component';
+import { ShelterAddPetComponent } from './simple-user/shelter/shelter-add-pet/shelter-add-pet.component';
+import { ShelterAdoptionRequestsComponent } from './simple-user/shelter/shelter-adoption-requests/shelter-adoption-requests.component';
 import { faLightbulb } from '@fortawesome/free-solid-svg-icons';
 import { faPaw, faHeart, faHandHoldingHeart, faInfoCircle,faCommentDots, faCamera,faPen } from '@fortawesome/free-solid-svg-icons';
 
