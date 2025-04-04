@@ -37,30 +37,28 @@
     <div class="pets-section">
         <h2 class="pets-title">My animals</h2>
         
+        <div *ngIf="loading" class="loading-message">
+            Loading pets...
+        </div>
+
+        <div *ngIf="!loading && userPets.length === 0" class="no-pets-message">
+            You don't have any pets yet. 
+            <a routerLink="/pet" style="color: #ff4766; text-decoration: underline;">
+                Add your first pet
+            </a>
+        </div>
+        
         <div class="pets-grid">
-            <!-- Animal 1 -->
-            <div class="pet-card" [routerLink]="['/vet/treatment-specific-pets-user', 1]">
+            <!-- Boucle sur les animaux de l'utilisateur -->
+            <div *ngFor="let pet of userPets" class="pet-card" [routerLink]="['/vet/treatment-specific-pets-user', pet.idPet]">
                 <div class="pet-image-container">
-                    <img src="assets/images/logo.png" alt="Rex" class="pet-image">
+                    <img [src]="pet.petImage || 'assets/images/logo.png'" [alt]="pet.petName" class="pet-image">
                 </div>
                 <div class="pet-info">
-                    <h3 class="pet-name" color style="color: #ff4766;">Dodo</h3>
-                    <p class="pet-breed">Dobermann</p>
-                    <p class="pet-details">5 ans · 32 kg</p>
-                    <span class="pet-type-badge" style="background-color: #FE9A7A;">Dog</span>
-                </div>
-            </div>
-    
-            <!-- Animal 2 -->
-            <div class="pet-card" [routerLink]="['/vet/treatment-specific-pets-user', 2]">
-                <div class="pet-image-container">
-                    <img src="assets/images/logo.png" alt="Luna" class="pet-image">
-                </div>
-                <div class="pet-info">
-                    <h3 class="pet-name" color style="color: #ff4766;">Sisi</h3>
-                    <p class="pet-breed">Chihuahua</p>
-                    <p class="pet-details">3 ans · 4.5 kg</p>
-                    <span class="pet-type-badge" style="background-color: #FE9A7A;">Dog</span>
+                    <h3 class="pet-name" style="color: #ff4766;">{{ pet.petName }}</h3>
+                    <p class="pet-breed">{{ pet.breed }}</p>
+                    <p class="pet-details">{{ pet.petAge }} ans · {{ pet.gender }} </p>
+                    <span class="pet-type-badge" style="background-color: #FE9A7A;">{{ pet.species }}</span>
                 </div>
             </div>
         </div>
