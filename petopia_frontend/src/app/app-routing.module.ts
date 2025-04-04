@@ -63,7 +63,6 @@ const routes: Routes = [
       { path: 'store', component: StoreDashComponent },
 
       { path: 'vet', component: DashPrincipaleComponent },
-      { path: 'tic-tac-toe', component: GameComponent },
       { path: 'consultations', component: ConsultationListComponent },
       { path: 'diagnosis', component: DiagnosisListComponent },
       { path: 'notifications', component: NotificationListComponent },

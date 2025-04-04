@@ -72,7 +72,7 @@ export class AppointmentUserComponent implements OnInit {
         alert('Appointment created successfully!');
         this.loadConsultations();
         this.resetForm();
-        window.location.replace('home/vet/appointment-user');
+        window.location.replace('vet/appointment-user');
       },
       error: (err) => {
         console.error('Error creating appointment:', err);

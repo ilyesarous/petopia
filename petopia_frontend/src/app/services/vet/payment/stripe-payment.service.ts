@@ -68,7 +68,7 @@ export class StripePaymentService {
     // Utilise les détails fournis ou les valeurs par défaut
     const details = paymentDetails || this.defaultPaymentDetails;
     
-    this.router.navigate(['/home/vet/dash-principale-user'], {
+    this.router.navigate(['vet/dash-principale-user'], {
       queryParams: { payment_status: status }
     }).then(() => {
       setTimeout(() => {

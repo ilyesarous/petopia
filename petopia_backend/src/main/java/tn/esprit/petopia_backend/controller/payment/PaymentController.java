@@ -75,13 +75,13 @@ public class PaymentController {
 
     @GetMapping("/success")
     public RedirectView getSuccessVet() {
-        String redirectUrl = "http://localhost:4200/home/vet/dash-principale-user?payment_status=success";
+        String redirectUrl = "http://localhost:4200/vet/dash-principale-user?payment_status=success";
         return new RedirectView(redirectUrl);
     }
 
     @GetMapping("/cancel")
     public RedirectView cancelVet() {
-        String redirectUrl = "http://localhost:4200/home/vet/dash-principale-user?payment_status=cancel";
+        String redirectUrl = "http://localhost:4200/vet/dash-principale-user?payment_status=cancel";
         return new RedirectView(redirectUrl);
     }
 }

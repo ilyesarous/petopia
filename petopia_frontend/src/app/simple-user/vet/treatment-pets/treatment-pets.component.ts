@@ -86,7 +86,7 @@ export class TreatmentPetsComponent implements OnInit {
 
   navigateToDiagnosis() {
     if (this.petId) {
-      this.router.navigate(['home/vet/treatment-specific-pet', this.petId]);
+      this.router.navigate(['vet/treatment-specific-pet', this.petId]);
     }
   }
 /*
