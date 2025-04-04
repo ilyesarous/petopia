@@ -1,0 +1,117 @@
+<div class="signup-container">
+  <div class="signup-card">
+    <div class="signup-header">
+      <p>Join our community today</p>
+    </div>
+
+    <form [formGroup]="signupForm" (ngSubmit)="onSubmit()" class="signup-form">
+      <!-- Name Field -->
+      <div class="form-group">
+        <label for="name">Full Name</label>
+        <div class="input-wrapper">
+          <i class="bi bi-person-fill input-icon"></i>
+          <input type="text" id="name" formControlName="name"
+                 [ngClass]="{'is-invalid': isFieldInvalid('name')}"
+                 placeholder="Enter your full name">
+        </div>
+        <div *ngIf="isFieldInvalid('name')" class="error-message">
+          <i class="bi bi-exclamation-circle"></i> Name is required and should contain only letters
+        </div>
+      </div>
+
+      <!-- Email Field -->
+      <div class="form-group">
+        <label for="email">Email</label>
+        <div class="input-wrapper">
+          <i class="bi bi-envelope-fill input-icon"></i>
+          <input type="email" id="email" formControlName="email"
+                 [ngClass]="{'is-invalid': isFieldInvalid('email')}"
+                 placeholder="Enter your email">
+        </div>
+        <div *ngIf="isFieldInvalid('email')" class="error-message">
+          <i class="bi bi-exclamation-circle"></i> Enter a valid email address
+        </div>
+      </div>
+
+      <!-- Password Field -->
+      <div class="form-group">
+        <label for="password">Password</label>
+        <div class="input-wrapper">
+          <i class="bi bi-lock-fill input-icon"></i>
+          <input [type]="showPassword ? 'text' : 'password'" id="password"
+                 formControlName="password" placeholder="Create password">
+          <button type="button" class="password-toggle" (click)="togglePassword()">
+            <i class="bi" [ngClass]="showPassword ? 'bi-eye-slash-fill' : 'bi-eye-fill'"></i>
+          </button>
+        </div>
+        <div *ngIf="signupForm.get('password')?.errors" class="error-message">
+          <i class="bi bi-exclamation-circle"></i>
+          <div *ngIf="signupForm.get('password')?.errors?.['required']">Password is required</div>
+          <div *ngIf="signupForm.get('password')?.errors?.['minlength']">Must be at least 6 characters</div>
+          <div *ngIf="signupForm.get('password')?.errors?.['pattern']" class="password-requirements">
+            Password must contain:
+            <ul>
+              <li><i class="bi bi-check-circle"></i> One uppercase letter</li>
+              <li><i class="bi bi-check-circle"></i> One lowercase letter</li>
+              <li><i class="bi bi-check-circle"></i> One number</li>
+              <li><i class="bi bi-check-circle"></i> One special character (@$!%*?&)</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Phone Number Field -->
+      <div class="form-group">
+        <label for="phone_number">Phone Number</label>
+        <div class="input-wrapper">
+          <i class="bi bi-telephone-fill input-icon"></i>
+          <input type="text" id="phone_number" formControlName="phone_number"
+                 [ngClass]="{'is-invalid': isFieldInvalid('phone_number')}"
+                 placeholder="Enter phone number">
+        </div>
+        <div *ngIf="isFieldInvalid('phone_number')" class="error-message">
+          <i class="bi bi-exclamation-circle"></i> Phone number must be exactly 8 digits
+        </div>
+      </div>
+
+      <!-- Role Selection -->
+      <div class="form-group">
+        <label for="role">Account Type</label>
+        <div class="input-wrapper">
+          <i class="bi bi-person-badge-fill input-icon"></i>
+          <select id="role" formControlName="role"
+                  [ngClass]="{'is-invalid': isFieldInvalid('role')}">
+            <option value="" disabled selected>Select account type</option>
+            <option value="USER">Pet Owner</option>
+            <option value="VET">Veterinarian</option>
+            <option value="PARTNER">Pet Service Partner</option>
+            <option value="SHELTER">Shelter Representative</option>
+          </select>
+        </div>
+        <div *ngIf="isFieldInvalid('role')" class="error-message">
+          <i class="bi bi-exclamation-circle"></i> Please select account type
+        </div>
+      </div>
+
+      <!-- Submit Button -->
+      <button type="submit" class="signup-btn" [disabled]="signupForm.invalid">
+        Create Account
+        <i class="bi bi-arrow-right"></i>
+      </button>
+
+      <!-- Messages -->
+      <div *ngIf="successMessage" class="success-message">
+        <i class="bi bi-check-circle-fill"></i> {{ successMessage }}
+      </div>
+
+      <div *ngIf="errorMessage" class="error-message">
+        <i class="bi bi-exclamation-triangle-fill"></i> {{ errorMessage }}
+      </div>
+
+      <!-- Login Link -->
+      <div class="login-link">
+        Already have an account? <a routerLink="/login">Sign in here</a>
+      </div>
+    </form>
+  </div>
+</div>

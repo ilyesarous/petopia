@@ -11,32 +11,35 @@ import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerCo
 @EnableWebSocketMessageBroker
 public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
-    /*@Override
+    @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
-        registry.addEndpoint("/user/ws").withSockJS();
-
+        registry.addEndpoint("/ws").setAllowedOriginPatterns("*").withSockJS();
     }
 
     @Override
     public void configureMessageBroker(MessageBrokerRegistry registry) {
         registry.setApplicationDestinationPrefixes("/app");
-        registry.enableSimpleBroker("/topic");
-    }*/
-    @Override
+        registry.enableSimpleBroker("/topic", "/queue"); // Allows both public and private messages
+        registry.setUserDestinationPrefix("/user"); // Enables private messaging
+
+    }
+    /*
+     @Override
     public void configureMessageBroker(MessageBrokerRegistry config) {
         config.enableSimpleBroker("/topic"); // Destination pour les messages broadcastés
         config.setApplicationDestinationPrefixes("/app"); // Préfixe pour les messages envoyés par le client
     }
+     */
 
    /* @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
         registry.addEndpoint("/chat").setAllowedOrigins("http://localhost:4200").withSockJS(); // Endpoint WebSocket
-    }*/
+    }
    @Override
    public void registerStompEndpoints(StompEndpointRegistry registry) {
        registry.addEndpoint("/chat/websocket")
                .setAllowedOrigins("*") ;  // Autoriser toutes les origines
                //.withSockJS();
    }
-
+*/
 }

@@ -1,0 +1,63 @@
+<div class="login-container">
+  <div class="login-card">
+    <div class="login-header">
+      <h2>Welcome Back!</h2>
+    </div>
+
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-form">
+      <!-- Email Field -->
+      <div class="form-group">
+        <label for="email">Email</label>
+        <div class="input-wrapper">
+          <i class="bi bi-envelope-fill input-icon"></i>
+          <input type="email" id="email" formControlName="email"
+                 [ngClass]="{'is-invalid': isFieldInvalid('email')}"
+                 placeholder="Enter your email">
+        </div>
+        <div *ngIf="isFieldInvalid('email')" class="error-message">
+          <i class="bi bi-exclamation-circle"></i> Enter a valid email address
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="password">Password</label>
+        <div class="input-wrapper">
+          <i class="bi bi-lock-fill input-icon"></i>
+          <input [type]="showPassword ? 'text' : 'password'" id="password"
+                 formControlName="password" placeholder="Enter your password">
+          <button type="button" class="password-toggle" (click)="togglePassword()">
+            <i class="bi" [ngClass]="showPassword ? 'bi-eye-slash-fill' : 'bi-eye-fill'"></i>
+          </button>
+        </div>
+        <div *ngIf="isFieldInvalid('password')" class="error-message">
+          <i class="bi bi-exclamation-circle"></i> Password must be at least 6 characters
+        </div>
+      </div>
+
+      <!-- Submit Button -->
+      <button type="submit" class="login-btn" [disabled]="loginForm.invalid">
+        Login
+        <i class="bi bi-arrow-right"></i>
+      </button>
+
+      <!-- Messages -->
+      <div *ngIf="successMessage" class="success-message">
+        <i class="bi bi-check-circle-fill"></i> {{ successMessage }}
+      </div>
+
+      <div *ngIf="errorMessage" class="error-message">
+        <i class="bi bi-exclamation-triangle-fill"></i> {{ errorMessage }}
+      </div>
+
+      <!-- Links -->
+      <div class="login-links">
+        <a routerLink="/signup" class="link">
+          <i class="bi bi-person-plus"></i> Create an account
+        </a>
+        <a routerLink="/reset-password" class="link">
+          <i class="bi bi-key"></i> Forgot password?
+        </a>
+      </div>
+    </form>
+  </div>
+</div>

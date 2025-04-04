@@ -12,39 +12,49 @@ import { PetGrowthListComponent } from './admin/vet/pet-growth/pet-growth-list/p
 import { PetGrowthVetComponent } from './simple-user/vet/pet-growth-vet/pet-growth-vet.component';
 import { DashPrincipaleHomeVetComponent } from './simple-user/vet/dash-principale-home-vet/dash-principale-home-vet.component';
 import { ChartComponent } from './admin/chart/chart.component';
-import { ProductsComponent } from './simple-user/products/products.component';
+import { ProductsComponent } from './simple-user/store/products/products.component';
+import { ProductDetailComponent } from './simple-user/store/product-detail/product-detail.component';
+import { FavoriteComponent } from './simple-user/store/favorite/favorite.component';
+import { StoreDashComponent } from './admin/store/store-dash/store-dash.component';
+import {LoginComponent} from "./components/login/login.component";
+import {SignupComponent} from "./components/signup/signup.component";
+import {AuthGuard} from "./auth.guard";
 import { MatchingComponent } from './simple-user/matching/matching/matching.component';
 import { PetDetailsComponent } from './simple-user/matching/pet-details/pet-details.component';
 
 
-const routes: Routes = [
-  { path: '', redirectTo: '/home', pathMatch: 'full' },
-  { path: 'home', component: ComponentWrapperComponent,
-    children: [
-      {path: 'products', component: ProductsComponent},
-      { path: 'vet', component: DashPrincipaleHomeVetComponent },
-      { path: 'vet/pet-growth/:id', component: PetGrowthVetComponent },
-      { path: 'matchy', component: MatchingComponent  },
-      { path: 'pet-details/:id', component:PetDetailsComponent}
 
-    ]
-  },
-  { path: 'dashboard', component: DashbordComponent,
+const routes: Routes = [
+  { path: '', redirectTo: '/login', pathMatch: 'full' },
+  { path: 'home', component: ComponentWrapperComponent, canActivate: [AuthGuard]},
+  { path: 'products', component: ProductsComponent, canActivate: [AuthGuard]},
+  { path: 'products/:id', component: ProductDetailComponent, canActivate: [AuthGuard] },
+  { path: 'favorites', component: FavoriteComponent, canActivate: [AuthGuard]},
+  { path: 'vet', component: DashPrincipaleHomeVetComponent, canActivate: [AuthGuard] },
+  { path: 'vet/pet-growth/:id', component: PetGrowthVetComponent, canActivate: [AuthGuard] },
+  { path: 'matchy', component: MatchingComponent ,canActivate: [AuthGuard]  },
+  { path: 'pet-details/:id', component:PetDetailsComponent ,canActivate: [AuthGuard] },
+
+  { path: 'dashboard', component: DashbordComponent, canActivate: [AuthGuard],
     children: [
-      {path: 'user', component: ChartComponent},
+      { path: 'user', component: ChartComponent },
+      { path: 'store', component: StoreDashComponent },
       { path: 'vet', component: DashPrincipaleComponent },
-      { path: 'tic-tac-toe', component:  GameComponent },
-      { path: 'consultations' , component: ConsultationListComponent},
-      { path: 'diagnosis' , component: DiagnosisListComponent},
-      { path: 'notifications' , component: NotificationListComponent},
-      { path: 'pet-growth' , component: PetGrowthListComponent},
-    ]
+      { path: 'tic-tac-toe', component: GameComponent },
+      { path: 'consultations', component: ConsultationListComponent },
+      { path: 'diagnosis', component: DiagnosisListComponent },
+      { path: 'notifications', component: NotificationListComponent },
+      { path: 'pet-growth', component: PetGrowthListComponent },
+    ],
   },
+  { path: 'signup', component: SignupComponent },
+  { path: 'login', component: LoginComponent },
   { path: '**', component: PageNotFoundComponent }
+
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
 export class AppRoutingModule { }

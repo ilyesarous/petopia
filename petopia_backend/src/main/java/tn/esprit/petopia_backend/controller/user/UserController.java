@@ -3,11 +3,12 @@ package tn.esprit.petopia_backend.controller.user;
 
 import jakarta.mail.MessagingException;
 import org.springframework.http.HttpStatus;
-import tn.esprit.petopia_backend.entities.pet.Pet;
+import org.springframework.security.access.prepost.PreAuthorize;
 import tn.esprit.petopia_backend.entities.user.User;
-import tn.esprit.petopia_backend.dto.ReqRes;
+import tn.esprit.petopia_backend.dto.*;
 import tn.esprit.petopia_backend.repositories.user.UserRepository;
-import tn.esprit.petopia_backend.services.pet.PetService;
+import tn.esprit.petopia_backend.security.JWTUtils;
+import tn.esprit.petopia_backend.services.notif.NotificationService;
 import tn.esprit.petopia_backend.services.user.EmailService;
 import tn.esprit.petopia_backend.services.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Date;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
@@ -30,16 +32,33 @@ public class UserController {
     @Autowired
     private UserRepository userRepository;
 
+
+    @Autowired
+    private final NotificationService notificationService;
+
+
+    @Autowired
+    private JWTUtils jwtUtils;
+
+    public UserController(NotificationService notificationService) {
+        this.notificationService = notificationService;
+    }
+
     @PostMapping("/auth/register")
     public ResponseEntity<ReqRes> register(@RequestBody ReqRes reg) throws MessagingException {
         ReqRes response = usersManagementService.register(reg);
         String userId = response.getUserId();
-        System.out.println(userId);
         if (response.getStatusCode() == 200) {
             String subject = "Welcome to Petopia";
             String htmlContent = usersManagementService.getHtmlTemplate(reg.getName(), reg.getEmail(), reg.getPassword(), userId);
-
             emailService.sendHtmlMessage(reg.getEmail(), subject, htmlContent);
+            SignupNotification notification = new SignupNotification(
+                    reg.getUserId(),
+                    reg.getName(),
+                    reg.getEmail(),
+                    new Date()
+            );
+            notificationService.notifyNewSignup(notification);
         }
 
         return ResponseEntity.ok(response);
@@ -84,6 +103,7 @@ public class UserController {
     }
 
     @GetMapping("/user/get-user/{userId}")
+    @PreAuthorize("hasAnyAuthority('ROLE_USER','ROLE_ADMIN','ROLE_PARTNER','ROLE_SHELTER')")
     public ResponseEntity<ReqRes> getuserByID(@PathVariable Integer userId){
         return ResponseEntity.ok(usersManagementService.getUsersById(userId));
 
@@ -115,5 +135,4 @@ public class UserController {
         boolean exists = usersManagementService.checkEmailExists(email);
         return ResponseEntity.ok(exists);
     }
-
 }

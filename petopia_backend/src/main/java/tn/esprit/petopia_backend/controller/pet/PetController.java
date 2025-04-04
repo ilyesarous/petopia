@@ -1,5 +1,6 @@
 package tn.esprit.petopia_backend.controller.pet;
 
+
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -7,7 +8,9 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+import tn.esprit.petopia_backend.controller.matching.MatchRequest;
 import tn.esprit.petopia_backend.entities.adoptions.Shelter;
+import tn.esprit.petopia_backend.entities.matching.MatchStatus;
 import tn.esprit.petopia_backend.entities.matching.Matches;
 import tn.esprit.petopia_backend.entities.matching.Preferences;
 import tn.esprit.petopia_backend.entities.pet.Pet;
@@ -17,8 +20,11 @@ import tn.esprit.petopia_backend.services.adoptions.IShelterService;
 import tn.esprit.petopia_backend.services.matching.MatchesService;
 import tn.esprit.petopia_backend.services.pet.PetService;
 
+import java.util.Base64;
+import java.util.HashMap;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @RestController
@@ -36,10 +42,30 @@ public class PetController {
     }
 
     @PostMapping("/user/pet/add")
-    public String createPet(@RequestBody Pet pet) {
+    public ResponseEntity<Map<String, String>> addPet(@RequestBody Pet pet) {
         petService.addPet(pet);
-        return "Pet added successfully";
+        Map<String, String> response = new HashMap<>();
+        response.put("message", "Pet added successfully");
+        return ResponseEntity.ok(response);
     }
+
+    @GetMapping("/user/pet/all")
+    public ResponseEntity<List<Pet>> getAllPets() {
+        List<Pet> pets = petService.getallPets();
+        pets.forEach(pet -> {
+            if (pet.getPetImageBytes() != null) {
+                String base64Image = "data:image/png;base64," + Base64.getEncoder().encodeToString(pet.getPetImageBytes());
+                pet.setPetImage(base64Image);
+            }
+        });
+        if (pets.isEmpty()) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.ok(pets);
+    }
+
+
+    //Amalllllllll zedt hedhi
 
     @PostMapping("/shelter/pet/add")
     @PreAuthorize("hasAuthority('ROLE_SHELTER')")
@@ -51,26 +77,27 @@ public class PetController {
             return ResponseEntity.badRequest().body("No shelter associated with this user");
         }
         pet.setShelter(shelter);
+
         pet.setUser(null);
         petService.addPet(pet);
         return ResponseEntity.ok("Pet added for shelter successfully");
     }
-
     @PutMapping("/pet/update/{id}")
-    @PreAuthorize("hasAuthority('ROLE_SHELTER')")
+    @PreAuthorize("hasAnyAuthority('ROLE_SHELTER','ROLE_USER')")
     public ResponseEntity<Pet> updatePet(@PathVariable Integer id, @RequestBody Pet pet) {
         pet.setIdPet(id);
         Pet updatedPet = petService.updatePet(pet);
         return ResponseEntity.ok(updatedPet);
     }
 
+
+    // Endpoint for deleting a pet (only accessible by shelters)
     @DeleteMapping("/pet/delete/{id}")
-    @PreAuthorize("hasAuthority('ROLE_SHELTER')")
+    @PreAuthorize("hasAnyAuthority('ROLE_SHELTER','ROLE_USER')")
     public ResponseEntity<Void> deletePet(@PathVariable Integer id) {
         petService.deletePet(id);
         return ResponseEntity.ok().build();
     }
-
     @GetMapping("/pet/get/{id}")
     @PreAuthorize("hasAnyAuthority('ROLE_USER', 'ROLE_SHELTER', 'ROLE_ADMIN')")
     public ResponseEntity<Pet> getPetById(@PathVariable Integer id) {
@@ -99,11 +126,13 @@ public class PetController {
         return ResponseEntity.ok(petService.getPetsByStatus(status));
     }
 
+    // anas bdet tekhdem hmd welyeeeyyyyy
+
     @GetMapping("/user/pet/{petId}/check-preferences")
     @PreAuthorize("hasAuthority('ROLE_USER')")
     public ResponseEntity<PetPreferencesResponse> checkPetPreferences(@PathVariable int petId) {
-        // Récupérer le pet par son ID
         Pet pet = petService.getPetById(petId);
+
         if (pet == null) {
             return ResponseEntity.notFound().build();
         }
@@ -155,6 +184,8 @@ public class PetController {
     public ResponseEntity<List<Pet>> getMatchingPetsOnly(@PathVariable int petId) {
         // Récupérer le pet par son ID
         Pet pet = petService.getPetById(petId);
+
+        // Vérifier si le pet existe
         if (pet == null) {
             return ResponseEntity.notFound().build();
         }
@@ -179,4 +210,6 @@ public class PetController {
 
         return ResponseEntity.ok(matchingPets);
     }
+
+
 }

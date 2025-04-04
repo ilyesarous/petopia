@@ -1,0 +1,93 @@
+<form [formGroup]="productForm" (ngSubmit)="onSubmit()" class="product-form">
+    <div class="form-header">
+      <h2>{{ editingProduct ? 'Edit Product' : 'Add New Product' }}</h2>
+    </div>
+  
+    <!-- Image Upload -->
+    <div class="form-group image-upload">
+      <label>Product Images</label>
+      <div class="image-preview">
+        <div class="preview-container" *ngIf="previewUrl">
+          <img [src]="previewUrl" alt="Product preview" class="preview-image">
+          <button type="button" class="remove-image" (click)="removeImage()">
+            <i class="bi bi-x"></i>
+          </button>
+        </div>
+        <div class="upload-area" [class.has-image]="previewUrl">
+          <input type="file" id="productImage" accept="image/*" (change)="onFileSelected($event)" #fileInput>
+          <label for="productImage" class="upload-label">
+            <i class="bi bi-cloud-arrow-up"></i>
+            <span>{{ previewUrl ? 'Change Image' : 'Upload Image' }}</span>
+          </label>
+        </div>
+      </div>
+    </div>
+  
+    <!-- Basic Information -->
+    <div class="form-row">
+      <div class="form-group">
+        <label for="productName">Product Name *</label>
+        <input type="text" id="productName" formControlName="product_name" placeholder="Enter product name">
+        <div *ngIf="productForm.get('product_name')?.invalid && productForm.get('product_name')?.touched" class="error-message">
+          Product name is required
+        </div>
+      </div>
+  
+      <div class="form-group">
+        <label for="old_price">Price ($) *</label>
+        <input type="number" id="old_price" formControlName="old_price" min="0" step="0.01" placeholder="0.00">
+        <div *ngIf="productForm.get('old_price')?.invalid && productForm.get('old_price')?.touched" class="error-message">
+          Valid price is required
+        </div>
+      </div>
+    </div>
+  
+    <div class="form-row">
+        
+      <div class="form-group">
+        <label for="couponPrice">Discount (%)</label>
+        <input type="number" id="couponPrice" formControlName="cuppon_price" min="0" max="100" placeholder="0">
+      </div>
+    </div>
+  
+    <!-- Category and Stock -->
+    <div class="form-row">
+      <div class="form-group">
+        <label for="category">Category *</label>
+        <select id="category" formControlName="category">
+          <option value="">Select category</option>
+          <option *ngFor="let cat of categories" [value]="cat">{{ cat }}</option>
+        </select>
+        <div *ngIf="productForm.get('category')?.invalid && productForm.get('category')?.touched" class="error-message">
+          Category is required
+        </div>
+      </div>
+  
+      <div class="form-group">
+        <label for="quantity">Available Quantity *</label>
+        <input type="number" id="quantity" formControlName="availableQuantity" min="0" placeholder="0">
+        <div *ngIf="productForm.get('availableQuantity')?.invalid && productForm.get('availableQuantity')?.touched" class="error-message">
+          Valid quantity is required
+        </div>
+      </div>
+    </div>
+  
+    <!-- Description -->
+    <div class="form-group">
+      <label for="description">Description *</label>
+      <textarea id="description" formControlName="product_description" rows="4" placeholder="Enter product description"></textarea>
+      <div *ngIf="productForm.get('product_description')?.invalid && productForm.get('product_description')?.touched" class="error-message">
+        Description is required (min 20 characters)
+      </div>
+    </div>
+  
+  
+    <!-- Form Actions -->
+    <div class="form-actions">
+      <button type="button" class="btn-cancel" routerLink="/admin/store">Cancel</button>
+      <button type="submit" class="btn-submit" [disabled]="productForm.invalid || isSubmitting">
+        <span *ngIf="!isSubmitting">{{ editingProduct ? 'Update' : 'Create' }} Product</span>
+        <span *ngIf="isSubmitting">Processing...</span>
+      </button>
+    </div>
+  </form>

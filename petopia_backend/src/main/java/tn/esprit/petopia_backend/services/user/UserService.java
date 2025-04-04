@@ -76,8 +76,49 @@ public class UserService {
         }
         return resp;
     }
+    public ReqRes login(ReqRes loginRequest) {
+        ReqRes response = new ReqRes();
+        try {
+            System.out.println("Login Request: " + loginRequest.getEmail());
+            System.out.println("Password Provided: " + loginRequest.getPassword());
+
+            var user = usersRepo.findByEmail(loginRequest.getEmail())
+                    .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+
+            if (!user.getLocked()) {
+                response.setStatusCode(403); // Forbidden status code
+                response.setError("This user is not activated. Check your email or contact support.");
+                return response;
+            }
+
+            if (!passwordEncoder.matches(loginRequest.getPassword(), user.getPassword())) {
+                response.setStatusCode(401); // Unauthorized status code
+                response.setError("Invalid password. Please try again.");
+                return response;
+            }
+
+            var jwt = jwtUtils.generateToken(user, Long.valueOf(user.getId_user()));
+            var refreshToken = jwtUtils.generateRefreshToken(new HashMap<>(), user);
+
+            response.setStatusCode(200);
+            response.setToken(jwt);
+            response.setRole(user.getRole().name());
+            response.setRefreshToken(refreshToken);
+            response.setExpirationTime("24Hrs");
+            response.setMessage("Successfully Logged In");
+            response.setUserId(String.valueOf(user.getId_user()));
+
+        } catch (UsernameNotFoundException e) {
+            response.setStatusCode(404);
+            response.setError("User not found.");
+        } catch (Exception e) {
+            response.setStatusCode(500);
+            response.setError("An error occurred during login. Please try again.");
+        }
+        return response;
+    }
     public String getHtmlTemplate(String name, String email, String password, String userId) {
-        String activationUrl = "http://localhost:2007/auth/activate?userId=" + userId; // Change localhost to your domain
+        String activationUrl = "http://localhost:888/auth/activate?userId=" + userId; // Change localhost to your domain
         return "<!DOCTYPE html>\n" +
                 "<html lang=\"en\">\n" +
                 "<head>\n" +
@@ -147,48 +188,6 @@ public class UserService {
     public boolean checkPhoneNumberExists(String phoneNumber) {
         return usersRepo.findByPhoneNumber(phoneNumber).isPresent();
     }
-    public ReqRes login(ReqRes loginRequest) {
-        ReqRes response = new ReqRes();
-        try {
-            System.out.println("Login Request: " + loginRequest.getEmail());
-            System.out.println("Password Provided: " + loginRequest.getPassword());
-
-            var user = usersRepo.findByEmail(loginRequest.getEmail())
-                    .orElseThrow(() -> new UsernameNotFoundException("User not found"));
-
-            if (!user.getLocked()) {
-                response.setStatusCode(403); // Forbidden status code
-                response.setError("This user is not activated. Check your email or contact support.");
-                return response;
-            }
-
-            if (!passwordEncoder.matches(loginRequest.getPassword(), user.getPassword())) {
-                response.setStatusCode(401); // Unauthorized status code
-                response.setError("Invalid password. Please try again.");
-                return response;
-            }
-
-            var jwt = jwtUtils.generateToken(user, Long.valueOf(user.getId_user()));
-            var refreshToken = jwtUtils.generateRefreshToken(new HashMap<>(), user);
-
-            response.setStatusCode(200);
-            response.setToken(jwt);
-            response.setRole(user.getRole().name());
-            response.setRefreshToken(refreshToken);
-            response.setExpirationTime("24Hrs");
-            response.setMessage("Successfully Logged In");
-            response.setUserId(String.valueOf(user.getId_user()));
-
-        } catch (UsernameNotFoundException e) {
-            response.setStatusCode(404);
-            response.setError("User not found.");
-        } catch (Exception e) {
-            response.setStatusCode(500);
-            response.setError("An error occurred during login. Please try again.");
-        }
-        return response;
-    }
-
 
     public ReqRes refreshToken(ReqRes refreshTokenRequest) {
         ReqRes response = new ReqRes();
