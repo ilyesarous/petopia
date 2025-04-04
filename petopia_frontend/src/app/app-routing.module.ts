@@ -57,11 +57,11 @@ const routes: Routes = [
   { path: 'vet/tic-tac-toe', component:  GameComponent, canActivate: [AuthGuard]},
   { path: 'vet/treatment-specific-pets-user/:id', component: TreatmentSpecificPetsUserComponent, canActivate: [AuthGuard]},
   { path: 'vet/meet', component: VideoConsultationComponent, canActivate: [AuthGuard]},
+
   { path: 'dashboard', component: DashbordComponent, canActivate: [AuthGuard],
     children: [
       { path: 'user', component: ChartComponent },
       { path: 'store', component: StoreDashComponent },
-
       { path: 'vet', component: DashPrincipaleComponent },
       { path: 'consultations', component: ConsultationListComponent },
       { path: 'diagnosis', component: DiagnosisListComponent },

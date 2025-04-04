@@ -35,7 +35,7 @@ export class NavbarComponent implements OnInit {
     { id: 2, name: 'Store', link: '/products' },
     { id: 3, name: 'Community Hub', link: '#' },
     { id: 4, name: 'Events', link: '#' },
-    { id: 5, name: 'Vet', link: 'vet' },
+    { id: 5, name: 'Vet', link: '/vet/dash-principale-user' },
     {id: 6, name: 'Adoption', link: 'adoption'},
   ];
 
@@ -45,7 +45,7 @@ export class NavbarComponent implements OnInit {
   ];
 
   VETpages = [
-    { id: 1, name: 'Vet', link: 'vet' },
+    { id: 1, name: 'Vet', link: '/vet' },
   ];
   constructor(private authService: AuthService, private router: Router) {}
 
