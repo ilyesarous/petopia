@@ -50,6 +50,7 @@ import { TreatmentSpecificPetsUserComponent } from './simple-user/vet/treatment-
 import { PaymentStatusPopupComponent } from './simple-user/vet/payment-status-popup/payment-status-popup.component';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDialogModule } from '@angular/material/dialog';
+import { VideoConsultationComponent } from './simple-user/vet/video-consultation/video-consultation.component';
 
 @NgModule({
   declarations: [
@@ -89,6 +90,7 @@ import { MatDialogModule } from '@angular/material/dialog';
     AppointmentUserComponent,
     TreatmentSpecificPetsUserComponent,
     PaymentStatusPopupComponent,
+    VideoConsultationComponent,
   ],
   imports: [
     BrowserModule,

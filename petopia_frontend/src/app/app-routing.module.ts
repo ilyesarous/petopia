@@ -22,6 +22,7 @@ import { DashPrincipaleUserComponent } from './simple-user/vet/dash-principale-u
 import { AppointmentUserComponent } from './simple-user/vet/appointment-user/appointment-user.component';
 import { GameComponent } from './simple-user/vet/tic-tac-toe/game/game.component';
 import { TreatmentSpecificPetsUserComponent } from './simple-user/vet/treatment-specific-pets-user/treatment-specific-pets-user.component';
+import { VideoConsultationComponent } from './simple-user/vet/video-consultation/video-consultation.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/home', pathMatch: 'full' },
@@ -38,7 +39,8 @@ const routes: Routes = [
       { path: 'vet/dash-principale-user', component: DashPrincipaleUserComponent},
       { path: 'vet/appointment-user' , component : AppointmentUserComponent},
       { path: 'vet/tic-tac-toe', component:  GameComponent },
-      { path: 'vet/treatment-specific-pets-user/:id', component: TreatmentSpecificPetsUserComponent}
+      { path: 'vet/treatment-specific-pets-user/:id', component: TreatmentSpecificPetsUserComponent},
+      { path: 'vet/meet', component: VideoConsultationComponent}
     ]
   },
   { path: 'dashboard', component: DashbordComponent,
