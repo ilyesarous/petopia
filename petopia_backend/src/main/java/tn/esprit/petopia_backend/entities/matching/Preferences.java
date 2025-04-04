@@ -24,7 +24,8 @@ public class Preferences {
     private String preferred_gender;
     private String preferred_location;
 
-    @OneToOne
+
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     private Pet pet;
 
 }

@@ -78,6 +78,9 @@ public class MatchesController {
         Pet pet1 = petService.getPetById(matchRequest.getPet1Id());
         Pet pet2 = petService.getPetById(matchRequest.getPet2Id());
 
+
+
+
         if (pet1 == null || pet2 == null) {
             System.out.println("Pet1 ou Pet2 introuvable");
             return ResponseEntity.notFound().build();

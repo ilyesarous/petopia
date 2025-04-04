@@ -39,6 +39,9 @@ import { CommonModule } from '@angular/common';
 import { CanvasJSAngularChartsModule } from '@canvasjs/angular-charts';
 import { ChartComponent } from './admin/chart/chart.component';
 import { ProductsComponent } from './simple-user/products/products.component';
+import { MatchingComponent } from './simple-user/matching/matching/matching.component';
+import { PetDetailsComponent } from './simple-user/matching/pet-details/pet-details.component';
+
 
 @NgModule({
   declarations: [
@@ -70,6 +73,9 @@ import { ProductsComponent } from './simple-user/products/products.component';
     PetGrowthListComponent,
     ChartComponent,
     ProductsComponent,
+    MatchingComponent,
+    PetDetailsComponent,
+   
   ],
   imports: [
     BrowserModule,

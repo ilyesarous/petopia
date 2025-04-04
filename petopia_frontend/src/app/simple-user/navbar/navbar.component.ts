@@ -6,7 +6,7 @@ import { Component } from '@angular/core';
   styleUrls: ['./navbar.component.css']
 })
 export class NavbarComponent {
-
+  showMatchingDropdown: boolean = false;
   list:any[] = [
     {id: 1, icon: 'bi bi-envelope'},
     {id: 2, icon: 'bi bi-bell'},
@@ -18,6 +18,8 @@ export class NavbarComponent {
     {id: 3, name: 'Community Hub', link: '#'},
     {id: 4, name: 'Events', link: '#'},
     {id: 5, name: 'Vet', link: 'vet'},
+    {id: 6, name: 'Matching', link: 'matchy'},
   ]
 
+  
 }

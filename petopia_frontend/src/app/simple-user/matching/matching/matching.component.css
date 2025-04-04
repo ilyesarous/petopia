@@ -1,0 +1,335 @@
+.btn-pink {
+    background-color: #F83182;
+    color: white;
+    border: none;
+}
+
+.btn-pink:hover {
+    background-color: #e02a72;
+    color: white;
+}
+
+.dropdown-menu {
+    border: 1px solid #FF617C;
+    padding: 0;
+}
+
+.dropdown-item {
+    padding: 8px 15px;
+    color: #F83182;
+}
+
+.dropdown-item:hover {
+    background-color: #FE9A7A;
+    color: white;
+}
+
+.dropdown-menu.show {
+    z-index: 1000;
+}
+
+
+/* Carte principale */
+.match-card {
+    transition: all 0.3s ease-in-out;
+    border-radius: 12px;
+    overflow: hidden;
+    background: #fff;
+  }
+  
+  .match-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+  }
+  
+  /* Card main */
+  .card-main {
+    position: relative;
+  }
+  
+  .discount {
+    position: relative;
+    background: linear-gradient(to bottom, #fe9a7a, #ff617c, #f83182);
+    font-weight: 700;
+    color: #fff;
+    text-align: center;
+    text-transform: uppercase;
+    height: 30px;
+    width: 80px;
+    border-radius: 0 20px 20px 0;
+    line-height: 30px;
+    font-style: italic;
+    left: -10px;
+    top: 20px;
+  }
+  
+  .discount::after {
+    border-top: 6px solid #c80;
+    content: "";
+    position: absolute;
+    bottom: -6px;
+    left: 0;
+    border-left: 8px solid transparent;
+  }
+  
+  .wishlist {
+    position: relative;
+    top: 20px;
+    right: 10px;
+    background-color: rgba(0, 0, 0, 0.1);
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    text-align: center;
+    padding: 6px 0;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .wishlist:hover {
+    background-color: rgba(0, 0, 0, 0.2);
+  }
+  
+  .discount-wishlist {
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  .label {
+    position: absolute;
+    bottom: 30px;
+    left: 10px;
+    font-size: 11px;
+    font-weight: 500;
+    text-transform: uppercase;
+    color: #fff;
+    border-radius: 4px;
+    padding: 4px 8px;
+    z-index: 2;
+  }
+  
+  .label-green {
+    background-color: #5cb85c;
+  }
+  
+  .image img {
+    width: 100%;
+    height: 220px;
+    object-fit: cover;
+    border-bottom: 2px solid #f1f1f1;
+  }
+  
+  .cart-line {
+    display: none; /* Suppression pour un look plus épuré */
+  }
+  
+  .product-container {
+    position: absolute;
+    right: -50px;
+    top: 25%;
+    z-index: 4;
+    transition: all 0.4s ease;
+    opacity: 0;
+  }
+  
+  .p {
+    border: 1px solid #e9ecef;
+    border-radius: 4px;
+    height: 50px;
+    width: 50px;
+    cursor: pointer;
+    overflow: hidden;
+  }
+  
+  .p img {
+    height: 100%;
+    width: 100%;
+    opacity: 0.85;
+    transition: opacity 0.3s ease;
+  }
+  
+  .p img:hover {
+    opacity: 1;
+  }
+  
+  .match-card:hover .product-container {
+    opacity: 1;
+    right: 10px;
+  }
+  
+  /* Contenu */
+  .content {
+    padding: 15px !important;
+  }
+  
+  .pet-name {
+    font-size: 18px;
+    color: #333;
+    font-weight: 700;
+    text-decoration: none;
+    transition: color 0.3s ease;
+  }
+  
+  .pet-name:hover {
+    color: #ff617c;
+  }
+  
+  .pet-breed {
+    font-size: 14px;
+  }
+  
+  .pet-info p {
+    margin: 2px 0;
+  }
+  
+  .btn-pink {
+    background: linear-gradient(135deg, #f83182, #ff617c);
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 20px;
+    transition: background 0.3s ease;
+  }
+  
+  .btn-pink:hover {
+    background: linear-gradient(135deg, #ff617c, #fe9a7a);
+  }
+  
+  .btn-outline-pink {
+    border: 1px solid #ff617c;
+    color: #ff617c;
+    padding: 6px 12px;
+    border-radius: 20px;
+    background: transparent;
+    transition: all 0.3s ease;
+  }
+  
+  .btn-outline-pink:hover {
+    background: #ff617c;
+    color: white;
+  }
+  /*pour les notifications */
+  /* Style pour la liste déroulante des notifications */
+.notifications-dropdown {
+  position: absolute;
+  top: 50px;
+  right: 0;
+  width: 350px;
+  max-height: 400px;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  overflow: hidden;
+  z-index: 1000;
+  display: none;
+  animation: slideDown 0.3s ease-out;
+}
+
+.notifications-dropdown.show {
+  display: block;
+}
+
+/* Animation d'ouverture */
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* En-tête des notifications */
+.notifications-header {
+  background: linear-gradient(135deg, #FF617C 0%, #FE9A7A 100%);
+  color: white;
+  padding: 10px 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.notifications-header h6 {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.btn-close-sm {
+  filter: brightness(0) invert(1); /* Bouton de fermeture blanc */
+  opacity: 0.8;
+}
+
+.btn-close-sm:hover {
+  opacity: 1;
+}
+
+/* Corps des notifications */
+.notifications-body {
+  max-height: 340px;
+  overflow-y: auto;
+  padding: 10px;
+}
+
+/* Chaque élément de notification */
+.notification-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  border-bottom: 1px solid #eee;
+  transition: background-color 0.2s;
+}
+
+.notification-item:hover {
+  background-color: #f8f9fa;
+}
+
+.notification-content {
+  flex: 1;
+}
+
+.notification-content p {
+  font-size: 13px;
+  margin: 0;
+  line-height: 1.2;
+}
+
+.notification-content small {
+  font-size: 11px;
+}
+
+/* Actions (boutons Accepter/Supprimer) */
+.notification-actions {
+  display: flex;
+  gap: 5px;
+}
+
+.notification-actions .btn {
+  padding: 4px 8px;
+  font-size: 12px;
+  border-radius: 4px;
+}
+
+.btn-success {
+  background-color: #28a745;
+  border-color: #28a745;
+}
+
+.btn-danger {
+  background-color: #dc3545;
+  border-color: #dc3545;
+}
+
+.btn-success:hover,
+.btn-danger:hover {
+  opacity: 0.9;
+}
+
+/* Style pour le badge de notification */
+.badge {
+  font-size: 10px;
+  padding: 3px 6px;
+}

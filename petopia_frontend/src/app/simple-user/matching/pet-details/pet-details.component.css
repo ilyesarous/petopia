@@ -1,0 +1,17 @@
+.btn-close-white {
+    filter: brightness(0) invert(1);
+  }
+  
+  .card {
+    border-radius: 8px;
+  }
+  
+  .card-body p {
+    margin-bottom: 0.5rem;
+  }
+  
+  .card-body h6 {
+    font-size: 1.1rem;
+    margin-bottom: 1rem;
+    color: #FF617C;
+  }

@@ -1,6 +1,5 @@
 package tn.esprit.petopia_backend.controller.pet;
 
-
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -8,9 +7,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
-import tn.esprit.petopia_backend.controller.matching.MatchRequest;
 import tn.esprit.petopia_backend.entities.adoptions.Shelter;
-import tn.esprit.petopia_backend.entities.matching.MatchStatus;
 import tn.esprit.petopia_backend.entities.matching.Matches;
 import tn.esprit.petopia_backend.entities.matching.Preferences;
 import tn.esprit.petopia_backend.entities.pet.Pet;
@@ -32,19 +29,17 @@ public class PetController {
     private MatchesService matchesService;
     private final PetService petService;
     private final IShelterService shelterService;
-    public PetController(PetService petService,IShelterService shelterService) {
+
+    public PetController(PetService petService, IShelterService shelterService) {
         this.petService = petService;
-        this.shelterService= shelterService;
+        this.shelterService = shelterService;
     }
 
     @PostMapping("/user/pet/add")
-
     public String createPet(@RequestBody Pet pet) {
         petService.addPet(pet);
         return "Pet added successfully";
     }
-
-    //Amalllllllll zedt hedhi
 
     @PostMapping("/shelter/pet/add")
     @PreAuthorize("hasAuthority('ROLE_SHELTER')")
@@ -56,11 +51,11 @@ public class PetController {
             return ResponseEntity.badRequest().body("No shelter associated with this user");
         }
         pet.setShelter(shelter);
-
         pet.setUser(null);
         petService.addPet(pet);
         return ResponseEntity.ok("Pet added for shelter successfully");
     }
+
     @PutMapping("/pet/update/{id}")
     @PreAuthorize("hasAuthority('ROLE_SHELTER')")
     public ResponseEntity<Pet> updatePet(@PathVariable Integer id, @RequestBody Pet pet) {
@@ -69,14 +64,13 @@ public class PetController {
         return ResponseEntity.ok(updatedPet);
     }
 
-
-    // Endpoint for deleting a pet (only accessible by shelters)
     @DeleteMapping("/pet/delete/{id}")
     @PreAuthorize("hasAuthority('ROLE_SHELTER')")
     public ResponseEntity<Void> deletePet(@PathVariable Integer id) {
         petService.deletePet(id);
         return ResponseEntity.ok().build();
     }
+
     @GetMapping("/pet/get/{id}")
     @PreAuthorize("hasAnyAuthority('ROLE_USER', 'ROLE_SHELTER', 'ROLE_ADMIN')")
     public ResponseEntity<Pet> getPetById(@PathVariable Integer id) {
@@ -105,16 +99,19 @@ public class PetController {
         return ResponseEntity.ok(petService.getPetsByStatus(status));
     }
 
-    // anas bdet tekhdem hmd welyeeeyyyyy
-
     @GetMapping("/user/pet/{petId}/check-preferences")
     @PreAuthorize("hasAuthority('ROLE_USER')")
     public ResponseEntity<PetPreferencesResponse> checkPetPreferences(@PathVariable int petId) {
+        // Récupérer le pet par son ID
         Pet pet = petService.getPetById(petId);
-
         if (pet == null) {
             return ResponseEntity.notFound().build();
         }
+
+        // Récupérer l'utilisateur connecté
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User user = (User) authentication.getPrincipal();
+        int currentUserId = user.getId_user();
 
         boolean hasPreferences = pet.getPreferences() != null;
         List<Pet> matchingPets = null;
@@ -122,6 +119,8 @@ public class PetController {
         if (hasPreferences) {
             matchingPets = petService.getPetsByStatus(PetStatus.AVAILABLE)
                     .stream()
+                    .filter(p -> p.getIdPet() != petId) // Exclure le pet lui-même
+                    .filter(p -> p.getUser() == null || p.getUser().getId_user() != currentUserId) // Exclure les pets de l'utilisateur connecté
                     .filter(p -> matchesPreferences(p, pet.getPreferences()))
                     .collect(Collectors.toList());
         }
@@ -138,10 +137,17 @@ public class PetController {
     }
 
     private boolean matchesPreferences(Pet pet, Preferences preferences) {
-        return (preferences.getPreferred_breed() == null || pet.getBreed().equalsIgnoreCase(preferences.getPreferred_breed())) &&
+        System.out.println("Pet: " + pet.getPetName());
+        System.out.println("Breed: " + pet.getBreed() + " vs " + preferences.getPreferred_breed());
+        System.out.println("Age: " + pet.getPetAge() + " vs [" + preferences.getMin_age() + ", " + preferences.getMax_age() + "]");
+        System.out.println("Gender: " + pet.getGender().toString() + " vs " + preferences.getPreferred_gender());
+        System.out.println("Location: " + pet.getLocation() + " vs " + preferences.getPreferred_location());
+        boolean result = (preferences.getPreferred_breed() == null || pet.getBreed().equalsIgnoreCase(preferences.getPreferred_breed())) &&
                 (pet.getPetAge() >= preferences.getMin_age() && pet.getPetAge() <= preferences.getMax_age()) &&
                 (preferences.getPreferred_gender() == null || pet.getGender().toString().equalsIgnoreCase(preferences.getPreferred_gender())) &&
                 (preferences.getPreferred_location() == null || pet.getLocation().equalsIgnoreCase(preferences.getPreferred_location()));
+        System.out.println("Résultat: " + result);
+        return result;
     }
 
     @GetMapping("/user/pet/{petId}/matching-pets")
@@ -149,26 +155,28 @@ public class PetController {
     public ResponseEntity<List<Pet>> getMatchingPetsOnly(@PathVariable int petId) {
         // Récupérer le pet par son ID
         Pet pet = petService.getPetById(petId);
-
-        // Vérifier si le pet existe
         if (pet == null) {
             return ResponseEntity.notFound().build();
         }
 
+        // Récupérer l'utilisateur connecté
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User user = (User) authentication.getPrincipal();
+        int currentUserId = user.getId_user();
+
         // Vérifier si le pet a des préférences
         if (pet.getPreferences() == null) {
-            return ResponseEntity.ok(Collections.emptyList()); // Renvoie une liste vide si pas de préférences
+            return ResponseEntity.ok(Collections.emptyList());
         }
 
         // Trouver les pets correspondants aux préférences
         List<Pet> matchingPets = petService.getPetsByStatus(PetStatus.AVAILABLE)
                 .stream()
-                .filter(p -> p.getIdPet() != pet.getIdPet()) // Correction : utiliser != au lieu de equals()
+                .filter(p -> p.getIdPet() != petId) // Exclure le pet lui-même
+                .filter(p -> p.getUser() == null || p.getUser().getId_user() != currentUserId) // Exclure les pets de l'utilisateur connecté
                 .filter(p -> matchesPreferences(p, pet.getPreferences()))
                 .collect(Collectors.toList());
 
         return ResponseEntity.ok(matchingPets);
     }
-
-
 }

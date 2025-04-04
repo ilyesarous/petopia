@@ -1,0 +1,182 @@
+<div class="container mt-4">
+  <!-- Notification Icon -->
+  <div class="position-fixed top-0 end-0 p-3" style="z-index: 1000;">
+    <button class="btn btn-light position-relative" (click)="togglePendingMatches()">
+      <i class="bi bi-bell"></i>
+      <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" *ngIf="notificationCount > 0">
+        {{ notificationCount }}
+      </span>
+    </button>
+
+    <!-- Notifications Dropdown -->
+    <div class="notifications-dropdown" [ngClass]="{'show': showPendingMatches}" *ngIf="showPendingMatches">
+      <div class="notifications-header">
+        <h6 class="mb-0"><i class="bi bi-heart me-2"></i> Pending Matches ({{ notificationCount }})</h6>
+        <button class="btn-close btn-close-sm" (click)="togglePendingMatches()"></button>
+      </div>
+      <div class="notifications-body" *ngIf="pendingMatches.length > 0">
+        <div class="notification-item" *ngFor="let match of pendingMatches">
+          <div class="notification-content">
+            <p class="mb-1">
+              <a href="javascript:void(0)" (click)="viewPendingPetDetails(match, 'pet_1')" class="text-primary"><strong>{{ match.pet_1.petName }}</strong></a> 
+              wants to match with 
+              <a href="javascript:void(0)" (click)="viewPendingPetDetails(match, 'pet_2')" class="text-primary"><strong>{{ match.pet_2.petName }}</strong></a>
+            </p>
+          </div>
+          <div class="notification-actions">
+            <button class="btn btn-sm btn-success me-1" (click)="acceptMatch(match.id_match)" title="Accept">
+              <i class="bi bi-check"></i>
+            </button>
+            <button class="btn btn-sm btn-danger" (click)="deleteMatch(match.id_match)" title="Delete">
+              <i class="bi bi-trash"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="notifications-body text-center py-3" *ngIf="pendingMatches.length === 0">
+        <p class="text-muted mb-0">No pending matches.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Loader -->
+  <div *ngIf="isLoading" class="text-center py-4">
+    <p>Loading pets...</p>
+  </div>
+
+  <!-- Pets Dropdown -->
+  <div class="card mb-4 border-0 shadow-sm" *ngIf="!isLoading">
+    <div class="card-header" style="background: linear-gradient(135deg, #F83182 0%, #FF617C 50%, #FE9A7A 100%);">
+      <div class="d-flex justify-content-between align-items-center">
+        <h5 class="mb-0 text-white">
+          <i class="fas fa-paw me-2"></i>Your Pets List
+        </h5>
+        <div class="dropdown">
+          <button class="btn btn-white text-dark dropdown-toggle" 
+                  type="button" 
+                  (click)="togglePetDropdown()">
+            {{ selectedPet?.petName || 'Choose a Pet' }}
+          </button>
+          <div class="dropdown-menu" 
+               [ngClass]="{'show': showPetDropdown}"
+               style="max-height: 200px; overflow-y: auto;">
+            <a class="dropdown-item" 
+               *ngFor="let pet of petList" 
+               (click)="selectPet(pet)">
+              {{ pet.petName }}
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Preferences Form and Actions -->
+  <div class="row" *ngIf="selectedPet && !isLoading">
+    <div class="col-lg-6 mb-4">
+      <div class="card h-100 border-0 shadow-sm">
+        <div class="card-header text-white" style="background-color: #FF617C;">
+          <h5 class="mb-0"><i class="fas fa-cog me-2"></i>Manage Preferences for {{ selectedPet.petName }}</h5>
+        </div>
+        <div class="card-body">
+          <!-- Preferences Form -->
+          <div *ngIf="showPreferencesForm">
+            <form (ngSubmit)="savePreferences()">
+              <div class="mb-3">
+                <label for="breed" class="form-label">Preferred Breed</label>
+                <input type="text" class="form-control" id="breed" [(ngModel)]="newPreferences.preferred_breed" name="breed">
+              </div>
+              <div class="mb-3">
+                <label for="minAge" class="form-label">Minimum Age</label>
+                <input type="number" class="form-control" id="minAge" [(ngModel)]="newPreferences.min_age" name="minAge">
+              </div>
+              <div class="mb-3">
+                <label for="maxAge" class="form-label">Maximum Age</label>
+                <input type="number" class="form-control" id="maxAge" [(ngModel)]="newPreferences.max_age" name="maxAge">
+              </div>
+              <div class="mb-3">
+                <label for="gender" class="form-label">Preferred Gender</label>
+                <input type="text" class="form-control" id="gender" [(ngModel)]="newPreferences.preferred_gender" name="gender">
+              </div>
+              <div class="mb-3">
+                <label for="location" class="form-label">Preferred Location</label>
+                <input type="text" class="form-control" id="location" [(ngModel)]="newPreferences.preferred_location" name="location">
+              </div>
+              <button type="submit" class="btn btn-pink">Save</button>
+            </form>
+          </div>
+
+          <!-- Preferences Actions -->
+          <div class="mt-3 d-flex gap-2">
+            <button class="btn btn-info btn-sm" (click)="showPreferences()">
+              <i class="bi bi-eye me-1"></i> Show Preferences
+            </button>
+            <button class="btn btn-warning btn-sm" (click)="editPreferences()" [disabled]="!currentPreferences">
+              <i class="bi bi-pencil me-1"></i> Edit Preferences
+            </button>
+            <button class="btn btn-danger btn-sm" (click)="deletePreferences()" [disabled]="!currentPreferences">
+              <i class="bi bi-trash me-1"></i> Delete Preferences
+            </button>
+          </div>
+
+          <!-- Display Current Preferences -->
+          <div *ngIf="currentPreferences && !showPreferencesForm" class="mt-3">
+            <h6>Current Preferences</h6>
+            <p><strong>Breed:</strong> {{ currentPreferences.preferred_breed || 'Not specified' }}</p>
+            <p><strong>Min Age:</strong> {{ currentPreferences.min_age || 0 }} years</p>
+            <p><strong>Max Age:</strong> {{ currentPreferences.max_age || 0 }} years</p>
+            <p><strong>Gender:</strong> {{ currentPreferences.preferred_gender || 'Not specified' }}</p>
+            <p><strong>Location:</strong> {{ currentPreferences.preferred_location || 'Not specified' }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Matching Pets List -->
+  <div class="row" *ngIf="!isLoading">
+    <div class="col-md-3 mt-4" *ngFor="let match of matchingPets">
+      <div class="card match-card shadow-sm">
+        <div class="card-main">
+          <div class="discount-wishlist"></div>
+          <div class="product-container">
+            <div class="p">
+              <img [src]="match.petImage || 'assets/images/default-pet.png'" alt="{{ match.petName }}" />
+            </div>
+          </div>
+          <div class="image">
+            <img [src]="match.petImage || 'assets/images/default-pet.png'" alt="{{ match.petName }}" class="img-fluid" />
+          </div>
+          <div class="cart-line"></div>
+        </div>
+        <div class="content p-3 d-flex flex-column gap-2">
+          <div class="d-flex justify-content-between align-items-start">
+            <div class="d-flex flex-column">
+              <a href="javascript:void(0)" (click)="viewPetDetails(match)" class="pet-name">{{ match.petName }}</a>
+              <span class="pet-breed text-muted">{{ match.breed }}</span>
+            </div>
+            <div class="rating">
+              <i class="bi bi-star-fill text-warning" *ngFor="let star of [1,2,3,4,5]"></i>
+            </div>
+          </div>
+          <div class="pet-info text-muted small">
+            <p><i class="bi bi-calendar me-1"></i> {{ match.petAge }} years</p>
+            <p><i class="bi bi-gender-ambiguous me-1"></i> {{ match.gender }}</p>
+            <p><i class="bi bi-geo-alt me-1"></i> {{ match.location }}</p>
+          </div>
+          <div class="d-flex justify-content-between align-items-center mt-2">
+            <button class="btn btn-outline-pink btn-sm" (click)="viewPetDetails(match)">
+              <i class="bi bi-eye me-1"></i> View More
+            </button>
+            <button class="btn btn-pink btn-sm" (click)="matchPet(match)">
+              <i class="bi bi-heart-fill me-1"></i> Match
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-12 text-center py-5" *ngIf="matchingPets.length === 0 && !showPreferencesForm">
+      <p class="text-muted fs-5"><i class="bi bi-emoji-frown me-2"></i> No compatible pets found</p>
+    </div>
+  </div>
+</div>
