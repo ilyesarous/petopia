@@ -37,15 +37,12 @@ export class NavbarComponent implements OnInit {
     { id: 4, name: 'Events', link: '#' },
     { id: 5, name: 'Vet', link: 'vet' },
     {id: 6, name: 'Adoption', link: 'adoption'},
-
-
-     //TODO-AMAL
-     {id: 7, name: 'Info', link: 'shelter/info'},
-     {id:8 , name: 'Pets', link: 'shelter/pets'},
-     {id:9 , name: 'Adoption Requests', link: 'shelter/adoption-requests'},
-
   ];
 
+  shelterPages = [
+     {id:1 , name: 'MyPets', link: 'shelter/pets'},
+     {id:2 , name: 'Adoption Requests', link: 'shelter/adoption-requests'}
+  ];
   constructor(private authService: AuthService, private router: Router) {}
 
 

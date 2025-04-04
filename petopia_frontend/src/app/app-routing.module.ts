@@ -43,16 +43,7 @@ const routes: Routes = [
     children: [
       { path: 'user', component: ChartComponent },
       { path: 'store', component: StoreDashComponent },
-      {path: 'adoption', component: PetAdoptionListComponent},
-      {path: 'adoption/pets/:id', component: PetAdoptDetailsComponent },
-      {path: 'adoption/form/:idPet', component: AdoptPetComponent},
-      //TODO-AMAL
-      { path: 'shelter/info', component: ShelterInfoComponent },
-      { path: 'shelter/pets', component: ShelterPetListComponent },
-      { path: 'shelter/pets/add', component: ShelterAddPetComponent },
-      { path: 'shelter/pets/edit/:id', component: ShelterUpdatePetComponent },
-      { path: 'shelter/adoption-requests', component: ShelterAdoptionRequestsComponent },
-
+     
       { path: 'vet', component: DashPrincipaleComponent },
       { path: 'tic-tac-toe', component: GameComponent },
       { path: 'consultations', component: ConsultationListComponent },
@@ -61,6 +52,15 @@ const routes: Routes = [
       { path: 'pet-growth', component: PetGrowthListComponent },
     ],
   },
+  {path: 'adoption', component: PetAdoptionListComponent},
+  {path: 'adoption/pets/:id', component: PetAdoptDetailsComponent },
+  {path: 'adoption/form/:idPet', component: AdoptPetComponent},
+  { path: 'shelter/info', component: ShelterInfoComponent },
+  { path: 'shelter/pets', component: ShelterPetListComponent },
+  { path: 'shelter/pets/add', component: ShelterAddPetComponent },
+  { path: 'shelter/pets/edit/:id', component: ShelterUpdatePetComponent },
+  { path: 'shelter/adoption-requests', component: ShelterAdoptionRequestsComponent },
+
   { path: 'signup', component: SignupComponent },
   { path: 'login', component: LoginComponent },
   { path: '**', component: PageNotFoundComponent }

@@ -25,8 +25,10 @@ export class ShelterInfoComponent {
   ) {}
 
   ngOnInit(): void {
-    // TODO: Replace with userId from local storage or auth service
-    this.loadShelter(4);
+
+    const userId = localStorage.getItem('userId');
+
+    this.loadShelter(userId ? parseInt(userId) : 0);
   }
 
   loadShelter(userId: number): void {
