@@ -307,3 +307,32 @@
     border-radius: 5px;
     font-style: italic;
 }
+
+/* Map Controls */
+.map-controls {
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.location-button {
+    background-color: #3f51b5;
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    transition: background-color 0.3s;
+}
+
+.location-button:hover {
+    background-color: #303f9f;
+}
+
+.location-button i {
+    font-size: 16px;
+}

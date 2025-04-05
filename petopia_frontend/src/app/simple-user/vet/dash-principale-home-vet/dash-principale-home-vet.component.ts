@@ -174,4 +174,49 @@ export class DashPrincipaleHomeVetComponent implements OnInit, AfterViewInit {
       .catch(error => console.error('Error:', error));
   }
 
+  locateMe(): void {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const userLocation = L.latLng(position.coords.latitude, position.coords.longitude);
+          
+          // Centre la carte sur la position de l'utilisateur
+          this.map.setView(userLocation, 15);
+          
+          // Supprime l'ancien marqueur s'il existe
+          if (this.marker) {
+            this.map.removeLayer(this.marker);
+          }
+          
+          // Ajoute un nouveau marqueur
+          this.marker = L.marker(userLocation)
+            .addTo(this.map)
+            .bindPopup("You are here!")
+            .openPopup();
+          
+          // Met à jour les informations de localisation
+          fetch(`https://nominatim.openstreetmap.org/reverse?lat=${position.coords.latitude}&lon=${position.coords.longitude}&format=json`)
+            .then(response => response.json())
+            .then(data => {
+              const country = data.address.country || '';
+              const city = data.address.city || data.address.town || data.address.village || '';
+              this.selectedLocation = city ? `${city}, ${country}` : country;
+            })
+            .catch(error => console.error('Error:', error));
+        },
+        (error) => {
+          console.error('Error getting location:', error);
+          alert('Could not get your location. Please make sure location services are enabled.');
+        },
+        {
+          enableHighAccuracy: true, // Pour une meilleure précision
+          timeout: 10000, // 10 secondes de timeout
+          maximumAge: 0 // Ne pas utiliser de position en cache
+        }
+      );
+    } else {
+      alert('Geolocation is not supported by this browser.');
+    }
+  }
+
 }
