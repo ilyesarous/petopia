@@ -84,4 +84,11 @@ public class PaymentController {
         String redirectUrl = "http://localhost:4200/vet/dash-principale-user?payment_status=cancel";
         return new RedirectView(redirectUrl);
     }
+
+    @GetMapping("/revenue/{vetId}")
+    public ResponseEntity<Double> getVetRevenue(@PathVariable Long vetId) {
+        Double revenue = paymentService.getTotalRevenueForVet(vetId);
+        return ResponseEntity.ok(revenue);
+    }
+
 }

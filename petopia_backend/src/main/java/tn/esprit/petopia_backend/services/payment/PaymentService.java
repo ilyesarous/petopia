@@ -14,4 +14,9 @@ public class PaymentService implements IPaymentService {
     public PaymentRequest savePayment(PaymentRequest paymentRequest) {
         return paymentRepository.save(paymentRequest);
     }
+
+    public Double getTotalRevenueForVet(Long vetId) {
+        return paymentRepository.calculateTotalRevenueByVetId(vetId);
+    }
+
 }

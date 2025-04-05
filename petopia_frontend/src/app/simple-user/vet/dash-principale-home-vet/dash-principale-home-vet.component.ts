@@ -4,6 +4,7 @@ import { NotificationStateService } from 'src/app/services/vet/notifications/not
 import { ConsultationService } from 'src/app/services/vet/consultations/consultation.service';
 import { Consultation } from 'src/app/models/vet/consultation';
 import { DomSanitizer } from '@angular/platform-browser';
+import { StripePaymentService } from 'src/app/services/vet/payment/stripe-payment.service';
 
 @Component({
   selector: 'app-dash-principale-home-vet',
@@ -16,16 +17,34 @@ export class DashPrincipaleHomeVetComponent implements OnInit {
   todayAppointments: Consultation[] = [];
   hasAppointmentsToday = false;
   defaultPetImage = 'assets/images/logo.png';
+  vetRevenue: number = 0;
 
   constructor(
     private router: Router,
     private notificationState: NotificationStateService,
     private consultationService: ConsultationService,
-    private sanitizer: DomSanitizer
+    private sanitizer: DomSanitizer,
+    private stripePaymentService: StripePaymentService
   ) {}
 
   ngOnInit(): void {
     this.loadConsultations();
+    this.loadVetRevenue();
+  }
+
+  loadVetRevenue(): void {
+    const vetId = localStorage.getItem('userId'); // ou localStorage.getItem('userId')
+    if (vetId) {
+      this.stripePaymentService.getVetRevenue(+vetId).subscribe(
+        (revenue) => {
+          this.vetRevenue = revenue;
+        },
+        (error) => {
+          console.error('Error fetching vet revenue:', error);
+          this.vetRevenue = 0;
+        }
+      );
+    }
   }
 
   loadConsultations(): void {

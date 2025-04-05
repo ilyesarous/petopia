@@ -85,4 +85,9 @@ export class StripePaymentService {
       }, 100);
     });
   }
+
+  getVetRevenue(vetId: number): Observable<number> {
+    return this.http.get<number>(`${this.apiUrl}/revenue/${vetId}`);
+  }
+  
 }
