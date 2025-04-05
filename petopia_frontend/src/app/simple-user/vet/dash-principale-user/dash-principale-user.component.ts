@@ -6,12 +6,12 @@ import { PetService } from 'src/app/services/pets/pet.service';
 import { Pet } from 'src/app/models/pet/Pet';
 import { MatDialog } from '@angular/material/dialog';
 import { VetSelectionPopupComponent } from '../vet-selection-popup/vet-selection-popup.component';
-
+import { VetLocationService } from 'src/app/services/vet/location/vet-location.service'; 
 
 @Component({
   selector: 'app-dash-principale-user',
   templateUrl: './dash-principale-user.component.html',
-  styleUrls: ['./dash-principale-user.component.css']
+  styleUrls: ['./dash-principale-user.component.css'],
 })
 export class DashPrincipaleUserComponent implements OnInit, AfterViewInit {
   userPets: Pet[] = [];
@@ -19,18 +19,18 @@ export class DashPrincipaleUserComponent implements OnInit, AfterViewInit {
   private map: any;
   private marker: any;
   selectedLocation: string = '';
+  vetLocations: any[] = [];
 
   constructor(
     private stripePaymentService: StripePaymentService,
     private route: ActivatedRoute,
     private petService: PetService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private vetLocationService: VetLocationService
   ) {}
 
   ngOnInit() {
-    // Récupérer l'ID de l'utilisateur connecté
     const userId = localStorage.getItem('userId');
-    
     if (userId) {
       this.loadUserPets(parseInt(userId));
     }
@@ -78,8 +78,33 @@ export class DashPrincipaleUserComponent implements OnInit, AfterViewInit {
 
   ngAfterViewInit(): void {
       this.initMap();
+      this.loadVetLocations();
+    }
+
+    private loadVetLocations(): void {
+      this.vetLocationService.getAllLocations().subscribe(locations => {
+        this.vetLocations = locations;
+        this.addLocationsToMap(); 
+      });
     }
   
+    private addLocationsToMap(): void {
+      this.vetLocations.forEach(location => {
+        const marker = L.marker([location.latitude, location.longitude])
+          .addTo(this.map)
+          .bindPopup(`
+            <div class="custom-popup">
+              <h3 style="color: #F83182; margin-bottom: 10px;">${location.vet.name}</h3>
+              <div class="popup-details">
+                <p><i class="fas fa-envelope" style="color: #FF617C;"></i> ${location.vet.email}</p>
+                <p><i class="fas fa-phone" style="color: #FF617C;"></i> ${location.vet.phoneNumber}</p>
+                <p><i class="fas fa-map-marker-alt" style="color: #FF617C;"></i> ${location.address}</p>
+              </div>
+            </div>
+          `);
+      });
+    }
+
     private initMap(): void {
       // Initialisation de la carte
       this.map = L.map('map').setView([36.8065, 10.1815], 13); // Coordonnées centrées sur Tunis
