@@ -100,4 +100,55 @@
     font-size: 24px;
     color: #F83182;
 }
+.popup-actions {
+    margin-top: 10px;
+    text-align: center;
+  }
   
+  /* Styles for Map Popup */
+.custom-popup {
+    font-family: 'Arial', sans-serif;
+    padding: 10px;
+    min-width: 250px;
+  }
+  
+  .custom-popup h3 {
+    margin: 0 0 10px 0;
+    padding-bottom: 5px;
+    border-bottom: 1px solid #F83182;
+  }
+  
+  .popup-details {
+    margin-bottom: 10px;
+  }
+  
+  .popup-details p {
+    margin: 5px 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  
+  .popup-details i {
+    width: 16px;
+    text-align: center;
+  }
+  
+  .popup-actions {
+    margin-top: 15px;
+    text-align: center;
+  }
+  
+  /* Leaflet Popup Customization */
+  .leaflet-popup-content-wrapper {
+    border-radius: 8px !important;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.2) !important;
+  }
+  
+  .leaflet-popup-content {
+    margin: 10px !important;
+  }
+  
+  .leaflet-popup-tip {
+    background: #F83182 !important;
+  }

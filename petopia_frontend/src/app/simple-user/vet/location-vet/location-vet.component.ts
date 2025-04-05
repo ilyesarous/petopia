@@ -1,7 +1,7 @@
 import { Component, OnInit, AfterViewInit } from '@angular/core';
 import * as L from 'leaflet';
 import { VetLocationService } from 'src/app/services/vet/location/vet-location.service';
-import { AuthService } from 'src/app/services/user/auth.service';
+//import { AuthService } from 'src/app/services/user/auth.service';
 
 @Component({
   selector: 'app-location-vet',
@@ -20,10 +20,11 @@ export class LocationVetComponent implements OnInit, AfterViewInit{
   
     constructor(
       private vetLocationService: VetLocationService,
-      private authService: AuthService
+      //private authService: AuthService
     ) {}
   
     ngOnInit(): void {
+      (window as any).deleteLocation = (id: number) => this.deleteLocation(id);
     }
 
 
@@ -50,10 +51,19 @@ export class LocationVetComponent implements OnInit, AfterViewInit{
           const marker = L.marker([location.latitude, location.longitude])
             .addTo(this.map)
             .bindPopup(`
-              <b>${location.vet.name}</b><br>
-              Email: ${location.vet.email}<br>
-              Phone: ${location.vet.phoneNumber}<br>
-              Address: ${location.address}
+              <div class="custom-popup">
+                <h3 style="color: #F83182; margin-bottom: 10px;">${location.vet.name}</h3>
+                <div class="popup-details">
+                  <p><i class="fas fa-envelope" style="color: #FF617C;"></i> ${location.vet.email}</p>
+                  <p><i class="fas fa-phone" style="color: #FF617C;"></i> ${location.vet.phoneNumber}</p>
+                  <p><i class="fas fa-map-marker-alt" style="color: #FF617C;"></i> ${location.address}</p>
+                </div>
+                <div class="popup-actions">
+                  <p style="color: #FF617C;" onclick="window.deleteLocation(${location.id})">
+                    <i class="fas fa-trash"></i> Delete Location
+                  </p>
+                </div>
+              </div>
             `);
         });
       }
@@ -209,5 +219,38 @@ export class LocationVetComponent implements OnInit, AfterViewInit{
         }
       }
   
+
+      // Ajoutez cette méthode à votre classe
+deleteLocation(id: number): void {
+  if (confirm('Are you sure you want to delete this location?')) {
+    this.vetLocationService.deleteLocation(id).subscribe({
+      next: () => {
+        // Supprimer le marqueur correspondant
+        this.map.eachLayer((layer: any) => {
+          if (layer instanceof L.Marker) {
+            const markerLatLng = layer.getLatLng();
+            const location = this.vetLocations.find(loc => 
+              loc.latitude === markerLatLng.lat && 
+              loc.longitude === markerLatLng.lng
+            );
+            
+            if (location && location.id === id) {
+              this.map.removeLayer(layer);
+            }
+          }
+        });
+
+        // Mettre à jour la liste des localisations
+        this.vetLocations = this.vetLocations.filter(loc => loc.id !== id);
+      },
+      error: (err) => {
+        console.error('Error deleting location:', err);
+        alert('Failed to delete location');
+      }
+    });
+  }
+}
+
+
 
 }
