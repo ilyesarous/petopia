@@ -1,34 +1,47 @@
 <!-- vet-selection-popup.component.html -->
-<h2 mat-dialog-title>Select a Veterinarian</h2>
-<mat-dialog-content>
-  <div *ngIf="isLoading" class="loading">
-    <p>Loading veterinarians...</p>
-  </div>
-
-  <div *ngIf="error" class="error">
-    <mat-icon color="warn">error</mat-icon>
-    <p>{{ error }}</p>
-  </div>
-
-  <mat-radio-group *ngIf="!isLoading && !error" [(ngModel)]="selectedVetId">
-    <div *ngFor="let vet of vets" class="vet-item">
-      <mat-radio-button [value]="vet.id_user">
-        <div class="vet-info">
-          <h3>{{ vet.name }}</h3>
-          <p>{{ vet.email }}</p>
-          <p>{{ vet.phoneNumber }}</p>
+<div class="vet-selection-dialog">
+    <h2 mat-dialog-title class="dialog-title">Select a Veterinarian</h2>
+    
+    <mat-dialog-content class="dialog-content">
+      <div *ngIf="error" class="error-state">
+        <div class="error-icon-container">
+          <mat-icon class="error-icon">error_outline</mat-icon>
         </div>
-      </mat-radio-button>
-    </div>
-  </mat-radio-group>
-</mat-dialog-content>
-<mat-dialog-actions align="end">
-  <button mat-button (click)="close()">Cancel</button>
-  <button 
-    mat-raised-button 
-    color="primary" 
-    (click)="selectVet()"
-    [disabled]="!selectedVetId">
-    Proceed to Payment (50 TND)
-  </button>
-</mat-dialog-actions>
+        <p class="error-message">{{ error }}</p>
+      </div>
+  
+      <mat-radio-group *ngIf="!isLoading && !error" [(ngModel)]="selectedVetId" class="vet-radio-group">
+        <mat-radio-button *ngFor="let vet of vets" [value]="vet.id_user" class="vet-option">
+          <div class="vet-card">
+            <div class="vet-avatar">
+              <mat-icon class="avatar-icon">pets</mat-icon>
+            </div>
+            <div class="vet-details">
+              <h3 class="vet-name">{{ vet.name }}</h3>
+              <div class="vet-contact">
+                <div class="contact-item">
+                  <mat-icon class="contact-icon">email</mat-icon>
+                  <span>{{ vet.email }}</span>
+                </div>
+                <div class="contact-item">
+                  <mat-icon class="contact-icon">phone</mat-icon>
+                  <span>{{ vet.phoneNumber }}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </mat-radio-button>
+      </mat-radio-group>
+    </mat-dialog-content>
+    
+    <mat-dialog-actions class="dialog-actions">
+      <button mat-button class="cancel-btn" (click)="close()">Cancel</button>
+      <button 
+        mat-raised-button 
+        class="confirm-btn"
+        (click)="selectVet()"
+        [disabled]="!selectedVetId">
+        Proceed to Payment (50 TND)
+      </button>
+    </mat-dialog-actions>
+  </div>

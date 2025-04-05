@@ -78,6 +78,8 @@ import { ShelterAddPetComponent } from './simple-user/shelter/shelter-add-pet/sh
 import { ShelterAdoptionRequestsComponent } from './simple-user/shelter/shelter-adoption-requests/shelter-adoption-requests.component';
 import { VetSelectionPopupComponent } from './simple-user/vet/vet-selection-popup/vet-selection-popup.component';
 import { MatRadioModule } from '@angular/material/radio';
+import { MatCardModule } from '@angular/material/card';
+import { MatRippleModule } from '@angular/material/core';
 
 
 @NgModule({
@@ -155,7 +157,8 @@ import { MatRadioModule } from '@angular/material/radio';
     MatIconModule,
     MatDialogModule,
     MatRadioModule,
-
+    MatCardModule,
+    MatRippleModule,
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }
