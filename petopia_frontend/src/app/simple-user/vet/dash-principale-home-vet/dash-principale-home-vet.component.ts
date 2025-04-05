@@ -5,6 +5,8 @@ import { ConsultationService } from 'src/app/services/vet/consultations/consulta
 import { Consultation } from 'src/app/models/vet/consultation';
 import { DomSanitizer } from '@angular/platform-browser';
 import { StripePaymentService } from 'src/app/services/vet/payment/stripe-payment.service';
+import {Pet} from "src/app/models/pet/Pet"; 
+
 
 @Component({
   selector: 'app-dash-principale-home-vet',
@@ -18,6 +20,10 @@ export class DashPrincipaleHomeVetComponent implements OnInit {
   hasAppointmentsToday = false;
   defaultPetImage = 'assets/images/logo.png';
   vetRevenue: number = 0;
+  uniquePets: Pet[] = [];
+  loadingPets = false;
+  totalPatients: number = 0;
+
 
   constructor(
     private router: Router,
@@ -30,6 +36,7 @@ export class DashPrincipaleHomeVetComponent implements OnInit {
   ngOnInit(): void {
     this.loadConsultations();
     this.loadVetRevenue();
+    this.loadUniquePets();
   }
 
   loadVetRevenue(): void {
@@ -48,30 +55,34 @@ export class DashPrincipaleHomeVetComponent implements OnInit {
   }
 
   loadConsultations(): void {
+    const vetId = localStorage.getItem('userId');
+    
+    if (!vetId || isNaN(Number(vetId))) {
+        console.error('Invalid vet ID');
+        return;
+    }
+
     this.consultationService.getAllConsultations().subscribe({
-      next: (consultations) => {
-        const today = new Date().toISOString().split('T')[0];
-        
-        // Filtrer les consultations d'aujourd'hui
-        this.todayAppointments = consultations.filter(c => {
-          // Ajoutez un log pour déboguer
-          console.log('Consultation date:', c.consultation_date, 'Today:', today);
-          return c.consultation_date.startsWith(today);
-        });
-        
-        // Mettre à jour les variables d'état
-        this.totalAppointments = this.todayAppointments.length;
-        this.hasAppointmentsToday = this.totalAppointments > 0;
-        
-        // Log pour vérification
-        console.log('Today appointments:', this.todayAppointments);
-        console.log('Total appointments today:', this.totalAppointments);
-      },
-      error: (err) => {
-        console.error('Error loading consultations', err);
-      }
+        next: (consultations) => {
+            const today = new Date().toISOString().split('T')[0];
+            
+            // Filtrer les consultations d'aujourd'hui pour ce vétérinaire
+            this.todayAppointments = consultations.filter(c => {
+                return c.consultation_date.startsWith(today) && 
+                       c.uservet?.id_user === Number(vetId);
+            });
+            
+            // Mettre à jour les variables d'état
+            this.totalAppointments = this.todayAppointments.length;
+            this.hasAppointmentsToday = this.totalAppointments > 0;
+            
+            console.log('Today appointments for vet:', this.todayAppointments);
+        },
+        error: (err) => {
+            console.error('Error loading consultations', err);
+        }
     });
-  }
+}
 
   getConsultationColor(type: string): string {
     return type === 'meet' ? '#F83182' : '#FE9A7A';
@@ -95,4 +106,28 @@ export class DashPrincipaleHomeVetComponent implements OnInit {
   redirectToUrlDogBreedRecognition() {
     window.location.href = 'http://localhost:8501';
   }
+
+  loadUniquePets(): void {
+    this.loadingPets = true;
+    const vetId = localStorage.getItem('userId');
+    
+    if (vetId && !isNaN(Number(vetId))) {
+      this.consultationService.getUniquePetsForVet(Number(vetId)).subscribe({
+        next: (pets) => {
+          this.uniquePets = pets;
+          this.totalPatients = pets.length; 
+          this.loadingPets = false;
+          console.log('Unique pets loaded:', pets);
+        },
+        error: (err) => {
+          console.error('Error loading unique pets:', err);
+          this.loadingPets = false;
+        }
+      });
+    } else {
+      console.error('Invalid vet ID');
+      this.loadingPets = false;
+    }
+  }
+
 }

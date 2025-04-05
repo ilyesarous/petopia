@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import tn.esprit.petopia_backend.entities.vet.Consultations;
 import tn.esprit.petopia_backend.entities.vet.status_type;
 import tn.esprit.petopia_backend.services.vet.IConsultationsService;
+import tn.esprit.petopia_backend.entities.pet.Pet;
 
 import java.util.List;
 import java.util.Map;
@@ -73,4 +74,10 @@ public class ConsultationsController {
     Consultations retriveConsultations(@PathVariable int idConsultations){
         return consultationsService.retriveConsultations(idConsultations);
     }
+
+    @GetMapping("/auth/Consultations/vet/{vetId}/pets")
+    List<Pet> getUniquePetsForVet(@PathVariable Long vetId) {
+        return consultationsService.getUniquePetsForVet(vetId);
+    }
+
 }
