@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit } from '@angular/core';
+import * as L from 'leaflet';
 import { Router } from '@angular/router';
 import { NotificationStateService } from 'src/app/services/vet/notifications/notification-state.service';
 import { ConsultationService } from 'src/app/services/vet/consultations/consultation.service';
@@ -13,7 +14,7 @@ import {Pet} from "src/app/models/pet/Pet";
   templateUrl: './dash-principale-home-vet.component.html',
   styleUrls: ['./dash-principale-home-vet.component.css']
 })
-export class DashPrincipaleHomeVetComponent implements OnInit {
+export class DashPrincipaleHomeVetComponent implements OnInit, AfterViewInit {
 
   totalAppointments: number = 0;
   todayAppointments: Consultation[] = [];
@@ -23,6 +24,10 @@ export class DashPrincipaleHomeVetComponent implements OnInit {
   uniquePets: Pet[] = [];
   loadingPets = false;
   totalPatients: number = 0;
+  private map: any;
+  private marker: any;
+  selectedLocation: string = '';
+
 
 
   constructor(
@@ -128,6 +133,45 @@ export class DashPrincipaleHomeVetComponent implements OnInit {
       console.error('Invalid vet ID');
       this.loadingPets = false;
     }
+  }
+
+  ngAfterViewInit(): void {
+    this.initMap();
+  }
+
+  private initMap(): void {
+    // Initialisation de la carte
+    this.map = L.map('map').setView([36.8065, 10.1815], 13); // Coordonnées centrées sur Tunis
+
+    // Ajout des tuiles OpenStreetMap
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    }).addTo(this.map);
+
+    // Gestion du clic sur la carte
+    this.map.on('click', (e: L.LeafletMouseEvent) => {
+      this.onMapClick(e);
+    });
+  }
+
+  private onMapClick(e: L.LeafletMouseEvent): void {
+    // Supprime le marqueur existant
+    if (this.marker) {
+      this.map.removeLayer(this.marker);
+    }
+
+    // Ajoute un nouveau marqueur
+    this.marker = L.marker(e.latlng).addTo(this.map);
+
+    // Récupère les informations de localisation
+    fetch(`https://nominatim.openstreetmap.org/reverse?lat=${e.latlng.lat}&lon=${e.latlng.lng}&format=json`)
+      .then(response => response.json())
+      .then(data => {
+        const country = data.address.country || '';
+        const city = data.address.city || data.address.town || data.address.village || '';
+        this.selectedLocation = city ? `${city}, ${country}` : country;
+      })
+      .catch(error => console.error('Error:', error));
   }
 
 }
