@@ -463,3 +463,70 @@ mat-card-actions {
   .leaflet-popup-tip {
     background: #F83182 !important;
   }
+
+  .nearest-vet-popup {
+    font-family: 'Arial', sans-serif;
+    padding: 10px;
+    min-width: 200px;
+  }
+  
+  .nearest-vet-popup h4 {
+    color: #F83182;
+    margin-top: 0;
+    border-bottom: 1px solid #FF617C;
+    padding-bottom: 5px;
+  }
+
+  .nearest-vet-button {
+    background-color: #FE9A7A;
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    transition: background-color 0.3s;
+    margin-left: 10px;
+  }
+  
+  .nearest-vet-button:hover {
+    background-color: #FF617C;
+  }
+
+  .nearest-vet-popup {
+    font-family: 'Arial', sans-serif;
+    padding: 10px;
+    min-width: 250px;
+    background: white;
+    border-radius: 8px;
+  }
+  
+  .leaflet-popup-content-wrapper {
+    border-radius: 8px !important;
+    border: 2px solid #F83182 !important;
+  }
+  
+  .leaflet-popup-tip {
+    background: #F83182 !important;
+  }
+  
+  .nearest-vet-popup h4 {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 0;
+  }
+  
+  .nearest-vet-popup p {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  
+  .nearest-vet-popup i {
+    width: 16px;
+    text-align: center;
+  }

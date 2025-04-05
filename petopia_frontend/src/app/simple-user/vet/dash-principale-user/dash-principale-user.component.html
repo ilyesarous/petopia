@@ -73,15 +73,18 @@
     <div class="map-section">
         <h1 class="welcome-text">Vet Location</h1>
         <div class="map-controls">
+            <div *ngIf="selectedLocation" class="selected-location">
+                Selected location: {{ selectedLocation }}
+            </div>
             <button class="location-button" (click)="locateMe()">
                 <i class="fas fa-location-arrow"></i> My Current Location
             </button>
+            <button class="nearest-vet-button" (click)="findNearestVetToMyLocation()">
+                <i class="fas fa-map-marker-alt"></i> Find Nearest Vet
+            </button>
         </div>
-        <div *ngIf="selectedLocation" class="selected-location">
-            Selected location: {{ selectedLocation }}
-        </div>
+        
         <div id="map"></div>
-       
     </div>
     
     <br>

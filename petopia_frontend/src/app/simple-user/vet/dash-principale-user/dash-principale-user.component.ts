@@ -160,6 +160,29 @@ export class DashPrincipaleUserComponent implements OnInit, AfterViewInit {
               .bindPopup("You are here!")
               .openPopup();
             
+            // Trouve et affiche le vétérinaire le plus proche
+            /*
+            const nearestVet = this.findNearestVet(
+              position.coords.latitude, 
+              position.coords.longitude
+            );
+            
+            if (nearestVet) {
+              const popupContent = `
+                <div class="nearest-vet-popup">
+                  <h4>Nearest Veterinarian</h4>
+                  <p><strong>${nearestVet.vet.vet.name}</strong></p>
+                  <p>${nearestVet.vet.address}</p>
+                  <p>Distance: ${nearestVet.distance.toFixed(2)} km</p>
+                </div>
+              `;
+              
+              L.popup()
+                .setLatLng([nearestVet.vet.latitude, nearestVet.vet.longitude])
+                .setContent(popupContent)
+                .openOn(this.map);
+            }
+    */
             // Met à jour les informations de localisation
             fetch(`https://nominatim.openstreetmap.org/reverse?lat=${position.coords.latitude}&lon=${position.coords.longitude}&format=json`)
               .then(response => response.json())
@@ -175,9 +198,102 @@ export class DashPrincipaleUserComponent implements OnInit, AfterViewInit {
             alert('Could not get your location. Please make sure location services are enabled.');
           },
           {
-            enableHighAccuracy: true, // Pour une meilleure précision
-            timeout: 10000, // 10 secondes de timeout
-            maximumAge: 0 // Ne pas utiliser de position en cache
+            enableHighAccuracy: true,
+            timeout: 10000,
+            maximumAge: 0
+          }
+        );
+      } else {
+        alert('Geolocation is not supported by this browser.');
+      }
+    }
+
+    private calculateDistance(lat1: number, lon1: number, lat2: number, lon2: number): number {
+      const R = 6371; // Rayon de la Terre en km
+      const dLat = this.deg2rad(lat2 - lat1);
+      const dLon = this.deg2rad(lon2 - lon1);
+      const a = 
+        Math.sin(dLat/2) * Math.sin(dLat/2) +
+        Math.cos(this.deg2rad(lat1)) * Math.cos(this.deg2rad(lat2)) * 
+        Math.sin(dLon/2) * Math.sin(dLon/2);
+      const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
+      return R * c; // Distance en km
+    }
+    
+    private deg2rad(deg: number): number {
+      return deg * (Math.PI/180);
+    }
+
+    findNearestVet(userLat: number, userLng: number): any {
+      if (this.vetLocations.length === 0) return null;
+    
+      let nearestVet = this.vetLocations[0];
+      let shortestDistance = this.calculateDistance(
+        userLat, userLng, 
+        nearestVet.latitude, nearestVet.longitude
+      );
+    
+      this.vetLocations.forEach(location => {
+        const distance = this.calculateDistance(
+          userLat, userLng, 
+          location.latitude, location.longitude
+        );
+        if (distance < shortestDistance) {
+          shortestDistance = distance;
+          nearestVet = location;
+        }
+      });
+    
+      return {
+        vet: nearestVet,
+        distance: shortestDistance
+      };
+    }
+
+    findNearestVetToMyLocation(): void {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          (position) => {
+            const nearestVet = this.findNearestVet(
+              position.coords.latitude, 
+              position.coords.longitude
+            );
+            
+            if (nearestVet) {
+              this.map.setView(
+                [nearestVet.vet.latitude, nearestVet.vet.longitude], 
+                15
+              );
+              
+              const popupContent = `
+                <div class="nearest-vet-popup">
+                  <h4 style="color: #F83182; border-bottom: 2px solid #FF617C; padding-bottom: 5px; margin-bottom: 10px;">
+                    <i class="fas fa-star" style="color: #FE9A7A;"></i> Nearest Veterinarian
+                  </h4>
+                  <p style="margin: 8px 0;">
+                    <i class="fas fa-user-md" style="color: #FF617C;"></i> 
+                    <strong style="color: #F83182;">${nearestVet.vet.vet.name}</strong>
+                  </p>
+                  <p style="margin: 8px 0;">
+                    <i class="fas fa-map-marker-alt" style="color: #FF617C;"></i> 
+                    <span style="color: #333;">${nearestVet.vet.address}</span>
+                  </p>
+                  <p style="margin: 8px 0; background: #FFF5F7; padding: 5px; border-radius: 4px;">
+                    <i class="fas fa-route" style="color: #FE9A7A;"></i> 
+                    Distance: <strong style="color: #F83182;">${nearestVet.distance.toFixed(2)} km</strong>
+                  </p>
+                </div>
+              `;
+              
+              L.popup()
+                .setLatLng([nearestVet.vet.latitude, nearestVet.vet.longitude])
+                .setContent(popupContent)
+                .openOn(this.map);
+            }
+          },
+          (error) => {
+            console.error('Error getting location:', error);
+            alert('Could not get your location. Please make sure location services are enabled.');
           }
         );
       } else {
