@@ -17,6 +17,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -130,6 +131,11 @@ public class UserController {
     public ResponseEntity<Boolean> checkEmailExists(@RequestParam String email) {
         boolean exists = usersManagementService.checkEmailExists(email);
         return ResponseEntity.ok(exists);
+    }
+
+    @GetMapping("/auth/vets")
+    public List<User> getAllVeterinarians() {
+        return usersManagementService.getAllVets();
     }
 
 }

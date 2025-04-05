@@ -20,12 +20,20 @@
                 <h3>🗓️ Appointment</h3>
                 <div class="stat-card patients">Click to view</div>
             </div>
-    
+    <!--
             <div class="stat-card appointments" (click)="handlePaymentClick()">
                 <h3>💳 Payment</h3>
                 <div class="stat-card appointments">Click to pay</div>
             </div>
-    
+        -->
+        <!-- Modifiez cette partie dans votre template -->
+<div class="stat-card appointments">
+    <h3>💳 Payment</h3>
+    <button mat-raised-button (click)="openVetSelectionDialog()">
+        Select Vet and Pay
+    </button>
+</div>
+
             <div class="stat-card treatments" (click)="redirectToUrlDogBreedRecognition()">
                 <h3>🐕 Dog Breed Recognition</h3>
                 <div class="stat-card treatments">Click to view</div>

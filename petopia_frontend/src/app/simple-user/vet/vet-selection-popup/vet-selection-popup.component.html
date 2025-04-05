@@ -1,0 +1,34 @@
+<!-- vet-selection-popup.component.html -->
+<h2 mat-dialog-title>Select a Veterinarian</h2>
+<mat-dialog-content>
+  <div *ngIf="isLoading" class="loading">
+    <p>Loading veterinarians...</p>
+  </div>
+
+  <div *ngIf="error" class="error">
+    <mat-icon color="warn">error</mat-icon>
+    <p>{{ error }}</p>
+  </div>
+
+  <mat-radio-group *ngIf="!isLoading && !error" [(ngModel)]="selectedVetId">
+    <div *ngFor="let vet of vets" class="vet-item">
+      <mat-radio-button [value]="vet.id_user">
+        <div class="vet-info">
+          <h3>{{ vet.name }}</h3>
+          <p>{{ vet.email }}</p>
+          <p>{{ vet.phoneNumber }}</p>
+        </div>
+      </mat-radio-button>
+    </div>
+  </mat-radio-group>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button (click)="close()">Cancel</button>
+  <button 
+    mat-raised-button 
+    color="primary" 
+    (click)="selectVet()"
+    [disabled]="!selectedVetId">
+    Proceed to Payment (50 TND)
+  </button>
+</mat-dialog-actions>

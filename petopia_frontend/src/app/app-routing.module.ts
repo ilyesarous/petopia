@@ -38,6 +38,7 @@ import { AppointmentUserComponent } from './simple-user/vet/appointment-user/app
 import { TreatmentSpecificPetsUserComponent } from './simple-user/vet/treatment-specific-pets-user/treatment-specific-pets-user.component';
 import { VideoConsultationComponent } from './simple-user/vet/video-consultation/video-consultation.component';
 import { GameComponent } from './simple-user/vet/tic-tac-toe/game/game.component';
+//import { VetSelectionPopupComponent } from './simple-user/vet/vet-selection-popup/vet-selection-popup.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -57,6 +58,7 @@ const routes: Routes = [
   { path: 'vet/tic-tac-toe', component:  GameComponent, canActivate: [AuthGuard]},
   { path: 'vet/treatment-specific-pets-user/:id', component: TreatmentSpecificPetsUserComponent, canActivate: [AuthGuard]},
   { path: 'vet/meet', component: VideoConsultationComponent, canActivate: [AuthGuard]},
+  //{path : 'vet/select-vet' , component : VetSelectionPopupComponent, canActivate: [AuthGuard]},
 
   { path: 'dashboard', component: DashbordComponent, canActivate: [AuthGuard],
     children: [

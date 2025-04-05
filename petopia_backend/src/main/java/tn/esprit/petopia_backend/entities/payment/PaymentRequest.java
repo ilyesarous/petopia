@@ -34,6 +34,29 @@ public class PaymentRequest {
     @JoinColumn(name = "vet_id_user")
     private User userVet;
 
+
+    @Transient // Ce champ ne sera pas persisté
+    private Integer userId;
+
+    @Transient
+    private Integer vetId;
+
+    public Integer getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Integer userId) {
+        this.userId = userId;
+    }
+
+    public Integer getVetId() {
+        return vetId;
+    }
+
+    public void setVetId(Integer vetId) {
+        this.vetId = vetId;
+    }
+
     // Getters et Setters
     public Double getAmount() {
         return amount;

@@ -372,5 +372,8 @@ public class UserService {
         new ReqRes(HttpStatus.OK, "Token revoked successfully");
     }
 
+    public List<User> getAllVets() {
+        return usersRepo.findByRole(UserRole.VET);
+    }
 
 }

@@ -4,6 +4,9 @@ import { ActivatedRoute } from '@angular/router';
 import { OnInit } from '@angular/core';
 import { PetService } from 'src/app/services/pets/pet.service';
 import { Pet } from 'src/app/models/pet/Pet';
+import { MatDialog } from '@angular/material/dialog';
+import { VetSelectionPopupComponent } from '../vet-selection-popup/vet-selection-popup.component';
+
 
 @Component({
   selector: 'app-dash-principale-user',
@@ -17,7 +20,8 @@ export class DashPrincipaleUserComponent implements OnInit {
   constructor(
     private stripePaymentService: StripePaymentService,
     private route: ActivatedRoute,
-    private petService: PetService
+    private petService: PetService,
+    private dialog: MatDialog
   ) {}
 
   ngOnInit() {
@@ -41,6 +45,13 @@ export class DashPrincipaleUserComponent implements OnInit {
     });
   }
 
+  openVetSelectionDialog(): void {
+    this.dialog.open(VetSelectionPopupComponent, {
+      width: '500px',
+      disableClose: true
+    });
+  }
+  
   loadUserPets(userId: number) {
     this.petService.getPetsByOwnerId(userId).subscribe({
       next: (pets) => {
@@ -53,11 +64,11 @@ export class DashPrincipaleUserComponent implements OnInit {
       }
     });
   }
-
+/*
   handlePaymentClick() {
     this.stripePaymentService.redirectToCheckout();
   }
-
+*/
   redirectToUrlDogBreedRecognition() {
     window.location.href = 'http://localhost:8501';
   }

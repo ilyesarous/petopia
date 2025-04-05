@@ -76,6 +76,8 @@ import {  ShelterInfoComponent } from './simple-user/shelter/shelter-info/shelte
 import { ShelterPetListComponent } from './simple-user/shelter/shelter-pet-list/shelter-pet-list.component';
 import { ShelterAddPetComponent } from './simple-user/shelter/shelter-add-pet/shelter-add-pet.component';
 import { ShelterAdoptionRequestsComponent } from './simple-user/shelter/shelter-adoption-requests/shelter-adoption-requests.component';
+import { VetSelectionPopupComponent } from './simple-user/vet/vet-selection-popup/vet-selection-popup.component';
+import { MatRadioModule } from '@angular/material/radio';
 
 
 @NgModule({
@@ -132,7 +134,8 @@ import { ShelterAdoptionRequestsComponent } from './simple-user/shelter/shelter-
     ShelterInfoComponent,
     ShelterPetListComponent,
     ShelterAddPetComponent,
-    ShelterAdoptionRequestsComponent
+    ShelterAdoptionRequestsComponent,
+    VetSelectionPopupComponent
   ],
   imports: [
     BrowserModule,
@@ -151,6 +154,8 @@ import { ShelterAdoptionRequestsComponent } from './simple-user/shelter/shelter-
     FontAwesomeModule,
     MatIconModule,
     MatDialogModule,
+    MatRadioModule,
+
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }
