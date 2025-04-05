@@ -5,6 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import tn.esprit.petopia_backend.entities.vet.Consultations;
 import tn.esprit.petopia_backend.entities.vet.status_type;
+import tn.esprit.petopia_backend.repositories.vet.ConsultationsRepository;
 import tn.esprit.petopia_backend.services.vet.IConsultationsService;
 import tn.esprit.petopia_backend.entities.pet.Pet;
 
@@ -78,6 +79,12 @@ public class ConsultationsController {
     @GetMapping("/auth/Consultations/vet/{vetId}/pets")
     List<Pet> getUniquePetsForVet(@PathVariable Long vetId) {
         return consultationsService.getUniquePetsForVet(vetId);
+    }
+
+    @GetMapping("/auth/Consultations/retrieveConsultationsByUser/{userId}")
+    public ResponseEntity<List<Consultations>> getConsultationsByUser(@PathVariable Integer userId) {
+        List<Consultations> consultations = consultationsService.getConsultationsByUserId(userId);
+        return ResponseEntity.ok(consultations);
     }
 
 }

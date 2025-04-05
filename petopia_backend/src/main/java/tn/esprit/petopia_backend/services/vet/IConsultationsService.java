@@ -15,4 +15,5 @@ public interface IConsultationsService {
 
     public List<Pet> getUniquePetsForVet(Long vetId);
 
+    List<Consultations> getConsultationsByUserId(Integer userId);
 }

@@ -13,4 +13,7 @@ public interface ConsultationsRepository extends CrudRepository<Consultations,In
     @Query("SELECT DISTINCT c.petconsultation FROM Consultations c WHERE c.uservet.id_user = :vetId")
     List<Pet> findDistinctPetsByVetId(@Param("vetId") Long vetId);
 
+    @Query("SELECT c FROM Consultations c WHERE c.userclient.id_user = :userId")
+    List<Consultations> findByUserId(@Param("userId") Integer userId);
+
 }

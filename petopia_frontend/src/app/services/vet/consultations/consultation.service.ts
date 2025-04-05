@@ -50,4 +50,8 @@ export class ConsultationService {
     return this.http.get<Pet[]>(`${this.apiUrl}/vet/${vetId}/pets`, this.httpOptions);
   }
 
+  getConsultationsByUserId(userId: number): Observable<Consultation[]> {
+    return this.http.get<Consultation[]>(`${this.apiUrl}/retrieveConsultationsByUser/${userId}`, this.httpOptions);
+  }
+
 }
