@@ -80,6 +80,7 @@ import { VetSelectionPopupComponent } from './simple-user/vet/vet-selection-popu
 import { MatRadioModule } from '@angular/material/radio';
 import { MatCardModule } from '@angular/material/card';
 import { MatRippleModule } from '@angular/material/core';
+import { LocationVetComponent } from './simple-user/vet/location-vet/location-vet.component';
 
 
 @NgModule({
@@ -137,7 +138,8 @@ import { MatRippleModule } from '@angular/material/core';
     ShelterPetListComponent,
     ShelterAddPetComponent,
     ShelterAdoptionRequestsComponent,
-    VetSelectionPopupComponent
+    VetSelectionPopupComponent,
+    LocationVetComponent
   ],
   imports: [
     BrowserModule,

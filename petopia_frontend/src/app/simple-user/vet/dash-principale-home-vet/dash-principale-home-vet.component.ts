@@ -1,5 +1,5 @@
-import { Component, OnInit, AfterViewInit } from '@angular/core';
-import * as L from 'leaflet';
+
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { NotificationStateService } from 'src/app/services/vet/notifications/notification-state.service';
 import { ConsultationService } from 'src/app/services/vet/consultations/consultation.service';
@@ -8,13 +8,12 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { StripePaymentService } from 'src/app/services/vet/payment/stripe-payment.service';
 import {Pet} from "src/app/models/pet/Pet"; 
 
-
 @Component({
   selector: 'app-dash-principale-home-vet',
   templateUrl: './dash-principale-home-vet.component.html',
   styleUrls: ['./dash-principale-home-vet.component.css']
 })
-export class DashPrincipaleHomeVetComponent implements OnInit, AfterViewInit {
+export class DashPrincipaleHomeVetComponent implements OnInit {
 
   totalAppointments: number = 0;
   todayAppointments: Consultation[] = [];
@@ -24,10 +23,6 @@ export class DashPrincipaleHomeVetComponent implements OnInit, AfterViewInit {
   uniquePets: Pet[] = [];
   loadingPets = false;
   totalPatients: number = 0;
-  private map: any;
-  private marker: any;
-  selectedLocation: string = '';
-
 
 
   constructor(
@@ -45,7 +40,7 @@ export class DashPrincipaleHomeVetComponent implements OnInit, AfterViewInit {
   }
 
   loadVetRevenue(): void {
-    const vetId = localStorage.getItem('userId'); // ou localStorage.getItem('userId')
+    const vetId = localStorage.getItem('userId'); 
     if (vetId) {
       this.stripePaymentService.getVetRevenue(+vetId).subscribe(
         (revenue) => {
@@ -132,90 +127,6 @@ export class DashPrincipaleHomeVetComponent implements OnInit, AfterViewInit {
     } else {
       console.error('Invalid vet ID');
       this.loadingPets = false;
-    }
-  }
-
-  ngAfterViewInit(): void {
-    this.initMap();
-  }
-
-  private initMap(): void {
-    // Initialisation de la carte
-    this.map = L.map('map').setView([36.8065, 10.1815], 13); // Coordonnées centrées sur Tunis
-
-    // Ajout des tuiles OpenStreetMap
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-    }).addTo(this.map);
-
-    // Gestion du clic sur la carte
-    this.map.on('click', (e: L.LeafletMouseEvent) => {
-      this.onMapClick(e);
-    });
-  }
-
-  private onMapClick(e: L.LeafletMouseEvent): void {
-    // Supprime le marqueur existant
-    if (this.marker) {
-      this.map.removeLayer(this.marker);
-    }
-
-    // Ajoute un nouveau marqueur
-    this.marker = L.marker(e.latlng).addTo(this.map);
-
-    // Récupère les informations de localisation
-    fetch(`https://nominatim.openstreetmap.org/reverse?lat=${e.latlng.lat}&lon=${e.latlng.lng}&format=json`)
-      .then(response => response.json())
-      .then(data => {
-        const country = data.address.country || '';
-        const city = data.address.city || data.address.town || data.address.village || '';
-        this.selectedLocation = city ? `${city}, ${country}` : country;
-      })
-      .catch(error => console.error('Error:', error));
-  }
-
-  locateMe(): void {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          const userLocation = L.latLng(position.coords.latitude, position.coords.longitude);
-          
-          // Centre la carte sur la position de l'utilisateur
-          this.map.setView(userLocation, 15);
-          
-          // Supprime l'ancien marqueur s'il existe
-          if (this.marker) {
-            this.map.removeLayer(this.marker);
-          }
-          
-          // Ajoute un nouveau marqueur
-          this.marker = L.marker(userLocation)
-            .addTo(this.map)
-            .bindPopup("You are here!")
-            .openPopup();
-          
-          // Met à jour les informations de localisation
-          fetch(`https://nominatim.openstreetmap.org/reverse?lat=${position.coords.latitude}&lon=${position.coords.longitude}&format=json`)
-            .then(response => response.json())
-            .then(data => {
-              const country = data.address.country || '';
-              const city = data.address.city || data.address.town || data.address.village || '';
-              this.selectedLocation = city ? `${city}, ${country}` : country;
-            })
-            .catch(error => console.error('Error:', error));
-        },
-        (error) => {
-          console.error('Error getting location:', error);
-          alert('Could not get your location. Please make sure location services are enabled.');
-        },
-        {
-          enableHighAccuracy: true, // Pour une meilleure précision
-          timeout: 10000, // 10 secondes de timeout
-          maximumAge: 0 // Ne pas utiliser de position en cache
-        }
-      );
-    } else {
-      alert('Geolocation is not supported by this browser.');
     }
   }
 

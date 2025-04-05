@@ -1,3 +1,4 @@
+
 <div class="dashboard">
     <div class="header">
         <div class="welcome-container">
@@ -127,23 +128,6 @@
 
     <br>
     <app-qr-scanner></app-qr-scanner>
-
-    <br>
-
-    <!-- Map Section -->
-    <div class="map-section">
-        <h1 class="welcome-text">Vet Location</h1>
-        <div class="map-controls">
-            <button class="location-button" (click)="locateMe()">
-                <i class="fas fa-location-arrow"></i> My Current Location
-            </button>
-        </div>
-        <div *ngIf="selectedLocation" class="selected-location">
-            Selected location: {{ selectedLocation }}
-        </div>
-        <div id="map"></div>
-       
-    </div>
 
 </div>
 

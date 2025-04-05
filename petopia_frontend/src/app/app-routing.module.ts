@@ -39,7 +39,7 @@ import { TreatmentSpecificPetsUserComponent } from './simple-user/vet/treatment-
 import { VideoConsultationComponent } from './simple-user/vet/video-consultation/video-consultation.component';
 import { GameComponent } from './simple-user/vet/tic-tac-toe/game/game.component';
 //import { VetSelectionPopupComponent } from './simple-user/vet/vet-selection-popup/vet-selection-popup.component';
-
+import { LocationVetComponent } from './simple-user/vet/location-vet/location-vet.component';
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
   { path: 'home', component: ComponentWrapperComponent, canActivate: [AuthGuard]},
@@ -59,6 +59,7 @@ const routes: Routes = [
   { path: 'vet/treatment-specific-pets-user/:id', component: TreatmentSpecificPetsUserComponent, canActivate: [AuthGuard]},
   { path: 'vet/meet', component: VideoConsultationComponent, canActivate: [AuthGuard]},
   //{path : 'vet/select-vet' , component : VetSelectionPopupComponent, canActivate: [AuthGuard]},
+  { path: 'vet/location', component: LocationVetComponent, canActivate: [AuthGuard] },
 
   { path: 'dashboard', component: DashbordComponent, canActivate: [AuthGuard],
     children: [
