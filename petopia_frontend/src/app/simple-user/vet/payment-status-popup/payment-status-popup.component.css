@@ -1,0 +1,83 @@
+.payment-popup-container {
+    padding: 20px;
+    border-radius: 12px;
+    max-width: 400px;
+    margin: 0 auto;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  }
+  
+  .popup-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  
+  .popup-header h2 {
+    margin: 0;
+    font-size: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  
+  .popup-content p {
+    font-size: 1.1rem;
+    line-height: 1.6;
+    margin-bottom: 25px;
+  }
+  
+  .actions {
+    display: flex;
+    justify-content: center;
+  }
+  
+  .download-btn {
+    background: linear-gradient(135deg, #F83182 0%, #FF617C 100%);
+    color: white;
+    padding: 10px 25px;
+    border-radius: 25px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+  }
+  
+  .download-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(248, 49, 130, 0.4);
+  }
+  
+  /* Couleurs spécifiques */
+  .success {
+    border-top: 4px solid #4CAF50;
+  }
+  
+  .cancel {
+    border-top: 4px solid #F83182;
+  }
+
+  /* Ajoutez ces styles à votre fichier CSS existant */
+
+.payment-details {
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    padding: 15px;
+    margin: 15px 0;
+    border-left: 4px solid #F83182;
+  }
+  
+  .detail-row {
+    display: flex;
+    margin-bottom: 8px;
+    align-items: center;
+  }
+  
+  .detail-label {
+    font-weight: 600;
+    color: #FF617C;
+    min-width: 100px;
+  }
+  
+  .detail-value {
+    color: #555;
+    flex-grow: 1;
+  }

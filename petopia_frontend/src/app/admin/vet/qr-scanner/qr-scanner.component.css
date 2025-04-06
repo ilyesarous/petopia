@@ -60,7 +60,7 @@ p {
     text-align: left; /* Alignement du texte à gauche */
     border: 2px solid #F83182; /* Bordure rose */
   }
-  
+
   /* Style pour les mots-clés dans le texte (optionnel) */
   p strong {
     color: #FF617C; /* Orange pour les mots-clés */
@@ -70,3 +70,29 @@ p {
   p em {
     color: #FE9A7A; /* Jaune pour les valeurs */
   }
+
+  .container {
+    display: flex; /* Affichage en ligne */
+    align-items: center; /* Alignement vertical centré */
+    gap: 20px; /* Espacement entre les éléments */
+}
+
+.result-container {
+    max-width: 1500px; /* Ajuste la largeur du résultat */
+}
+
+.container {
+  display: flex; /* Mettre la vidéo et le résultat sur la même ligne */
+  align-items: center; /* Alignement vertical centré */
+  gap: 20px; /* Espacement entre les éléments */
+}
+
+.video-container {
+  display: flex;
+  flex-direction: column; /* Boutons au-dessus de la vidéo */
+  align-items: center; /* Centrer les boutons et la vidéo */
+  gap: 10px; /* Espacement entre boutons et vidéo */
+}
+
+
+
