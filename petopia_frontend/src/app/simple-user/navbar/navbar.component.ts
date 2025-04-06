@@ -33,7 +33,7 @@ export class NavbarComponent implements OnInit {
   pages = [
     { id: 1, name: 'Home', link: '/home' },
     { id: 2, name: 'Store', link: '/products' },
-    { id: 3, name: 'Community Hub', link: '#' },
+    { id: 3, name: 'Community Hub', link: 'community' },
     { id: 4, name: 'Events', link: '#' },
     { id: 5, name: 'Vet', link: 'vet' },
   ];

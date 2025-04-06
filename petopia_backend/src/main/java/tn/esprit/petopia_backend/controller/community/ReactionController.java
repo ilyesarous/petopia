@@ -1,9 +1,12 @@
 package tn.esprit.petopia_backend.controller.community;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import tn.esprit.petopia_backend.entities.community.Reaction;
 import tn.esprit.petopia_backend.entities.community.ReactionType;
+import tn.esprit.petopia_backend.entities.user.User;
 import tn.esprit.petopia_backend.services.community.IReactionService;
 
 import java.util.List;
@@ -19,9 +22,14 @@ public class ReactionController {
     }
 
     @PostMapping("/add")
-    public ResponseEntity<Reaction> addReaction(@RequestParam int userId, @RequestParam Long postId, @RequestParam ReactionType type) {
+    public ResponseEntity<Reaction> addReaction(@RequestParam Long postId, @RequestParam ReactionType type) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User user = (User) authentication.getPrincipal();
+        int userId = user.getId_user();  // Get the correct authenticated user's ID
+
         return ResponseEntity.ok(reactionService.addReaction(userId, postId, type));
     }
+
 
     @PutMapping("/update/{reactionId}")
     public ResponseEntity<Reaction> updateReaction(@PathVariable Long reactionId, @RequestParam ReactionType type) {

@@ -20,7 +20,7 @@ import { QrScannerComponent } from './admin/vet/qr-scanner/qr-scanner.component'
 import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonModule } from '@angular/material/button';
 import { NotificationListComponent } from './admin/vet/notifications/notification-list/notification-list.component';
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { NotificationStatsComponent } from './admin/vet/notifications/notification-stats/notification-stats.component';
 import { ConsultationListComponent } from './admin/vet/consultations/consultation-list/consultation-list.component';
 import { NgxPaginationModule } from 'ngx-pagination';
@@ -52,6 +52,13 @@ import { FeedbacksComponent } from './simple-user/store/feedbacks/feedbacks.comp
 import {LoginComponent} from "./components/login/login.component";
 import {FooterComponent} from "./components/footer/footer.component";
 import {SignupComponent} from "./components/signup/signup.component";
+import { CommunityComponent } from './simple-user/community/community.component';
+import { PostComponent } from './simple-user/post/post.component';
+import { ReactionComponent } from './simple-user/reaction/reaction.component';
+import { CommentComponent } from './simple-user/comment/comment.component';
+import { StoryComponent } from './simple-user/story/story.component';
+import { AuthInterceptor } from './interceptors/auth.interceptor';
+import { RelativeTimePipe } from './pipes/relative-time.pipe';
 
 @NgModule({
   declarations: [
@@ -93,7 +100,13 @@ import {SignupComponent} from "./components/signup/signup.component";
     FeedbacksComponent,
     LoginComponent,
     FooterComponent,
-    SignupComponent
+    SignupComponent,
+    CommunityComponent,
+    PostComponent,
+    ReactionComponent,
+    CommentComponent,
+    StoryComponent,
+    RelativeTimePipe
   ],
   imports: [
     BrowserModule,
@@ -110,7 +123,8 @@ import {SignupComponent} from "./components/signup/signup.component";
     CanvasJSAngularChartsModule,
     BrowserAnimationsModule
   ],
-  providers: [],
+  providers: [
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

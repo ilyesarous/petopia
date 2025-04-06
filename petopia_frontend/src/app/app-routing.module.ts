@@ -19,6 +19,8 @@ import { StoreDashComponent } from './admin/store/store-dash/store-dash.componen
 import {LoginComponent} from "./components/login/login.component";
 import {SignupComponent} from "./components/signup/signup.component";
 import {AuthGuard} from "./auth.guard";
+import { CommunityComponent } from './simple-user/community/community.component';
+import { PostComponent } from './simple-user/post/post.component';
 
 
 
@@ -30,6 +32,9 @@ const routes: Routes = [
   { path: 'favorites', component: FavoriteComponent, canActivate: [AuthGuard]},
   { path: 'vet', component: DashPrincipaleHomeVetComponent, canActivate: [AuthGuard] },
   { path: 'vet/pet-growth/:id', component: PetGrowthVetComponent, canActivate: [AuthGuard] },
+  { path: 'community', component: CommunityComponent},
+  { path: 'post/:id', component: PostComponent, canActivate: [AuthGuard] },
+
 
   { path: 'dashboard', component: DashbordComponent, canActivate: [AuthGuard],
     children: [
