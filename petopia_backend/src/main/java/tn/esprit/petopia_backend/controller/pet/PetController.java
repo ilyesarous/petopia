@@ -33,7 +33,9 @@ public class PetController {
 
     @Autowired
     private MatchesService matchesService;
+    @Autowired
     private final PetService petService;
+    @Autowired
     private final IShelterService shelterService;
     public PetController(PetService petService,IShelterService shelterService) {
         this.petService = petService;
@@ -64,7 +66,6 @@ public class PetController {
     }
 
 
-    //Amalllllllll zedt hedhi
 
     @PostMapping("/shelter/pet/add")
     @PreAuthorize("hasAuthority('ROLE_SHELTER')")
@@ -122,6 +123,11 @@ public class PetController {
     @PreAuthorize("hasAnyAuthority('ROLE_USER','ROLE_SHELTER','ROLE_ADMIN')")
     public ResponseEntity<List<Pet>> getPetsByStatus(@PathVariable PetStatus status) {
         return ResponseEntity.ok(petService.getPetsByStatus(status));
+    }
+    @GetMapping("/pet/unassigned")
+    @PreAuthorize("hasAnyAuthority('ROLE_USER','ROLE_SHELTER','ROLE_ADMIN')")
+    public ResponseEntity<List<Pet>> getUnassignedPets() {
+        return ResponseEntity.ok(petService.getUnassignedPets());
     }
 
     // anas bdet tekhdem hmd welyeeeyyyyy

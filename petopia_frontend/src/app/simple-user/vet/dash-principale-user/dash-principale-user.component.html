@@ -1,0 +1,70 @@
+<div class="dashboard">
+    <div class="header">
+        <div class="welcome-container">
+            <h1 class="welcome-text">Welcome back</h1>
+            <div class="right-elements">
+                <div class="game-icon" routerLink="/vet/tic-tac-toe">
+                    🎮 
+                </div>
+                <div class="notification-container">
+                    <app-notification-vet></app-notification-vet>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="stats-grid-container">
+        <div class="stats-row">
+            <!-- 1ere ligne (3 cartes) -->
+            <div class="stat-card patients" routerLink="/vet/appointment-user">
+                <h3>🗓️ Appointment</h3>
+                <div class="stat-card patients">Click to view</div>
+            </div>
+    
+            <div class="stat-card appointments" (click)="handlePaymentClick()">
+                <h3>💳 Payment</h3>
+                <div class="stat-card appointments">Click to pay</div>
+            </div>
+    
+            <div class="stat-card treatments" (click)="redirectToUrlDogBreedRecognition()">
+                <h3>🐕 Dog Breed Recognition</h3>
+                <div class="stat-card treatments">Click to view</div>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="pets-section">
+        <h2 class="pets-title">My animals</h2>
+        
+        <div class="pets-grid">
+            <!-- Animal 1 -->
+            <div class="pet-card" [routerLink]="['/vet/treatment-specific-pets-user', 1]">
+                <div class="pet-image-container">
+                    <img src="assets/images/logo.png" alt="Rex" class="pet-image">
+                </div>
+                <div class="pet-info">
+                    <h3 class="pet-name" color style="color: #ff4766;">Dodo</h3>
+                    <p class="pet-breed">Dobermann</p>
+                    <p class="pet-details">5 ans · 32 kg</p>
+                    <span class="pet-type-badge" style="background-color: #FE9A7A;">Dog</span>
+                </div>
+            </div>
+    
+            <!-- Animal 2 -->
+            <div class="pet-card" [routerLink]="['/vet/treatment-specific-pets-user', 2]">
+                <div class="pet-image-container">
+                    <img src="assets/images/logo.png" alt="Luna" class="pet-image">
+                </div>
+                <div class="pet-info">
+                    <h3 class="pet-name" color style="color: #ff4766;">Sisi</h3>
+                    <p class="pet-breed">Chihuahua</p>
+                    <p class="pet-details">3 ans · 4.5 kg</p>
+                    <span class="pet-type-badge" style="background-color: #FE9A7A;">Dog</span>
+                </div>
+            </div>
+        </div>
+    </div>    
+</div>
+
+<app-chatbot></app-chatbot>

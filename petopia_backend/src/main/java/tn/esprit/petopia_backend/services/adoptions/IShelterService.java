@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface IShelterService {
     Shelter createShelter(Shelter shelter, Integer userIdFromToken);
-    Shelter updateShelter(Shelter shelter);
+    Shelter updateShelter(Shelter shelter, Integer userIdFromToken);
     void deleteShelter(Integer id);
     Shelter getShelterById(Integer id);
     List<Shelter> getAllShelters();

@@ -30,5 +30,9 @@ export class NotificationService {
     const url = `${this.apiUrl}/retriveNotification/${idNotification}`;
     return this.http.get<Notification>(url);
   }
+
+  addNotification(notification: any): Observable<Notification> {
+    return this.http.post<Notification>(`${this.apiUrl}/addNotification`, notification);
+  }
   
 }

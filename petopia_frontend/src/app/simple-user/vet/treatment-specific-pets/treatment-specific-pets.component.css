@@ -1,0 +1,30 @@
+/* Ajoutez ces styles si vous voulez améliorer l'animation */
+.card {
+    overflow: hidden;
+  }
+  
+  /* Style pour les badges de type de diagnostic */
+  .badge {
+    transition: all 0.2s ease;
+  }
+  
+  /* Style pour les boutons d'action */
+  .btn-outline-primary {
+    border-color: #F83182;
+    color: #F83182;
+  }
+  
+  .btn-outline-primary:hover {
+    background-color: #F83182;
+    color: white;
+  }
+  
+  .btn-outline-danger {
+    border-color: #FF617C;
+    color: #FF617C;
+  }
+  
+  .btn-outline-danger:hover {
+    background-color: #FF617C;
+    color: white;
+  }

@@ -36,8 +36,13 @@ export class NavbarComponent implements OnInit {
     { id: 3, name: 'Community Hub', link: 'community' },
     { id: 4, name: 'Events', link: '#' },
     { id: 5, name: 'Vet', link: 'vet' },
+    {id: 6, name: 'Adoption', link: 'adoption'},
   ];
 
+  shelterPages = [
+     {id:1 , name: 'MyPets', link: 'shelter/pets'},
+     {id:2 , name: 'Adoption Requests', link: 'shelter/adoption-requests'}
+  ];
   constructor(private authService: AuthService, private router: Router) {}
 
 
