@@ -142,6 +142,7 @@ const routes: Routes = [
       { path: 'user', component: ChartComponent },
       { path: 'store', component: StoreDashComponent },
 
+
       { path: 'vet', component: DashPrincipaleComponent },
       { path: 'tic-tac-toe', component: GameComponent },
       { path: 'consultations', component: ConsultationListComponent },
