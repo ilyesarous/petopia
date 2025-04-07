@@ -76,6 +76,7 @@ import {  ShelterInfoComponent } from './simple-user/shelter/shelter-info/shelte
 import { ShelterPetListComponent } from './simple-user/shelter/shelter-pet-list/shelter-pet-list.component';
 import { ShelterAddPetComponent } from './simple-user/shelter/shelter-add-pet/shelter-add-pet.component';
 import { ShelterAdoptionRequestsComponent } from './simple-user/shelter/shelter-adoption-requests/shelter-adoption-requests.component';
+import { CartComponent } from './simple-user/store/cart/cart.component';
 
 
 @NgModule({
@@ -132,7 +133,8 @@ import { ShelterAdoptionRequestsComponent } from './simple-user/shelter/shelter-
     ShelterInfoComponent,
     ShelterPetListComponent,
     ShelterAddPetComponent,
-    ShelterAdoptionRequestsComponent
+    ShelterAdoptionRequestsComponent,
+    CartComponent
   ],
   imports: [
     BrowserModule,

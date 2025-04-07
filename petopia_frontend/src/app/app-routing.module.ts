@@ -38,6 +38,7 @@ import { AppointmentUserComponent } from './simple-user/vet/appointment-user/app
 import { TreatmentSpecificPetsUserComponent } from './simple-user/vet/treatment-specific-pets-user/treatment-specific-pets-user.component';
 import { VideoConsultationComponent } from './simple-user/vet/video-consultation/video-consultation.component';
 import { GameComponent } from './simple-user/vet/tic-tac-toe/game/game.component';
+import { CartComponent } from './simple-user/store/cart/cart.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -45,6 +46,7 @@ const routes: Routes = [
   { path: 'products', component: ProductsComponent, canActivate: [AuthGuard]},
   { path: 'products/:id', component: ProductDetailComponent, canActivate: [AuthGuard] },
   { path: 'favorites', component: FavoriteComponent, canActivate: [AuthGuard]},
+  { path: 'cart', component: CartComponent, canActivate: [AuthGuard]},
   { path: 'vet', component: DashPrincipaleHomeVetComponent, canActivate: [AuthGuard] },
   { path: 'vet/pet-growth/:id', component: PetGrowthVetComponent, canActivate: [AuthGuard] },
   { path: 'vet/treatment-pets', component: TreatmentPetsComponent, canActivate: [AuthGuard] },

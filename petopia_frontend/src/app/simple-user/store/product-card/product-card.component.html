@@ -40,9 +40,20 @@
           >${{product.old_price}}</span
         >
       </div>
-      <button class="add-to-cart">
-        <i class="bi bi-cart-plus"></i>
-      </button>
+      <div>
+        <button class="add-to-cart" *ngIf="!inCart" (click)="addToCart()">
+          <i class="bi bi-cart-plus"></i>
+        </button>
+        <div *ngIf="inCart" class="d-flex align-items-center gap-2">
+          <button class="add-to-cart" (click)="increaseQuantity()">
+            <i class="bi bi-plus"></i>
+          </button>
+          <p class="product-name">2</p>
+          <button class="add-to-cart" (click)="decreaseQuantity()">
+            <i class="bi bi-dash"></i>
+          </button>
+        </div>
+      </div>
     </div>
   </div>
 </div>

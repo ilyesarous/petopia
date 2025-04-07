@@ -8,7 +8,7 @@ import tn.esprit.petopia_backend.services.store.FeedbackService;
 import java.util.List;
 
 @RestController
-@RequestMapping("auth/feedback")
+@RequestMapping("user/feedback")
 @AllArgsConstructor
 public class FeedbackController {
     private FeedbackService feedbackService;
@@ -28,9 +28,9 @@ public class FeedbackController {
         return feedbackService.getSentimentById( idProduct);
     }
 
-    @PostMapping("add/{idProduct}")
-    public String addProduct(@PathVariable int idProduct, @RequestBody Feedback feedback) {
-        return feedbackService.addFeedback(idProduct, feedback);
+    @PostMapping("add/{idUser}/{idProduct}")
+    public String addProduct(@PathVariable int idProduct, @PathVariable int idUser, @RequestBody Feedback feedback) {
+        return feedbackService.addFeedback(idUser, idProduct, feedback);
     }
 
     @PutMapping("update")

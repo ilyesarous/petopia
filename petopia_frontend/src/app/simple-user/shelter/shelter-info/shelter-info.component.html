@@ -4,22 +4,16 @@
     <div class="settings-main">
       <h2 class="title">Shelter Information</h2>
   
-      <!-- <div class="profile-picture">
-        <img src="{{ shelterData.profilePicture || 'assets/default-profile.png' }}" alt="Shelter Picture">
-        <input type="file" id="file" hidden (change)="onFileSelected($event)">
-        <label for="file" class="change-picture-btn">Upload new picture</label>
-      </div> -->
-  
       <div class="info-form" *ngIf="shelterForm" [formGroup]="shelterForm">
         <div class="info-group">
           <label>Shelter Name</label>
-          <input formControlName="shelter_name" [readonly]="!isEditing" placeholder="{{ shelterData?.shelter_name }}" />
+          <input formControlName="shelter_name" [readonly]="!isEditing" placeholder="{{ shelterData!.shelter_name }}" />
           <fa-icon *ngIf="isEditing" [icon]="faPen" class="me-2 icon-pen" ></fa-icon>
         </div>
   
         <div class="info-group">
           <label>Location</label>
-          <input formControlName="location" [readonly]="!isEditing" placeholder="{{ shelterData?.location }}" />
+          <input formControlName="location" [readonly]="!isEditing" placeholder="{{ shelterData!.location }}" />
           <fa-icon *ngIf="isEditing" [icon]="faPen" class="me-2 icon-pen" ></fa-icon>
 
         </div>

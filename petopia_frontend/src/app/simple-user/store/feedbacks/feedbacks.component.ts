@@ -17,14 +17,17 @@ export class FeedbacksComponent implements OnInit {
   averageRating = 0;
   feedbacks: Feedback[] = []; // You'll populate this from your service
   product!: Product;
+  p: number = 1; // Current page
+  itemsPerPage: number = 5; // Items per page
+  totalItems: number = 0;
 
   constructor(
     private fb: FormBuilder,
     private feedbackService: FeedbackService,
-    private productService: ProductService,
     private route: ActivatedRoute
   ) {
     this.feedbackForm = this.fb.group({
+      user_id: [localStorage.getItem('userId')],
       productId: [this.route.snapshot.paramMap.get('id'), Validators.required],
       stars_number: [5, Validators.required],
       description: ['', [Validators.required, Validators.minLength(5)]],
@@ -41,6 +44,7 @@ export class FeedbacksComponent implements OnInit {
     if (productId) {
       this.feedbackService.getByProductId(+productId).subscribe((feedbacks) => {
         this.feedbacks = feedbacks;
+        this.totalItems = feedbacks.length; // Set total items count
         this.averageRating = this.getaverageRating();
       });
     }
@@ -51,6 +55,7 @@ export class FeedbacksComponent implements OnInit {
       // Submit to your backend
       this.feedbackService.create(this.feedbackForm.value).subscribe(() => {
         this.feedbackForm.setValue({
+          user_id: localStorage.getItem('userId'),
           productId: this.route.snapshot.paramMap.get('id'), 
           stars_number: 5,
           description: '',

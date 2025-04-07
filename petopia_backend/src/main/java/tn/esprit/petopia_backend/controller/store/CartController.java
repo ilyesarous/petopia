@@ -40,12 +40,26 @@ public class CartController {
         return cartService.updateCart(cart);
     }
 
-    @DeleteMapping("delete/{idUser}/{idProduct}")
-    public void deleteCart(@PathVariable int idUser, @PathVariable int idProduct) {
-        cartService.decreaseProductQuantityById(idUser, idProduct);
+    @PutMapping("increase")
+    public Cart increaseProductQuantity(@RequestBody AddToCart addToCart) {
+         return cartService.increaseProductQuantityById(addToCart.getId_user(), addToCart.getIdProduct());
+    }
+    @PutMapping("decrease")
+    public Cart decreaseProductQuantity(@RequestBody AddToCart addToCart) {
+        return cartService.decreaseProductQuantityById(addToCart.getId_user(), addToCart.getIdProduct());
     }
     @DeleteMapping("clear/{idUser}")
     public void clearCart(@PathVariable int idUser) {
         cartService.clearCart(idUser);
+    }
+
+    @DeleteMapping("delete/{idUser}/{idProduct}")
+    public Cart removeItemFromCart(@PathVariable int idUser, @PathVariable int idProduct) {
+        return cartService.removeItem(idUser, idProduct);
+    }
+
+    @GetMapping("nbItems/{idUser}")
+    public int getNbItems(@PathVariable int idUser) {
+        return cartService.getNbItems(idUser);
     }
 }
