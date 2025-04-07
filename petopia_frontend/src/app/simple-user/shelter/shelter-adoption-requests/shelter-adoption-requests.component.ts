@@ -4,6 +4,7 @@ import { Adoption } from 'src/app/models/adoption/adoption/Adoption';
 import { Shelter } from 'src/app/models/adoption/shelter/Shelter';
 import { AdoptionService } from 'src/app/services/adoptions/adoption/adoption.service';
 import { ShelterService } from 'src/app/services/adoptions/shelter/shelter.service';
+import { PetService } from 'src/app/services/pets/pet.service';
 
 @Component({
   selector: 'app-shelter-adoption-requests',
@@ -27,8 +28,10 @@ export class ShelterAdoptionRequestsComponent implements OnInit {
   constructor(
     private adoptionService: AdoptionService,
     private shelterService: ShelterService,
+    private petService: PetService,
     private router: Router
   ) {}
+  
 
   ngOnInit(): void {
     const userIdStr = localStorage.getItem('userId');
@@ -95,14 +98,31 @@ export class ShelterAdoptionRequestsComponent implements OnInit {
       this.paginateRequests();
     }
   }
+  private createFormData(pet: any): FormData {
+    const formData = new FormData();
+    formData.append('petData', JSON.stringify(pet));
+    return formData;
+  }
+  
 
   approveRequest(request: Adoption): void {
     request.status = 'APPROVED';
+  
     this.adoptionService.updateAdoption(request.id_request, request).subscribe({
       next: () => {
-        alert('Request approved!');
-        this.allAdoptionRequests = this.allAdoptionRequests.filter(r => r.id_request !== request.id_request);
-        this.applyFilter();
+        // Update the pet's status to ADOPTED
+        const updatedPet = { ...request.pet, status: 'ADOPTED' };
+        this.petService.updatePetWithImage(updatedPet.idPet, this.createFormData(updatedPet)).subscribe({
+          next: () => {
+            alert('Request approved and pet marked as adopted!');
+            this.allAdoptionRequests = this.allAdoptionRequests.filter(r => r.id_request !== request.id_request);
+            this.applyFilter();
+          },
+          error: (err) => {
+            console.error('Error updating pet status:', err);
+            alert('Request approved, but failed to update pet status.');
+          }
+        });
       },
       error: (err) => {
         console.error('Error approving request:', err);
@@ -110,14 +130,25 @@ export class ShelterAdoptionRequestsComponent implements OnInit {
       }
     });
   }
-
+  
   rejectRequest(request: Adoption): void {
     request.status = 'REJECTED';
+  
     this.adoptionService.updateAdoption(request.id_request, request).subscribe({
       next: () => {
-        alert('Request rejected!');
-        this.allAdoptionRequests = this.allAdoptionRequests.filter(r => r.id_request !== request.id_request);
-        this.applyFilter();
+        // Ensure pet is AVAILABLE again (if not already)
+        const updatedPet = { ...request.pet, status: 'AVAILABLE' };
+        this.petService.updatePetWithImage(updatedPet.idPet, this.createFormData(updatedPet)).subscribe({
+          next: () => {
+            alert('Request rejected and pet is still available.');
+            this.allAdoptionRequests = this.allAdoptionRequests.filter(r => r.id_request !== request.id_request);
+            this.applyFilter();
+          },
+          error: (err) => {
+            console.error('Error reverting pet status:', err);
+            alert('Request rejected, but failed to update pet status.');
+          }
+        });
       },
       error: (err) => {
         console.error('Error rejecting request:', err);
@@ -125,6 +156,7 @@ export class ShelterAdoptionRequestsComponent implements OnInit {
       }
     });
   }
+  
 
   clearStatus(): void {
     this.selectedStatus = '';

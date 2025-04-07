@@ -1,6 +1,7 @@
 package tn.esprit.petopia_backend.controller.pet;
 
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -9,6 +10,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import tn.esprit.petopia_backend.controller.matching.MatchRequest;
 import tn.esprit.petopia_backend.entities.adoptions.Shelter;
 import tn.esprit.petopia_backend.entities.matching.MatchStatus;
@@ -18,9 +20,11 @@ import tn.esprit.petopia_backend.entities.pet.Pet;
 import tn.esprit.petopia_backend.entities.pet.PetStatus;
 import tn.esprit.petopia_backend.entities.user.User;
 import tn.esprit.petopia_backend.services.adoptions.IShelterService;
+import tn.esprit.petopia_backend.services.community.CloudinaryService;
 import tn.esprit.petopia_backend.services.matching.MatchesService;
 import tn.esprit.petopia_backend.services.pet.PetService;
 
+import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -34,9 +38,13 @@ public class PetController {
     private final PetService petService;
     @Autowired
     private final IShelterService shelterService;
-    public PetController(PetService petService,IShelterService shelterService) {
+    @Autowired
+    private final CloudinaryService cloudinaryService;
+
+    public PetController(PetService petService,IShelterService shelterService,CloudinaryService cloudinaryService) {
         this.petService = petService;
         this.shelterService= shelterService;
+        this.cloudinaryService = cloudinaryService;
     }
 
     @PostMapping("/user/pet/add")
@@ -57,61 +65,95 @@ public class PetController {
     }
 
 
-
     @PostMapping("/shelter/pet/add")
     @PreAuthorize("hasAuthority('ROLE_SHELTER')")
-    public ResponseEntity<String> addPetForShelter(@RequestBody Pet pet) {
+    public ResponseEntity<Map<String, String>> addPetForShelter(
+            @RequestParam("image") MultipartFile image,
+            @RequestParam("petData") String petData) {
+
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User user = (User) authentication.getPrincipal();
         Shelter shelter = shelterService.getShelterByUserId(user.getId_user());
         if (shelter == null) {
-            return ResponseEntity.badRequest().body("No shelter associated with this user");
+            Map<String, String> error = new HashMap<>();
+            error.put("message", "No shelter associated with this user");
+            return ResponseEntity.badRequest().body(error);
         }
-        pet.setShelter(shelter);
 
-        pet.setUser(null);
-        petService.addPet(pet);
-        return ResponseEntity.ok("Pet added for shelter successfully");
+        try {
+            String imageUrl = cloudinaryService.uploadImage(image);
+
+            ObjectMapper objectMapper = new ObjectMapper();
+            Pet pet = objectMapper.readValue(petData, Pet.class);
+
+            pet.setShelter(shelter);
+            pet.setPetImage(imageUrl);
+            pet.setUser(null);
+
+            petService.addPet(pet);
+
+            Map<String, String> response = new HashMap<>();
+            response.put("message", "Pet added for shelter successfully");
+            return ResponseEntity.ok(response);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            Map<String, String> error = new HashMap<>();
+            error.put("message", "Failed to upload image or parse pet data");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(error);
+        }
     }
-    @PutMapping("/pet/update/{id}")
+
+
+    @PutMapping("/pet/updateWithImage/{id}")
     @PreAuthorize("hasAnyAuthority('ROLE_SHELTER','ROLE_USER')")
-    public ResponseEntity<?> updatePet(@PathVariable Integer id, @RequestBody Pet pet) {
+    public ResponseEntity<?> updatePetWithImage(@PathVariable Integer id,
+                                                @RequestParam(value = "image", required = false) MultipartFile image,
+                                                @RequestParam("petData") String petData) {
         try {
             Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
             User currentUser = (User) authentication.getPrincipal();
-            System.out.println("hhhhhhhhhhhhheeeeeeeeeeeeelooooo");
-            // Fetch existing pet from DB for comparison
             Pet existingPet = petService.getPetById(id);
-            System.out.println("pettttttttt:"+existingPet);
+
             if (existingPet == null) {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND)
-                        .body("Pet with ID " + id + " not found.");
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Pet with ID " + id + " not found.");
             }
 
-            // Detailed checks (example)
+            // Check if the shelter is allowed to update the pet
             if (currentUser.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ROLE_SHELTER"))) {
                 Integer shelterIdOfUser = shelterService.getShelterByUserId(currentUser.getId_user()).getId_shelter();
-                Integer shelterIdOfPet = existingPet.getShelter() != null ? existingPet.getShelter().getId_shelter() : null;
+                Integer shelterIdOfPet = Optional.ofNullable(existingPet.getShelter()).map(Shelter::getId_shelter).orElse(null);
 
                 if (!Objects.equals(shelterIdOfPet, shelterIdOfUser)) {
-                    String msg = "Permission denied: Shelter ID mismatch (user shelter: " + shelterIdOfUser
-                            + ", pet shelter: " + shelterIdOfPet + ")";
-                    System.out.println(msg);
-                    return ResponseEntity.status(HttpStatus.FORBIDDEN).body(msg);
+                    return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                            .body("Permission denied: You can only update pets from your own shelter.");
                 }
             }
 
-            pet.setIdPet(id);
-            Pet updatedPet = petService.updatePet(pet);
-            return ResponseEntity.ok(updatedPet);
+            ObjectMapper objectMapper = new ObjectMapper();
+            Pet updatedPet = objectMapper.readValue(petData, Pet.class);
+            updatedPet.setIdPet(id);
+            updatedPet.setShelter(existingPet.getShelter());
+            updatedPet.setUser(existingPet.getUser());
 
-        } catch (Exception e) {
-            e.printStackTrace(); // Logs error to console clearly
+            if (image != null && !image.isEmpty()) {
+                String imageUrl = cloudinaryService.uploadImage(image);
+                updatedPet.setPetImage(imageUrl);
+            } else {
+                updatedPet.setPetImage(existingPet.getPetImage());
+            }
+
+            Pet result = petService.updatePet(updatedPet);
+            return ResponseEntity.ok(result);
+
+        } catch (IOException e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("Error occurred: " + e.getMessage());
+                    .body("Error parsing pet data or uploading image.");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Unexpected error occurred: " + e.getMessage());
         }
     }
-
     // Endpoint for deleting a pet (only accessible by shelters)
     @DeleteMapping("/pet/delete/{id}")
     @PreAuthorize("hasAnyAuthority('ROLE_SHELTER','ROLE_USER')")
