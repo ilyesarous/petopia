@@ -40,6 +40,7 @@ export class NavbarComponent implements OnInit {
   ];
 
   shelterPages = [
+    {id: 0, name: 'Home', link: 'shelter/home'},
      {id:1 , name: 'MyPets', link: 'shelter/pets'},
      {id:2 , name: 'Adoption Requests', link: 'shelter/adoption-requests'}
   ];

@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -77,6 +77,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatDialogModule } from '@angular/material/dialog';
 import { VideoConsultationComponent } from './simple-user/vet/video-consultation/video-consultation.component';
 import { TreatmentPetsComponent } from './simple-user/vet/treatment-pets/treatment-pets.component';
+import { AdoptionDetailsComponent } from './simple-user/shelter/adoption-details/adoption-details.component';
+import { ShelterHomeComponent } from './simple-user/shelter/shelter-home/shelter-home.component';
 
 @NgModule({
   declarations: [
@@ -135,6 +137,8 @@ import { TreatmentPetsComponent } from './simple-user/vet/treatment-pets/treatme
     TreatmentSpecificPetsUserComponent,
     PaymentStatusPopupComponent,
     VideoConsultationComponent,
+    AdoptionDetailsComponent,
+    ShelterHomeComponent,
   ],
   imports: [
     BrowserModule,
@@ -154,6 +158,7 @@ import { TreatmentPetsComponent } from './simple-user/vet/treatment-pets/treatme
     MatIconModule,
     MatDialogModule,
   ],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }
   ],

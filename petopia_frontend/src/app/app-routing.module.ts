@@ -38,6 +38,8 @@ import { AppointmentUserComponent } from './simple-user/vet/appointment-user/app
 import { TreatmentSpecificPetsUserComponent } from './simple-user/vet/treatment-specific-pets-user/treatment-specific-pets-user.component';
 import { VideoConsultationComponent } from './simple-user/vet/video-consultation/video-consultation.component';
 import { GameComponent } from './simple-user/vet/tic-tac-toe/game/game.component';
+import { AdoptionDetailsComponent } from './simple-user/shelter/adoption-details/adoption-details.component';
+import { ShelterHomeComponent } from './simple-user/shelter/shelter-home/shelter-home.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -122,6 +124,15 @@ const routes: Routes = [
   {
     path: 'shelter/adoption-requests',
     component: ShelterAdoptionRequestsComponent,
+  },
+  {
+    path: 'shelter/home',
+    component: ShelterHomeComponent,
+    canActivate: [AuthGuard], 
+  },
+  {
+    path: 'shelter/adoption-requests/:id',
+    component: AdoptionDetailsComponent,
   },
   {
     path: 'dashboard',

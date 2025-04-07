@@ -59,7 +59,7 @@ export class PetAdoptionListComponent implements OnInit {
   }
 
   goToDetails(id: number) {
-    this.router.navigate(['home/adoption/pets', id])
+    this.router.navigate(['adoption/pets', id])
       .then(success => {
         if (!success) {
           console.error('Navigation failed');

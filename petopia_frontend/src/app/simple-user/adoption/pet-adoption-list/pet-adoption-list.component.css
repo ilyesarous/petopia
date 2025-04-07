@@ -20,13 +20,14 @@ h2 {
 
 /* Search & Filter Container */
 .search-filter-container {
-  background: linear-gradient(135deg, #faf5f9, #ffc0c9);
+  background: linear-gradient(135deg, #F83182 0%, #FE9A7A 100%);
   border-radius: 15px;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
   padding: 1rem;
   
   h3 {
     font-weight: 600;
+    color:#fff;
     margin-bottom: 20px;
   }
 }
@@ -57,7 +58,7 @@ h2 {
 
 /* Buttons */
 .adopt-btn {
-  background-color: #ff6b81;
+  background-color: #F83182;
   color: #fff;
   border: none;
   border-radius: 50px;
@@ -66,8 +67,8 @@ h2 {
   transition: background-color 0.3s ease, transform 0.3s ease;
 
   &:hover {
-    background-color: #ff4757;
-    transform: scale(1.05);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(248, 49, 130, 0.3);
   }
 }
 .dream-pet-search-section {
@@ -110,8 +111,8 @@ h2 {
         transition: background-color 0.3s ease, transform 0.3s ease;
         
         &:hover {
-          background-color: #ff7247;
-          transform: scale(1.05);
+          transform: translateY(-2px);
+          box-shadow: 0 5px 15px rgba(248, 49, 130, 0.3);
         }
       }
     }

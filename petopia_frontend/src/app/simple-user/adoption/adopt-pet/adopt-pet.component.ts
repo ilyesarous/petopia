@@ -93,6 +93,6 @@ export class AdoptPetComponent implements OnInit {
   closePopup(): void {
     this.showPopup = false;
     // Navigate after closing the popup if desired
-    this.router.navigate(['/home/adoption']);
+    this.router.navigate(['/adoption']);
   }
 }

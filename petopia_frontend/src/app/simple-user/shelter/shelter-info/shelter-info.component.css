@@ -69,7 +69,7 @@
 
   .info-group {
     position: relative;
-    border: 1px solid #d81b60;
+    border: 1px solid #F83182;
     border-radius: 20px;
     min-height: 70px;
     display: flex;
@@ -81,7 +81,7 @@
   .info-group label {
     display: block;
     font-weight: 600;
-    color: #d81b60;
+    color: #F83182;
     font-size: 1rem;
     position: absolute;
     top: -15px;
@@ -155,7 +155,7 @@
     color: #721c24;
   }
   .icon-pen {
-    color: #ff6b81;
+    color: #F83182;
     font-size: 1.1rem;
     vertical-align: middle;
     border-bottom: 1px solid;

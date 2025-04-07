@@ -111,7 +111,7 @@
     }
 
     .heart-icon {
-      color: #ff6b81;
+      color: #F83182;
       margin: 0 3px;
     }
   }
@@ -136,11 +136,11 @@
     }
 
     .adopt-btn {
-      background-color: #ff6b81;
+      background-color: #F83182;
       color: #fff;
       &:hover {
-        background-color: #ff4757;
-        transform: scale(1.05);
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(248, 49, 130, 0.3);
       }
     }
   }

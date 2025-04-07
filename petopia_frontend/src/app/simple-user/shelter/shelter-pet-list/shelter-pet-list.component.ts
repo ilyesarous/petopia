@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Form, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Shelter } from 'src/app/models/adoption/shelter/Shelter';
 import { Pet } from 'src/app/models/pet/Pet';
 import { ShelterService } from 'src/app/services/adoptions/shelter/shelter.service';
@@ -13,13 +13,25 @@ import { faPaw } from '@fortawesome/free-solid-svg-icons';
 })
 export class ShelterPetListComponent {
   pets: Pet[] = [];
+  paginatedPets: Pet[] = [];
+  currentPage = 1;
+  itemsPerPage = 6;
+
   shelter?: Shelter;
   selectedPet!: Pet;
-  showEditModal: boolean = false;
+  showEditModal = false;
   editPetForm!: FormGroup;
   faPaw = faPaw;
 
-  constructor(private petService: PetService, private shelterService : ShelterService, private fb: FormBuilder) {}
+  // Bootstrap Alert
+  alertMessage: string = '';
+  alertClass: string = '';
+
+  constructor(
+    private petService: PetService,
+    private shelterService: ShelterService,
+    private fb: FormBuilder
+  ) {}
 
   ngOnInit(): void {
     const userId = localStorage.getItem('userId');
@@ -35,9 +47,7 @@ export class ShelterPetListComponent {
           this.loadPetsByShelterId(this.shelter.id_shelter);
         }
       },
-      error: (err) => {
-        console.error('Error fetching shelter details:', err);
-      }
+      error: (err) => console.error('Error fetching shelter details:', err)
     });
   }
 
@@ -45,39 +55,67 @@ export class ShelterPetListComponent {
     this.petService.getPetsByShelterId(shelterId).subscribe({
       next: (data) => {
         this.pets = data;
-        console.log('Pets by shelter:', this.pets);
+        this.updatePaginatedPets();
       },
-      error: (err) => {
-        console.error('Error fetching pets:', err);
-      }
+      error: (err) => console.error('Error fetching pets:', err)
     });
   }
+
+  updatePaginatedPets(): void {
+    const start = (this.currentPage - 1) * this.itemsPerPage;
+    const end = start + this.itemsPerPage;
+    this.paginatedPets = this.pets.slice(start, end);
+  }
+
+  changePage(page: number): void {
+    this.currentPage = page;
+    this.updatePaginatedPets();
+  }
+
+  get totalPagesCount(): number {
+    return Math.ceil(this.pets.length / this.itemsPerPage);
+  }
+
+  get pageNumbers(): number[] {
+    return Array.from({ length: this.totalPagesCount }, (_, i) => i + 1);
+  }
+
   deletePet(pet: Pet): void {
     if (confirm(`Are you sure you want to delete ${pet.petName}?`)) {
       this.petService.deletePet(pet.idPet).subscribe({
         next: () => {
-          // Remove deleted pet from the list
           this.pets = this.pets.filter(p => p.idPet !== pet.idPet);
-          alert('Pet deleted successfully!');
+          this.updatePaginatedPets();
+          this.showAlert('Pet deleted successfully!', 'success');
         },
         error: (err) => {
-          console.error('Error deleting pet:', err);
-          alert('Error deleting pet. Please try again.');
+          const alreadyInRequest = err.status === 409 || err.error?.message?.includes('adoption');
+          const errorMessage = alreadyInRequest
+            ? 'This pet is already part of an adoption request and cannot be deleted.'
+            : 'This pet is already part of an adoption request and cannot be deleted.';
+          this.showAlert(errorMessage, 'danger');
         }
       });
     }
   }
+
+  showAlert(message: string, type: 'success' | 'danger') {
+    this.alertMessage = message;
+    this.alertClass = type === 'success' ? 'alert alert-success' : 'alert alert-danger';
+    setTimeout(() => {
+      this.alertMessage = '';
+      this.alertClass = '';
+    }, 4000);
+  }
+
   getStatusClass(status?: string): string {
     switch (status) {
-      case 'AVAILABLE':
-        return 'tag-available';
-      case 'ADOPTED':
-        return 'tag-adopted';
-      
-      default:
-        return 'tag-default';
+      case 'AVAILABLE': return 'tag-available';
+      case 'ADOPTED': return 'tag-adopted';
+      default: return 'tag-default';
     }
   }
+
   openEditModal(pet: Pet): void {
     this.selectedPet = pet;
     this.initEditForm();
@@ -101,26 +139,24 @@ export class ShelterPetListComponent {
   }
 
   onEditSubmit(): void {
-    if (this.editPetForm.invalid) {
-      return;
-    }
+    if (this.editPetForm.invalid) return;
+
     const updatedPet: Pet = {
       ...this.selectedPet,
       ...this.editPetForm.value
     };
+
     this.petService.updatePet(updatedPet.idPet, updatedPet).subscribe({
       next: (res) => {
-        // Update the pet list with the new values
         const index = this.pets.findIndex(p => p.idPet === res.idPet);
-        if (index !== -1) {
-          this.pets[index] = res;
-        }
+        if (index !== -1) this.pets[index] = res;
+        this.updatePaginatedPets();
         this.showEditModal = false;
-        alert('Pet information updated successfully!');
+        this.showAlert('Pet updated successfully!', 'success');
       },
       error: (err) => {
         console.error('Error updating pet:', err);
-        alert('Error updating pet. Please try again.');
+        this.showAlert('Update failed. Try again.', 'danger');
       }
     });
   }
