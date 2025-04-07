@@ -16,7 +16,7 @@
     <div class="info-form" *ngIf="shelterForm" [formGroup]="shelterForm">
       <div class="info-group">
         <label>Shelter Name</label>
-        <input formControlName="shelter_name" [readonly]="!isEditing" placeholder="{{ shelterData?.shelter_name }}" />
+        <input formControlName="shelter_name" [readonly]="!isEditing" placeholder="{{ shelterData!.shelter_name }}" />
         <fa-icon *ngIf="isEditing" [icon]="faPen" class="me-2 icon-pen"></fa-icon>
         <!-- Error message below the input field -->
         <div *ngIf="shelterForm.get('shelter_name')?.invalid && shelterForm.get('shelter_name')?.touched" class="error-message">

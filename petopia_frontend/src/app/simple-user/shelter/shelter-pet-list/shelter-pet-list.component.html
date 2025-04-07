@@ -136,7 +136,7 @@
           <div class="form-group image-preview-container" *ngIf="editImagePreviewUrl || selectedPet?.petImage">
             <label>Current / New Preview</label>
             <div class="image-preview-wrapper">
-              <img [src]="editImagePreviewUrl || selectedPet?.petImage" alt="Preview" />
+              <img [src]="editImagePreviewUrl || selectedPet!.petImage" alt="Preview" />
             </div>
           </div>
           

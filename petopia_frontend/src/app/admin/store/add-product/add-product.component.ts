@@ -15,7 +15,7 @@ export class AddProductComponent {
   isSubmitting: boolean = false;
   previewUrl: any;
   selectedFile: File | null = null;
-  categories: string[] = ['FOOD', 'ACCESSORIES', 'TOYS', 'CLOTHES'];
+  categories: string[] = ['FOOD', 'ACCESSORY', 'TOYS', 'CLOTHES'];
   currentProductId: number | null = null;
   userId: number = 0;
   constructor(
@@ -119,7 +119,7 @@ export class AddProductComponent {
     formData.append('id_user', this.userId.toString());
     this.productService.addProduct(formData).subscribe({
       next: () => {
-        this.router.navigate(['/home/products']);
+        this.router.navigate(['/products']);
       },
       error: (err) => {
         console.error('Error creating product:', err);
