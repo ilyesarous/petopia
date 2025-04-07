@@ -1,66 +1,64 @@
-<!-- shelter-info.component.html -->
 <div class="account-settings-container">
-  
-    <div class="settings-main">
-      <h2 class="title">Shelter Information</h2>
-  
-      <!-- <div class="profile-picture">
-        <img src="{{ shelterData.profilePicture || 'assets/default-profile.png' }}" alt="Shelter Picture">
-        <input type="file" id="file" hidden (change)="onFileSelected($event)">
-        <label for="file" class="change-picture-btn">Upload new picture</label>
-      </div> -->
-  
-      <div class="info-form" *ngIf="shelterForm" [formGroup]="shelterForm">
-        <div class="info-group">
-          <label>Shelter Name</label>
-          <input formControlName="shelter_name" [readonly]="!isEditing" placeholder="{{ shelterData?.shelter_name }}" />
-          <fa-icon *ngIf="isEditing" [icon]="faPen" class="me-2 icon-pen" ></fa-icon>
-        </div>
-  
-        <div class="info-group">
-          <label>Location</label>
-          <input formControlName="location" [readonly]="!isEditing" placeholder="{{ shelterData?.location }}" />
-          <fa-icon *ngIf="isEditing" [icon]="faPen" class="me-2 icon-pen" ></fa-icon>
+  <!-- New Container for the Logo on the Left -->
+  <div class="logo-container">
+    <div class="profile-picture">
+      <!-- Dynamically change the logo when a new file is selected -->
+      <img *ngIf="logoPreviewUrl || shelterData.logoUrl" [src]="logoPreviewUrl || shelterData.logoUrl" alt="Shelter Logo" class="logo-img" />
+      <input type="file" id="file" hidden (change)="onLogoChange($event)">
+      <label for="file" class="change-picture-btn" *ngIf="isEditing">Upload new logo</label>
+    </div>
+  </div>
 
-        </div>
-  
-        <div class="info-group">
-          <label>Email</label>
-          <input formControlName="email" [readonly]="!isEditing" />
-          <fa-icon *ngIf="isEditing" [icon]="faPen" class="me-2 icon-pen" ></fa-icon>
+  <!-- Main Settings Form on the Right -->
+  <div class="settings-main">
+    <h2 class="title">Shelter Information</h2>
 
-        </div>
-  
-        <div class="info-group">
-          <label>Phone Number</label>
-          <input formControlName="phone_number" [readonly]="!isEditing" />
-          <fa-icon *ngIf="isEditing" [icon]="faPen" class="me-2 icon-pen" ></fa-icon>
+    <div class="info-form" *ngIf="shelterForm" [formGroup]="shelterForm">
+      <div class="info-group">
+        <label>Shelter Name</label>
+        <input formControlName="shelter_name" [readonly]="!isEditing" placeholder="{{ shelterData?.shelter_name }}" />
+        <fa-icon *ngIf="isEditing" [icon]="faPen" class="me-2 icon-pen" ></fa-icon>
+      </div>
 
-        </div>
-  
-        <div class="info-group">
-          <label>Description</label>
-          <textarea formControlName="description" [readonly]="!isEditing"></textarea>
-          <fa-icon *ngIf="isEditing" [icon]="faPen" class="me-2 icon-pen" ></fa-icon>
+      <div class="info-group">
+        <label>Location</label>
+        <input formControlName="location" [readonly]="!isEditing" placeholder="{{ shelterData?.location }}" />
+        <fa-icon *ngIf="isEditing" [icon]="faPen" class="me-2 icon-pen" ></fa-icon>
+      </div>
 
-        </div>
-  
-        <div class="info-group">
-          <label>Website</label>
-          <input formControlName="website" [readonly]="!isEditing" />
-          <fa-icon *ngIf="isEditing" [icon]="faPen" class="me-2 icon-pen" ></fa-icon>
+      <div class="info-group">
+        <label>Email</label>
+        <input formControlName="email" [readonly]="!isEditing" />
+        <fa-icon *ngIf="isEditing" [icon]="faPen" class="me-2 icon-pen" ></fa-icon>
+      </div>
 
-        </div>
-  
-        <div class="actions">
-          <button class="btn-edit" (click)="enableEdit()" *ngIf="!isEditing">Modify</button>
-          <button class="btn-update" (click)="onSubmit()" *ngIf="isEditing">Update</button>
-          <button class="btn-cancel" (click)="cancelEdit()" *ngIf="isEditing">Cancel</button>
-        </div>
-  
-        <div class="alert" *ngIf="alertMessage" [ngClass]="'alert-' + alertType">
-          {{ alertMessage }}
-        </div>
+      <div class="info-group">
+        <label>Phone Number</label>
+        <input formControlName="phone_number" [readonly]="!isEditing" />
+        <fa-icon *ngIf="isEditing" [icon]="faPen" class="me-2 icon-pen" ></fa-icon>
+      </div>
+
+      <div class="info-group">
+        <label>Description</label>
+        <textarea formControlName="description" [readonly]="!isEditing"></textarea>
+        <fa-icon *ngIf="isEditing" [icon]="faPen" class="me-2 icon-pen" ></fa-icon>
+      </div>
+
+      <div class="info-group">
+        <label>Website</label>
+        <input formControlName="website" [readonly]="!isEditing" />
+        <fa-icon *ngIf="isEditing" [icon]="faPen" class="me-2 icon-pen" ></fa-icon>
+      </div>
+
+      <div class="actions">
+        <button class="btn-edit" (click)="enableEdit()" *ngIf="!isEditing">Modify</button>
+        <button class="btn-update" (click)="onSubmit()" *ngIf="isEditing">Update</button>
+        <button class="btn-cancel" (click)="cancelEdit()" *ngIf="isEditing">Cancel</button>
+      </div>
+
+      <div class="alert" *ngIf="alertMessage" [ngClass]="'alert-' + alertType">
+        {{ alertMessage }}
       </div>
     </div>
   </div>
+</div>

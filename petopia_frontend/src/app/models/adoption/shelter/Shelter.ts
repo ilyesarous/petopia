@@ -7,5 +7,6 @@ export class Shelter {
     email?: string;
     phone_number?: string;
     website?: string;
+    logoUrl?:string;
     
 }

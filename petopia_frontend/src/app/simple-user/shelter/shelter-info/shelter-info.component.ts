@@ -16,7 +16,9 @@ export class ShelterInfoComponent {
   isEditing: boolean = false;
   alertMessage: string = '';
   alertType: string = 'success'; // 'success' or 'danger'
-  faPen=faPen;
+  faPen = faPen;
+  logoFile: File | null = null;  // To hold the selected logo file
+  logoPreviewUrl: string | null = null;  // To hold the preview URL for the selected logo
 
   constructor(
     private fb: FormBuilder,
@@ -25,9 +27,7 @@ export class ShelterInfoComponent {
   ) {}
 
   ngOnInit(): void {
-
     const userId = localStorage.getItem('userId');
-
     this.loadShelter(userId ? parseInt(userId) : 0);
   }
 
@@ -70,16 +70,31 @@ export class ShelterInfoComponent {
     });
   }
 
+  // Handle logo file change and generate a preview URL for the image
+  onLogoChange(event: any): void {
+    const file = event.target.files[0];
+    if (file) {
+      this.logoFile = file;  // Store the actual file
+      const reader = new FileReader();
+      reader.onload = (e: any) => {
+        this.logoPreviewUrl = e.target.result;  // Set the preview URL for the logo image
+      };
+      reader.readAsDataURL(file);
+    }
+  }
+
   onSubmit(): void {
     if (this.shelterForm.invalid) {
       return;
     }
+
     const updatedShelter: Shelter = {
       ...this.shelterData,
       ...this.shelterForm.value
     };
 
-    this.shelterService.updateShelter(updatedShelter).subscribe({
+    // Pass the logo file to the update method (either the file or null)
+    this.shelterService.updateShelter(updatedShelter, this.logoFile).subscribe({
       next: (res) => {
         this.shelterData = res;
         this.isEditing = false;
