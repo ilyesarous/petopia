@@ -29,7 +29,7 @@ public class FeedbackService implements IFeedbackService {
     private UserService userService;
 
     @Override
-    public String addFeedback(int idProduct, Feedback feedback) {
+    public String addFeedback(int idUser, int idProduct, Feedback feedback) {
         feedback.setCreatedAt(new Date());
 // Load CoreNLP pipeline with sentiment analysis
         Properties props = new Properties();
@@ -45,7 +45,7 @@ public class FeedbackService implements IFeedbackService {
             String sentiment = sentence.get(SentimentCoreAnnotations.SentimentClass.class);
             System.out.println("Sentence: " + sentence);
             feedback.setSentiment(sentiment);
-            User user = userService.getUsersById(1).getOurUsers();
+            User user = userService.getUsersById(idUser).getOurUsers();
             Product product = productService.findById(idProduct);
             feedback.setUser(user);
             feedback.setProduct(product);

@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Product } from 'src/app/models/product/Product';
@@ -8,30 +8,41 @@ import { Product } from 'src/app/models/product/Product';
 })
 export class ProductService {
   constructor(private http: HttpClient) {}
-  url: string = 'http://localhost:8082/petopia/auth/';
+  url: string = 'http://localhost:8082/petopia/user/';
+  token: string = localStorage.getItem('token') || '';
+  private getAuthHeaders(): HttpHeaders {
+    return new HttpHeaders({
+      'Authorization': `Bearer ${this.token}`
+    });
+  }
 
   getAllProducts(): Observable<[Product]> {
-    return this.http.get<[Product]>(this.url + 'product');
+    return this.http.get<[Product]>(this.url + 'product', {
+      headers: this.getAuthHeaders()});
   }
   
   getProductById(id: number): Observable<Product> {
-    return this.http.get<Product>(this.url + 'product/' + id);
+    return this.http.get<Product>(this.url + 'product/' + id, {
+      headers: this.getAuthHeaders()});
   }
 
   addProduct(formData: FormData): Observable<Product> {
-    return this.http.post<Product>(this.url + 'product/add', formData);
+    return this.http.post<Product>(this.url + 'product/add', formData, {
+      headers: this.getAuthHeaders(),});
   }
   
   updateLikedProduct(idProduct: number): Observable<Product> {
     return this.http.put<Product>(
       this.url + 'product/update/' + idProduct,
-      idProduct
+      idProduct,
+      { headers: this.getAuthHeaders() }
     );
   }
   updateProduct(formData: FormData): Observable<Product> {
     return this.http.put<Product>(
       this.url + 'product/update',
-      formData
+      formData,
+      { headers: this.getAuthHeaders() }
     );
   }
 

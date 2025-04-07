@@ -37,9 +37,9 @@
       </button>
       <button class="icon-btn" (click)="viewCart()" title="Cart">
         <i class="bi bi-cart"></i>
-        <span class="icon-badge" *ngIf="cartItemCount > 0">{{
-          cartItemCount
-        }}</span>
+        <span class="icon-badge" *ngIf="cartItemCount > 0">
+          {{ cartItemCount }}
+        </span>
       </button>
     </div>
   </div>
@@ -56,20 +56,64 @@
       <app-brands></app-brands>
     </div>
   </div>
-  <!-- Products -->
-  <div class="row">
-    <h2 class="mb-4">Products</h2>
-    <div class="col-md-3 mt-3" *ngFor="let product of filteredProducts">
-      <app-product-card [product]="product"></app-product-card>
-    </div>
 
-    <!-- No results message -->
-    <div
-      *ngIf="filteredProducts.length === 0 && searchQuery"
-      class="col-12 text-center py-5"
-    >
-      <h4>No products found for "{{ searchQuery }}"</h4>
-      <button class="btn btn-link" (click)="clearSearch()">Clear search</button>
+  <!-- Products -->
+  <div *ngIf="searchQuery.length == 0">
+    <div class="row" *ngFor="let category of categories">
+      <h2 class="mb-4">{{ category.titel }}</h2>
+      <div
+        class="col-md-3 mt-3"
+        *ngFor="let product of getPaginatedItems(category)"
+      >
+        <app-product-card [product]="product"></app-product-card>
+      </div>
+      <!-- Custom Horizontal Pagination -->
+      <div
+        *ngIf="category.items.length > itemsPerPage"
+        class="horizontal-pagination"
+      >
+        <button
+          class="page-nav"
+          (click)="prevPage(category)"
+          [disabled]="category.currentPage === 1"
+        >
+          <i class="bi bi-chevron-left"></i>
+        </button>
+
+        <div class="page-numbers">
+          <button
+            *ngFor="let page of getPages(category)"
+            [class.active]="page === category.currentPage"
+            (click)="setPage(category, page)"
+          >
+            {{ page }}
+          </button>
+        </div>
+
+        <button
+          class="page-nav"
+          (click)="nextPage(category)"
+          [disabled]="category.currentPage === getTotalPages(category)"
+        >
+          <i class="bi bi-chevron-right"></i>
+        </button>
+      </div>
     </div>
+  </div>
+  <div *ngIf="searchQuery.length > 0">
+    <div class="row">
+      <h2 class="mb-4">Searched Product</h2>
+      <div class="col-md-3 mt-3" *ngFor="let product of filteredProducts">
+        <app-product-card [product]="product"></app-product-card>
+      </div>
+    </div>
+  </div>
+  <!-- No results message -->
+  <div
+    *ngIf="filteredProducts.length === 0 && searchQuery"
+    class="col-12 text-center py-5"
+  >
+    <h4>No products found for "{{ searchQuery }}"</h4>
+    <button class="btn btn-link" (click)="clearSearch()">Clear search</button>
   </div>
 </div>

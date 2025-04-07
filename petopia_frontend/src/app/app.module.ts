@@ -97,7 +97,13 @@ import { StoryComponent } from './simple-user/story/story.component';
 import { RelativeTimePipe } from './pipes/relative-time.pipe';
 
 
-
+import { faLightbulb } from '@fortawesome/free-solid-svg-icons';
+import { faPaw, faHeart, faHandHoldingHeart, faInfoCircle,faCommentDots, faCamera,faPen } from '@fortawesome/free-solid-svg-icons';
+import {  ShelterInfoComponent } from './simple-user/shelter/shelter-info/shelter-info.component';
+import { ShelterPetListComponent } from './simple-user/shelter/shelter-pet-list/shelter-pet-list.component';
+import { ShelterAddPetComponent } from './simple-user/shelter/shelter-add-pet/shelter-add-pet.component';
+import { ShelterAdoptionRequestsComponent } from './simple-user/shelter/shelter-adoption-requests/shelter-adoption-requests.component';
+import { CartComponent } from './simple-user/store/cart/cart.component';
 
 
 @NgModule({
@@ -164,6 +170,8 @@ import { RelativeTimePipe } from './pipes/relative-time.pipe';
     VideoConsultationComponent,
     GameComponent,
     BoardComponent,
+    ShelterAdoptionRequestsComponent,
+    CartComponent
   ],
   imports: [
     BrowserModule,

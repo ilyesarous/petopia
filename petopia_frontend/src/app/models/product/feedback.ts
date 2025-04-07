@@ -7,6 +7,6 @@ export class Feedback {
   sentiment!: string;
   user_id!: number;
   productId!: number;
-  created_at!: Date;
+  createdAt!: Date;
   updated_at!: Date;
 }

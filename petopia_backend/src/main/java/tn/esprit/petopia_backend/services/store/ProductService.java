@@ -55,8 +55,8 @@ public class ProductService implements IProductService {
             }
 
             // Set user and brand (as you already have)
-            //User user = userService.getUsersById(product.getUser().getId_user()).getOurUsers();
-            User user = userService.getUsersById(1).getOurUsers();
+            User user = userService.getUsersById(product.getUser().getId_user()).getOurUsers();
+            //User user = userService.getUsersById(1).getOurUsers();
 
             //Brand brand = brandRepository.findById(product.getBrand().getId()).get();
             Brand brand = brandRepository.findById(2).get();

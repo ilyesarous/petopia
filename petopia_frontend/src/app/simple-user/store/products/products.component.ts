@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Product } from 'src/app/models/product/Product';
+import { CartService } from 'src/app/services/store/cart/cart.service';
 import { FeedbackService } from 'src/app/services/store/feedback/feedback.service';
 import { ProductService } from 'src/app/services/store/products/product.service';
 
@@ -11,20 +12,24 @@ import { ProductService } from 'src/app/services/store/products/product.service'
 })
 export class ProductsComponent implements OnInit {
   listProducts: Product[] = [];
+  foodList: Product[] = [];
+  userId: number = 0;
+  AccessoriesList: Product[] = [];
   searchQuery: string = '';
   recentSearches: string[] = [];
   filteredProducts: Product[] = [];
   favoriteCount: number = 0; // You'll want to update this dynamically
-  cartItemCount: number = 5; // You'll want to update this dynamically
+  cartItemCount: number = 0; // You'll want to update this dynamically
+  p: number = 1; // Page actuelle
+  itemsPerPage: number = 4; // Nombre d'éléments par page
 
-  constructor(
-    private service: ProductService,
-    private router: Router,
-  ) {}
+  categories: any[] = [];
+
+  constructor(private service: ProductService, private cartService: CartService, private router: Router) {}
 
   ngOnInit() {
     this.getAllProducts();
-    this.loadRecentSearches(); // Initialize with all products
+    this.loadRecentSearches(); 
   }
 
   onSearch() {
@@ -80,21 +85,31 @@ export class ProductsComponent implements OnInit {
     this.searchQuery = '';
     this.filteredProducts = [...this.listProducts];
   }
-  
+
   getAllProducts() {
     this.service.getAllProducts().subscribe((data) => {
       this.listProducts = data;
 
+      this.AccessoriesList = data.filter(
+        (product) => product.category === 'ACCESSORY'
+      );
+      this.foodList = data.filter((product) => product.category === 'FOOD');
+      this.categories = [
+        { titel: 'Food', items: this.foodList, currentPage: 1 },
+        { titel: 'Accessories', items: this.AccessoriesList, currentPage: 1 },
+        { titel: 'Products', items: this.listProducts, currentPage: 1 },
+      ];
+
       this.favoriteCount = this.listProducts.filter(
         (product) => product.liked === true
       ).length;
-
-      // this.listProducts.map((product) => {
-      //   product.old_price =
-      //     product.product_price -
-      //     (product.product_price * product.cuppon_price) / 100;
-      // });
+      
       this.filteredProducts = [...this.listProducts];
+    });
+    this.cartService.getNbItemsInCart(this.userId).subscribe((response) => {
+      this.cartItemCount = response;
+      console.log(response);
+      
     });
   }
 
@@ -102,11 +117,41 @@ export class ProductsComponent implements OnInit {
   viewFavorites() {
     // Navigate to favorites page or show favorites modal
     this.router.navigate(['favorites']);
-    console.log('View favorites clicked');
   }
 
   viewCart() {
     // Navigate to cart page or show cart modal
-    console.log('View cart clicked');
+    this.router.navigate(['cart']);
+  }
+
+  getPaginatedItems(category: any): any[] {
+    const start = (category.currentPage - 1) * this.itemsPerPage;
+    const end = start + this.itemsPerPage;
+    return category.items.slice(start, end);
+  }
+  
+  getTotalPages(category: any): number {
+    return Math.ceil(category.items.length / this.itemsPerPage);
+  }
+  
+  getPages(category: any): number[] {
+    const total = this.getTotalPages(category);
+    return Array.from({length: total}, (_, i) => i + 1);
+  }
+  
+  prevPage(category: any): void {
+    if (category.currentPage > 1) {
+      category.currentPage--;
+    }
+  }
+  
+  nextPage(category: any): void {
+    if (category.currentPage < this.getTotalPages(category)) {
+      category.currentPage++;
+    }
+  }
+  
+  setPage(category: any, page: number): void {
+    category.currentPage = page;
   }
 }
