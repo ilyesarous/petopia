@@ -151,8 +151,19 @@ import { RelativeTimePipe } from './pipes/relative-time.pipe';
     ReactionComponent,
     CommentComponent,
     StoryComponent,
-    RelativeTimePipe
+    RelativeTimePipe,
 
+    TreatmentPetsComponent,
+    TreatmentSpecificPetsComponent,
+    NotificationVetComponent,
+    GrowthTrakingChoseIdComponent,
+    DashPrincipaleUserComponent,
+    AppointmentUserComponent,
+    TreatmentSpecificPetsUserComponent,
+    PaymentStatusPopupComponent,
+    VideoConsultationComponent,
+    GameComponent,
+    BoardComponent,
   ],
   imports: [
     BrowserModule,
