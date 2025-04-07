@@ -161,3 +161,12 @@
   vertical-align: middle;
   border-bottom: 1px solid;
 }
+
+/* Error message styling */
+.error-message {
+  color: #8b0000; /* Dark red */
+  font-size: 0.9rem;
+  font-weight: bold; /* Make the text bold */
+  margin-top: 5px;
+  padding-left: 10px; /* Slight indentation */
+}

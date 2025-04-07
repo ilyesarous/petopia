@@ -47,13 +47,22 @@ export class ShelterInfoComponent {
     this.shelterForm = this.fb.group({
       shelter_name: [this.shelterData.shelter_name, Validators.required],
       location: [this.shelterData.location, Validators.required],
-      email: [this.shelterData.email, [Validators.required, Validators.email]],
-      phone_number: [this.shelterData.phone_number, Validators.required],
-      description: [this.shelterData.description, Validators.required],
-      website: [this.shelterData.website]
+      email: [
+        this.shelterData.email,
+        [Validators.required, Validators.email]  
+      ],
+      phone_number: [
+        this.shelterData.phone_number,
+        [Validators.required, Validators.pattern(/^\d{8}$/)]
+      ],
+      description: [this.shelterData.description, [Validators.required, Validators.minLength(10)]],  
+      website: [
+        this.shelterData.website,
+        [Validators.pattern('https?://.+')] 
+      ]
     });
   }
-
+  
   enableEdit(): void {
     this.isEditing = true;
   }
@@ -81,6 +90,11 @@ export class ShelterInfoComponent {
       };
       reader.readAsDataURL(file);
     }
+  }
+
+  // Check if the form is valid
+  get isFormValid() {
+    return this.shelterForm.valid;
   }
 
   onSubmit(): void {
