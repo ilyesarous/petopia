@@ -21,7 +21,6 @@ export class PetAdoptionListComponent implements OnInit {
   distinctLocations: string[] = [];
 
   constructor(private petService: PetService, private router: Router, private route: ActivatedRoute) {}
-
   ngOnInit(): void {
     this.loadUnassignedPets();
   }

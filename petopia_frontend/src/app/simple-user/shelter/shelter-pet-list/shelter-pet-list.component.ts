@@ -13,9 +13,14 @@ import { faPaw } from '@fortawesome/free-solid-svg-icons';
 })
 export class ShelterPetListComponent {
   pets: Pet[] = [];
+  filteredPets: Pet[] = [];
   paginatedPets: Pet[] = [];
+
   currentPage = 1;
   itemsPerPage = 6;
+
+  searchQuery: string = '';
+  statusFilter: 'ALL' | 'AVAILABLE' | 'ADOPTED' = 'ALL';
 
   shelter?: Shelter;
   selectedPet!: Pet;
@@ -23,9 +28,14 @@ export class ShelterPetListComponent {
   editPetForm!: FormGroup;
   faPaw = faPaw;
 
-  // Bootstrap Alert
   alertMessage: string = '';
   alertClass: string = '';
+  showAddModal = false;
+  addPetForm!: FormGroup;
+  selectedImage: File | null = null;
+  editImageFile: File | null = null;
+  editImagePreviewUrl: string | ArrayBuffer | null = null;
+  imagePreviewUrl: string | ArrayBuffer | null = null;
 
   constructor(
     private petService: PetService,
@@ -54,17 +64,40 @@ export class ShelterPetListComponent {
   loadPetsByShelterId(shelterId: number): void {
     this.petService.getPetsByShelterId(shelterId).subscribe({
       next: (data) => {
-        this.pets = data;
-        this.updatePaginatedPets();
+        this.pets = data.reverse();
+        this.applyFilters();
       },
       error: (err) => console.error('Error fetching pets:', err)
     });
   }
 
+  applyFilters(): void {
+    const query = this.searchQuery.toLowerCase();
+
+    this.filteredPets = this.pets.filter(pet => {
+      const matchesSearch = [
+        pet.petName,
+        pet.breed,
+        pet.species,
+        pet.gender,
+        pet.healthStatus,
+        pet.size,
+        pet.status
+      ].some(field => field?.toLowerCase().includes(query));
+
+      const matchesStatus = this.statusFilter === 'ALL' || pet.status === this.statusFilter;
+
+      return matchesSearch && matchesStatus;
+    });
+
+    this.currentPage = 1;
+    this.updatePaginatedPets();
+  }
+
   updatePaginatedPets(): void {
     const start = (this.currentPage - 1) * this.itemsPerPage;
     const end = start + this.itemsPerPage;
-    this.paginatedPets = this.pets.slice(start, end);
+    this.paginatedPets = this.filteredPets.slice(start, end);
   }
 
   changePage(page: number): void {
@@ -73,7 +106,7 @@ export class ShelterPetListComponent {
   }
 
   get totalPagesCount(): number {
-    return Math.ceil(this.pets.length / this.itemsPerPage);
+    return Math.ceil(this.filteredPets.length / this.itemsPerPage);
   }
 
   get pageNumbers(): number[] {
@@ -85,7 +118,7 @@ export class ShelterPetListComponent {
       this.petService.deletePet(pet.idPet).subscribe({
         next: () => {
           this.pets = this.pets.filter(p => p.idPet !== pet.idPet);
-          this.updatePaginatedPets();
+          this.applyFilters();
           this.showAlert('Pet deleted successfully!', 'success');
         },
         error: (err) => {
@@ -118,6 +151,8 @@ export class ShelterPetListComponent {
 
   openEditModal(pet: Pet): void {
     this.selectedPet = pet;
+    this.editImageFile = null;
+    this.editImagePreviewUrl = null;
     this.initEditForm();
     this.showEditModal = true;
   }
@@ -136,27 +171,110 @@ export class ShelterPetListComponent {
 
   closeEditModal(): void {
     this.showEditModal = false;
+    this.editImageFile = null;
+    this.editImagePreviewUrl = null;
+  }
+
+  onEditImageSelected(event: any): void {
+    const file = event.target.files[0];
+    if (file) {
+      this.editImageFile = file;
+      const reader = new FileReader();
+      reader.onload = (e: ProgressEvent<FileReader>) => {
+        const result = e.target?.result;
+        if (result !== undefined) {
+          this.editImagePreviewUrl = result;
+        }
+      };
+      reader.readAsDataURL(file);
+    }
   }
 
   onEditSubmit(): void {
     if (this.editPetForm.invalid) return;
 
-    const updatedPet: Pet = {
+    const updatedPet = {
       ...this.selectedPet,
       ...this.editPetForm.value
     };
 
-    this.petService.updatePet(updatedPet.idPet, updatedPet).subscribe({
-      next: (res) => {
-        const index = this.pets.findIndex(p => p.idPet === res.idPet);
-        if (index !== -1) this.pets[index] = res;
-        this.updatePaginatedPets();
-        this.showEditModal = false;
+    const formData = new FormData();
+    formData.append('petData', JSON.stringify(updatedPet));
+
+    if (this.editImageFile) {
+      formData.append('image', this.editImageFile);
+    }
+
+    this.petService.updatePetWithImage(updatedPet.idPet, formData).subscribe({
+      next: () => {
+        this.loadPetsByShelterId(this.shelter!.id_shelter!);
+        this.closeEditModal();
         this.showAlert('Pet updated successfully!', 'success');
       },
       error: (err) => {
         console.error('Error updating pet:', err);
         this.showAlert('Update failed. Try again.', 'danger');
+      }
+    });
+  }
+
+  openAddModal(): void {
+    this.initAddForm();
+    this.showAddModal = true;
+  }
+
+  closeAddModal(): void {
+    this.showAddModal = false;
+    this.selectedImage = null;
+    this.imagePreviewUrl = null;
+  }
+
+  initAddForm(): void {
+    this.addPetForm = this.fb.group({
+      petName: ['', [Validators.required, Validators.minLength(2)]],
+      breed: ['', Validators.required],
+      petAge: [0, [Validators.required, Validators.min(0)]],
+      species: ['', Validators.required],
+      gender: ['', Validators.required],
+      size: ['', Validators.required],
+      healthStatus: ['']
+    });
+  }
+
+  onFileSelected(event: any) {
+    const file = event.target.files[0];
+    if (file) {
+      this.selectedImage = file;
+
+      const reader = new FileReader();
+      reader.onload = (e: ProgressEvent<FileReader>) => {
+        const result = e.target?.result;
+        if (result !== undefined) {
+          this.imagePreviewUrl = result;
+        }
+      };
+      reader.readAsDataURL(file);
+    }
+  }
+
+  onAddSubmit(): void {
+    if (this.addPetForm.invalid || !this.selectedImage) return;
+
+    const formData = new FormData();
+    const petData = { ...this.addPetForm.value };
+
+    formData.append('image', this.selectedImage);
+    formData.append('petData', JSON.stringify(petData));
+
+    this.petService.addPetForShelter(formData).subscribe({
+      next: () => {
+        this.closeAddModal();
+        this.loadPetsByShelterId(this.shelter!.id_shelter!);
+        this.showAlert('Pet added successfully!', 'success');
+      },
+      error: (err) => {
+        console.error('Add failed:', err);
+        this.showAlert('Failed to add pet.', 'danger');
       }
     });
   }

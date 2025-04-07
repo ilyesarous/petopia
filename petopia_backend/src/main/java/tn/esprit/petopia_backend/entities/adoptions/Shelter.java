@@ -27,6 +27,7 @@ public class Shelter {
     private String description;
 
     private String website;
+    
 
 
     @OneToOne(mappedBy = "shelter", cascade = CascadeType.ALL)
