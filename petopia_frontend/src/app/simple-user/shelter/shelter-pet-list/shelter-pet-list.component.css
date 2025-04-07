@@ -1,7 +1,6 @@
 /* Pet list container */
 .pet-list-container {
     padding: 40px 20px;
-    background: #fffaf6;
     border-radius: 16px;
     box-shadow: 0 5px 15px rgba(250, 128, 114, 0.15);
 }
@@ -10,10 +9,11 @@
 .shelter-pet-card {
     display: flex;
     flex-direction: column;
-    background: #ffffff;
+    background: #f7f9fc;
     border-radius: 20px;
     overflow: hidden;
-    box-shadow: 0 4px 10px rgba(255, 105, 180, 0.1);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.08);
+
     transition: transform 0.3s ease;
     margin-bottom: 25px;
     height: 100%; /* Ensures consistent height */
@@ -43,6 +43,7 @@
     border-radius: 10px;
     padding: 5px 12px;
     font-size: 0.75rem;
+    font-weight: bold;
     text-transform: uppercase;
 }
 
@@ -51,7 +52,7 @@
   }
   
   .tag-adopted {
-    background-color: #dc5e6b; /* red */
+    background-color: #F83182; /* red */
   }
 
 
@@ -66,7 +67,7 @@
 
 .pet-name {
     font-size: 1.4rem;
-    color: #ff7b9c;
+    color: #F83182;
     margin-bottom: 8px;
 }
 
@@ -104,21 +105,21 @@
 }
 
 .edit-btn {
-    background-color: #ff7eb2;
+    background-color: #F83182;
 }
 
 .edit-btn:hover {
-    background-color: #F83182;
-    transform: scale(1.05);
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(248, 49, 130, 0.3);
 }
 
 .delete-btn {
-    background-color: #ffab73;
+    background-color: #ff7547;
 }
 
 .delete-btn:hover {
-    background-color: #fd8f4b;
-    transform: scale(1.05);
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(248, 49, 130, 0.3);
 }
 /* Modal Overlay (full screen background) */
 .modal-overlay {
@@ -253,4 +254,38 @@
       width: 90%;
     }
   }
+  .pagination-controls {
+    display: flex;
+    justify-content: center;
+    margin-top: 2rem;
+    gap: 8px;
+  }
   
+  .page-btn {
+    background-color: #fefefe;
+    color: #F83182;
+    border: 2px solid #F83182;
+    padding: 8px 16px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.3s ease;
+  }
+  
+  .page-btn:hover {
+    background-color: #F83182;
+    color: white;
+  }
+  
+  .page-btn.active {
+    background-color: #F83182;
+    color: white;
+    font-weight: bold;
+    box-shadow: 0 0 8px rgba(248, 49, 130, 0.3);
+  }
+  
+  .page-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+ 

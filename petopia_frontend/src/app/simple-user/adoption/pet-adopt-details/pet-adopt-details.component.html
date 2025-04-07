@@ -2,7 +2,7 @@
     <div class="pet-showcase-card">
       <!-- Decorative paw prints at the top -->
       <div class="paw-prints">
-        <fa-icon [icon]="faPaw" style="color: #ff9999;" *ngFor="let i of [1,2,3,4,5,6,7,8,9,10,11,12,13,14]"></fa-icon>
+        <fa-icon [icon]="faPaw" style="color: #F83182;" *ngFor="let i of [1,2,3,4,5,6,7,8,9,10,11,12,13,14]"></fa-icon>
       </div>
   
       <!-- Pet name, stylized -->
@@ -14,7 +14,7 @@
       <!-- Circular pet image -->
       <div class="pet-image-wrapper">
         <img 
-          [src]="pet.petImage || 'https://via.placeholder.com/300x300?text=Pet+Image'" 
+          [src]="pet.petImage" 
           class="pet-image" 
           [alt]="pet.petName"
         >
@@ -38,7 +38,7 @@
   
       <!-- Call-to-Action -->
       <div class="cta-row">
-        <button class="btn adopt-btn" [routerLink]="['/home/adoption/form', pet.idPet]" >Adopt Me</button>
+        <button class="btn adopt-btn" [routerLink]="['/adoption/form', pet.idPet]" >Adopt Me</button>
       </div>
     </div>
   </div>

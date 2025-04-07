@@ -24,7 +24,7 @@ import { PostComponent } from './simple-user/post/post.component';
 import { PetAdoptionListComponent } from './simple-user/adoption/pet-adoption-list/pet-adoption-list.component';
 import { PetAdoptDetailsComponent } from './simple-user/adoption/pet-adopt-details/pet-adopt-details.component';
 import { AdoptPetComponent } from './simple-user/adoption/adopt-pet/adopt-pet.component';
-import {  ShelterInfoComponent } from './simple-user/shelter/shelter-info/shelter-info.component';
+import { ShelterInfoComponent } from './simple-user/shelter/shelter-info/shelter-info.component';
 import { ShelterPetListComponent } from './simple-user/shelter/shelter-pet-list/shelter-pet-list.component';
 import { ShelterAddPetComponent } from './simple-user/shelter/shelter-add-pet/shelter-add-pet.component';
 import { ShelterAdoptionRequestsComponent } from './simple-user/shelter/shelter-adoption-requests/shelter-adoption-requests.component';
@@ -40,6 +40,8 @@ import { AppointmentUserComponent } from './simple-user/vet/appointment-user/app
 import { TreatmentSpecificPetsUserComponent } from './simple-user/vet/treatment-specific-pets-user/treatment-specific-pets-user.component';
 import { VideoConsultationComponent } from './simple-user/vet/video-consultation/video-consultation.component';
 import { GameComponent } from './simple-user/vet/tic-tac-toe/game/game.component';
+import { AdoptionDetailsComponent } from './simple-user/shelter/adoption-details/adoption-details.component';
+import { ShelterHomeComponent } from './simple-user/shelter/shelter-home/shelter-home.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -61,12 +63,30 @@ const routes: Routes = [
   { path: 'vet/meet', component: VideoConsultationComponent, canActivate: [AuthGuard]},
   { path: 'community', component: CommunityComponent},
   { path: 'post/:id', component: PostComponent, canActivate: [AuthGuard] },
-
-
+  { path: 'adoption', component: PetAdoptionListComponent },
+  { path: 'adoption/pets/:id', component: PetAdoptDetailsComponent },
+  { path: 'adoption/form/:idPet', component: AdoptPetComponent },
+  { path: 'shelter/info', component: ShelterInfoComponent },
+  { path: 'shelter/pets', component: ShelterPetListComponent },
+  { path: 'shelter/pets/add', component: ShelterAddPetComponent },
+  {
+    path: 'shelter/adoption-requests',
+    component: ShelterAdoptionRequestsComponent,
+  },
+  {
+    path: 'shelter/home',
+    component: ShelterHomeComponent,
+    canActivate: [AuthGuard], 
+  },
+  {
+    path: 'shelter/adoption-requests/:id',
+    component: AdoptionDetailsComponent,
+  },
   { path: 'dashboard', component: DashbordComponent, canActivate: [AuthGuard],
     children: [
       { path: 'user', component: ChartComponent },
       { path: 'store', component: StoreDashComponent },
+
 
       { path: 'vet', component: DashPrincipaleComponent },
       { path: 'tic-tac-toe', component: GameComponent },
@@ -74,24 +94,20 @@ const routes: Routes = [
       { path: 'diagnosis', component: DiagnosisListComponent },
       { path: 'notifications', component: NotificationListComponent },
       { path: 'pet-growth', component: PetGrowthListComponent },
-      { path: 'dog-breed-recognition' , component: AppDogBreedRecognitionRedirectButtonComponent}
-    ]
+      {
+        path: 'dog-breed-recognition',
+        component: AppDogBreedRecognitionRedirectButtonComponent,
+      },
+    ],
   },
-  {path: 'adoption', component: PetAdoptionListComponent},
-  {path: 'adoption/pets/:id', component: PetAdoptDetailsComponent },
-  {path: 'adoption/form/:idPet', component: AdoptPetComponent},
-  { path: 'shelter/info', component: ShelterInfoComponent },
-  { path: 'shelter/pets', component: ShelterPetListComponent },
-  { path: 'shelter/pets/add', component: ShelterAddPetComponent },
-  { path: 'shelter/adoption-requests', component: ShelterAdoptionRequestsComponent },
 
   { path: 'signup', component: SignupComponent },
   { path: 'login', component: LoginComponent },
-  { path: '**', component: PageNotFoundComponent }
+  { path: '**', component: PageNotFoundComponent },
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}

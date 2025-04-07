@@ -1,5 +1,7 @@
 <!-- src/app/simple-user/shelter/shelter-pet-list/shelter-pet-list.component.html -->
-
+<div *ngIf="alertMessage" class="alert" [ngClass]="alertClass" role="alert">
+  {{ alertMessage }}
+</div>
 <div class="pet-list-container container">
     <h2 class="text-center my-4">{{ shelter?.shelter_name }}'s Pets</h2>
     <div class="row">
@@ -29,6 +31,28 @@
           
       </div>
     </div>
+    <div class="pagination-controls" *ngIf="pageNumbers.length > 1">
+      <button class="page-btn" [disabled]="currentPage === 1" (click)="changePage(currentPage - 1)">Prev</button>
+  
+      <ng-container *ngFor="let page of pageNumbers">
+        <button
+          class="page-btn"
+          [class.active]="page === currentPage"
+          (click)="changePage(page)"
+        >
+          {{ page }}
+        </button>
+      </ng-container>
+  
+      <button
+        class="page-btn"
+        [disabled]="currentPage === pageNumbers.length"
+        (click)="changePage(currentPage + 1)"
+      >
+        Next
+      </button>
+    </div>
+  
   </div>
   <!-- Edit Pet Modal -->
 <div class="modal-overlay" *ngIf="showEditModal">
@@ -74,4 +98,4 @@
       </div>
     </div>
   </div>
-  
+ 

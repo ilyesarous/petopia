@@ -3,6 +3,7 @@ package tn.esprit.petopia_backend.controller.pet;
 
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
@@ -20,11 +21,7 @@ import tn.esprit.petopia_backend.services.adoptions.IShelterService;
 import tn.esprit.petopia_backend.services.matching.MatchesService;
 import tn.esprit.petopia_backend.services.pet.PetService;
 
-import java.util.Base64;
-import java.util.HashMap;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @RestController
@@ -53,12 +50,6 @@ public class PetController {
     @GetMapping("/user/pet/all")
     public ResponseEntity<List<Pet>> getAllPets() {
         List<Pet> pets = petService.getallPets();
-        pets.forEach(pet -> {
-            if (pet.getPetImageBytes() != null) {
-                String base64Image = "data:image/png;base64," + Base64.getEncoder().encodeToString(pet.getPetImageBytes());
-                pet.setPetImage(base64Image);
-            }
-        });
         if (pets.isEmpty()) {
             return ResponseEntity.noContent().build();
         }
@@ -84,10 +75,41 @@ public class PetController {
     }
     @PutMapping("/pet/update/{id}")
     @PreAuthorize("hasAnyAuthority('ROLE_SHELTER','ROLE_USER')")
-    public ResponseEntity<Pet> updatePet(@PathVariable Integer id, @RequestBody Pet pet) {
-        pet.setIdPet(id);
-        Pet updatedPet = petService.updatePet(pet);
-        return ResponseEntity.ok(updatedPet);
+    public ResponseEntity<?> updatePet(@PathVariable Integer id, @RequestBody Pet pet) {
+        try {
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            User currentUser = (User) authentication.getPrincipal();
+            System.out.println("hhhhhhhhhhhhheeeeeeeeeeeeelooooo");
+            // Fetch existing pet from DB for comparison
+            Pet existingPet = petService.getPetById(id);
+            System.out.println("pettttttttt:"+existingPet);
+            if (existingPet == null) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                        .body("Pet with ID " + id + " not found.");
+            }
+
+            // Detailed checks (example)
+            if (currentUser.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ROLE_SHELTER"))) {
+                Integer shelterIdOfUser = shelterService.getShelterByUserId(currentUser.getId_user()).getId_shelter();
+                Integer shelterIdOfPet = existingPet.getShelter() != null ? existingPet.getShelter().getId_shelter() : null;
+
+                if (!Objects.equals(shelterIdOfPet, shelterIdOfUser)) {
+                    String msg = "Permission denied: Shelter ID mismatch (user shelter: " + shelterIdOfUser
+                            + ", pet shelter: " + shelterIdOfPet + ")";
+                    System.out.println(msg);
+                    return ResponseEntity.status(HttpStatus.FORBIDDEN).body(msg);
+                }
+            }
+
+            pet.setIdPet(id);
+            Pet updatedPet = petService.updatePet(pet);
+            return ResponseEntity.ok(updatedPet);
+
+        } catch (Exception e) {
+            e.printStackTrace(); // Logs error to console clearly
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Error occurred: " + e.getMessage());
+        }
     }
 
     // Endpoint for deleting a pet (only accessible by shelters)

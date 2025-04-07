@@ -96,7 +96,7 @@
 
 /* Icon Paw near Title */
 .icon-paw {
-  color: #ff6b81;
+  color: #F83182;
   font-size: 1.3rem;
   vertical-align: middle;
 }
@@ -145,7 +145,7 @@ textarea {
 
 /* Submit Button */
 .submit-btn {
-  background-color: #ff6b81;
+  background-color: #F83182;
   color: #fff;
   border: none;
   border-radius: 50px;
@@ -158,8 +158,8 @@ textarea {
 }
 
 .submit-btn:hover {
-  background-color: #ff4757;
-  transform: scale(1.03);
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(248, 49, 130, 0.3);
 }
 
 .submit-btn:disabled {
@@ -206,7 +206,7 @@ textarea {
   .file-upload-label {
     display: inline-block;
     padding: 0.75rem 1.5rem;
-    background-color: #ff6b81;
+    background-color: #F83182;
     color: #fff;
     font-weight: 600;
     border-radius: 50px;
@@ -218,8 +218,8 @@ textarea {
   }
   
   .file-upload-label:hover {
-    background-color: #ff4757;
-    transform: scale(1.03);
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(248, 49, 130, 0.3);
   }
   
   /* The text that shows the chosen file name */
@@ -270,7 +270,7 @@ textarea {
   }
   
   .modal-content button {
-    background: #ff98a8;
+    background: #F83182;
     border: none;
     color: #fff;
     padding: 0.5rem 1.5rem;
@@ -281,7 +281,8 @@ textarea {
   }
   
   .modal-content button:hover {
-    background: #ff6b81;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(248, 49, 130, 0.3);
   }
   
   /* Slide down animation for the modal */
