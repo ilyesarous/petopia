@@ -1,0 +1,172 @@
+<div class="post-card card mb-3">
+  <!-- Header: Avatar, author name, and post time -->
+  <div class="card-header d-flex align-items-center post-header">
+    <div class="card-header d-flex align-items-center post-header">
+  <i class="bi bi-person-circle me-2"></i>
+  <div>
+    <div class="post-author fw-bold">{{ post.user?.name || 'User Name' }}</div>
+  </div>
+</div>
+
+    <!-- Optional menu icon -->
+    <div class="post-time text-muted me-2">
+      {{ post.date | relativeTime }}
+    </div>
+
+    <div class="ms-auto post-menu">
+      <i class="bi bi-three-dots"></i>
+    </div>
+
+  </div>
+
+  <!-- Post content: text and image -->
+  <div class="card-body post-body">
+    <p class="mb-2">{{ post.content }}</p>
+    <div *ngIf="post.image" class="post-images">
+      <img *ngFor="let imgUrl of post.image.split(',')"
+           [src]="imgUrl.trim()"
+           alt="Post image"
+           class="img-fluid rounded mt-2 mb-2" />
+    </div>
+    
+    </div>
+
+  <!-- Action buttons: Like and Comment -->
+  <div class="post-actions d-flex align-items-center px-3 pb-2">
+    <!-- <button class="btn btn-link text-decoration-none text-secondary" (click)="toggleLike()">
+      <i class="bi bi-hand-thumbs-up"></i> {{ liked ? 'Liked' : 'Like' }}
+    </button> -->
+    <div class="d-flex mb-2 px-3">
+      <!-- LIKE Button -->
+      <button
+        class="btn btn-sm me-2"
+        [ngClass]="{
+          'btn-primary': userReaction === 'LIKE',
+          'btn-outline-primary': userReaction !== 'LIKE'
+        }"
+        (click)="addReaction('LIKE')"
+      >
+        👍 Like
+      </button>
+    
+      <!-- LOVE Button -->
+      <button
+        class="btn btn-sm me-2"
+        [ngClass]="{
+          'btn-danger': userReaction === 'LOVE',
+          'btn-outline-danger': userReaction !== 'LOVE'
+        }"
+        (click)="addReaction('LOVE')"
+      >
+        ❤️ Love
+      </button>
+    
+      <!-- WOW Button -->
+      <button
+        class="btn btn-sm me-2"
+        [ngClass]="{
+          'btn-warning': userReaction === 'WOW',
+          'btn-outline-warning': userReaction !== 'WOW'
+        }"
+        (click)="addReaction('WOW')"
+      >
+        😮 Wow
+      </button>
+    
+      <!-- HAHA Button -->
+      <button
+        class="btn btn-sm me-2"
+        [ngClass]="{
+          'btn-success': userReaction === 'HAHA',
+          'btn-outline-success': userReaction !== 'HAHA'
+        }"
+        (click)="addReaction('HAHA')"
+      >
+        😂 Haha
+      </button>
+    
+      <!-- SAD Button -->
+      <button
+        class="btn btn-sm me-2"
+        [ngClass]="{
+          'btn-info': userReaction === 'SAD',
+          'btn-outline-info': userReaction !== 'SAD'
+        }"
+        (click)="addReaction('SAD')"
+      >
+        😢 Sad
+      </button>
+    </div>
+    
+    
+    <button class="btn btn-link text-decoration-none text-secondary" (click)="toggleComments()">
+      <i class="bi bi-chat-dots"></i> Comment ({{ post.comments?.length || 0 }})
+    </button>
+    
+  </div>
+
+  <!-- TODO -->
+  <!-- Avatars for people who liked the post (optional) -->
+  <div class="d-flex align-items-center px-3 pb-2">
+
+    <small class="ms-2 text-muted pointer" (click)="openLikesPopup()">
+      {{ getReactionSummary() }}
+    </small>
+    
+    
+    </div>
+
+    <div class="modal fade custom-modal" [class.show]="showLikesPopup" [style.display]="showLikesPopup ? 'block' : 'none'" tabindex="-1" role="dialog">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Reactions</h5>
+          </div>
+          <div class="modal-body">
+            <ul class="list-group">
+              <li class="list-group-item d-flex align-items-center" *ngFor="let reaction of post.reactions">
+                <i class="bi bi-person-fill text-white me-2"></i>
+                <!-- Affiche le nom de l’utilisateur et le type de la réaction -->
+                <span>{{ reaction.user?.name || 'User Name' }} reacted with {{ reaction.type }}</span>
+              </li>
+            </ul>
+          </div>
+          
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" (click)="closeLikesPopup()">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+<!-- Comments Section -->
+<div class="post-comments px-3" *ngIf="showComments">
+  <ng-container *ngFor="let comment of getDisplayedComments()">
+    <div class="comment-item mb-2 border p-2 rounded">
+      <div class="d-flex align-items-start">
+        <i class="bi bi-person-circle me-2"></i>
+        <div class="ms-2">
+          <div class="comment-author fw-bold">
+            {{ comment.user?.name || 'Commenter Name' }}
+            <span class="comment-time text-muted ms-2">{{ comment.date | date:'short' }}</span>
+          </div>
+          <div class="comment-text">
+            {{ comment.content }}
+          </div>
+          <div class="comment-actions mt-1">
+            <a href="#" class="me-3 text-secondary text-decoration-none">Like</a>
+            <a href="#" class="me-3 text-secondary text-decoration-none">Reply</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+  <button
+    *ngIf="!showAllComments && post.comments && post.comments.length > 3"
+    class="btn btn-link see-more-comments p-0"
+    (click)="showAllComments = true">
+    See more comments
+  </button>
+</div>
+
+</div>

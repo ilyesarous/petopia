@@ -1,0 +1,41 @@
+.comment-section {
+  background-color: #fff;
+
+  .single-comment {
+    .comment-avatar {
+      width: 32px;
+      height: 32px;
+      object-fit: cover;
+    }
+    .comment-author {
+      font-size: 0.85rem;
+    }
+    .comment-time {
+      font-size: 0.75rem;
+    }
+    .comment-text {
+      font-size: 0.9rem;
+    }
+    .comment-actions {
+      a {
+        font-size: 0.8rem;
+        &:hover {
+          text-decoration: underline;
+        }
+      }
+    }
+  }
+
+  .add-comment {
+    .comment-avatar {
+      width: 32px;
+      height: 32px;
+      object-fit: cover;
+    }
+    input.form-control {
+      border-radius: 20px;
+      background-color: #f2f3f5;
+      border: none;
+    }
+  }
+}

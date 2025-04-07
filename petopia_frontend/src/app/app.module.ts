@@ -60,9 +60,15 @@ import { FeedbacksComponent } from './simple-user/store/feedbacks/feedbacks.comp
 import {LoginComponent} from "./components/login/login.component";
 import {FooterComponent} from "./components/footer/footer.component";
 import {SignupComponent} from "./components/signup/signup.component";
+import { CommunityComponent } from './simple-user/community/community.component';
+import { PostComponent } from './simple-user/post/post.component';
+import { ReactionComponent } from './simple-user/reaction/reaction.component';
+import { CommentComponent } from './simple-user/comment/comment.component';
+import { StoryComponent } from './simple-user/story/story.component';
+import { AuthInterceptor } from './interceptors/auth.interceptor';
+import { RelativeTimePipe } from './pipes/relative-time.pipe';
 import { PetAdoptionListComponent } from './simple-user/adoption/pet-adoption-list/pet-adoption-list.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { AuthInterceptor } from './interceptors/auth.interceptor';
 import { PetAdoptDetailsComponent } from './simple-user/adoption/pet-adopt-details/pet-adopt-details.component';
 
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
@@ -132,7 +138,14 @@ import { ShelterAdoptionRequestsComponent } from './simple-user/shelter/shelter-
     ShelterInfoComponent,
     ShelterPetListComponent,
     ShelterAddPetComponent,
-    ShelterAdoptionRequestsComponent
+    ShelterAdoptionRequestsComponent,
+    CommunityComponent,
+    PostComponent,
+    ReactionComponent,
+    CommentComponent,
+    StoryComponent,
+    RelativeTimePipe
+
   ],
   imports: [
     BrowserModule,
@@ -150,7 +163,7 @@ import { ShelterAdoptionRequestsComponent } from './simple-user/shelter/shelter-
     BrowserAnimationsModule,
     FontAwesomeModule,
     MatIconModule,
-    MatDialogModule,
+    MatDialogModule
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }

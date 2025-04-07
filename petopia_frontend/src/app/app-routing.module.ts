@@ -18,6 +18,8 @@ import { StoreDashComponent } from './admin/store/store-dash/store-dash.componen
 import {LoginComponent} from "./components/login/login.component";
 import {SignupComponent} from "./components/signup/signup.component";
 import {AuthGuard} from "./auth.guard";
+import { CommunityComponent } from './simple-user/community/community.component';
+import { PostComponent } from './simple-user/post/post.component';
 
 import { PetAdoptionListComponent } from './simple-user/adoption/pet-adoption-list/pet-adoption-list.component';
 import { PetAdoptDetailsComponent } from './simple-user/adoption/pet-adopt-details/pet-adopt-details.component';
@@ -57,6 +59,10 @@ const routes: Routes = [
   { path: 'vet/tic-tac-toe', component:  GameComponent, canActivate: [AuthGuard]},
   { path: 'vet/treatment-specific-pets-user/:id', component: TreatmentSpecificPetsUserComponent, canActivate: [AuthGuard]},
   { path: 'vet/meet', component: VideoConsultationComponent, canActivate: [AuthGuard]},
+  { path: 'community', component: CommunityComponent},
+  { path: 'post/:id', component: PostComponent, canActivate: [AuthGuard] },
+
+
   { path: 'dashboard', component: DashbordComponent, canActivate: [AuthGuard],
     children: [
       { path: 'user', component: ChartComponent },
