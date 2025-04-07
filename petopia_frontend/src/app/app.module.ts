@@ -89,6 +89,16 @@ import { BrandsComponent } from './simple-user/store/brands/brands.component';
 import { ProductDetailComponent } from './simple-user/store/product-detail/product-detail.component';
 import { FavoriteComponent } from './simple-user/store/favorite/favorite.component';
 import { FeedbacksComponent } from './simple-user/store/feedbacks/feedbacks.component';
+import { CommunityComponent } from './simple-user/community/community.component';
+import { PostComponent } from './simple-user/post/post.component';
+import { ReactionComponent } from './simple-user/reaction/reaction.component';
+import { CommentComponent } from './simple-user/comment/comment.component';
+import { StoryComponent } from './simple-user/story/story.component';
+import { RelativeTimePipe } from './pipes/relative-time.pipe';
+
+
+
+
 
 @NgModule({
   declarations: [
@@ -136,17 +146,13 @@ import { FeedbacksComponent } from './simple-user/store/feedbacks/feedbacks.comp
     ShelterAdoptionRequestsComponent,
     AdoptionDetailsComponent,
     ShelterHomeComponent,
-    TreatmentPetsComponent,
-    TreatmentSpecificPetsComponent,
-    NotificationVetComponent,
-    GrowthTrakingChoseIdComponent,
-    DashPrincipaleUserComponent,
-    AppointmentUserComponent,
-    TreatmentSpecificPetsUserComponent,
-    PaymentStatusPopupComponent,
-    VideoConsultationComponent,
-    GameComponent,
-    BoardComponent,
+    CommunityComponent,
+    PostComponent,
+    ReactionComponent,
+    CommentComponent,
+    StoryComponent,
+    RelativeTimePipe
+
   ],
   imports: [
     BrowserModule,

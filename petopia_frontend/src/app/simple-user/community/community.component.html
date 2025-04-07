@@ -1,0 +1,104 @@
+<div class="community-feed container py-4">
+  <!-- Carousel de stories -->
+  <div id="storyCarousel" class="carousel slide mb-4" data-bs-ride="carousel">
+    <div class="carousel-inner">
+      <div class="carousel-item active" *ngIf="stories.length">
+        <div class="d-flex justify-content-around">
+          <app-story *ngFor="let story of stories" [story]="story"></app-story>
+        </div>
+      </div>
+    </div>
+    <button class="carousel-control-prev" type="button" data-bs-target="#storyCarousel" data-bs-slide="prev">
+      <span class="carousel-control-prev-icon"></span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#storyCarousel" data-bs-slide="next">
+      <span class="carousel-control-next-icon"></span>
+    </button>
+  </div>
+
+
+
+    <!-- Barre de recherche et dropdown de tri -->
+<div class="mb-3">
+  <div class="input-group">
+    <input
+      type="text"
+      [(ngModel)]="searchQuery"
+      (input)="updatePosts()"
+      placeholder="Search by post content or by user"
+      class="form-control"
+    />
+    <button
+      class="btn btn-outline-secondary dropdown-toggle"
+      type="button"
+      data-bs-toggle="dropdown"
+      aria-expanded="false">
+      Trier par type
+    </button>
+    <ul class="dropdown-menu dropdown-menu-end">
+      <!-- Pour chaque type défini dans l'enum -->
+      <li *ngFor="let type of postTypes">
+        <a class="dropdown-item" href="#" (click)="filterByType(type); $event.preventDefault()">{{ type }}</a>
+      </li>
+      <li><hr class="dropdown-divider"></li>
+      <li>
+        <a class="dropdown-item" href="#" (click)="clearTypeFilter(); $event.preventDefault()">Tous les types</a>
+      </li>
+    </ul>
+  </div>
+</div>
+
+
+    <!-- Create a new post form -->
+    <div class="create-post card mb-3">
+      <div class="card-body">
+        <textarea
+          [(ngModel)]="newPostContent"
+          class="form-control"
+          placeholder="What's on your mind?"
+          rows="3">
+        </textarea>
+            <!-- Select for Post Type -->
+    <select class="form-select mt-2" [(ngModel)]="newPostType">
+      <option [ngValue]="PostType.LOST_PET">Lost Pet</option>
+      <option [ngValue]="PostType.ADOPTION">Adoption</option>
+      <option [ngValue]="PostType.GENERAL">General</option>
+      <option [ngValue]="PostType.ADVICE">Advice</option>
+      <option [ngValue]="PostType.FOR_SALE">For Sale</option>
+    </select>
+        <div class="d-flex justify-content-between align-items-center mt-2">
+         
+          <div class="file-input-container">
+            <!-- Hidden file input with multiple attribute -->
+            <input
+              type="file"
+              id="fileInput"
+              (change)="onFileSelected($event)"
+              accept="image/*"
+              multiple
+              hidden
+            />
+            <!-- Custom label as button with icon -->
+            <label for="fileInput" class="btn btn-secondary mb-0">
+              <i class="bi bi-image me-1"></i> Add image(s)
+            </label>
+            <!-- Display selected file names using the getter -->
+            <span class="file-name ms-2" *ngIf="selectedFiles && selectedFiles.length">
+              {{ selectedFileNames }}
+            </span>
+          </div>
+          
+          
+          
+          <button class="btn btn-primary" (click)="createPost()">Post</button>
+        </div>
+      </div>
+    </div>
+
+  <!-- Liste des posts -->
+  <div class="row">
+    <div class="col-12 mb-3" *ngFor="let post of posts">
+      <app-post [post]="post"></app-post>
+    </div>
+  </div>
+</div>

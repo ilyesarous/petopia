@@ -15,9 +15,11 @@ import { ProductsComponent } from './simple-user/store/products/products.compone
 import { ProductDetailComponent } from './simple-user/store/product-detail/product-detail.component';
 import { FavoriteComponent } from './simple-user/store/favorite/favorite.component';
 import { StoreDashComponent } from './admin/store/store-dash/store-dash.component';
-import { LoginComponent } from './components/login/login.component';
-import { SignupComponent } from './components/signup/signup.component';
-import { AuthGuard } from './auth.guard';
+import {LoginComponent} from "./components/login/login.component";
+import {SignupComponent} from "./components/signup/signup.component";
+import {AuthGuard} from "./auth.guard";
+import { CommunityComponent } from './simple-user/community/community.component';
+import { PostComponent } from './simple-user/post/post.component';
 
 import { PetAdoptionListComponent } from './simple-user/adoption/pet-adoption-list/pet-adoption-list.component';
 import { PetAdoptDetailsComponent } from './simple-user/adoption/pet-adopt-details/pet-adopt-details.component';
@@ -43,78 +45,24 @@ import { ShelterHomeComponent } from './simple-user/shelter/shelter-home/shelter
 
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
-  {
-    path: 'home',
-    component: ComponentWrapperComponent,
-    canActivate: [AuthGuard],
-  },
-  { path: 'products', component: ProductsComponent, canActivate: [AuthGuard] },
-  {
-    path: 'products/:id',
-    component: ProductDetailComponent,
-    canActivate: [AuthGuard],
-  },
-  { path: 'favorites', component: FavoriteComponent, canActivate: [AuthGuard] },
-  {
-    path: 'vet',
-    component: DashPrincipaleHomeVetComponent,
-    canActivate: [AuthGuard],
-  },
-  {
-    path: 'vet/pet-growth/:id',
-    component: PetGrowthVetComponent,
-    canActivate: [AuthGuard],
-  },
-  {
-    path: 'vet/treatment-pets',
-    component: TreatmentPetsComponent,
-    canActivate: [AuthGuard],
-  },
-  {
-    path: 'vet/treatment-specific-pet/:id',
-    component: TreatmentSpecificPetsComponent,
-    canActivate: [AuthGuard],
-  },
-  {
-    path: 'vet/notification-vet',
-    component: NotificationVetComponent,
-    canActivate: [AuthGuard],
-  },
-  {
-    path: 'vet/vet-calendar',
-    component: VetCalendarComponent,
-    canActivate: [AuthGuard],
-  },
-  {
-    path: 'vet/growth-traking-chose-id',
-    component: GrowthTrakingChoseIdComponent,
-    canActivate: [AuthGuard],
-  },
-  {
-    path: 'vet/dash-principale-user',
-    component: DashPrincipaleUserComponent,
-    canActivate: [AuthGuard],
-  },
-  {
-    path: 'vet/appointment-user',
-    component: AppointmentUserComponent,
-    canActivate: [AuthGuard],
-  },
-  {
-    path: 'vet/tic-tac-toe',
-    component: GameComponent,
-    canActivate: [AuthGuard],
-  },
-  {
-    path: 'vet/treatment-specific-pets-user/:id',
-    component: TreatmentSpecificPetsUserComponent,
-    canActivate: [AuthGuard],
-  },
-  {
-    path: 'vet/meet',
-    component: VideoConsultationComponent,
-    canActivate: [AuthGuard],
-  },
+  { path: 'home', component: ComponentWrapperComponent, canActivate: [AuthGuard]},
+  { path: 'products', component: ProductsComponent, canActivate: [AuthGuard]},
+  { path: 'products/:id', component: ProductDetailComponent, canActivate: [AuthGuard] },
+  { path: 'favorites', component: FavoriteComponent, canActivate: [AuthGuard]},
+  { path: 'vet', component: DashPrincipaleHomeVetComponent, canActivate: [AuthGuard] },
+  { path: 'vet/pet-growth/:id', component: PetGrowthVetComponent, canActivate: [AuthGuard] },
+  { path: 'vet/treatment-pets', component: TreatmentPetsComponent, canActivate: [AuthGuard] },
+  { path: 'vet/treatment-specific-pet/:id', component: TreatmentSpecificPetsComponent, canActivate: [AuthGuard]},
+  { path: 'vet/notification-vet', component: NotificationVetComponent, canActivate: [AuthGuard]},
+  { path: 'vet/vet-calendar', component: VetCalendarComponent, canActivate: [AuthGuard]},
+  { path: 'vet/growth-traking-chose-id', component: GrowthTrakingChoseIdComponent, canActivate: [AuthGuard]},
+  { path: 'vet/dash-principale-user', component: DashPrincipaleUserComponent, canActivate: [AuthGuard]},
+  { path: 'vet/appointment-user' , component : AppointmentUserComponent, canActivate: [AuthGuard]},
+  { path: 'vet/tic-tac-toe', component:  GameComponent, canActivate: [AuthGuard]},
+  { path: 'vet/treatment-specific-pets-user/:id', component: TreatmentSpecificPetsUserComponent, canActivate: [AuthGuard]},
+  { path: 'vet/meet', component: VideoConsultationComponent, canActivate: [AuthGuard]},
+  { path: 'community', component: CommunityComponent},
+  { path: 'post/:id', component: PostComponent, canActivate: [AuthGuard] },
   { path: 'adoption', component: PetAdoptionListComponent },
   { path: 'adoption/pets/:id', component: PetAdoptDetailsComponent },
   { path: 'adoption/form/:idPet', component: AdoptPetComponent },
@@ -134,10 +82,7 @@ const routes: Routes = [
     path: 'shelter/adoption-requests/:id',
     component: AdoptionDetailsComponent,
   },
-  {
-    path: 'dashboard',
-    component: DashbordComponent,
-    canActivate: [AuthGuard],
+  { path: 'dashboard', component: DashbordComponent, canActivate: [AuthGuard],
     children: [
       { path: 'user', component: ChartComponent },
       { path: 'store', component: StoreDashComponent },

@@ -1,0 +1,112 @@
+.post-card {
+  border: none;
+  border-radius: 8px;
+  .card-header {
+    background-color: #fff;
+    border-bottom: none;
+  }
+  .post-header {
+    .post-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+    .post-author {
+      font-size: 0.95rem;
+    }
+    .post-time {
+      font-size: 0.8rem;
+    }
+    .post-menu {
+      cursor: pointer;
+    }
+  }
+  .post-body {
+    background-color: #fff;
+    p {
+      font-size: 0.9rem;
+    }
+  }
+  .post-actions {
+    background-color: #fff;
+    button {
+      color: #666;
+      font-size: 0.85rem;
+      i {
+        margin-right: 5px;
+      }
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+  .avatars-liked {
+    img {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      margin-right: -8px;
+      border: 2px solid #fff;
+    }
+  }
+  .post-comments {
+    background-color: #fff;
+    border-radius: 0 0 8px 8px;
+  }
+}
+.custom-modal .modal-content {
+  background: linear-gradient(135deg, #F83182 0%, #FE9A7A 100%);
+  border: none;
+  color: #fff;
+}
+
+.custom-modal .modal-header,
+.custom-modal .modal-body,
+.custom-modal .modal-footer {
+  background: none;
+}
+
+.custom-modal .modal-title {
+  color: #fff;
+}
+
+.custom-modal .list-group-item {
+  background-color: rgba(255, 255, 255, 0.2);
+  border: none;
+  color: #fff;
+}
+
+.custom-modal .btn-secondary {
+  background-color: rgba(0, 0, 0, 0.2);
+  border: none;
+}
+.post-header {
+  padding-left: 0.5rem !important;  /* remove left padding */
+}
+.pointer {
+  cursor: pointer;
+}
+.see-more-comments {
+  text-decoration: none !important;  /* Remove underline */
+  color: #343a40;                     /* Darker color */
+  font-weight: 600;                   /* Make it bold */
+  font-size: 1rem;                    /* Increase font size if desired */
+  cursor: pointer;
+  border: none;
+  background: none;
+  padding: 0;
+
+  &:hover {
+    color: #212529;                   /* Even darker on hover */
+    text-decoration: none;
+  }
+}
+.post-actions .btn-link:hover,
+.pointer:hover,
+.see-more-comments:hover {
+  color: #F83182 !important;
+}
+.post-images img {
+  margin-right: 0.5rem; /* Adjust spacing as needed */
+}
