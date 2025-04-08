@@ -34,10 +34,10 @@
           placeholder="Write your motivation here..."
         ></textarea>
         <div class="error-messages" *ngIf="adoptionForm.get('motivation_letter')?.invalid && adoptionForm.get('motivation_letter')?.touched">
-          <div *ngIf="adoptionForm.get('motivation_letter')?.errors?.['required']">
+          <div *ngIf="adoptionForm.get('motivation_letter')?.errors?.['required']" class="text-danger">
             Motivation letter is required.
           </div>
-          <div *ngIf="adoptionForm.get('motivation_letter')?.errors?.['minlength']">
+          <div *ngIf="adoptionForm.get('motivation_letter')?.errors?.['minlength']" class="text-danger">
             Motivation letter should be at least 20 characters long.
           </div>
         </div>
@@ -48,27 +48,38 @@
         <label for="cinImage" class="form-label">
           <fa-icon [icon]="faCamera" class="me-2"></fa-icon> Upload Your CIN Image
         </label>
-        <div class="file-upload-group">
-          <!-- Hidden File Input -->
-          <input
-            type="file"
-            id="cinImage"
-            #fileInput
-            (change)="onFileSelected($event)"
-            accept="image/*"
-          />
-          <!-- Styled Label acting as a button -->
-          <label for="cinImage" class="file-upload-label">
-            <i class="fas fa-upload me-2"></i> Choose a File
-          </label>
-          <!-- Display chosen file name -->
-          <span class="file-chosen">{{ selectedFileName || 'No file chosen' }}</span>
-        </div>
-        <!-- File Error Message -->
-        <div class="error-messages" *ngIf="fileError">
-          {{ fileError }}
+
+        <!-- Input + Preview Flex Layout -->
+        <div class="file-upload-row">
+          <div class="file-upload-group">
+            <!-- Hidden File Input -->
+            <input
+              type="file"
+              id="cinImage"
+              #fileInput
+              (change)="onFileSelected($event)"
+              accept="image/*"
+            />
+            <!-- Styled Label acting as a button -->
+            <label for="cinImage" class="file-upload-label">
+              <i class="fas fa-upload me-2"></i> Choose a File
+            </label>
+            <!-- Display chosen file name -->
+            <span class="file-chosen">{{ selectedFileName || 'No file chosen' }}</span>
+
+            <!-- Error message if file is missing -->
+            <small *ngIf="fileError" class="text-danger d-block mt-2">
+              {{ fileError }}
+            </small>
+          </div>
+
+          <!-- Image Preview -->
+          <div *ngIf="previewUrl" class="cin-preview right">
+            <img [src]="previewUrl" alt="CIN Preview" />
+          </div>
         </div>
       </div>
+
 
       <!-- Submit Button -->
       <button type="submit" class="submit-btn" [disabled]="adoptionForm.invalid">

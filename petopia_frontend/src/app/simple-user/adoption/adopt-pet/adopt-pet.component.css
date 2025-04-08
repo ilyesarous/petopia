@@ -296,4 +296,39 @@ textarea {
       opacity: 1;
     }
   }
-  
+.file-upload-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.file-upload-group {
+  flex: 1;
+}
+
+.file-chosen {
+  display: block;
+  margin-top: 0.5rem;
+  font-weight: 500;
+  color: #555;
+}
+
+.cin-preview.right img {
+  max-width: 150px;
+  max-height: 150px;
+  border-radius: 10px;
+  border: 2px solid #F83182;
+  box-shadow: 0 6px 20px rgba(248, 49, 130, 0.2);
+  transition: transform 0.3s ease;
+}
+
+.cin-preview.right img:hover {
+  transform: scale(1.05);
+}
+.text-danger {
+  font-size: 1rem;       /* Increase font size */
+  font-weight: 600;      /* Make it bold */
+  color: #dc3545;        /* Bootstrap red, can be customized */
+  margin-top: 0.5rem;
+}
