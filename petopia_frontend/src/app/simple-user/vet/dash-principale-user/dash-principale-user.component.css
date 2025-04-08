@@ -11,6 +11,27 @@
     color: #F83182;
 }
 
+.rate-vet {
+    background: linear-gradient(135deg, #F83182, #FF617C, #FE9A7A);
+    color: white;
+    font-weight: bold;
+    padding: 12px 24px;
+    border-radius: 30px;
+    text-align: center;
+    cursor: pointer;
+    font-size: 18px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    width: fit-content;
+    box-shadow: 0 8px 16px rgba(248, 49, 130, 0.3);
+    margin: 16px auto;
+  }
+  
+  .rate-vet:hover {
+    transform: scale(1.05);
+    box-shadow: 0 10px 20px rgba(248, 49, 130, 0.4);
+  }
+  
+
 .header {
     width: 100%;
     margin-bottom: 20px;

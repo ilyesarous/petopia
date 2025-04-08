@@ -1,0 +1,34 @@
+<div class="container">
+    <div class="video-container">
+      <div class="button-group">
+        <button 
+          class="scan-button" 
+          (click)="startScanning()" 
+          [disabled]="isScanning"
+          [ngClass]="{'scanning': isScanning}">
+          {{ isScanning ? 'Scanning...' : 'Start Scanning' }}
+        </button>
+  
+        <button 
+          class="scan-button" 
+          (click)="stopScanning()" 
+          [disabled]="!isScanning"
+          [ngClass]="{'scanning': !isScanning}">
+          Stop Scanning
+        </button>
+      </div>
+  
+      <video id="video" width="300" height="200" [hidden]="!isScanning"></video>
+    </div>
+  
+    <div class="message-container">
+      <div *ngIf="errorMessage" class="error-message">
+        {{ errorMessage }}
+      </div>
+  
+      <div *ngIf="isScanning" class="scanning-hint">
+        <p>Scanning QR code...</p>
+      </div>
+    </div>
+  </div>
+  

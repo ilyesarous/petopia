@@ -1,0 +1,88 @@
+/* Ajoutez ces styles à votre fichier CSS existant */
+
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    padding: 20px;
+  }
+  
+  .video-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+  }
+  
+  button[disabled] {
+    background-color: #cccccc !important;
+    cursor: not-allowed;
+    transform: none !important;
+  }
+  
+  .message-container {
+    min-height: 60px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .error-message {
+    color: #F83182;
+    background-color: rgba(248, 49, 130, 0.1);
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-weight: bold;
+    text-align: center;
+  }
+  
+  .scanning-hint {
+    color: #FF617C;
+    font-style: italic;
+  }
+  
+  /* Animation pour le scanning */
+  @keyframes pulse {
+    0% { opacity: 0.6; }
+    50% { opacity: 1; }
+    100% { opacity: 0.6; }
+  }
+  
+  .scanning-hint p {
+    animation: pulse 2s infinite;
+  }
+
+  .button-group {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    margin: 20px 0;
+  }
+  
+  .scan-button {
+    background: linear-gradient(135deg, #F83182, #FF617C, #FE9A7A);
+    color: white;
+    border: none;
+    border-radius: 25px;
+    padding: 12px 24px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: 0 6px 14px rgba(248, 49, 130, 0.3);
+    min-width: 140px;
+  }
+  
+  .scan-button:hover:not(:disabled) {
+    transform: scale(1.05);
+    box-shadow: 0 10px 20px rgba(248, 49, 130, 0.4);
+  }
+  
+  .scan-button:disabled {
+    background: #FE9A7A !important;
+    cursor: not-allowed;
+    opacity: 0.8;
+  }
+  

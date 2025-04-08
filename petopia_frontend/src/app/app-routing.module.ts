@@ -40,6 +40,9 @@ import { VideoConsultationComponent } from './simple-user/vet/video-consultation
 import { GameComponent } from './simple-user/vet/tic-tac-toe/game/game.component';
 //import { VetSelectionPopupComponent } from './simple-user/vet/vet-selection-popup/vet-selection-popup.component';
 import { LocationVetComponent } from './simple-user/vet/location-vet/location-vet.component';
+import { InfoSpecificVetComponent } from './simple-user/vet/info-specific-vet/info-specific-vet.component';
+import { QrCodeVetScannerComponent } from './simple-user/vet/qr-code-vet-scanner/qr-code-vet-scanner.component';
+
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
   { path: 'home', component: ComponentWrapperComponent, canActivate: [AuthGuard]},
@@ -60,6 +63,8 @@ const routes: Routes = [
   { path: 'vet/meet', component: VideoConsultationComponent, canActivate: [AuthGuard]},
   //{path : 'vet/select-vet' , component : VetSelectionPopupComponent, canActivate: [AuthGuard]},
   { path: 'vet/location', component: LocationVetComponent, canActivate: [AuthGuard] },
+  { path: 'vet/info-specific-vet/:id', component: InfoSpecificVetComponent, canActivate: [AuthGuard] },
+  { path: 'vet/qrcode-vet-scanner' , component: QrCodeVetScannerComponent, canActivate: [AuthGuard] },
 
   { path: 'dashboard', component: DashbordComponent, canActivate: [AuthGuard],
     children: [

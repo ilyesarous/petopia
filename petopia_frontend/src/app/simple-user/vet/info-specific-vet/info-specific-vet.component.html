@@ -1,0 +1,23 @@
+<!-- info-specific-vet.component.html -->
+<div class="vet-info-container">
+    <div class="welcome-section">
+      <h1>Welcome Doctor {{vetName}}</h1>
+      <p>Share this QR code with your clients to get ratings</p>
+    </div>
+  
+    <div class="qr-code-section">
+      <div *ngIf="isLoading" class="loading-spinner">
+        <!-- Ajoutez un spinner de chargement ici -->
+        <p>Generating QR code...</p>
+      </div>
+  
+      <div *ngIf="!isLoading && qrImageUrl" class="qr-code-container">
+        <img [src]="qrImageUrl" alt="Veterinarian QR Code">
+        <p class="instruction">Scan this code to rate Dr. {{vetName}}</p>
+      </div>
+  
+      <div *ngIf="!isLoading && !qrImageUrl" class="error-message">
+        Could not generate QR code. Please try again.
+      </div>
+    </div>
+  </div>
