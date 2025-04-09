@@ -10,7 +10,7 @@
       <div class="ms-2">
         <div class="comment-author fw-bold">
           {{ comment.user?.name || 'Commenter Name' }}
-          <span class="comment-time text-muted ms-2">{{ comment.createdAt | date:'short' }}</span>
+          <span class="comment-time text-muted ms-2">{{ comment.date | date:'short' }}</span>
         </div>
         <div class="comment-text">
           {{ comment.content }}

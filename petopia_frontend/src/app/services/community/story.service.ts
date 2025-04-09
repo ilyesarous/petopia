@@ -15,9 +15,13 @@ export class StoryService {
     return this.http.get<Story[]>(`${this.baseUrl}/all`);
   }
 
-  createStory(userId: number, story: Story): Observable<Story> {
-    return this.http.post<Story>(`${this.baseUrl}/add/${userId}`, story);
+  // createStory(userId: number, story: Story): Observable<Story> {
+  //   return this.http.post<Story>(`${this.baseUrl}/add/${userId}`, story);
+  // }
+  createStory(userId: number, formData: FormData): Observable<Story> {
+    return this.http.post<Story>(`${this.baseUrl}/add/${userId}`, formData);
   }
+  
 
   getStoryById(id: number): Observable<Story> {
     return this.http.get<Story>(`${this.baseUrl}/${id}`);

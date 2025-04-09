@@ -95,8 +95,19 @@ public class PostController {
 
     @PutMapping("/update/{id}")
     public ResponseEntity<Post> updatePost(@PathVariable Long id, @RequestBody Post postDetails) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        User currentUser = (User) auth.getPrincipal();
+        Post existingPost = postService.getPostById(id);
+        if (existingPost == null) {
+            return ResponseEntity.notFound().build();
+        }
+        // Check that the logged-in user is the owner
+        if (existingPost.getUser() == null || existingPost.getUser().getId_user() != currentUser.getId_user()) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+        }
         return ResponseEntity.ok(postService.updatePost(id, postDetails));
     }
+
 
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<String> deletePost(@PathVariable Long id) {

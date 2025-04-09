@@ -8,6 +8,9 @@ export interface Comment {
     postId: number;
     user?:User; 
     content: string;
-    createdAt?: Date;  
+    date?: Date;  
+    isEditing?: boolean;
+  editedContent?: string;
+    menuOpen?: boolean;
   }
   
