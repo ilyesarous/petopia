@@ -35,6 +35,20 @@ export class CommunityComponent implements OnInit {
   newStoryText: string = '';
   selectedStoryFile: File | null = null;
 
+  // For delete confirmation modal
+  showDeleteConfirmation: boolean = false;
+  storyToDeleteId: number | null = null;
+
+  // For story popup viewer
+  activeStory: Story | null = null;
+  popupTimeout: any; // to store the setTimeout reference
+
+  
+  // For story popup viewer:
+  activeStoryIndex: number = -1; // index into stories array; -1 means no active popup
+  progress: number = 0;          // progress bar percentage (0 to 100)
+  popupTimer: any;               // reference for the interval timer
+
   constructor(
     private postService: PostService,
     private storyService: StoryService,
@@ -59,7 +73,7 @@ export class CommunityComponent implements OnInit {
       next: (data: Story[]) => {
         console.log('Stories loaded:', data);
         this.stories = data;
-        // e.g., chunk size 8 => each slide can hold up to 8 items
+        // Chunk stories if needed (e.g., for a carousel)
         this.chunkedStories = this.chunkArray(this.stories, 8);
       },
       error: (err) => {
@@ -87,7 +101,6 @@ export class CommunityComponent implements OnInit {
     if (target.files && target.files.length > 0) {
       this.selectedStoryFile = target.files[0];
       console.log('Story file selected:', this.selectedStoryFile);
-      
     }
   }
 
@@ -111,9 +124,9 @@ export class CommunityComponent implements OnInit {
     this.storyService.createStory(userId, formData).subscribe({
       next: (story) => {
         console.log('Story created:', story);
-        // Insert new story at the start
+        // Insert the new story at the start
         this.stories.unshift(story);
-        // Re-chunk the updated array
+        // Re-chunk the updated array if needed
         this.chunkedStories = this.chunkArray(this.stories, 8);
         this.newStoryText = '';
         this.selectedStoryFile = null;
@@ -125,6 +138,12 @@ export class CommunityComponent implements OnInit {
     });
   }
 
+  // Return the selected story file name
+  get selectedStoryFileNames(): string {
+    return this.selectedStoryFile ? this.selectedStoryFile.name : '';
+  }
+
+  // Methods for post creation (unchanged)
   onFileSelected(event: Event): void {
     const target = event.target as HTMLInputElement;
     if (target.files && target.files.length > 0) {
@@ -132,17 +151,11 @@ export class CommunityComponent implements OnInit {
       console.log('Selected files:', this.selectedFiles);
     }
   }
-
   get selectedFileNames(): string {
     return this.selectedFiles && this.selectedFiles.length
       ? this.selectedFiles.map(f => f.name).join(', ')
       : '';
   }
-  get selectedStoryFileNames(): string {
-    return this.selectedStoryFile ? this.selectedStoryFile.name : '';
-  }
-  
-
   createPost(): void {
     if (!this.newPostContent.trim() && (!this.selectedFiles || this.selectedFiles.length === 0)) {
       return;
@@ -173,7 +186,6 @@ export class CommunityComponent implements OnInit {
       this.updatePosts();
     });
   }
-
   updatePosts(): void {
     let filtered = this.originalPosts;
     if (this.searchQuery.trim()) {
@@ -192,12 +204,10 @@ export class CommunityComponent implements OnInit {
     }
     this.posts = filtered;
   }
-
   filterByType(type: PostType): void {
     this.selectedPostType = type;
     this.updatePosts();
   }
-
   clearTypeFilter(): void {
     this.selectedPostType = null;
     this.updatePosts();
@@ -209,5 +219,129 @@ export class CommunityComponent implements OnInit {
       container.scrollBy({ left: scrollAmount, behavior: 'smooth' });
     }
   }
-  
+
+  // ---------- Delete Confirmation Methods ----------
+
+  // Check whether the current user is the owner of the story
+  isOwner(story: Story): boolean {
+    const currentUserId = Number(localStorage.getItem('userId'));
+    return story.user && story.user.id_user === currentUserId;
+  }
+
+  openDeleteConfirmation(storyId: number): void {
+    // Prevent the parent click event (if any) by stopping propagation in HTML
+    this.storyToDeleteId = storyId;
+    this.showDeleteConfirmation = true;
+  }
+
+  cancelDelete(): void {
+    this.showDeleteConfirmation = false;
+    this.storyToDeleteId = null;
+  }
+
+  confirmDelete(): void {
+    if (this.storyToDeleteId !== null) {
+      this.storyService.deleteStory(this.storyToDeleteId).subscribe(() => {
+        // Remove the story from the list
+        this.stories = this.stories.filter(s => s.id !== this.storyToDeleteId);
+        this.chunkedStories = this.chunkArray(this.stories, 8);
+        this.cancelDelete();
+      }, error => {
+        console.error('Error deleting story:', error);
+        this.cancelDelete();
+      });
+    }
+  }
+
+    // Called when a story card is clicked to show the story popup
+
+
+     // Returns the active story object (or null if none)
+  getActiveStory(): Story | null {
+    if (this.activeStoryIndex >= 0 && this.activeStoryIndex < this.stories.length) {
+      return this.stories[this.activeStoryIndex];
+    }
+    return null;
+  }
+
+  // Opens the story popup for a given index (called from (click) on story card)
+  openStoryPopup(index: number): void {
+    // Clear any existing popup timer if running
+    if (this.popupTimer) {
+      clearInterval(this.popupTimer);
+    }
+    this.activeStoryIndex = index;
+    this.progress = 0;
+    this.startProgressTimer();
+  }
+
+  // Starts the progress timer (5 seconds total, update every 50ms)
+  startProgressTimer(): void {
+    const totalDuration = 5000; // 5 seconds
+    const updateInterval = 50;  // update every 50ms
+    const updatesCount = totalDuration / updateInterval;  // e.g., 5000/50 = 100 updates
+    const increment = 100 / updatesCount; // progress increment per update
+    this.popupTimer = setInterval(() => {
+      this.progress += increment;
+      if (this.progress >= 100) {
+        // Auto-navigate to next story when timer completes.
+        this.nextStory();
+      }
+    }, updateInterval);
+  }
+
+  // Closes the popup and clears the timer
+  closeStoryPopup(): void {
+    this.activeStoryIndex = -1;
+    this.progress = 0;
+    if (this.popupTimer) {
+      clearInterval(this.popupTimer);
+    }
+  }
+
+  // Navigates to the next story if available
+  nextStory(event?: Event): void {
+    if (event) {
+      event.stopPropagation(); // prevent closing the popup when clicking arrow
+    }
+    if (this.popupTimer) {
+      clearInterval(this.popupTimer);
+    }
+    // If at last story, close popup; otherwise, go to next
+    if (this.activeStoryIndex < this.stories.length - 1) {
+      this.activeStoryIndex++;
+      this.progress = 0;
+      this.startProgressTimer();
+    } else {
+      this.closeStoryPopup();
+    }
+  }
+
+  // Navigates to the previous story if available
+  prevStory(event?: Event): void {
+    if (event) {
+      event.stopPropagation();
+    }
+    if (this.popupTimer) {
+      clearInterval(this.popupTimer);
+    }
+    if (this.activeStoryIndex > 0) {
+      this.activeStoryIndex--;
+      this.progress = 0;
+      this.startProgressTimer();
+    } else {
+      // Optionally, you can loop to the last story or just do nothing.
+      // this.activeStoryIndex = this.stories.length - 1; // loop back
+      // this.progress = 0; this.startProgressTimer();
+      this.closeStoryPopup();
+    }
+  }
+
+  // ... existing methods (toggleCreateStory, createStory, etc.)
+
+  // Example: Click handler on a story card (pass its index)
+  onStoryCardClick(index: number): void {
+    this.openStoryPopup(index);
+  }
+
 }
