@@ -1,0 +1,147 @@
+@import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600&family=Roboto:wght@400;500;700&display=swap');
+
+/* 
+  The outer container will have background images on the left and right
+  that repeat vertically (paw prints). The main card is centered.
+*/
+
+.pet-showcase-container {
+  position: relative;
+  min-height: 100vh;      /* fill the viewport height */
+  padding: 60px 20px;     /* more top/bottom space */
+  background-color: #fdfdfd;
+
+  /* Left Paw-Print Column */
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    width: 80px;
+    background: url('/assets/images/shelter/paw-pattern.jpg') repeat-y center; 
+    /* 
+      ^ Provide your own paw-print pattern image.
+      e.g. 40x40 or 60x60 repeating tile.
+    */
+    /* faint so it doesn't distract too much */
+    z-index: 1;
+  }
+
+  /* Right Paw-Print Column */
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    width: 80px;
+    background: url('/assets/images/shelter/paw-pattern.jpg') repeat-y center;
+    z-index: 1;
+  }
+}
+
+/* The card with the pet details */
+.pet-showcase-card {
+  position: relative;
+  z-index: 2;  /* above the background columns */
+  background-color: #fff;
+  border-radius: 12px;
+  padding: 2rem;
+  max-width: 700px;
+  margin: 0 auto;
+  text-align: center;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+  overflow: hidden;
+
+  /* Decorative paw prints at the top */
+  .paw-prints {
+    position: absolute;
+    top: 15px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 1rem;
+    i {
+      margin: 0 2px;
+    }
+  }
+
+  .pet-header {
+    margin-top: 2rem;
+  }
+  .pet-name {
+    font-family: 'Dancing Script', cursive;
+    font-size: 3rem;
+    color: #333;
+    margin-bottom: 0.5rem;
+  }
+  .pet-subtitle {
+    font-family: 'Roboto', sans-serif;
+    font-size: 1.1rem;
+    color: #666;
+    margin-bottom: 2rem;
+  }
+
+  /* Circular image styling */
+  .pet-image-wrapper {
+    width: 200px;
+    height: 200px;
+    margin: 0 auto;
+    border-radius: 50%;
+    overflow: hidden;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+  }
+  .pet-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  /* Additional info (location, shelter, etc.) */
+  .pet-info {
+    margin-top: 1.5rem;
+    font-family: 'Roboto', sans-serif;
+    font-size: 1rem;
+    color: #555;
+    text-align: center;
+
+    .adoption-paragraph {
+      margin-top: 1.5rem;
+      line-height: 1.5;
+    }
+
+    .heart-icon {
+      color: #F83182;
+      margin: 0 3px;
+    }
+  }
+
+  /* CTA Buttons */
+  .cta-row {
+    margin-top: 2rem;
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+
+    .btn {
+      font-family: 'Roboto', sans-serif;
+      font-weight: 600;
+      border: none;
+      border-radius: 50px;
+      padding: 10px 20px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: inline-flex;
+      align-items: center;
+    }
+
+    .adopt-btn {
+      background-color: #F83182;
+      color: #fff;
+      &:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(248, 49, 130, 0.3);
+      }
+    }
+  }
+}

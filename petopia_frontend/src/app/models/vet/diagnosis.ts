@@ -2,7 +2,8 @@ export class Diagnosis {
     idDiagnosis!: number;
     diagnosis_description!: string;
     diagnosis_date!: string;
-    medicamentPrescriptions!: Medicament_Prescription[];
+    diagnosisT!: string;
+    medicamentPrescriptions: Medicament_Prescription[] = [];
     petdiagnosis!: Pet;
   }
   
@@ -14,5 +15,11 @@ export class Diagnosis {
   export class Pet {
     idPet!: number;
     petName!: string;
-    breed! : string;
+    petAge!: number;
+    petImage!: string;
+    breed!: string;
+    gender!: string;  
+    species!: string;
+    size!: string;
+    healthStatus!: string;
   }

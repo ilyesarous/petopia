@@ -22,6 +22,8 @@ public class Diagnosis {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int idDiagnosis;
     private String diagnosis_description;
+    @Enumerated(EnumType.STRING)
+    private diagnosis_type diagnosisT;
 
     @Temporal(TemporalType.DATE)
     private LocalDate diagnosis_date;

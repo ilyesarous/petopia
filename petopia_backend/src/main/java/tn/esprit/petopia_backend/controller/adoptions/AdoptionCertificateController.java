@@ -5,6 +5,8 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import tn.esprit.petopia_backend.entities.adoptions.AdoptionCertificate;
 import tn.esprit.petopia_backend.services.adoptions.IAdoptionCertificateService;
+
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -29,13 +31,16 @@ public class AdoptionCertificateController {
         AdoptionCertificate createdCertificate = certificateService
                 .createCertificateFromAdoption(adoptionId, shelterSignature);
 
+        Map<String, Object> response = new HashMap<>();
+
         if (createdCertificate == null) {
-            return ResponseEntity
-                    .badRequest()
-                    .body(Map.of("message", "Adoption must be approved first."));
+            response.put("message", "No shelter associated with this user");
+            return ResponseEntity.badRequest().body(response);
         }
 
-        return ResponseEntity.ok(createdCertificate);
+        response.put("message", "Adoption certificate created successfully.");
+        response.put("certificate", createdCertificate);
+        return ResponseEntity.ok(response);
     }
 
 

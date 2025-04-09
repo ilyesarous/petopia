@@ -1,0 +1,332 @@
+.notification-container {
+    position: relative;
+    display: inline-block;
+  }
+  
+  /* Bell Icon Styles */
+  .notification-bell {
+    position: relative;
+    padding: 0.5rem;
+    color: #6b7280;
+    transition: all 0.3s ease;
+    border-radius: 50%;
+    background: none;
+    border: none;
+    cursor: pointer;
+  }
+  
+  .notification-bell:hover {
+    color: #F83182;
+    transform: scale(1.1);
+  }
+  
+  .notification-badge {
+    position: absolute;
+    top: -0.25rem;
+    right: -0.25rem;
+    background-color: #F83182;
+    color: white;
+    border-radius: 50%;
+    width: 1.25rem;
+    height: 1.25rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.75rem;
+    font-weight: bold;
+    animation: pulse 2s infinite;
+  }
+  
+  /* Panel Styles */
+  .notification-panel {
+    position: fixed;
+    top: 0;
+    right: 0;
+    height: 100vh;
+    width: 100%;
+    max-width: 24rem;
+    z-index: 50;
+  }
+  
+  .notification-overlay {
+    position: fixed;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(2px);
+    animation: fadeIn 0.3s ease-out;
+  }
+  
+  .notification-content {
+    position: relative;
+    height: 100%;
+    width: 100%;
+    background-color: white;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    transform: translateX(100%);
+    animation: slideIn 0.3s ease-out forwards;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  /* Header Styles */
+  .notification-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 1.5rem;
+    background-color: #F83182;
+    color: white;
+  }
+  
+  .notification-header h3 {
+    font-weight: 600;
+    font-size: 1.25rem;
+    margin: 0;
+  }
+  
+  .unread-counter {
+    background-color: rgba(255, 255, 255, 0.2);
+    padding: 0.25rem 0.5rem;
+    border-radius: 9999px;
+    font-size: 0.75rem;
+    margin-right: 1rem;
+  }
+  
+  .close-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0.25rem;
+    transition: all 0.2s;
+  }
+  
+  /* List Styles */
+  .notification-list {
+    flex: 1;
+    overflow-y: auto;
+    padding: 0.5rem 0;
+  }
+  
+  .empty-notifications {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    color: #9ca3af;
+    padding: 2rem;
+    text-align: center;
+  }
+  
+  .empty-notifications p {
+    margin-top: 1rem;
+    font-size: 1rem;
+  }
+  
+  /* Notification Item Styles */
+  .notification-item {
+    display: flex;
+    align-items: flex-start;
+    padding: 1rem 1.5rem;
+    gap: 1rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    position: relative;
+  }
+  
+  .notification-item:hover {
+    background-color: #f9fafb;
+  }
+  
+  .notification-item.unread {
+    background-color: rgba(248, 49, 130, 0.05);
+  }
+  
+  .notification-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 50%;
+  }
+  
+  .bg-rose {
+    background-color: #F83182;
+  }
+  
+  .notification-details {
+    flex: 1;
+    min-width: 0;
+  }
+  
+  .notification-title-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+  
+  .notification-time {
+    color: #6b7280;
+    font-size: 0.75rem;
+    white-space: nowrap;
+  }
+  
+  .notification-message {
+    color: #6b7280;
+    font-size: 0.875rem;
+    margin-top: 0.25rem;
+    margin-bottom: 0;
+    white-space: normal;
+    overflow: visible;
+    text-overflow: clip;
+    word-wrap: break-word;
+  }
+  
+  .delete-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0.25rem;
+    opacity: 1;
+    transition: all 0.2s;
+  }
+  
+  /* Custom Colors */
+  .text-rose {
+    color: #F83182;
+  }
+  
+  .text-rose-700 {
+    color: #d3165a;
+  }
+  
+  .text-red-500 {
+    color: #ef4444;
+  }
+  
+  .text-red-700 {
+    color: #b91c1c;
+  }
+  
+  .text-green-500 {
+    color: #10b981;
+  }
+  
+  /* Animations */
+  @keyframes slideIn {
+    from {
+      transform: translateX(100%);
+    }
+    to {
+      transform: translateX(0);
+    }
+  }
+  
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+  
+  @keyframes pulse {
+    0% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.1);
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
+  
+  /* Responsive adjustments */
+  @media (max-width: 640px) {
+    .notification-panel {
+      max-width: 100%;
+    }
+    
+    .notification-content {
+      border-radius: 0;
+    }
+  }
+  
+  .material-icons {
+    font-size: 1.25rem;
+    vertical-align: middle;
+  }
+
+  /* Styles pour le bouton Add */
+.add-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.25rem;
+  margin-right: 0.5rem;
+  transition: all 0.2s;
+}
+
+/* Styles pour le formulaire */
+.add-notification-form {
+  padding: 1rem;
+  background-color: #f8f9fa;
+  border-bottom: 1px solid #e9ecef;
+}
+
+.form-group {
+  margin-bottom: 1rem;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  color: #495057;
+  font-weight: 500;
+}
+
+.form-textarea {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid #ced4da;
+  border-radius: 0.25rem;
+  min-height: 100px;
+  resize: vertical;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.5rem;
+}
+
+.cancel-button {
+  padding: 0.5rem 1rem;
+  background-color: #6c757d;
+  color: white;
+  border: none;
+  border-radius: 0.25rem;
+  cursor: pointer;
+}
+
+.submit-button {
+  padding: 0.5rem 1rem;
+  background-color: #F83182;
+  color: white;
+  border: none;
+  border-radius: 0.25rem;
+  cursor: pointer;
+}
+
+.cancel-button:hover {
+  background-color: #5a6268;
+}
+
+.submit-button:hover {
+  background-color: #d3165a;
+}

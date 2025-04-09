@@ -1,0 +1,26 @@
+/* Vous pouvez ajouter ici vos customisations, par exemple : */
+.container {
+    background-color: #f9f9fb;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  }
+  .file-input-container {
+    display: flex;
+    align-items: center;
+  
+    input[type="file"] {
+      display: none;
+    }
+  
+    label.btn {
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+    }
+  
+    .file-name {
+      font-size: 0.9rem;
+      color: #6c757d;
+    }
+  }
+  

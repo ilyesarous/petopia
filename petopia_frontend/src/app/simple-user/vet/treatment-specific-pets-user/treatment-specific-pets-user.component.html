@@ -1,0 +1,229 @@
+<div class="container" @fadeIn>
+  <!-- Pet Growth Graph Section -->
+  <div class="growth-section">
+    <div class="header-content pt-0">  <!-- Ajout de pt-0 pour padding-top: 0 -->
+      <div class="title-wrapper">
+        <i class="fas fa-heartbeat icon"></i>
+        <h1>{{petName}} Pet Growth</h1>
+        <i class="fas fa-heartbeat icon"></i>
+      </div>
+    </div>
+<br>
+  <div class="row">
+    <!-- Weight Chart -->
+    <div class="col-lg-6 mb-4">
+      <div class="card h-100 border-0 shadow-sm">
+        <div class="card-header text-white" style="background-color: #FF617C;">
+          <div class="d-flex justify-content-between align-items-center">
+            <h5 class="mb-0"><i class="fas fa-weight me-2"></i> Weight Evolution</h5>
+            <span class="badge bg-white text-dark">{{ petGrowths.length }} measures</span>
+          </div>
+        </div>
+        <div class="card-body">
+          <div id="chart" *ngIf="petGrowths.length > 0">
+            <apx-chart 
+              [series]="weightChartOptions.series"
+              [chart]="weightChartOptions.chart"
+              [xaxis]="weightChartOptions.xaxis"
+              [yaxis]="weightChartOptions.yaxis"
+              [stroke]="weightChartOptions.stroke"
+              [fill]="weightChartOptions.fill"
+              [colors]="weightChartOptions.colors"
+              [tooltip]="weightChartOptions.tooltip"
+              [dataLabels]="weightChartOptions.dataLabels">
+            </apx-chart>
+          </div>
+          <div *ngIf="petGrowths.length === 0" class="text-center py-4">
+            <p class="text-muted">No data available</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Height Chart -->
+    <div class="col-lg-6 mb-4">
+      <div class="card h-100 border-0 shadow-sm">
+        <div class="card-header text-white" style="background-color: #FE9A7A;">
+          <div class="d-flex justify-content-between align-items-center">
+            <h5 class="mb-0"><i class="fas fa-ruler-vertical me-2"></i> Evolution of Size</h5>
+            <span class="badge bg-white text-dark">{{ petGrowths.length }} measures</span>
+          </div>
+        </div>
+        <div class="card-body">
+          <div id="height-chart" *ngIf="petGrowths.length > 0">
+            <apx-chart 
+              [series]="heightChartOptions.series"
+              [chart]="heightChartOptions.chart"
+              [xaxis]="heightChartOptions.xaxis"
+              [yaxis]="heightChartOptions.yaxis"
+              [dataLabels]="heightChartOptions.dataLabels"
+              [fill]="heightChartOptions.fill"
+              [colors]="heightChartOptions.colors"
+              [tooltip]="heightChartOptions.tooltip">
+            </apx-chart>
+          </div>
+          <div *ngIf="petGrowths.length === 0" class="text-center py-4">
+            <p class="text-muted">No data available</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<br>
+  <!-- Treatments and Procedures Section -->
+    <div class="header" @fadeInGrow>
+      <div class="header-content">
+        <div class="title-wrapper">
+          <i class="fas fa-heartbeat icon"></i>
+          <h1>Treatments and Procedures for {{petName}}</h1>
+          <i class="fas fa-heartbeat icon"></i>
+        </div>
+      </div>
+      <div class="divider"></div>
+    </div>
+  <br>
+
+  <!-- Treatment List Section -->
+  <div class="treatment-section">
+    
+    <!-- Filters -->
+    <div class="filters-container" @fadeIn>
+      
+      <div class="filter-group">
+        <div class="type-filter">
+          <label>Filter by type:</label>
+          <select [(ngModel)]="selectedType" (change)="applyFilters()">
+            <option *ngFor="let type of diagnosisTypes" [value]="type">
+              {{ type === 'all' ? 'All Types' : type }}
+            </option>
+          </select>
+        </div>
+        
+        <div class="date-filter">
+          <label>Sort by date:</label>
+          <select [(ngModel)]="sortOrder" (change)="toggleSortOrder()">
+            <option value="desc">Newest First</option>
+            <option value="asc">Oldest First</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <!-- Table -->
+    <div class="table-container" @fadeIn>
+        <table class="diagnosis-table">
+            <thead>
+                <tr>
+                    <th>Pet Name</th>
+                    <th>Breed</th>
+                    <th>Diagnosis Type</th>
+                    <th>Description</th>
+                    <th>Date</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let diagnosis of filteredDiagnoses"
+                (click)="selectDiagnosis(diagnosis.idDiagnosis)"
+                    [class.selected]="selectedDiagnosis?.idDiagnosis === diagnosis.idDiagnosis">
+                    <td>
+                      <div class="pet-info">
+                        <i class="fas fa-paw"></i>
+                        {{ diagnosis.petdiagnosis.petName }}
+                      </div>
+                    </td>
+                    <td>{{diagnosis.petdiagnosis.breed}}</td>
+                    <td>
+                    <span class="badge" [style.background]="getBadgeColor(diagnosis.diagnosisT)">
+                        {{diagnosis.diagnosisT}}
+                    </span>
+                    </td>
+                    <td class="description-cell">{{diagnosis.diagnosis_description}}</td>
+                    <td>{{diagnosis.diagnosis_date | date}}</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- No results message -->
+        <div *ngIf="filteredDiagnoses.length === 0" class="no-results-message" @fadeIn>
+          <div class="message-content">
+            <i class="fas fa-info-circle"></i> 
+            <p>No diagnoses match your search criteria.</p>
+          </div>
+        </div>
+    </div>
+
+    <!-- Diagnosis Details Panel -->
+    <div *ngIf="selectedDiagnosis" class="details-panel" @fadeInOut>
+        <div class="panel-header">
+          <h3>Diagnosis Details</h3>
+          <button (click)="selectedDiagnosis = null" class="close-button">
+            <i class="fas fa-times"></i>
+          </button>
+        </div>
+        
+        <div class="panel-content">
+          <div class="detail-row">
+            <span class="detail-label">ID:</span>
+            <span class="detail-value">{{ selectedDiagnosis.idDiagnosis }}</span>
+          </div>
+          
+          <div class="detail-row">
+            <span class="detail-label">Description:</span>
+            <span class="detail-value">{{ selectedDiagnosis.diagnosis_description }}</span>
+          </div>
+          
+          <div class="detail-row">
+            <span class="detail-label">Date:</span>
+            <span class="detail-value">{{ selectedDiagnosis.diagnosis_date | date }}</span>
+          </div>
+          
+          <div class="section-divider"></div>
+          
+          <h4 class="section-title">Pet Details</h4>
+          <div class="detail-row">
+            <span class="detail-label">Name:</span>
+            <span class="detail-value">{{ selectedDiagnosis.petdiagnosis.petName }}</span>
+          </div>
+          
+          <div class="detail-row">
+            <span class="detail-label">Breed:</span>
+            <span class="detail-value">{{ selectedDiagnosis.petdiagnosis.breed }}</span>
+          </div>
+          
+          <div class="section-divider"></div>
+          
+          <h4 class="section-title">Medicament Prescriptions</h4>
+          <ul class="prescription-list">
+            <li *ngFor="let prescription of selectedDiagnosis.medicamentPrescriptions">
+              <i class="fas fa-pills"></i> {{ prescription.medicament }}
+            </li>
+          </ul>
+
+          <div class="section-divider"></div>
+            <h4 class="section-title">QR Code</h4>
+            <div class="qr-code-container">
+              <img *ngIf="qrCodeUrl" 
+                  [src]="qrCodeUrl" 
+                  (error)="qrCodeError = true"
+                  alt="Diagnosis QR Code" 
+                  class="qr-code-image">
+              
+              <div *ngIf="qrCodeError" class="qr-code-error">
+                <i class="fas fa-exclamation-circle"></i>
+                <p>QR Code not available</p>
+              </div>
+              
+              <p *ngIf="!qrCodeError" class="qr-code-instruction">
+                Scan this QR code to view diagnosis details
+              </p>
+            </div>
+          
+        </div>
+    </div>
+  </div>
+
+</div>
