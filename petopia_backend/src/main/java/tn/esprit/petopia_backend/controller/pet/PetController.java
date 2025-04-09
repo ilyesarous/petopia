@@ -190,8 +190,8 @@ public class PetController {
     }
     @GetMapping("/pet/unassigned")
     @PreAuthorize("hasAnyAuthority('ROLE_USER','ROLE_SHELTER','ROLE_ADMIN')")
-    public ResponseEntity<List<Pet>> getUnassignedPets() {
-        return ResponseEntity.ok(petService.getUnassignedPets());
+    public ResponseEntity<List<Pet>> getUnassignedPets(@RequestParam("userId") Integer userId) {
+        return ResponseEntity.ok(petService.getUnassignedPets(userId));
     }
 
     // anas bdet tekhdem hmd welyeeeyyyyy

@@ -26,14 +26,22 @@ export class PetAdoptionListComponent implements OnInit {
   currentPage: number = 1;
   totalPages: number = 1;
   pageNumbers: number[] = [];
+  userId:number=0;
 
   constructor(private petService: PetService, private router: Router, private route: ActivatedRoute) {}
   ngOnInit(): void {
+    const storedId = localStorage.getItem('userId');
+    this.userId = storedId ? +storedId : 0; 
+    console.log(this.userId);
     this.loadUnassignedPets();
+
+
   }
 
   loadUnassignedPets(): void {
-    this.petService.getUnassignedPets().subscribe({
+    console.log(this.userId);
+
+    this.petService.getUnassignedPets(this.userId).subscribe({
       next: (data: Pet[]) => {
         this.pets = data;
         this.applyFilters(); 
