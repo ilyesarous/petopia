@@ -20,6 +20,7 @@ export class DashPrincipaleComponent implements OnInit , AfterViewInit{
   totalDiagnoses: number = 0;
   totalPetGrowths: number = 0;
   totalConsultations: number = 0;
+  totalLocations: number = 0;
 
   private map: any;
   private marker: any;
@@ -96,6 +97,16 @@ export class DashPrincipaleComponent implements OnInit , AfterViewInit{
       },
       (error) => {
         console.error('Error fetching consultations', error);
+      }
+    );
+
+    // Récupérer le nombre total de localisations
+    this.vetLocationService.getAllLocations().subscribe(
+      (locations) => {
+        this.totalLocations = locations.length;
+      },
+      (error) => {
+        console.error('Error fetching locations', error);
       }
     );
   }

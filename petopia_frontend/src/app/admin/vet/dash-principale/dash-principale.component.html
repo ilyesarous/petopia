@@ -32,9 +32,14 @@
         </div>
       </div>
       
+    
+      <div class="dashboard-card">
+        <p>{{"🗺️📍"}}</p>
+        <h3>Veterinary Locations</h3>
+        <p>{{ totalLocations }}</p>
+      </div>
 <!-- Map Section -->
 <div class="map-section">
-  <h2 class="welcome-text">Veterinary Locations</h2>
   <div class="map-controls">
       <div *ngIf="selectedLocation" class="selected-location">
           Selected location: {{ selectedLocation }}
