@@ -6,7 +6,7 @@
   <component name="ChangeListManager">
     <list default="true" id="d82146aa-c391-488d-a5e9-d2774f899f12" name="Changes" comment="fix: fixed app module ts">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/petopia_backend/src/main/java/tn/esprit/petopia_backend/entities/user/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/petopia_backend/src/main/java/tn/esprit/petopia_backend/entities/user/User.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/petopia_frontend/src/app/admin/vet/notifications/notification-list/notification-list.component.html" beforeDir="false" afterPath="$PROJECT_DIR$/petopia_frontend/src/app/admin/vet/notifications/notification-list/notification-list.component.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -134,7 +134,7 @@
       <workItem from="1744062576796" duration="3583000" />
       <workItem from="1744066512510" duration="3964000" />
       <workItem from="1744117096504" duration="63000" />
-      <workItem from="1744206168119" duration="13036000" />
+      <workItem from="1744206168119" duration="14090000" />
     </task>
     <task id="LOCAL-00001" summary="fix: fixed app module ts">
       <option name="closed" value="true" />

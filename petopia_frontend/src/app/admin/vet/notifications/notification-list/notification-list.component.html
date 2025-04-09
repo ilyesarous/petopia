@@ -10,7 +10,6 @@
           <th>User ID</th>
           <th>User Name</th>
           <th>User Role</th>
-          <th>Actions</th>
         </tr>
       </thead>
       <tbody>
@@ -27,14 +26,6 @@
           <td>{{ notification.user.id_user }}</td>
           <td>{{ notification.user.name }}</td>
           <td>{{ notification.user.role }}</td>
-          <td>
-            <button *ngIf="!notification.seen" (click)="markAsSeen(notification.idNotification)" (click)="$event.stopPropagation()" class="action-button mark-as-seen">
-              👀
-            </button>
-            <button (click)="deleteNotification(notification.idNotification)" (click)="$event.stopPropagation()" class="action-button delete">
-                🗑️
-            </button>
-          </td>
         </tr>
       </tbody>
     </table>
