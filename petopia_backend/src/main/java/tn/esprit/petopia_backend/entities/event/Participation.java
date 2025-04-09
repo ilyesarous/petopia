@@ -32,4 +32,15 @@ public class Participation {
 
     @Enumerated(EnumType.STRING)
     private ParticipationStatus statusParticipation;
+
+    @Override
+    public String toString() {
+        return "Participation{" +
+                "idParticipation=" + idParticipation +
+                ", dateInscription=" + dateInscription +
+                ", event=" + event +
+                ", participant=" + participant +
+                ", statusParticipation=" + statusParticipation +
+                '}';
+    }
 }

@@ -34,7 +34,7 @@ export class NavbarComponent implements OnInit {
     { id: 1, name: 'Home', link: '/home' },
     { id: 2, name: 'Store', link: '/products' },
     { id: 3, name: 'Community Hub', link: 'community' },
-    { id: 4, name: 'Events', link: '#' },
+    { id: 4, name: 'Events', link: '/events' },
     { id: 5, name: 'Vet', link: 'vet' },
     {id: 6, name: 'Adoption', link: 'adoption'},
   ];

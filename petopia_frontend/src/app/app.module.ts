@@ -100,6 +100,10 @@ import { CartComponent } from './simple-user/store/cart/cart.component';
 import { ShelterListComponent } from './admin/shelter/shelter-list/shelter-list.component';
 import { ShelterDetailsComponent } from './admin/shelter/shelter-details/shelter-details.component';
 
+import { EventFormComponent } from './admin/Event/event-form/event-form.component';
+import { EventListComponent } from './admin/Event/event-list/event-list.component';
+import { ParticipationFormComponent } from './simple-user/Event/participation-form/participation-form.component';
+import { EventEditComponent } from './admin/Event/event-edit/event-edit.component';
 
 @NgModule({
   declarations: [
@@ -168,7 +172,11 @@ import { ShelterDetailsComponent } from './admin/shelter/shelter-details/shelter
     ShelterAdoptionRequestsComponent,
     CartComponent,
     ShelterListComponent,
-    ShelterDetailsComponent
+    ShelterDetailsComponent,
+    EventFormComponent,
+    EventListComponent,
+    ParticipationFormComponent,
+    EventEditComponent,
   ],
   imports: [
     BrowserModule,

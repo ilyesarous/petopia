@@ -20,6 +20,9 @@ import {SignupComponent} from "./components/signup/signup.component";
 import {AuthGuard} from "./auth.guard";
 import { CommunityComponent } from './simple-user/community/community.component';
 import { PostComponent } from './simple-user/post/post.component';
+import { EventListComponent } from './admin/Event/event-list/event-list.component';
+import { EventFormComponent } from './admin/Event/event-form/event-form.component';
+import { ParticipationFormComponent } from './simple-user/Event/participation-form/participation-form.component';
 
 import { PetAdoptionListComponent } from './simple-user/adoption/pet-adoption-list/pet-adoption-list.component';
 import { PetAdoptDetailsComponent } from './simple-user/adoption/pet-adopt-details/pet-adopt-details.component';
@@ -55,6 +58,10 @@ const routes: Routes = [
   { path: 'cart', component: CartComponent, canActivate: [AuthGuard]},
   { path: 'vet', component: DashPrincipaleHomeVetComponent, canActivate: [AuthGuard] },
   { path: 'vet/pet-growth/:id', component: PetGrowthVetComponent, canActivate: [AuthGuard] },
+  { path: 'events', component: EventListComponent, canActivate: [AuthGuard] },
+  //{ path: 'participer', component: ParticipationFormComponent,canActivate: [AuthGuard] },
+  { path: 'participate/:id', component: ParticipationFormComponent, canActivate: [AuthGuard] },
+
   { path: 'vet/treatment-pets', component: TreatmentPetsComponent, canActivate: [AuthGuard] },
   { path: 'vet/treatment-specific-pet/:id', component: TreatmentSpecificPetsComponent, canActivate: [AuthGuard]},
   { path: 'vet/notification-vet', component: NotificationVetComponent, canActivate: [AuthGuard]},
@@ -96,6 +103,10 @@ const routes: Routes = [
       { path: 'diagnosis', component: DiagnosisListComponent },
       { path: 'notifications', component: NotificationListComponent },
       { path: 'pet-growth', component: PetGrowthListComponent },
+
+      { path: 'events', component: EventListComponent },
+      { path: 'add-event', component: EventFormComponent },
+
       {
         path: 'dog-breed-recognition',
         component: AppDogBreedRecognitionRedirectButtonComponent,

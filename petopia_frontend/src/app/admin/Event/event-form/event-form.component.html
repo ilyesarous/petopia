@@ -1,0 +1,74 @@
+<div class="event-form-container">
+  <h2>Créer un Événement</h2>
+  <form [formGroup]="eventForm" (ngSubmit)="onSubmit()">
+    <div class="form-group">
+      <label for="nameEvent">Nom de l'événement</label>
+      <input type="text" id="nameEvent" formControlName="nameEvent" />
+    </div>
+
+    <div class="form-group">
+      <label for="descriptionEvent">Description</label>
+      <textarea id="descriptionEvent" formControlName="descriptionEvent"></textarea>
+    </div>
+
+    <div class="form-group">
+      <label for="dateEvent">Date</label>
+      <input type="date" id="dateEvent" formControlName="dateEvent" />
+    </div>
+
+    <div class="form-group">
+      <label for="lieuEvent">Lieu</label>
+      <input type="text" id="lieuEvent" formControlName="lieuEvent" />
+    </div>
+
+    <div class="form-group">
+      <label for="lattitudeEvent">Latitude</label>
+      <input type="number" id="lattitudeEvent" formControlName="lattitudeEvent" />
+    </div>
+
+    <div class="form-group">
+      <label for="longitudeEvent">Longitude</label>
+      <input type="number" id="longitudeEvent" formControlName="longitudeEvent" />
+    </div>
+
+    <div class="form-group">
+      <label for="prixEvent">Prix</label>
+      <input type="number" id="prixEvent" formControlName="prixEvent" />
+    </div>
+
+    <div class="form-group">
+      <label for="placesMaxEvent">Places Max</label>
+      <input type="number" id="placesMaxEvent" formControlName="placesMaxEvent" />
+    </div>
+
+    <div class="form-group">
+      <label for="eventType">Type d'événement</label>
+      <select id="eventType" formControlName="eventType">
+        <option value="PROMENADE">Promenade</option>
+        <option value="RANDONNEE">Randonnée</option>
+        <option value="PHOTO_SEANCE">Séance photo</option>
+      </select>
+      
+    </div>
+
+    <div class="form-group">
+      <label for="visibiliteEvent">Visibilité</label>
+      <select id="visibiliteEvent" formControlName="visibiliteEvent">
+        <option value="PUBLIC">Public</option>
+        <option value="PRIVATE">Privé</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label for="statusEvent">Statut</label>
+      <select id="statusEvent" formControlName="statusEvent">
+        <option value="ACTIF">Actif</option>
+        <option value="ANNULE">Annulé</option>
+        <option value="TERMINE">Terminé</option>
+      </select>
+      
+    </div>
+
+    <button type="submit" [disabled]="!eventForm.valid">Créer l'événement</button>
+  </form>
+</div>
