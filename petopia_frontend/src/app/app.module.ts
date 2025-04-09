@@ -83,6 +83,8 @@ import { MatRippleModule } from '@angular/material/core';
 import { LocationVetComponent } from './simple-user/vet/location-vet/location-vet.component';
 import { InfoSpecificVetComponent } from './simple-user/vet/info-specific-vet/info-specific-vet.component';
 import { QrCodeVetScannerComponent } from './simple-user/vet/qr-code-vet-scanner/qr-code-vet-scanner.component';
+import { UserRatingVetComponent } from './simple-user/vet/user-rating-vet/user-rating-vet.component';
+import { InfoRatingVetComponent } from './simple-user/vet/info-rating-vet/info-rating-vet.component';
 
 
 @NgModule({
@@ -143,7 +145,9 @@ import { QrCodeVetScannerComponent } from './simple-user/vet/qr-code-vet-scanner
     VetSelectionPopupComponent,
     LocationVetComponent,
     InfoSpecificVetComponent,
-    QrCodeVetScannerComponent
+    QrCodeVetScannerComponent,
+    UserRatingVetComponent,
+    InfoRatingVetComponent
   ],
   imports: [
     BrowserModule,

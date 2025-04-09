@@ -2,6 +2,8 @@ import { Component , OnInit } from '@angular/core';
 import { BrowserQRCodeReader } from '@zxing/browser';
 import { Result } from '@zxing/library';
 import { Router } from '@angular/router';
+import { RatingVet } from 'src/app/models/vet/rating-vet';
+import { VetRatingService } from 'src/app/services/vet/rating/vet-rating.service';
 
 @Component({
   selector: 'app-qr-code-vet-scanner',
@@ -13,12 +15,17 @@ export class QrCodeVetScannerComponent implements OnInit {
   scannerControls: any;
   isScanning: boolean = false;
   errorMessage: string | null = null;
+  ratings: RatingVet[] = [];
 
-  constructor(private router: Router) {
+  constructor(private router: Router,
+              private ratingService: VetRatingService
+  ) {
     this.codeReader = new BrowserQRCodeReader();
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.loadAllRatings();
+  }
 
   startScanning(): void {
     this.isScanning = true;
@@ -86,4 +93,18 @@ export class QrCodeVetScannerComponent implements OnInit {
       return false;
     }
   }
+
+
+  loadAllRatings(): void {
+    this.ratingService.getAllRatings().subscribe({
+      next: (ratings) => {
+        this.ratings = ratings;
+      },
+      error: (err) => {
+        console.error('Failed to load ratings:', err);
+      }
+    });
+  }
+
+  
 }

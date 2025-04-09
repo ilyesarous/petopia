@@ -45,9 +45,10 @@ export class NavbarComponent implements OnInit {
   ];
 
   VETpages = [
-    { id: 1, name: 'Vet', link: '/vet' },
+    { id: 1, name: 'Vet Dashboard', link: '/vet' },
     { id: 2, name: 'Locations', link: '/vet/location' },
     { id: 3, name: 'Vet Info', link: 'vet/info-specific-vet/:id' },
+    { id: 4, name: 'ratings', link: 'vet/info-rating-vet' },
   ];
   constructor(private authService: AuthService, private router: Router) {}
 

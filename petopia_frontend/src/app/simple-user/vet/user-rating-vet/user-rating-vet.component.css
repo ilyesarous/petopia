@@ -1,0 +1,61 @@
+.rating-container {
+    max-width: 800px;
+    margin: 2rem auto;
+    padding: 2rem;
+    font-family: 'Arial', sans-serif;
+  }
+  
+  .rating-title {
+    color: #F83182;
+    text-align: center;
+    margin-bottom: 2rem;
+  } 
+  
+  .add-rating-form {
+    background-color: #f9f9f9;
+    padding: 2rem;
+    border-radius: 8px;
+  }
+  
+  .add-rating-form h3 {
+    color: #F83182;
+    margin-bottom: 1.5rem;
+  }
+  
+  .rating-input, .comment-input {
+    margin-bottom: 1.5rem;
+  }
+  
+  .star-rating {
+    margin-top: 0.5rem;
+  }
+  
+  .star-rating span {
+    font-size: 2rem;
+    cursor: pointer;
+    margin-right: 0.5rem;
+  }
+  
+  .comment-input textarea {
+    width: 100%;
+    min-height: 100px;
+    padding: 0.8rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    resize: vertical;
+  }
+  
+  .submit-btn {
+    background-color: #F83182;
+    color: white;
+    border: none;
+    padding: 0.8rem 1.5rem;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background-color 0.3s;
+  }
+  
+  .submit-btn:hover {
+    background-color: #FF617C;
+  }

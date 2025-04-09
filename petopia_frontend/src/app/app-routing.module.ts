@@ -42,6 +42,8 @@ import { GameComponent } from './simple-user/vet/tic-tac-toe/game/game.component
 import { LocationVetComponent } from './simple-user/vet/location-vet/location-vet.component';
 import { InfoSpecificVetComponent } from './simple-user/vet/info-specific-vet/info-specific-vet.component';
 import { QrCodeVetScannerComponent } from './simple-user/vet/qr-code-vet-scanner/qr-code-vet-scanner.component';
+import { UserRatingVetComponent } from './simple-user/vet/user-rating-vet/user-rating-vet.component';
+import { InfoRatingVetComponent } from './simple-user/vet/info-rating-vet/info-rating-vet.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -65,6 +67,9 @@ const routes: Routes = [
   { path: 'vet/location', component: LocationVetComponent, canActivate: [AuthGuard] },
   { path: 'vet/info-specific-vet/:id', component: InfoSpecificVetComponent, canActivate: [AuthGuard] },
   { path: 'vet/qrcode-vet-scanner' , component: QrCodeVetScannerComponent, canActivate: [AuthGuard] },
+  { path: 'vet/RatingVet/:id' , component: UserRatingVetComponent, canActivate: [AuthGuard] },
+  { path: 'vet/info-rating-vet', component:InfoRatingVetComponent, canActivate: [AuthGuard] },
+
 
   { path: 'dashboard', component: DashbordComponent, canActivate: [AuthGuard],
     children: [

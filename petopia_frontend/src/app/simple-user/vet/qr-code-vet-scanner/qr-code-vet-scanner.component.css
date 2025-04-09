@@ -85,4 +85,73 @@
     cursor: not-allowed;
     opacity: 0.8;
   }
+  .ratings-container {
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 1rem;
+  }
+  
+  .ratings-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    gap: 1.5rem;
+    margin-top: 2rem;
+  }
+  
+  .rating-card {
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+  }
+  
+  .card-header {
+    background-color: #FF617C;
+    color: white;
+    padding: 1rem;
+  }
+  
+  .card-header h3 {
+    margin: 0;
+  }
+  
+  .card-body {
+    padding: 1.5rem;
+  }
+  
+  .rating-info {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+  }
+  
+  .user-info, .vet-info {
+    flex: 1;
+  }
+  
+  .user-info h4, .vet-info h4 {
+    margin-top: 0;
+    color: #F83182;
+  }
+  
+  .rating-details {
+    margin-top: 1.5rem;
+  }
+  
+  .rating-stars {
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+  }
+  
+  .comment {
+    font-style: italic;
+    padding: 0.5rem;
+    background-color: #f5f5f5;
+    border-radius: 4px;
+  }
+
+  .h2 {
+    color: #F83182;
+  }
+  
   
