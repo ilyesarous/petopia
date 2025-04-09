@@ -20,6 +20,7 @@ export class EventListComponent implements OnInit {
   isAdmin: boolean = false; // Variable pour savoir si l'utilisateur est un admin
   selectedEvent: Event | null = null; // L'événement sélectionné pour participer
   @ViewChild('editEventModal') editEventModal!: ElementRef;
+  role: string = '';
 
  
   editMode: boolean = false;  // Pour contrôler l’affichage du formulaire d’édition
@@ -32,11 +33,15 @@ export class EventListComponent implements OnInit {
   ngOnInit(): void {
           // Pour chaque événement, récupérer l'organisateur si c'est un ID
           this.events.forEach(event => {
-            if (typeof event.organisateur === 'number') {  // Si l'organisateur est un ID
+            // if (typeof event.organisateur === 'number') {  // Si l'organisateur est un ID
               this.authService.getUserById(event.organisateur).subscribe(user => {
                 event.organisateur = user;  // Remplacer l'ID par l'objet user
-              });
-            } });
+              // });
+            }) });
+
+            this.authService.role.subscribe((role) => {
+              this.role = role || ''; // Ensure role is never undefined
+            });
         
         // Se abonner à l'observable pour recevoir les mises à jour en temps réel
         this.eventService.events$.subscribe((data) => {
@@ -47,9 +52,7 @@ export class EventListComponent implements OnInit {
         this.eventService.loadEvents();
 
         // Vérifier si l'utilisateur est un admin
-        this.authService.role.subscribe(role => {
-          this.isAdmin = role === 'admin'; // Assurez-vous que 'admin' est bien la valeur du rôle administrateur
-        });
+      
         
 }
 
