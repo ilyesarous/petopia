@@ -49,6 +49,7 @@ import { CartComponent } from './simple-user/store/cart/cart.component';
 import { ShelterListComponent } from './admin/shelter/shelter-list/shelter-list.component';
 import { ShelterDetailsComponent } from './admin/shelter/shelter-details/shelter-details.component';
 import { MyAdoptionsComponent } from './simple-user/adoption/my-adoptions/my-adoptions.component';
+import { AddShelterComponent } from './simple-user/adoption/add-shelter/add-shelter.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -82,6 +83,7 @@ const routes: Routes = [
   { path: 'shelter/info', component: ShelterInfoComponent },
   { path: 'shelter/pets', component: ShelterPetListComponent },
   { path: 'shelter/pets/add', component: ShelterAddPetComponent },
+  {path: 'add-shelter', component: AddShelterComponent},
   {
     path: 'shelter/adoption-requests',
     component: ShelterAdoptionRequestsComponent,

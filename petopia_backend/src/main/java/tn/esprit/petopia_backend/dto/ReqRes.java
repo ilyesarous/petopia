@@ -31,7 +31,7 @@ public class ReqRes {
     private User ourUsers;
     private List<User> ourUsersList;
     private String userId;
-
+    private int shelter_id;
     // Add this field for reclamations
     private List<ReclamationDTO> reclamations;
 
