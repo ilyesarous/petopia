@@ -52,6 +52,11 @@ import { FeedbacksComponent } from './simple-user/store/feedbacks/feedbacks.comp
 import {LoginComponent} from "./components/login/login.component";
 import {FooterComponent} from "./components/footer/footer.component";
 import {SignupComponent} from "./components/signup/signup.component";
+import { RouterModule } from '@angular/router';
+import { EventFormComponent } from './admin/Event/event-form/event-form.component';
+import { EventListComponent } from './admin/Event/event-list/event-list.component';
+import { ParticipationFormComponent } from './simple-user/Event/participation-form/participation-form.component';
+import { EventEditComponent } from './admin/Event/event-edit/event-edit.component';
 
 @NgModule({
   declarations: [
@@ -93,7 +98,11 @@ import {SignupComponent} from "./components/signup/signup.component";
     FeedbacksComponent,
     LoginComponent,
     FooterComponent,
-    SignupComponent
+    SignupComponent,
+    EventFormComponent,
+    EventListComponent,
+    ParticipationFormComponent,
+    EventEditComponent,
   ],
   imports: [
     BrowserModule,
@@ -108,7 +117,8 @@ import {SignupComponent} from "./components/signup/signup.component";
     FullCalendarModule,
     CommonModule,
     CanvasJSAngularChartsModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    RouterModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

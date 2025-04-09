@@ -1,0 +1,244 @@
+.event-list {
+  font-family: 'Arial', sans-serif;
+  margin: 20px auto;
+  max-width: 900px;
+  padding: 20px 15px; /* Padding global pour respirer un peu */
+}
+
+h2 {
+  color: #F83182;
+  text-align: center;
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+.btn-add-event {
+  background-color: #FF617C;
+  color: white;
+  padding: 12px 25px;
+  border: none;
+  border-radius: 30px;
+  font-size: 16px;
+  cursor: pointer;
+  display: block;
+  margin: 20px auto;
+  transition: background-color 0.3s;
+}
+
+.btn-add-event:hover {
+  background-color: #F83182;
+}
+
+.no-events {
+  color: #FE9A7A;
+  text-align: center;
+  font-size: 18px;
+}
+
+.events-container {
+  display: flex;
+  flex-direction: column;
+  gap: 25px; /* Ajoute de l’espace entre les cartes */
+  padding: 20px 0;
+}
+
+.event-item {
+  background-color: #FFF0F6;
+  border-left: 5px solid #F83182;
+  padding: 15px;
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease;
+}
+
+.event-item:hover {
+  transform: translateY(-2px); /* petit effet de survol sympa */
+}
+
+.event-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.event-header h3 {
+  font-size: 20px;
+  color: #FF617C;
+}
+
+.event-id {
+  font-size: 14px;
+  color: #FE9A7A;
+}
+
+.event-details p {
+  margin: 5px 0;
+  font-size: 14px;
+  color: #333;
+}
+
+.extra-details {
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid #fe9a7a3a;
+}
+
+.event-actions {
+  text-align: right;
+  margin-top: 10px;
+}
+
+.btn-delete-event,
+.btn-update-event,
+.event-actions button {
+  background-color: #FE9A7A;
+  color: white;
+  padding: 7px 12px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-left: 8px;
+  transition: background-color 0.3s;
+}
+
+.btn-delete-event:hover,
+.btn-update-event:hover,
+.event-actions button:hover {
+  background-color: #F83182;
+}
+
+/* === Popup Styles === */
+.popup-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+}
+
+.popup-content {
+  background-color: #ffe9f0;
+  padding: 30px;
+  border-radius: 20px;
+  width: 90%;
+  max-width: 700px;
+  box-shadow: 0 5px 25px rgba(0, 0, 0, 0.3);
+  position: relative;
+}
+
+.close-button {
+  position: absolute;
+  top: 15px;
+  right: 20px;
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #f83182;
+  cursor: pointer;
+}
+
+/* === Form Modal === */
+.event-form-container {
+  background-color: #ffe9f0 !important;
+  border-radius: 15px;
+  box-shadow: 0 5px 25px rgba(248, 49, 130, 0.2);
+  color: #333;
+  padding: 20px;
+}
+
+.event-form-container .modal-header {
+  border-bottom: none;
+  background-color: transparent;
+  padding-bottom: 0;
+}
+
+.event-form-container .modal-title {
+  color: #f83182;
+  font-weight: bold;
+}
+
+.event-form-container .btn-close {
+  filter: brightness(0.5);
+}
+
+.event-form-container .form-group {
+  margin-bottom: 15px;
+}
+
+.event-form-container label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 5px;
+  color: #ff617c;
+}
+
+.event-form-container input,
+.event-form-container select,
+.event-form-container textarea {
+  width: 100%;
+  padding: 10px;
+  border: 2px solid #fe9a7a;
+  border-radius: 10px;
+  background-color: #fff;
+  font-size: 1em;
+  color: #333;
+}
+
+.event-form-container input:focus,
+.event-form-container select:focus,
+.event-form-container textarea:focus {
+  border-color: #f83182;
+  outline: none;
+}
+
+.event-form-container textarea {
+  resize: vertical;
+}
+
+.event-form-container button[type="submit"] {
+  width: 100%;
+  background-color: #f83182;
+  color: white;
+  border: none;
+  padding: 12px;
+  border-radius: 12px;
+  font-size: 1em;
+  font-weight: bold;
+  cursor: pointer;
+  margin-top: 15px;
+  transition: background-color 0.3s ease;
+}
+
+.event-form-container button[type="submit"]:hover {
+  background-color: #ff617c;
+}
+.event-list {
+  padding-top: 30px;
+  padding-bottom: 30px;
+}
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0,0,0,0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modal-content {
+  background: #fff;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 0 10px #000;
+  width: 600px;
+  max-width: 90%;
+}

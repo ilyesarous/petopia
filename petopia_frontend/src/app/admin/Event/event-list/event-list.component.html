@@ -1,0 +1,209 @@
+<!--  <div class="event-list">
+  <h2>Liste des événements</h2>
+
+  <button  [routerLink]="['/dashboard/add-event']" class="btn-add-event">Ajouter un événement</button>
+ ############# <button *ngIf="isAdmin" [routerLink]="['/dashboard/add-event']" class="btn-add-event">Ajouter un événement</button> 
+
+  <div *ngIf="events.length === 0" class="no-events">Aucun événement disponible.</div>
+
+  <div *ngIf="events.length > 0" class="events-container">
+    <div class="event-item" *ngFor="let event of events">
+      <div class="event-header">
+        <h3>{{ event.nameEvent }}</h3>
+        <span class="event-id">ID: {{ event.idEvent }}</span>
+      </div>
+      
+      <div class="event-details">
+        <p><strong>Description:</strong> {{ event.descriptionEvent }}</p>
+        <p><strong>Date:</strong> {{ event.dateEvent | date:'short' }}</p>
+        <p><strong>Lieu:</strong> {{ event.lieuEvent }}</p>
+        <p><strong>Latitude:</strong> {{ event.lattitudeEvent }}</p>
+        <p><strong>Longitude:</strong> {{ event.longitudeEvent }}</p>
+        <p><strong>Prix:</strong> {{ event.prixEvent }}€</p>
+        <p><strong>Places max:</strong> {{ event.placesMaxEvent }}</p>
+        <p><strong>Type d'événement:</strong> {{ event.eventType }}</p>
+        <p><strong>Organisateur:</strong> {{ event.organisateur }}</p>
+        <p><strong>Visibilité:</strong> {{ event.visibiliteEvent }}</p>
+        <p><strong>Status:</strong> {{ event.statusEvent }}</p>
+      </div>
+
+      <div class="event-actions">
+        <button (click)="deleteEvent(event.idEvent)" class="btn-delete-event">Supprimer</button>
+    ################# <button (click)="updateEvent(event)" class="btn-update-event">Modifier</button>
+        <button (click)="editEvent(event)" class="btn-update-event">Modifier</button>
+
+        <button (click)="selectEvent(event)">Participer</button>
+        <a [routerLink]="['/event/details', event.id]">Voir détails</a>
+        
+
+
+      </div>
+      <div *ngFor="let event of events">
+        <h3>{{ event.name }}</h3>
+        <p>{{ event.description }}</p>
+      </div>
+  
+      <div *ngIf="editMode && eventToEdit && eventToEdit.idEvent === event.idEvent" class="edit-form">
+        <h4>Modifier l'événement</h4>
+        <form (ngSubmit)="saveUpdatedEvent()">
+          <label>Nom :</label>
+          <input [(ngModel)]="eventToEdit.nameEvent" name="nameEvent" required />
+      
+          <label>Description :</label>
+          <input [(ngModel)]="eventToEdit.descriptionEvent" name="descriptionEvent" />
+      
+          <label>Date :</label>
+          <input type="date" [(ngModel)]="eventToEdit.dateEvent" name="dateEvent" />
+      
+          <label>Lieu :</label>
+          <input [(ngModel)]="eventToEdit.lieuEvent" name="lieuEvent" />
+      
+          <label>Prix :</label>
+          <input type="number" [(ngModel)]="eventToEdit.prixEvent" name="prixEvent" />
+      
+          <label>Places max :</label>
+          <input type="number" [(ngModel)]="eventToEdit.placesMaxEvent" name="placesMaxEvent" />
+      
+          # ##############Ajoute d'autres champs si tu veux 
+      
+          <button type="submit">Enregistrer</button>
+          <button type="button" (click)="cancelEdit()">Annuler</button>
+        </form>
+      </div>
+      
+      
+
+    </div>
+  </div>
+</div>
+-->
+<div class="event-list">
+  <h2>Liste des événements</h2>
+
+  <button  [routerLink]="['/dashboard/add-event']" class="btn-add-event">Ajouter un événement</button>
+  <div *ngIf="events.length === 0" class="no-events">Aucun événement disponible.</div>
+</div>
+<div class="event-item" *ngFor="let event of events">
+  <div class="event-header">
+    <h3>{{ event.nameEvent }}</h3>
+    <span class="event-id">#{{ event.idEvent }}</span>
+  </div>
+
+  <div class="event-details">
+    <p><strong>Date:</strong> {{ event.dateEvent | date:'short' }}</p>
+    <p><strong>Lieu:</strong> {{ event.lieuEvent }}</p>
+    <p><strong>Prix:</strong> {{ event.prixEvent }}€</p>
+  </div>
+
+  <div class="event-actions">
+    <button (click)="deleteEvent(event.idEvent)" class="btn-delete-event">🗑 Supprimer</button>
+    <button (click)="editEvent(event)" class="btn-update-event">✏️ Modifier</button>
+    <button [routerLink]="['/participate', event.idEvent]">✅ Participer</button>
+    <button (click)="toggleDetails(event)">
+      {{ event.showDetails ? '▲ Moins de détails' : '▼ Voir détails' }}
+    </button>
+    
+  </div>
+ 
+
+  <div *ngIf="event.showDetails" class="extra-details">
+    <p><strong>Description:</strong> {{ event.descriptionEvent }}</p>
+    <p><strong>Latitude:</strong> {{ event.lattitudeEvent }}</p>
+    <p><strong>Longitude:</strong> {{ event.longitudeEvent }}</p>
+    <p><strong>Places max:</strong> {{ event.placesMaxEvent }}</p>
+    <p><strong>Type:</strong> {{ event.eventType }}</p>
+    <!-- Afficher les détails de l'organisateur -->
+  <p><strong>Organisateur:</strong> 
+    {{ event.organisateur?.prenom }} {{ event.organisateur?.nom }}
+  </p>
+  <p><strong>Email:</strong> {{ event.organisateur?.email }}</p>
+    <p><strong>Téléphone:</strong> {{ event.organisateur?.telephone }}</p>
+    <p><strong>Visibilité:</strong> {{ event.visibiliteEvent }}</p>
+    <p><strong>Status:</strong> {{ event.statusEvent }}</p>
+  </div>
+</div>
+
+
+
+<!-- Modal de mise à jour de l'événement -->
+<div class="modal fade" id="editEventModal" tabindex="-1" aria-labelledby="editEventModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+    <div class="modal-content event-form-container">
+      <div class="modal-header">
+        <h2 class="modal-title w-100" id="editEventModalLabel">Modifier un Événement</h2>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fermer"></button>
+      </div>
+      <div class="modal-body">
+        <form *ngIf="eventToEdit" (ngSubmit)="saveUpdatedEvent()">
+          <div class="form-group">
+            <label for="nameEvent">Nom de l'événement</label>
+            <input type="text" id="nameEvent" [(ngModel)]="eventToEdit.nameEvent" name="nameEvent" required />
+          </div>
+
+          <div class="form-group">
+            <label for="descriptionEvent">Description</label>
+            <textarea id="descriptionEvent" [(ngModel)]="eventToEdit.descriptionEvent" name="descriptionEvent" required></textarea>
+          </div>
+
+          <div class="form-group">
+            <label for="dateEvent">Date</label>
+            <input type="date" id="dateEvent" [(ngModel)]="eventToEdit.dateEvent" name="dateEvent" required />
+          </div>
+
+          <div class="form-group">
+            <label for="lieuEvent">Lieu</label>
+            <input type="text" id="lieuEvent" [(ngModel)]="eventToEdit.lieuEvent" name="lieuEvent" required />
+          </div>
+
+          <div class="form-group">
+            <label for="lattitudeEvent">Latitude</label>
+            <input type="number" id="lattitudeEvent" [(ngModel)]="eventToEdit.lattitudeEvent" name="lattitudeEvent" required />
+          </div>
+
+          <div class="form-group">
+            <label for="longitudeEvent">Longitude</label>
+            <input type="number" id="longitudeEvent" [(ngModel)]="eventToEdit.longitudeEvent" name="longitudeEvent" required />
+          </div>
+
+          <div class="form-group">
+            <label for="prixEvent">Prix</label>
+            <input type="number" id="prixEvent" [(ngModel)]="eventToEdit.prixEvent" name="prixEvent" required />
+          </div>
+
+          <div class="form-group">
+            <label for="placesMaxEvent">Places Max</label>
+            <input type="number" id="placesMaxEvent" [(ngModel)]="eventToEdit.placesMaxEvent" name="placesMaxEvent" required />
+          </div>
+
+          <div class="form-group">
+            <label for="eventType">Type d'événement</label>
+            <select id="eventType" [(ngModel)]="eventToEdit.eventType" name="eventType" required>
+              <option value="PROMENADE">Promenade</option>
+              <option value="RANDONNEE">Randonnée</option>
+              <option value="PHOTO_SEANCE">Séance photo</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="visibiliteEvent">Visibilité</label>
+            <select id="visibiliteEvent" [(ngModel)]="eventToEdit.visibiliteEvent" name="visibiliteEvent" required>
+              <option value="PUBLIC">Public</option>
+              <option value="PRIVATE">Privé</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="statusEvent">Statut</label>
+            <select id="statusEvent" [(ngModel)]="eventToEdit.statusEvent" name="statusEvent" required>
+              <option value="ACTIF">Actif</option>
+              <option value="ANNULE">Annulé</option>
+              <option value="TERMINE">Terminé</option>
+            </select>
+          </div>
+
+          <button type="submit">Mettre à jour l'événement</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

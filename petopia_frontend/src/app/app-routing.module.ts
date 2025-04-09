@@ -19,6 +19,9 @@ import { StoreDashComponent } from './admin/store/store-dash/store-dash.componen
 import {LoginComponent} from "./components/login/login.component";
 import {SignupComponent} from "./components/signup/signup.component";
 import {AuthGuard} from "./auth.guard";
+import { EventListComponent } from './admin/Event/event-list/event-list.component';
+import { EventFormComponent } from './admin/Event/event-form/event-form.component';
+import { ParticipationFormComponent } from './simple-user/Event/participation-form/participation-form.component';
 
 
 
@@ -30,6 +33,9 @@ const routes: Routes = [
   { path: 'favorites', component: FavoriteComponent, canActivate: [AuthGuard]},
   { path: 'vet', component: DashPrincipaleHomeVetComponent, canActivate: [AuthGuard] },
   { path: 'vet/pet-growth/:id', component: PetGrowthVetComponent, canActivate: [AuthGuard] },
+  { path: 'events', component: EventListComponent, canActivate: [AuthGuard] },
+  //{ path: 'participer', component: ParticipationFormComponent,canActivate: [AuthGuard] },
+  { path: 'participate/:id', component: ParticipationFormComponent, canActivate: [AuthGuard] },
 
   { path: 'dashboard', component: DashbordComponent, canActivate: [AuthGuard],
     children: [
@@ -41,6 +47,10 @@ const routes: Routes = [
       { path: 'diagnosis', component: DiagnosisListComponent },
       { path: 'notifications', component: NotificationListComponent },
       { path: 'pet-growth', component: PetGrowthListComponent },
+      
+      { path: 'events', component: EventListComponent },
+      { path: 'add-event', component: EventFormComponent }
+      
     ],
   },
   { path: 'signup', component: SignupComponent },
