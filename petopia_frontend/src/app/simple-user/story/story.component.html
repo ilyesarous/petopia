@@ -1,10 +1,8 @@
 <div class="story-card text-center">
-  <div class="story-avatar mx-auto">
-    <img
-      *ngIf="story.imageUrl"
-      [src]="story.imageUrl"
-      alt="Story image"
-    />
+  <div class="story-box mx-auto">
+    <img *ngIf="story.image" [src]="story.image" alt="Story image" />
   </div>
-  <p *ngIf="story.text" class="mt-2 small text-muted">{{ story.text }}</p>
-</div>
+  <p class="story-owner mt-2 small">
+    {{ story.user?.name || 'Unknown User' }}
+  </p>
+  </div>

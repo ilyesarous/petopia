@@ -195,6 +195,8 @@ import { EventEditComponent } from './admin/Event/event-edit/event-edit.componen
     FullCalendarModule,
     BrowserAnimationsModule,
     FontAwesomeModule,
+    MatIconModule,
+    MatDialogModule
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }
