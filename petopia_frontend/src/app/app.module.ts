@@ -197,6 +197,8 @@ import { MyAdoptionsComponent } from './simple-user/adoption/my-adoptions/my-ado
     FullCalendarModule,
     BrowserAnimationsModule,
     FontAwesomeModule,
+    MatIconModule,
+    MatDialogModule
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }

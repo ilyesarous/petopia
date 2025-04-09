@@ -19,11 +19,16 @@ public class CommentController {
         this.commentService = commentService;
     }
 
-    @PostMapping("/add")
-    public ResponseEntity<Comment> addComment(@RequestParam int userId, @RequestParam Long postId, @RequestBody String content) {
+    @PostMapping(value = "/add", consumes = {"multipart/form-data"})
+    public ResponseEntity<Comment> addComment(
+            @RequestParam int userId,
+            @RequestParam Long postId,
+            @RequestParam String content) {
+
         Comment newComment = commentService.addComment(userId, postId, content);
         return ResponseEntity.ok(newComment);
     }
+
 
     @PutMapping("/update/{id}")
     public ResponseEntity<Comment> updateComment(@PathVariable Long id, @RequestBody Map<String, String> requestBody) {

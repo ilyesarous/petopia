@@ -1,26 +1,114 @@
-/* Vous pouvez ajouter ici vos customisations, par exemple : */
-.container {
-    background-color: #f9f9fb;
-    border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-  }
-  .file-input-container {
-    display: flex;
-    align-items: center;
-  
-    input[type="file"] {
-      display: none;
-    }
-  
-    label.btn {
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-    }
-  
-    .file-name {
-      font-size: 0.9rem;
-      color: #6c757d;
-    }
-  }
-  
+.stories-slide {
+  display: flex;
+  flex-wrap: nowrap;         /* all in one row */
+  overflow-x: auto;          /* horizontal scrolling */
+  gap: 1rem;                 /* spacing between items */
+  padding: 0 60px;
+  /* Hide scrollbars if you want a cleaner look: */
+  scrollbar-width: none; 
+}
+.stories-slide::-webkit-scrollbar {
+  display: none; 
+}
+
+/* Force each item to keep its width, never shrink */
+.story-card {
+  flex: 0 0 auto;            /* or flex-shrink: 0; */
+  width: 130px;              /* pick whatever width you want */           /* adjust to your desired height */
+  border: 1px solid #F83182;  /* pink border */
+  border-radius: 0.25rem;
+  background-color: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start; /* place content at top; or center if you prefer */
+  padding: 0.5rem;            /* space around content inside the card */
+  text-align: center;
+}
+
+/* 3) The image container: fits the top portion of the card */
+.story-box {
+  width: 100%;
+  height: 80px;  /* see how it fits with the .story-card height */
+  background-color: #f9f9f9;
+  border-radius: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  margin-bottom: 0.5rem;
+}
+
+/* The actual image is constrained within the box */
+.story-box img {
+  display: block;
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: cover; /* or contain if you prefer no cropping */
+}
+
+/* 4) Owner text or "Create Story" text under the box */
+.story-owner {
+  margin: 0;
+  font-size: 0.75rem;    /* tweak for readability */
+  color: #333;
+  white-space: nowrap;   /* keep on one line */
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* 5) Optional: style your scroll buttons to match pink brand */
+.scroll-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 10;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: none;
+  background-color: #F83182;
+  color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* left arrow position */
+.scroll-left {
+  left: 0; 
+  /* or left: -30px; if you want it slightly outside the container */
+}
+/* right arrow position */
+.scroll-right {
+  right: 0;
+}
+/* Make the entire Create Story card clickable */
+.story-card.create-story {
+  cursor: pointer;
+  color: #F83182; 
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+.story-card.create-story i {
+  color: #F83182; 
+}
+
+/* On hover, turn the card pink (#F83182) and text/icon white */
+.story-card.create-story:hover {
+  background-color: #F83182;   /* Pink fill */
+  border-color: #F83182;       /* Match border to fill */
+}
+
+.btn-custom {
+  background-color: #F83182 !important;
+  border-color: #F83182 !important;
+  color: #fff !important;
+}
+
+.btn-custom:hover,
+.btn-custom:focus,
+.btn-custom:active {
+  background-color: #d02a6b !important; /* slightly darker shade */
+  border-color: #d02a6b !important;
+  color: #fff !important;
+}

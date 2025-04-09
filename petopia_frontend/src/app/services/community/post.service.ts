@@ -15,13 +15,6 @@ export class PostService {
   getPosts(): Observable<Post[]> {
     return this.http.get<Post[]>(`${this.baseUrl}/getAll`);
   }
-
-  // createPost(post: Post, file: File): Observable<Post> {
-  //   const formData = new FormData();
-  //   formData.append('file', file);
-  //   formData.append('content', post.content);
-  //   return this.http.post<Post>(`${this.baseUrl}/add`, formData);
-  // }
   createPost(post: Post, formData: FormData): Observable<Post> {
     return this.http.post<Post>(`${this.baseUrl}/add`, formData);
   }
@@ -35,7 +28,8 @@ export class PostService {
     return this.http.put<Post>(`${this.baseUrl}/update/${id}`, postDetails);
   }
 
-  deletePost(id: number): Observable<any> {
-    return this.http.delete(`${this.baseUrl}/delete/${id}`);
+  deletePost(id: number): Observable<string> {
+    return this.http.delete(`${this.baseUrl}/delete/${id}`, { responseType: 'text' });
   }
+  
 }

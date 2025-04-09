@@ -1,172 +1,170 @@
 <div class="post-card card mb-3">
+<div *ngIf="!isDeleted">
   <!-- Header: Avatar, author name, and post time -->
   <div class="card-header d-flex align-items-center post-header">
-    <div class="card-header d-flex align-items-center post-header">
-  <i class="bi bi-person-circle me-2"></i>
-  <div>
-    <div class="post-author fw-bold">{{ post.user?.name || 'User Name' }}</div>
-  </div>
-</div>
-
-    <!-- Optional menu icon -->
+    <div class="d-flex align-items-center">
+      <i class="bi bi-person-circle me-2"></i>
+      <div>
+        <div class="post-author fw-bold">{{ post.user?.name || 'User Name' }}</div>
+      </div>
+    </div>
     <div class="post-time text-muted me-2">
       {{ post.date | relativeTime }}
     </div>
-
-    <div class="ms-auto post-menu">
-      <i class="bi bi-three-dots"></i>
+    <!-- Post menu: only visible if logged-in user is the post owner -->
+    <div class="ms-auto post-menu" *ngIf="isPostOwner()">
+      <i class="bi bi-three-dots pointer" (click)="post['menuOpen'] = !post['menuOpen']"></i>
+      <div class="dropdown-menu show position-absolute end-0 mt-1" *ngIf="post['menuOpen']">
+        <button class="dropdown-item" (click)="editPost()">Edit</button>
+        <button class="dropdown-item" (click)="deletePost()">Delete</button>
+      </div>
     </div>
-
   </div>
 
   <!-- Post content: text and image -->
   <div class="card-body post-body">
-    <p class="mb-2">{{ post.content }}</p>
+    <!-- If in edit mode, show an input field for post content -->
+    <div *ngIf="post['isEditing']; else displayPostContent">
+      <textarea class="form-control" [(ngModel)]="post['editedContent']"></textarea>
+      <div class="mt-1">
+        <button class="btn btn-sm btn-primary me-2" (click)="updatePost()">Save</button>
+        <button class="btn btn-sm btn-secondary" (click)="cancelPostEdit()">Cancel</button>
+      </div>
+    </div>
+    <ng-template #displayPostContent>
+      <p class="mb-2">{{ post.content }}</p>
+    </ng-template>
     <div *ngIf="post.image" class="post-images">
       <img *ngFor="let imgUrl of post.image.split(',')"
            [src]="imgUrl.trim()"
            alt="Post image"
            class="img-fluid rounded mt-2 mb-2" />
     </div>
-    
-    </div>
+  </div>
 
-  <!-- Action buttons: Like and Comment -->
+  <!-- Action buttons: Reactions and Comment toggle -->
   <div class="post-actions d-flex align-items-center px-3 pb-2">
-    <!-- <button class="btn btn-link text-decoration-none text-secondary" (click)="toggleLike()">
-      <i class="bi bi-hand-thumbs-up"></i> {{ liked ? 'Liked' : 'Like' }}
-    </button> -->
     <div class="d-flex mb-2 px-3">
-      <!-- LIKE Button -->
-      <button
-        class="btn btn-sm me-2"
-        [ngClass]="{
-          'btn-primary': userReaction === 'LIKE',
-          'btn-outline-primary': userReaction !== 'LIKE'
-        }"
-        (click)="addReaction('LIKE')"
-      >
+      <!-- Reaction Buttons with conditional styling -->
+      <button class="btn btn-sm me-2"
+              [ngClass]="{'btn-primary': userReaction === 'LIKE', 'btn-outline-primary': userReaction !== 'LIKE'}"
+              (click)="addReaction('LIKE')">
         👍 Like
       </button>
-    
-      <!-- LOVE Button -->
-      <button
-        class="btn btn-sm me-2"
-        [ngClass]="{
-          'btn-danger': userReaction === 'LOVE',
-          'btn-outline-danger': userReaction !== 'LOVE'
-        }"
-        (click)="addReaction('LOVE')"
-      >
+      <button class="btn btn-sm me-2"
+              [ngClass]="{'btn-danger': userReaction === 'LOVE', 'btn-outline-danger': userReaction !== 'LOVE'}"
+              (click)="addReaction('LOVE')">
         ❤️ Love
       </button>
-    
-      <!-- WOW Button -->
-      <button
-        class="btn btn-sm me-2"
-        [ngClass]="{
-          'btn-warning': userReaction === 'WOW',
-          'btn-outline-warning': userReaction !== 'WOW'
-        }"
-        (click)="addReaction('WOW')"
-      >
+      <button class="btn btn-sm me-2"
+              [ngClass]="{'btn-warning': userReaction === 'WOW', 'btn-outline-warning': userReaction !== 'WOW'}"
+              (click)="addReaction('WOW')">
         😮 Wow
       </button>
-    
-      <!-- HAHA Button -->
-      <button
-        class="btn btn-sm me-2"
-        [ngClass]="{
-          'btn-success': userReaction === 'HAHA',
-          'btn-outline-success': userReaction !== 'HAHA'
-        }"
-        (click)="addReaction('HAHA')"
-      >
+      <button class="btn btn-sm me-2"
+              [ngClass]="{'btn-success': userReaction === 'HAHA', 'btn-outline-success': userReaction !== 'HAHA'}"
+              (click)="addReaction('HAHA')">
         😂 Haha
       </button>
-    
-      <!-- SAD Button -->
-      <button
-        class="btn btn-sm me-2"
-        [ngClass]="{
-          'btn-info': userReaction === 'SAD',
-          'btn-outline-info': userReaction !== 'SAD'
-        }"
-        (click)="addReaction('SAD')"
-      >
+      <button class="btn btn-sm me-2"
+              [ngClass]="{'btn-info': userReaction === 'SAD', 'btn-outline-info': userReaction !== 'SAD'}"
+              (click)="addReaction('SAD')">
         😢 Sad
       </button>
     </div>
-    
-    
     <button class="btn btn-link text-decoration-none text-secondary" (click)="toggleComments()">
       <i class="bi bi-chat-dots"></i> Comment ({{ post.comments?.length || 0 }})
     </button>
-    
   </div>
 
-  <!-- TODO -->
-  <!-- Avatars for people who liked the post (optional) -->
+  <!-- Reaction Summary and Likes Popup Trigger -->
   <div class="d-flex align-items-center px-3 pb-2">
-
     <small class="ms-2 text-muted pointer" (click)="openLikesPopup()">
       {{ getReactionSummary() }}
     </small>
-    
-    
-    </div>
+  </div>
 
-    <div class="modal fade custom-modal" [class.show]="showLikesPopup" [style.display]="showLikesPopup ? 'block' : 'none'" tabindex="-1" role="dialog">
-      <div class="modal-dialog" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title">Reactions</h5>
-          </div>
-          <div class="modal-body">
-            <ul class="list-group">
-              <li class="list-group-item d-flex align-items-center" *ngFor="let reaction of post.reactions">
-                <i class="bi bi-person-fill text-white me-2"></i>
-                <!-- Affiche le nom de l’utilisateur et le type de la réaction -->
-                <span>{{ reaction.user?.name || 'User Name' }} reacted with {{ reaction.type }}</span>
-              </li>
-            </ul>
-          </div>
-          
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" (click)="closeLikesPopup()">Close</button>
-          </div>
+  <!-- Likes Popup Modal -->
+  <div class="modal fade custom-modal" [class.show]="showLikesPopup" [style.display]="showLikesPopup ? 'block' : 'none'" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Reactions</h5>
+        </div>
+        <div class="modal-body">
+          <ul class="list-group">
+            <li class="list-group-item d-flex align-items-center" *ngFor="let reaction of post.reactions">
+              <i class="bi bi-person-fill text-white me-2"></i>
+              <span>{{ reaction.user?.name || 'User Name' }} reacted with {{ reaction.type }}</span>
+            </li>
+          </ul>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" (click)="closeLikesPopup()">Close</button>
         </div>
       </div>
     </div>
-    
-<!-- Comments Section -->
-<div class="post-comments px-3" *ngIf="showComments">
-  <ng-container *ngFor="let comment of getDisplayedComments()">
-    <div class="comment-item mb-2 border p-2 rounded">
-      <div class="d-flex align-items-start">
-        <i class="bi bi-person-circle me-2"></i>
-        <div class="ms-2">
-          <div class="comment-author fw-bold">
-            {{ comment.user?.name || 'Commenter Name' }}
-            <span class="comment-time text-muted ms-2">{{ comment.date | date:'short' }}</span>
-          </div>
-          <div class="comment-text">
-            {{ comment.content }}
-          </div>
-          <div class="comment-actions mt-1">
-            <a href="#" class="me-3 text-secondary text-decoration-none">Like</a>
-            <a href="#" class="me-3 text-secondary text-decoration-none">Reply</a>
+  </div>
+
+  <!-- Comments Section -->
+  <div class="post-comments px-3" *ngIf="showComments">
+    <ng-container *ngFor="let comment of getDisplayedComments()">
+      <div class="comment-item mb-2 border p-2 rounded">
+        <div class="d-flex align-items-start">
+          <i class="bi bi-person-circle me-2"></i>
+          <div class="ms-2 w-100">
+            <div class="d-flex justify-content-between">
+              <div class="comment-author fw-bold">
+                {{ comment.user?.name || 'Commenter Name' }}
+                <span class="comment-time text-muted ms-2">
+                  {{ comment.date | date:'short' }}
+                </span>
+              </div>
+              <!-- Three-dots menu for comment owner -->
+              <div *ngIf="isCommentOwner(comment)" class="comment-menu position-relative">
+                <i class="bi bi-three-dots pointer" (click)="toggleCommentMenu(comment)"></i>
+                <div class="dropdown-menu show position-absolute end-0 mt-1" *ngIf="comment['menuOpen']">
+                  <button class="dropdown-item" (click)="editComment(comment)">Edit</button>
+                  <button class="dropdown-item" (click)="deleteComment(comment.id!)">Delete</button>
+                </div>
+              </div>
+            </div>
+            <!-- Inline editing for comment -->
+            <div *ngIf="comment['isEditing']; else displayComment">
+              <input type="text" class="form-control" [(ngModel)]="comment['editedContent']" />
+              <div class="mt-1">
+                <button class="btn btn-sm btn-primary me-2" (click)="updateComment(comment)">Save</button>
+                <button class="btn btn-sm btn-secondary" (click)="cancelEdit(comment)">Cancel</button>
+              </div>
+            </div>
+            <ng-template #displayComment>
+              <div class="comment-text">
+                {{ comment.content }}
+              </div>
+            </ng-template>
+            <div class="comment-actions mt-1">
+              <a href="#" class="me-3 text-secondary text-decoration-none">Like</a>
+              <a href="#" class="me-3 text-secondary text-decoration-none">Reply</a>
+            </div>
           </div>
         </div>
       </div>
+    </ng-container>
+    <button *ngIf="!showAllComments && post.comments && post.comments.length > 3"
+            class="btn btn-link see-more-comments p-0"
+            (click)="showAllComments = true">
+      See more comments
+    </button>
+    <!-- Add Comment Input Area -->
+    <div class="add-comment d-flex align-items-center mt-3">
+      <i class="bi bi-person-circle comment-avatar"></i>
+      <input type="text"
+             class="form-control ms-2"
+             placeholder="Write a comment..."
+             [(ngModel)]="newComment"
+             (keyup.enter)="addComment()" />
+      <button class="btn btn-primary ms-2" (click)="addComment()">Comment</button>
     </div>
-  </ng-container>
-  <button
-    *ngIf="!showAllComments && post.comments && post.comments.length > 3"
-    class="btn btn-link see-more-comments p-0"
-    (click)="showAllComments = true">
-    See more comments
-  </button>
+  </div>
 </div>
-
 </div>
