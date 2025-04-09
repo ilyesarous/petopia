@@ -105,7 +105,7 @@ const routes: Routes = [
       { path: 'pet-growth', component: PetGrowthListComponent },
 
       { path: 'events', component: EventListComponent },
-      { path: 'add-event', component: EventFormComponent }
+      { path: 'add-event', component: EventFormComponent },
 
       {
         path: 'dog-breed-recognition',

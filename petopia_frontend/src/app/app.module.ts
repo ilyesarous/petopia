@@ -190,7 +190,6 @@ import { EventEditComponent } from './admin/Event/event-edit/event-edit.componen
     FullCalendarModule,
     BrowserAnimationsModule,
     FontAwesomeModule,
-    RouterModule
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }
