@@ -5,6 +5,8 @@ import { ConsultationService } from 'src/app/services/vet/consultations/consulta
 import { Component, OnInit, AfterViewInit } from '@angular/core';
 import * as L from 'leaflet';
 import { VetLocationService } from 'src/app/services/vet/location/vet-location.service';
+import { VetRatingService } from 'src/app/services/vet/rating/vet-rating.service';
+import { RatingVet } from 'src/app/models/vet/rating-vet';
 
 @Component({
   selector: 'app-dash-principale',
@@ -21,6 +23,7 @@ export class DashPrincipaleComponent implements OnInit , AfterViewInit{
   totalPetGrowths: number = 0;
   totalConsultations: number = 0;
   totalLocations: number = 0;
+  totalRatings: number = 0;
 
   private map: any;
   private marker: any;
@@ -29,19 +32,24 @@ export class DashPrincipaleComponent implements OnInit , AfterViewInit{
   addingMode = false;
   isSaving = false;
 
+  ratings: RatingVet[] = [];
+
+
   //constructor(private notificationService: NotificationService) { }
   constructor(
     private notificationService: NotificationService,
     private diagnosisService: DiagnosisService,
     private petGrowthService: PetGrowthsService,
     private consultationService: ConsultationService,
-    private vetLocationService: VetLocationService
+    private vetLocationService: VetLocationService,
+    private vetRatingService: VetRatingService
   ) { }
 
   ngOnInit(): void {
     this.loadNotificationStats();
     this.loadTotalCounts();
     (window as any).deleteLocation = (id: number) => this.deleteLocation(id);
+    this.loadAllRatings();
   }
 
   loadNotificationStats(): void {
@@ -109,6 +117,17 @@ export class DashPrincipaleComponent implements OnInit , AfterViewInit{
         console.error('Error fetching locations', error);
       }
     );
+
+    // Récupérer le nombre total de Ratings
+    this.vetRatingService.getAllRatings().subscribe(
+      (ratings) => {
+        this.totalRatings = ratings.length;
+      },
+      (error) => {
+        console.error('Error fetching ratings', error);
+      }
+    );
+
   }
 
 
@@ -334,6 +353,18 @@ export class DashPrincipaleComponent implements OnInit , AfterViewInit{
         }
       });
     }
+  }
+
+
+  loadAllRatings(): void {
+    this.vetRatingService.getAllRatings().subscribe({
+      next: (ratings) => {
+        this.ratings = ratings;
+      },
+      error: (err) => {
+        console.error('Failed to load ratings:', err);
+      }
+    });
   }
 
 }
