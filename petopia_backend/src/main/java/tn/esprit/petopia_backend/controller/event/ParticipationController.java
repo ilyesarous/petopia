@@ -11,6 +11,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/user/participations")
+@CrossOrigin(origins = "http://localhost:4200") // front Angular
 
 public class ParticipationController {
     @Autowired
@@ -35,6 +36,7 @@ public class ParticipationController {
     // http://localhost:8082/petopia/user/participations/addParticipation
     @PostMapping("/addParticipation")
     public ResponseEntity<Participation> createParticipation(@RequestBody Participation participation) {
+        System.out.println(participation);
         Participation createdParticipation = participationService.createParticipation(participation);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdParticipation);
     }

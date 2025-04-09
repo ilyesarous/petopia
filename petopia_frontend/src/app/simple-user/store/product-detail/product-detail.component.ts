@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Product } from 'src/app/models/product/Product';
+import { CartService } from 'src/app/services/store/cart/cart.service';
 import { ProductService } from 'src/app/services/store/products/product.service';
 
 @Component({
@@ -13,14 +14,20 @@ export class ProductDetailComponent {
   mainImage: string = '';
   selectedVariant: any;
   quantity: number = 1;
+  userId: number = 0;
 
   constructor(
-    private route: ActivatedRoute,
-    private productService: ProductService
+    private routeAc: ActivatedRoute,
+    private route: Router,
+    private productService: ProductService,
+    private cartService: CartService
   ) {}
 
   ngOnInit(): void {
-    const productId = this.route.snapshot.paramMap.get('id');
+    const productId = this.routeAc.snapshot.paramMap.get('id');
+    this.userId = localStorage.getItem('userId')
+      ? parseInt(localStorage.getItem('userId')!)
+      : 0;
     if (productId) {
       this.productService.getProductById(+productId).subscribe((product) => {
         this.product = product;
@@ -43,12 +50,11 @@ export class ProductDetailComponent {
 
   addToCart() {
     if (this.product) {
-      // Implement your cart service logic here
-      console.log('Added to cart:', {
-        product: this.product,
-        variant: this.selectedVariant,
-        quantity: this.quantity,
-      });
+      this.cartService
+        .addToCart(this.userId, this.product.product_id, this.quantity)
+        .subscribe(() => {
+          this.route.navigate(['/cart']);
+        });
     }
   }
 

@@ -27,7 +27,7 @@ public class Shelter {
     private String description;
 
     private String website;
-
+    private String logoUrl;
 
     @OneToOne(mappedBy = "shelter", cascade = CascadeType.ALL)
     @JsonIgnore

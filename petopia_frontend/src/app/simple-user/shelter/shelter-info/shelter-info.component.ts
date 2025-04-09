@@ -16,7 +16,9 @@ export class ShelterInfoComponent {
   isEditing: boolean = false;
   alertMessage: string = '';
   alertType: string = 'success'; // 'success' or 'danger'
-  faPen=faPen;
+  faPen = faPen;
+  logoFile: File | null = null;  // To hold the selected logo file
+  logoPreviewUrl: string | null = null;  // To hold the preview URL for the selected logo
 
   constructor(
     private fb: FormBuilder,
@@ -25,9 +27,7 @@ export class ShelterInfoComponent {
   ) {}
 
   ngOnInit(): void {
-
     const userId = localStorage.getItem('userId');
-
     this.loadShelter(userId ? parseInt(userId) : 0);
   }
 
@@ -47,13 +47,22 @@ export class ShelterInfoComponent {
     this.shelterForm = this.fb.group({
       shelter_name: [this.shelterData.shelter_name, Validators.required],
       location: [this.shelterData.location, Validators.required],
-      email: [this.shelterData.email, [Validators.required, Validators.email]],
-      phone_number: [this.shelterData.phone_number, Validators.required],
-      description: [this.shelterData.description, Validators.required],
-      website: [this.shelterData.website]
+      email: [
+        this.shelterData.email,
+        [Validators.required, Validators.email]  
+      ],
+      phone_number: [
+        this.shelterData.phone_number,
+        [Validators.required, Validators.pattern(/^\d{8}$/)]
+      ],
+      description: [this.shelterData.description, [Validators.required, Validators.minLength(10)]],  
+      website: [
+        this.shelterData.website,
+        [Validators.pattern('https?://.+')] 
+      ]
     });
   }
-
+  
   enableEdit(): void {
     this.isEditing = true;
   }
@@ -70,16 +79,36 @@ export class ShelterInfoComponent {
     });
   }
 
+  // Handle logo file change and generate a preview URL for the image
+  onLogoChange(event: any): void {
+    const file = event.target.files[0];
+    if (file) {
+      this.logoFile = file;  // Store the actual file
+      const reader = new FileReader();
+      reader.onload = (e: any) => {
+        this.logoPreviewUrl = e.target.result;  // Set the preview URL for the logo image
+      };
+      reader.readAsDataURL(file);
+    }
+  }
+
+  // Check if the form is valid
+  get isFormValid() {
+    return this.shelterForm.valid;
+  }
+
   onSubmit(): void {
     if (this.shelterForm.invalid) {
       return;
     }
+
     const updatedShelter: Shelter = {
       ...this.shelterData,
       ...this.shelterForm.value
     };
 
-    this.shelterService.updateShelter(updatedShelter).subscribe({
+    // Pass the logo file to the update method (either the file or null)
+    this.shelterService.updateShelter(updatedShelter, this.logoFile).subscribe({
       next: (res) => {
         this.shelterData = res;
         this.isEditing = false;

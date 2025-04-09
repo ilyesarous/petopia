@@ -1,5 +1,6 @@
 package tn.esprit.petopia_backend.entities.event;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -40,8 +41,9 @@ public class Event {
     private User organisateur;
 
     // Une liste de participations pour cet événement
-    //@OneToMany(mappedBy = "event", cascade = CascadeType.ALL)
-    //private List<Participation> participations;
+    @OneToMany(mappedBy = "event", cascade = CascadeType.ALL)
+    @JsonIgnore
+    private List<Participation> participations;
 
     @Enumerated(EnumType.STRING)
     private VisibilityEvent visibiliteEvent;

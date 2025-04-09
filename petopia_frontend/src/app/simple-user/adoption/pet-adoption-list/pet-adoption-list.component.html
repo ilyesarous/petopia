@@ -100,7 +100,7 @@
     <!-- Loop over filteredPets instead of pets -->
     <div *ngFor="let pet of filteredPets" class="col-md-4 mb-4">
       <div class="card pet-card shadow-sm" style="cursor:pointer;" (click)="goToDetails(pet.idPet)">
-        <img [src]="pet.petImage || 'https://via.placeholder.com/300x200'" class="card-img-top" [alt]="pet.petName">
+        <img [src]="pet.petImage" class="card-img-top" [alt]="pet.petName">
         <div class="card-body text-center">
           <h5 class="card-title">{{ pet.petName }}</h5>
           <p class="card-text">
@@ -109,9 +109,28 @@
             <strong>Location:</strong> {{ pet.location }} <br>
             <strong>Shelter:</strong> {{ pet.shelter?.shelter_name }}
           </p>
-          <button class="btn adopt-btn"  [routerLink]="['/home/adoption/form', pet.idPet]" >Adopt Now</button>
+          <button class="btn adopt-btn"  [routerLink]="['/adoption/form', pet.idPet]" >Adopt Now</button>
         </div>
       </div>
     </div>
+        <!-- Pagination Controls -->
+      <div class="pagination-controls text-center mt-4" *ngIf="totalPages > 1">
+        <button class="btn btn-sm mx-1" [disabled]="currentPage === 1" (click)="changePage(currentPage - 1)">
+          Prev
+        </button>
+
+        <button
+          *ngFor="let page of pageNumbers"
+          class="btn btn-sm mx-1"
+          [class.active]="currentPage === page"
+          (click)="changePage(page)">
+          {{ page }}
+        </button>
+
+        <button class="btn btn-sm mx-1" [disabled]="currentPage === totalPages" (click)="changePage(currentPage + 1)">
+          Next
+        </button>
+      </div>
+
   </div>
 </div>

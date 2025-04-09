@@ -11,7 +11,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import tn.esprit.petopia_backend.entities.store.Product;
 import tn.esprit.petopia_backend.entities.store.ProductCategory;
+import tn.esprit.petopia_backend.entities.user.User;
 import tn.esprit.petopia_backend.services.store.ProductService;
+import tn.esprit.petopia_backend.services.user.UserService;
 
 import java.util.List;
 
@@ -19,18 +21,19 @@ import java.util.List;
 @AllArgsConstructor
 public class ProductController {
     private ProductService productService;
+    private UserService userService;
 
     @GetMapping("partner/product/get/{id}")
     public List<Product> findAllById(@PathVariable int id) {
         return productService.findProductsById(id);
     }
 
-    @GetMapping("auth/product")
+    @GetMapping("user/product")
     public List<Product> findAll() {
         return productService.findAll();
     }
 
-    @GetMapping("auth/product/{id}")
+    @GetMapping("user/product/{id}")
     public Product findById(@PathVariable int id) {
         return productService.findById(id);
     }
@@ -43,11 +46,12 @@ public class ProductController {
                               @RequestParam("old_price") float oldPrice,
                               @RequestParam("cuppon_price") float cupponPrice,
                               @RequestParam("category") String category,
-                              @RequestParam("availableQuantity") int availableQuantity) {
-        return getProduct(file, productName, productDescription, productPrice, oldPrice, cupponPrice, category, availableQuantity);
+                              @RequestParam("availableQuantity") int availableQuantity,
+                              @RequestParam("id_user") int idUser) {
+        return getProduct(file, productName, productDescription, productPrice, oldPrice, cupponPrice, category, availableQuantity, idUser);
     }
 
-    @PostMapping(path = "auth/product/add", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PostMapping(path = "user/product/add", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public Product addProductSecondHand(@RequestParam("product_image") MultipartFile file,
                                         @RequestParam("product_name") String productName,
                                         @RequestParam("product_description") String productDescription,
@@ -55,12 +59,14 @@ public class ProductController {
                                         @RequestParam("old_price") float oldPrice,
                                         @RequestParam("cuppon_price") float cupponPrice,
                                         @RequestParam("category") String category,
-                                        @RequestParam("availableQuantity") int availableQuantity) {
-        return getProduct(file, productName, productDescription, productPrice, oldPrice, cupponPrice, category, availableQuantity);
+                                        @RequestParam("availableQuantity") int availableQuantity,
+                                        @RequestParam("id_user") int idUser) {
+        return getProduct(file, productName, productDescription, productPrice, oldPrice, cupponPrice, category, availableQuantity, idUser);
     }
 
-    private Product getProduct(@RequestParam("product_image") MultipartFile file, @RequestParam("product_name") String productName, @RequestParam("product_description") String productDescription, @RequestParam("product_price") float productPrice, @RequestParam("old_price") float oldPrice, @RequestParam("cuppon_price") float cupponPrice, @RequestParam("category") String category, @RequestParam("availableQuantity") int availableQuantity) {
+    private Product getProduct(@RequestParam("product_image") MultipartFile file, @RequestParam("product_name") String productName, @RequestParam("product_description") String productDescription, @RequestParam("product_price") float productPrice, @RequestParam("old_price") float oldPrice, @RequestParam("cuppon_price") float cupponPrice, @RequestParam("category") String category, @RequestParam("availableQuantity") int availableQuantity, @RequestParam("id_user") int idUser) {
         Product product = new Product();
+        User user = userService.getUsersById(idUser).getOurUsers();
         product.setProduct_name(productName);
         product.setProduct_description(productDescription);
         product.setProduct_price(productPrice);
@@ -71,6 +77,7 @@ public class ProductController {
         product.setRating(0); // default values
         product.setReview_count(0);
         product.setLiked(false);
+        product.setUser(user);
         return productService.addProduct(file, product);
     }
 
@@ -79,7 +86,7 @@ public class ProductController {
         return productService.updateProduct(product);
     }
 
-    @PutMapping("auth/product/update/{id}")
+    @PutMapping("user/product/update/{id}")
     public Product updateLikedProduct(@PathVariable int id) {
         return productService.updateLikedStatus(id);
     }

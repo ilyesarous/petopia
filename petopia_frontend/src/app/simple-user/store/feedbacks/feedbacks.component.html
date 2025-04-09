@@ -47,7 +47,13 @@
   
     <!-- Reviews List -->
     <div class="reviews-list">
-      <div *ngFor="let feedback of feedbacks" class="review-card">
+      <!-- Add paginate pipe to your ngFor -->
+      <div *ngFor="let feedback of feedbacks | paginate: { 
+            itemsPerPage: itemsPerPage, 
+            currentPage: p,
+            totalItems: totalItems
+          }" 
+          class="review-card">
         <div class="reviewer-info">
           <div class="avatar">{{ 'U' }}</div>
           <div>
@@ -57,7 +63,7 @@
                 <i *ngFor="let star of [1,2,3,4,5]" 
                    class="bi bi-star{{ star <= feedback.stars_number ? '-fill' : '' }}"></i>
               </div>
-              <span class="review-date">{{ feedback.created_at | date:'MMM d, yyyy' }}</span>
+              <span class="review-date">{{ feedback.createdAt | date:'EEE, MMM yyyy' }}</span>
             </div>
           </div>
         </div>
@@ -69,6 +75,18 @@
             <i class="bi bi-hand-thumbs-up"></i> Helpful ({{ 0 }})
           </button>
         </div>
+      </div>
+      <div class="pagination-controls">
+        <pagination-controls 
+          (pageChange)="p = $event"
+          previousLabel="Prev"
+          nextLabel="Next"
+          screenReaderPaginationLabel="Pagination"
+          screenReaderPageLabel="page"
+          screenReaderCurrentLabel="You're on page"
+          [maxSize]="5"
+          [responsive]="true">
+        </pagination-controls>
       </div>
   
       <div *ngIf="feedbacks.length === 0" class="empty-reviews">

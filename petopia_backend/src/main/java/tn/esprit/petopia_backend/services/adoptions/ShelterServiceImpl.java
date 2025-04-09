@@ -3,32 +3,46 @@ package tn.esprit.petopia_backend.services.adoptions;
 
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 import tn.esprit.petopia_backend.entities.adoptions.Shelter;
 import tn.esprit.petopia_backend.entities.user.User;
 import tn.esprit.petopia_backend.repositories.adoptions.ShelterRepository;
 import tn.esprit.petopia_backend.repositories.user.UserRepository;
 import tn.esprit.petopia_backend.services.adoptions.IShelterService;
+import tn.esprit.petopia_backend.services.community.CloudinaryService;
+
+import java.io.IOException;
 import java.util.List;
 
 @Service
 public class ShelterServiceImpl implements IShelterService {
-
     private final ShelterRepository shelterRepository;
     private final UserRepository userRepository;
+    private final CloudinaryService cloudinaryService;
 
-    public ShelterServiceImpl(ShelterRepository shelterRepository, UserRepository userRepository) {
+    public ShelterServiceImpl(ShelterRepository shelterRepository, UserRepository userRepository, CloudinaryService cloudinaryService) {
         this.shelterRepository = shelterRepository;
         this.userRepository = userRepository;
+        this.cloudinaryService = cloudinaryService;
     }
 
     @Override
     @Transactional
-    public Shelter createShelter(Shelter shelter, Integer userIdFromToken) {
+    public Shelter createShelter(Shelter shelter, Integer userIdFromToken, MultipartFile logoFile) {
         User managedUser = userRepository.findById(userIdFromToken)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
         if (managedUser.getShelter() != null) {
             throw new RuntimeException("User already has a shelter. Update the existing one instead.");
+        }
+
+        try {
+            if (logoFile != null && !logoFile.isEmpty()) {
+                String logoUrl = cloudinaryService.uploadImage(logoFile);
+                shelter.setLogoUrl(logoUrl);
+            }
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to upload logo image", e);
         }
 
         Shelter savedShelter = shelterRepository.save(shelter);
@@ -41,20 +55,17 @@ public class ShelterServiceImpl implements IShelterService {
         return savedShelter;
     }
 
-
     @Override
     @Transactional
-    public Shelter updateShelter(Shelter shelter, Integer userIdFromToken) {
+    public Shelter updateShelter(Shelter shelter, Integer userIdFromToken, MultipartFile logoFile) {
         // First validate the shelter exists
         Shelter existingShelter = shelterRepository.findById(shelter.getId_shelter())
                 .orElseThrow(() -> new RuntimeException("Shelter not found"));
 
-        // Verify the shelter belongs to the user making the request
         if (!existingShelter.getUser().getId_user().equals(userIdFromToken)) {
             throw new RuntimeException("You can only update your own shelter.");
         }
 
-        // Update only non-null fields
         if (shelter.getShelter_name() != null) {
             existingShelter.setShelter_name(shelter.getShelter_name());
         }
@@ -72,6 +83,15 @@ public class ShelterServiceImpl implements IShelterService {
         }
         if (shelter.getWebsite() != null) {
             existingShelter.setWebsite(shelter.getWebsite());
+        }
+
+        if (logoFile != null && !logoFile.isEmpty()) {
+            try {
+                String logoUrl = cloudinaryService.uploadImage(logoFile);
+                existingShelter.setLogoUrl(logoUrl);
+            } catch (IOException e) {
+                throw new RuntimeException("Failed to upload logo image", e);
+            }
         }
 
         return shelterRepository.save(existingShelter);
