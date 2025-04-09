@@ -37,8 +37,11 @@ export class ShelterService {
     }
   
     deleteShelter(id: number): Observable<string> {
-      return this.http.delete<string>(`${this.apiUrl}/deleteShelter/${id}`);
+      return this.http.delete(`${this.apiUrl}/deleteShelter/${id}`, {
+        responseType: 'text'
+      });
     }
+    
   
     getShelterById(id: number): Observable<Shelter> {
       return this.http.get<Shelter>(`${this.apiUrl}/getShelter/${id}`);
