@@ -17,7 +17,14 @@
       </div>
     
       <!-- Loop over stories for actual story cards -->
-      <div class="story-card" *ngFor="let story of stories">
+      <div class="story-card" *ngFor="let story of stories; index as i" (click)="openStoryPopup(i)">
+        <!-- Delete icon (only for owner) -->
+        <button class="delete-icon" 
+                *ngIf="isOwner(story)" 
+                (click)="openDeleteConfirmation(story.id); $event.stopPropagation()" 
+                title="Delete Story">
+          <i class="bi bi-trash"></i>
+        </button>
         <div class="story-box">
           <img *ngIf="story.image" [src]="story.image" alt="Story image" />
         </div>
@@ -26,8 +33,6 @@
         </p>
       </div>
     </div>
-    
-    
   
     <!-- Right scroll button (optional) -->
     <button class="scroll-btn scroll-right btn" (click)="scrollStories('right')">
@@ -35,14 +40,31 @@
     </button>
   </div>
   
-  
-  
+    <!-- Story Popup Overlay (for viewing stories) -->
+    <div class="story-popup" *ngIf="activeStoryIndex > -1" (click)="closeStoryPopup()">
+      <div class="story-popup-content" (click)="$event.stopPropagation()">
+        <!-- Progress bar container -->
+        <div class="progress-bar">
+          <div class="progress" [style.width.%]="progress"></div>
+        </div>
+        <!-- Header: user info and close -->
+        <div class="story-popup-header">
+          <span class="story-user">{{ getActiveStory()?.user?.name || 'Unknown User' }}</span>
+          <button class="close-popup" (click)="closeStoryPopup()">&times;</button>
+        </div>
+        <!-- Story image -->
+        <img *ngIf="getActiveStory()?.image" [src]="getActiveStory()?.image" alt="Story" />
+        <!-- Navigation arrows -->
+        <button class="popup-arrow left-arrow" (click)="prevStory($event)"><i class="bi bi-chevron-left"></i></button>
+        <button class="popup-arrow right-arrow" (click)="nextStory($event)"><i class="bi bi-chevron-right"></i></button>
+      </div>
+    </div>
 
   <!-- Create Story Form -->
   <div *ngIf="showCreateStory" class="card mb-3 create-story-form">
     <div class="card-body">
       <h5 class="card-title">Create a Story</h5>
-      <!-- Assign a unique id like "storyFileInput" -->
+      <!-- Unique id for story file input -->
       <input
         type="file"
         id="storyFileInput"
@@ -51,15 +73,12 @@
         class="form-control"
         hidden
       />
-      <!-- Use the same id in the label -->
       <label for="storyFileInput" class="btn btn-secondary mb-0">
         <i class="bi bi-image me-1"></i> Add image
       </label>
       <span class="file-name ms-2" *ngIf="selectedStoryFile">
         {{ selectedStoryFileNames }}
       </span>
-      
- 
       <textarea
         class="form-control mt-2"
         placeholder="Add a caption (optional)"
@@ -71,6 +90,7 @@
       </div>
     </div>
   </div>
+
 
   <!-- Search and sort bar -->
   <div class="mb-3">
@@ -155,6 +175,26 @@
   <div class="row">
     <div class="col-12 mb-3" *ngFor="let post of posts">
       <app-post [post]="post"></app-post>
+    </div>
+  </div>
+  <div class="modal fade custom-modal" 
+       [class.show]="showDeleteConfirmation" 
+       [style.display]="showDeleteConfirmation ? 'block' : 'none'" 
+       tabindex="-1" 
+       role="dialog">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Confirm Story Deletion</h5>
+        </div>
+        <div class="modal-body">
+          <p>Are you sure you want to delete this story?</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" (click)="cancelDelete()">Cancel</button>
+          <button type="button" class="btn btn-danger" (click)="confirmDelete()">Delete</button>
+        </div>
+      </div>
     </div>
   </div>
 </div>
