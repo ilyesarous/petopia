@@ -45,50 +45,56 @@ export class AdoptPetComponent implements OnInit {
     });
   }
 
+  previewUrl: string | ArrayBuffer | null = null;
+
   onFileSelected(event: any): void {
     const file: File = event.target.files[0];
     if (file) {
       this.selectedFile = file;
       this.selectedFileName = file.name;
       this.fileError = '';
+  
+      const reader = new FileReader();
+      reader.onload = () => {
+        this.previewUrl = reader.result;
+      };
+      reader.readAsDataURL(file);
     }
   }
+  
 
   onSubmit(): void {
-    console.log('Submit clicked');
     if (this.adoptionForm.invalid) {
-      console.log('Form invalid', this.adoptionForm.errors);
       return;
     }
+  
     if (!this.petId) {
       console.log('No petId');
       return;
     }
+  
     if (!this.selectedFile) {
       this.fileError = 'CIN image is required.';
       return;
     }
-
-    console.log('Creating FormData');
+  
     const adoptionPayload = {
       motivation_letter: this.adoptionForm.get('motivation_letter')?.value,
       pet: { idPet: this.petId }
     };
-
-    this.adoptionService.createAdoption(adoptionPayload).subscribe({
+  
+    this.adoptionService.createAdoption(adoptionPayload, this.selectedFile).subscribe({
       next: (res) => {
         console.log('Success:', res);
-        // Instead of alerting, show the popup modal
         this.showPopup = true;
       },
       error: (err) => {
         console.error('Full error:', err);
-        console.error('Error status:', err.status);
-        console.error('Error message:', err.message);
         alert('There was an error. Please try again.');
       }
     });
   }
+  
 
   closePopup(): void {
     this.showPopup = false;

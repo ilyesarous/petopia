@@ -20,6 +20,13 @@ export class PetAdoptionListComponent implements OnInit {
   selectedLocation: string = '';
   distinctLocations: string[] = [];
 
+
+  //pagination
+  petsPerPage: number = 6;
+  currentPage: number = 1;
+  totalPages: number = 1;
+  pageNumbers: number[] = [];
+
   constructor(private petService: PetService, private router: Router, private route: ActivatedRoute) {}
   ngOnInit(): void {
     this.loadUnassignedPets();
@@ -29,8 +36,7 @@ export class PetAdoptionListComponent implements OnInit {
     this.petService.getUnassignedPets().subscribe({
       next: (data: Pet[]) => {
         this.pets = data;
-        this.filteredPets = data;
-        // Build a unique list of locations for the dropdown
+        this.applyFilters(); 
         this.distinctLocations = Array.from(new Set(data.map(p => p.location))).filter(loc => loc);
       },
       error: (err) => console.error('Error loading unassigned pets', err)
@@ -39,22 +45,33 @@ export class PetAdoptionListComponent implements OnInit {
 
   applyFilters(): void {
     const term = this.searchTerm.toLowerCase();
-
-    this.filteredPets = this.pets.filter((pet) => {
-      // Search match: name or breed
+  
+    const filtered = this.pets.filter((pet) => {
       const matchesSearch = pet.petName?.toLowerCase().includes(term)
-                        || pet.breed?.toLowerCase().includes(term);
-
-      // Species match
-      const matchesSpecies = !this.selectedSpecies 
-                          || (pet.species && pet.species.toLowerCase() === this.selectedSpecies);
-
-      // Location match
-      const matchesLocation = !this.selectedLocation 
-                           || (pet.location && pet.location.toLowerCase() === this.selectedLocation.toLowerCase());
-
+        || pet.breed?.toLowerCase().includes(term);
+  
+      const matchesSpecies = !this.selectedSpecies
+        || (pet.species && pet.species.toLowerCase() === this.selectedSpecies);
+  
+      const matchesLocation = !this.selectedLocation
+        || (pet.location && pet.location.toLowerCase() === this.selectedLocation.toLowerCase());
+  
       return matchesSearch && matchesSpecies && matchesLocation;
     });
+  
+    this.totalPages = Math.ceil(filtered.length / this.petsPerPage);
+    this.pageNumbers = Array.from({ length: this.totalPages }, (_, i) => i + 1);
+    this.currentPage = Math.min(this.currentPage, this.totalPages); 
+  
+    const start = (this.currentPage - 1) * this.petsPerPage;
+    const end = start + this.petsPerPage;
+    this.filteredPets = filtered.slice(start, end);
+  }
+  changePage(page: number): void {
+    if (page >= 1 && page <= this.totalPages) {
+      this.currentPage = page;
+      this.applyFilters();
+    }
   }
 
   goToDetails(id: number) {

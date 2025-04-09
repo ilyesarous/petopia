@@ -113,5 +113,24 @@
         </div>
       </div>
     </div>
+        <!-- Pagination Controls -->
+      <div class="pagination-controls text-center mt-4" *ngIf="totalPages > 1">
+        <button class="btn btn-sm mx-1" [disabled]="currentPage === 1" (click)="changePage(currentPage - 1)">
+          Prev
+        </button>
+
+        <button
+          *ngFor="let page of pageNumbers"
+          class="btn btn-sm mx-1"
+          [class.active]="currentPage === page"
+          (click)="changePage(page)">
+          {{ page }}
+        </button>
+
+        <button class="btn btn-sm mx-1" [disabled]="currentPage === totalPages" (click)="changePage(currentPage + 1)">
+          Next
+        </button>
+      </div>
+
   </div>
 </div>

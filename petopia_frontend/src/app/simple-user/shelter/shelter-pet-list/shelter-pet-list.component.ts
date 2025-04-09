@@ -138,7 +138,7 @@ export class ShelterPetListComponent {
     setTimeout(() => {
       this.alertMessage = '';
       this.alertClass = '';
-    }, 4000);
+    }, 1000);
   }
 
   getStatusClass(status?: string): string {
@@ -159,13 +159,13 @@ export class ShelterPetListComponent {
 
   initEditForm(): void {
     this.editPetForm = this.fb.group({
-      petName: [this.selectedPet.petName, Validators.required],
-      breed: [this.selectedPet.breed, Validators.required],
-      petAge: [this.selectedPet.petAge, [Validators.required, Validators.min(0)]],
+      petName: [this.selectedPet.petName,[Validators.required, Validators.minLength(2)]],
+      breed: [this.selectedPet.breed, [Validators.required, Validators.minLength(2), Validators.max(20)]],
+      petAge: [this.selectedPet.petAge, [Validators.required, Validators.min(1)]],
       species: [this.selectedPet.species, Validators.required],
       gender: [this.selectedPet.gender, Validators.required],
       size: [this.selectedPet.size, Validators.required],
-      healthStatus: [this.selectedPet.healthStatus],
+      healthStatus: [this.selectedPet.healthStatus,[Validators.required, Validators.maxLength(50)]],
     });
   }
 
@@ -231,13 +231,13 @@ export class ShelterPetListComponent {
 
   initAddForm(): void {
     this.addPetForm = this.fb.group({
-      petName: ['', [Validators.required, Validators.minLength(2)]],
-      breed: ['', Validators.required],
-      petAge: [0, [Validators.required, Validators.min(0)]],
+      petName: ['',[Validators.required, Validators.minLength(2)]],
+      breed: ['', [Validators.required, Validators.minLength(2), Validators.max(20)]],
+      petAge: [0, [Validators.required, Validators.min(1)]],
       species: ['', Validators.required],
       gender: ['', Validators.required],
       size: ['', Validators.required],
-      healthStatus: ['']
+      healthStatus: ['',[Validators.required, Validators.maxLength(50)]],
     });
   }
 

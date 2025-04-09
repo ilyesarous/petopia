@@ -97,6 +97,8 @@ import { StoryComponent } from './simple-user/story/story.component';
 import { RelativeTimePipe } from './pipes/relative-time.pipe';
 
 import { CartComponent } from './simple-user/store/cart/cart.component';
+import { ShelterListComponent } from './admin/shelter/shelter-list/shelter-list.component';
+import { ShelterDetailsComponent } from './admin/shelter/shelter-details/shelter-details.component';
 
 
 @NgModule({
@@ -164,7 +166,9 @@ import { CartComponent } from './simple-user/store/cart/cart.component';
     GameComponent,
     BoardComponent,
     ShelterAdoptionRequestsComponent,
-    CartComponent
+    CartComponent,
+    ShelterListComponent,
+    ShelterDetailsComponent
   ],
   imports: [
     BrowserModule,

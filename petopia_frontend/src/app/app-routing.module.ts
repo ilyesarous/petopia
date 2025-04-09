@@ -43,6 +43,8 @@ import { GameComponent } from './simple-user/vet/tic-tac-toe/game/game.component
 import { AdoptionDetailsComponent } from './simple-user/shelter/adoption-details/adoption-details.component';
 import { ShelterHomeComponent } from './simple-user/shelter/shelter-home/shelter-home.component';
 import { CartComponent } from './simple-user/store/cart/cart.component';
+import { ShelterListComponent } from './admin/shelter/shelter-list/shelter-list.component';
+import { ShelterDetailsComponent } from './admin/shelter/shelter-details/shelter-details.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -88,8 +90,6 @@ const routes: Routes = [
     children: [
       { path: 'user', component: ChartComponent },
       { path: 'store', component: StoreDashComponent },
-
-
       { path: 'vet', component: DashPrincipaleComponent },
       { path: 'tic-tac-toe', component: GameComponent },
       { path: 'consultations', component: ConsultationListComponent },
@@ -100,6 +100,10 @@ const routes: Routes = [
         path: 'dog-breed-recognition',
         component: AppDogBreedRecognitionRedirectButtonComponent,
       },
+      {path:'shelters',component: ShelterListComponent, canActivate: [AuthGuard]},
+      {path:'shelters/:id',component: ShelterDetailsComponent, canActivate: [AuthGuard]},
+
+
     ],
   },
 

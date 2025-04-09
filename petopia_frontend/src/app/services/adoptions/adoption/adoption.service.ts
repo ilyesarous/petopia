@@ -12,10 +12,14 @@ export class AdoptionService {
 
   constructor(private http: HttpClient) {}
 
-  // Create an adoption request. Depending on your backend, you might send JSON or FormData.
-  createAdoption(adoption: any): Observable<Adoption> {
-    return this.http.post<Adoption>(`${this.apiUrl}/addAdoption`, adoption);
+  createAdoption(adoptionData: any, cinImage: File): Observable<Adoption> {
+    const formData = new FormData();
+    formData.append('cinImage', cinImage);
+    formData.append('adoptionData', JSON.stringify(adoptionData));
+  
+    return this.http.post<Adoption>(`${this.apiUrl}/addAdoption`, formData);
   }
+  
 
   updateAdoption(id: number, adoption: Adoption): Observable<Adoption> {
     return this.http.put<Adoption>(`${this.apiUrl}/updateAdoption/${id}`, adoption);
