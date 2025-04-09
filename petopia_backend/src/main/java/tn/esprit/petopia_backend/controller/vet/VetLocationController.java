@@ -28,7 +28,7 @@ public class VetLocationController {
         return vetLocationService.getAllLocations();
     }
 
-    @DeleteMapping("/auth/api/vet-locations/All/{id}")
+    @DeleteMapping("/auth/api/vet-locations/delete/{id}")
     public void deleteLocation(@PathVariable Long id) {
         vetLocationService.deleteLocation(id);
     }
