@@ -162,3 +162,22 @@ h2 {
   opacity: 0.5;
   cursor: not-allowed;
 }
+.pet-title-bar {
+  padding: 0 1rem;
+}
+
+.adoption-requests-btn {
+  font-weight: 600;
+  border-radius: 50px;
+  padding: 10px 24px;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  border: 2px solid #F83182;
+  color: #F83182;
+}
+
+.adoption-requests-btn:hover {
+  background-color: #F83182;
+  color: #fff;
+  box-shadow: 0 6px 15px rgba(248, 49, 130, 0.2);
+}
