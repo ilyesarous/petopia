@@ -108,6 +108,8 @@ import { MyAdoptionsComponent } from './simple-user/adoption/my-adoptions/my-ado
 import { AddShelterComponent } from './simple-user/adoption/add-shelter/add-shelter.component';
 import { ShelterSignCertificateComponent } from './simple-user/shelter/shelter-sign-certificate/shelter-sign-certificate.component';
 import { ShelterCertificateDetailsComponent } from './simple-user/shelter/shelter-certificate-details/shelter-certificate-details.component';
+import { CommunityListComponent } from './admin/community/community-list/community-list.component';
+import { CommunityDetailsComponent } from './admin/community/community-details/community-details.component';
 
 @NgModule({
   declarations: [
@@ -185,6 +187,8 @@ import { ShelterCertificateDetailsComponent } from './simple-user/shelter/shelte
     AddShelterComponent,
     ShelterSignCertificateComponent,
     ShelterCertificateDetailsComponent,
+    CommunityListComponent,
+    CommunityDetailsComponent,
   ],
   imports: [
     BrowserModule,

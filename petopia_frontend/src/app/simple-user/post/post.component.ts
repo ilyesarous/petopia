@@ -5,6 +5,7 @@ import { Post } from '../../models/community/post';
 import { Comment } from '../../models/community/comment';
 import { CommentService } from '../../services/community/comment.service';
 import { PostService } from '../../services/community/post.service';
+import { NgForm } from '@angular/forms';
 
 @Component({
   selector: 'app-post',
@@ -21,6 +22,10 @@ export class PostComponent implements OnInit {
   newComment: string = '';
   currentUserId: number | null = null;
   isDeleted: boolean = false;  // Add flag for deletion
+  selectedPostImageFile: File | null = null;
+  removeImage: boolean = false;
+
+
 
   constructor(
     private reactionService: ReactionService,
@@ -140,19 +145,40 @@ export class PostComponent implements OnInit {
     this.post['isEditing'] = false;
   }
 
-  updatePost(): void {
-    const updatedContent = this.post['editedContent'];
-    if (!updatedContent || !this.post.id) return;
-    this.postService.updatePost(this.post.id, { ...this.post, content: updatedContent }).subscribe({
+  updatePost(post: Post): void {
+    const updatedContent = post['editedContent'];
+    if (!updatedContent || !post.id) return;
+  
+    const formData = new FormData();
+    formData.append('content', updatedContent);
+    formData.append('postType', post.postType.toString().trim().toUpperCase().replace(/ /g, '_'));
+  
+    if (this.removeImage) {
+      formData.append('removeImage', 'true');
+    }
+  
+    if (this.selectedPostImageFile) {
+      formData.append('file', this.selectedPostImageFile, this.selectedPostImageFile.name);
+    }
+  
+    this.postService.updatePost(post.id, formData).subscribe({
       next: (updatedPost: Post) => {
-        this.post.content = updatedPost.content;
-        this.post['isEditing'] = false;
+        post.content = updatedPost.content;
+        post.image = updatedPost.image;
+        post.postType = updatedPost.postType;
+        post['isEditing'] = false;
+        this.selectedPostImageFile = null;
+        this.removeImage = false;
       },
       error: (err: any) => {
         console.error('Error updating post:', err);
       }
     });
   }
+  
+  
+  
+  
 
   deletePost(): void {
     if (!this.post.id) return;
@@ -219,7 +245,7 @@ export class PostComponent implements OnInit {
     });
   }
 
-  addComment(): void {
+  addComment(commentForm: NgForm): void {
     if (!this.newComment.trim()) return;
     const userIdStr = localStorage.getItem('userId');
     if (!userIdStr) {
@@ -233,11 +259,57 @@ export class PostComponent implements OnInit {
           this.post.comments = [];
         }
         this.post.comments.push(comment);
+        // Reset comment input and form state
         this.newComment = '';
+        commentForm.resetForm();
       },
       error: (err: any) => {
         console.error('Error adding comment:', err);
       }
     });
   }
+  onPostImageSelected(event: Event): void {
+    const target = event.target as HTMLInputElement;
+    if (target.files && target.files.length > 0) {
+      this.selectedPostImageFile = target.files[0];
+      console.log('Selected new post image file:', this.selectedPostImageFile);
+      // DO NOT do something like: post.image += this.selectedPostImageFile.name
+    }
+  }
+  
+  
+  
+  
+  // Toggle the removeImage flag when the user clicks the Remove image button
+  toggleRemoveImage(): void {
+    // Toggle the flag. If the user selects to remove the image, clear any chosen new file.
+    this.removeImage = !this.removeImage;
+    if (this.removeImage) {
+      this.selectedPostImageFile = null;
+    }
+  }
+  deleteExistingImage(post: Post): void {
+    // For simplicity, we'll clear the image completely.
+    // Alternatively, if posts can have multiple images (comma separated), you could remove the specific URL.
+    if (confirm('Are you sure you want to delete the current image?')) {
+      // Update the post by sending a flag to the backend (or modify post.image directly if you want local update).
+      // Here, assume the backend will clear the image when removeImage is "true".
+      const formData = new FormData();
+      formData.append('content', post['editedContent'] || post.content);
+      formData.append('postType', post.postType.toString().trim().toUpperCase().replace(/ /g, '_'));
+      formData.append('removeImage', 'true');
+      
+      this.postService.updatePost(post.id, formData).subscribe({
+        next: (updatedPost: Post) => {
+          post.image = updatedPost.image;  // should be null (or empty) if removed
+          // Optionally notify the user.
+        },
+        error: (err: any) => {
+          console.error('Error deleting image from post:', err);
+        }
+      });
+    }
+  }
+  
+  
 }

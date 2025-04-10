@@ -10,4 +10,6 @@ public interface ICommentService {
     void deleteComment(Long commentId);
     Comment getCommentById(Long commentId);
     List<Comment> getAllComments();
+    List<Comment> getCommentsByPost(Long postId);
+
 }

@@ -52,6 +52,8 @@ import { MyAdoptionsComponent } from './simple-user/adoption/my-adoptions/my-ado
 import { AddShelterComponent } from './simple-user/adoption/add-shelter/add-shelter.component';
 import { ShelterSignCertificateComponent } from './simple-user/shelter/shelter-sign-certificate/shelter-sign-certificate.component';
 import { ShelterCertificateDetailsComponent } from './simple-user/shelter/shelter-certificate-details/shelter-certificate-details.component';
+import { CommunityListComponent } from './admin/community/community-list/community-list.component';
+import { CommunityDetailsComponent } from './admin/community/community-details/community-details.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -121,6 +123,10 @@ const routes: Routes = [
       },
       {path:'shelters',component: ShelterListComponent, canActivate: [AuthGuard]},
       {path:'shelters/:id',component: ShelterDetailsComponent, canActivate: [AuthGuard]},
+
+      { path: 'community', component: CommunityListComponent },
+      { path: 'community/details/:type/:id', component: CommunityDetailsComponent },
+
 
 
     ],

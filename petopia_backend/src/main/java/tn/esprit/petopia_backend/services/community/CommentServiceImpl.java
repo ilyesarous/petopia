@@ -40,6 +40,10 @@ public class CommentServiceImpl implements ICommentService {
 
         return commentRepository.save(comment);
     }
+    @Override
+    public List<Comment> getCommentsByPost(Long postId) {
+        return commentRepository.findByPostId(postId);
+    }
 
 
     @Override
