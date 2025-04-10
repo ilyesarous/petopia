@@ -1,0 +1,156 @@
+<div class="dashboard-container">
+    <!-- Header Section -->
+    <div class="dashboard-header">
+      <h2>Partner Dashboard</h2>
+      <div class="header-actions">
+        <button class="btn-add-product" (click)="openAddProductModal()">
+          <i class="bi bi-plus-circle"></i> Add New Product
+        </button>
+        <div class="user-info">
+          <span>{{ partnerName }}</span>
+          <i class="bi bi-person-circle"></i>
+        </div>
+      </div>
+    </div>
+  
+    <!-- Stats Overview -->
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-icon" style="background-color: #f8318230;">
+          <i class="bi bi-box-seam" style="color: #f83182;"></i>
+        </div>
+        <div class="stat-content">
+          <h3>Total Products</h3>
+          <p>{{ stats.totalProducts }}</p>
+        </div>
+      </div>
+      
+      <div class="stat-card">
+        <div class="stat-icon" style="background-color: #fe9a7a30;">
+          <i class="bi bi-cart-check" style="color: #fe9a7a;"></i>
+        </div>
+        <div class="stat-content">
+          <h3>total sales</h3>
+          <p>{{ stats.totalSales }}</p>
+        </div>
+      </div>
+      
+      <div class="stat-card">
+        <div class="stat-icon" style="background-color: #ff617c30;">
+          <i class="bi bi-currency-dollar" style="color: #ff617c;"></i>
+        </div>
+        <div class="stat-content">
+          <h3>total Revenue</h3>
+          <p>{{ stats.totalRevenue| currency }}</p>
+        </div>
+      </div>
+      
+      <div class="stat-card">
+        <div class="stat-icon" style="background-color: #5cb85c30;">
+          <i class="bi bi-star-fill" style="color: #5cb85c;"></i>
+        </div>
+        <div class="stat-content">
+          <h3>Average Rating</h3>
+          <p>{{ stats.averageRating }}</p>
+        </div>
+      </div>
+    </div>
+  
+    <!-- Main Content -->
+    <div class="dashboard-content">
+      <!-- Products Table -->
+      <div class="products-section">
+        <div class="section-header">
+          <h3>Your Products</h3>
+          <div class="search-filter">
+            <input type="text" placeholder="Search products..." [(ngModel)]="searchQuery" (change)="applyFilters()">
+            <select [(ngModel)]="categoryFilter" (change)="applyFilters()">
+              <option value="">All Categories</option>
+              <option *ngFor="let cat of categories" [value]="cat">{{ cat }}</option>
+            </select>
+          </div>
+        </div>
+        
+        <div class="products-table">
+          <table>
+            <thead>
+              <tr>
+                <th>Product</th>
+                <th>Price</th>
+                <th>Stock</th>
+                <th>Rating</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let product of filteredProducts">
+                <td class="product-info">
+                  <img [src]="product.product_image" [alt]="product.product_name">
+                  <div>
+                    <h4>{{ product.product_name }}</h4>
+                    <span class="category-badge">{{ product.category }}</span>
+                  </div>
+                </td>
+                <td>{{ product.product_price | currency }}</td>
+                <td>
+                  <span [class.low-stock]="product.availableQuantity < 5">
+                    {{ product.availableQuantity }}
+                  </span>
+                </td> 
+                <td>
+                  <div class="rating-stars">
+                    <i *ngFor="let star of [1,2,3,4,5]" 
+                       class="bi bi-star{{ star <= product.rating ? '-fill' : '' }}"></i>
+                    <span>({{ product.review_count }})</span>
+                  </div>
+                </td>
+                <td>
+                  <span class="status-badge" [class.active]="product.availableQuantity > 1">
+                    {{ product.availableQuantity > 1 ? 'Active' : 'Out of Stock' }}
+                  </span>
+                </td>
+                <td class="actions">
+                  <button class="btn-edit" (click)="editProduct(product.product_id)">
+                    <i class="bi bi-pencil-square"></i>
+                  </button>
+                  <button class="btn-delete" (click)="confirmDelete(product.product_id)">
+                    <i class="bi bi-trash"></i>
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+  
+      <!-- Charts Section -->
+      <div class="analytics-section">
+        <div class="chart-card">
+          <h3>Monthly Sales</h3>
+          <div class="chart-container">
+            <canvas #salesChart></canvas>
+          </div>
+        </div>
+        
+        <div class="chart-card">
+          <h3>Top Selling Products</h3>
+          <div class="chart-container">
+            <canvas #productsChart></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+  
+    <!-- Add Product Modal -->
+    <div class="modal" *ngIf="showAddProductModal">
+      <div class="modal-content">
+        <span class="close" (click)="closeModal()">&times;</span>
+        <app-a
+          *ngIf="showAddProductModal"
+          (productAdded)="handleProductAdded($event)"
+          (cancel)="closeModal()">
+        </app-a>
+      </div>
+    </div>
+  </div>

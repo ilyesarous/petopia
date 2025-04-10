@@ -113,6 +113,7 @@ import { CommunityDetailsComponent } from './admin/community/community-details/c
 import { MatchingComponent } from './simple-user/matching/matching/matching.component';
 import { PetDetailsComponent } from './simple-user/matching/pet-details/pet-details.component';
 
+import { HomePartnerComponent } from './simple-user/store/partner/home-partner/home-partner.component';
 
 
 @NgModule({
@@ -196,6 +197,7 @@ import { PetDetailsComponent } from './simple-user/matching/pet-details/pet-deta
     ShelterCertificateDetailsComponent,
     CommunityListComponent,
     CommunityDetailsComponent,
+    HomePartnerComponent
   ],
   imports: [
     BrowserModule,

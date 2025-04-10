@@ -48,6 +48,7 @@ import { GameComponent } from './simple-user/vet/tic-tac-toe/game/game.component
 import { AdoptionDetailsComponent } from './simple-user/shelter/adoption-details/adoption-details.component';
 import { ShelterHomeComponent } from './simple-user/shelter/shelter-home/shelter-home.component';
 import { CartComponent } from './simple-user/store/cart/cart.component';
+import { HomePartnerComponent } from './simple-user/store/partner/home-partner/home-partner.component';
 import { ShelterListComponent } from './admin/shelter/shelter-list/shelter-list.component';
 import { ShelterDetailsComponent } from './admin/shelter/shelter-details/shelter-details.component';
 import { MyAdoptionsComponent } from './simple-user/adoption/my-adoptions/my-adoptions.component';
@@ -64,14 +65,15 @@ const routes: Routes = [
   { path: 'products/:id', component: ProductDetailComponent, canActivate: [AuthGuard] },
   { path: 'favorites', component: FavoriteComponent, canActivate: [AuthGuard]},
   { path: 'cart', component: CartComponent, canActivate: [AuthGuard]},
-  { path: 'vet', component: DashPrincipaleHomeVetComponent, canActivate: [AuthGuard] },
-  { path: 'vet/pet-growth/:id', component: PetGrowthVetComponent, canActivate: [AuthGuard] },
+  { path: 'partner/home', component: HomePartnerComponent, canActivate: [AuthGuard]},
   { path: 'matchy', component: MatchingComponent ,canActivate: [AuthGuard]  },
   { path: 'pet-details/:id', component:PetDetailsComponent ,canActivate: [AuthGuard] },
   { path: 'events', component: EventListComponent, canActivate: [AuthGuard] },
   //{ path: 'participer', component: ParticipationFormComponent,canActivate: [AuthGuard] },
   { path: 'participate/:id', component: ParticipationFormComponent, canActivate: [AuthGuard] },
 
+  { path: 'vet', component: DashPrincipaleHomeVetComponent, canActivate: [AuthGuard] },
+  { path: 'vet/pet-growth/:id', component: PetGrowthVetComponent, canActivate: [AuthGuard] },
   { path: 'vet/treatment-pets', component: TreatmentPetsComponent, canActivate: [AuthGuard] },
   { path: 'vet/treatment-specific-pet/:id', component: TreatmentSpecificPetsComponent, canActivate: [AuthGuard]},
   { path: 'vet/notification-vet', component: NotificationVetComponent, canActivate: [AuthGuard]},

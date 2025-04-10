@@ -50,6 +50,11 @@ export class NavbarComponent implements OnInit {
      {id:1 , name: 'MyPets', link: 'shelter/pets'},
      {id:2 , name: 'Adoption Requests', link: 'shelter/adoption-requests'}
   ];
+
+  partnerPages = [
+    {id: 0, name: 'Home', link: 'partner/home'},
+    {id: 1, name: 'add new product', link: 'partner/product/add'},
+  ]
   constructor(private authService: AuthService, private router: Router) {}
 
 
