@@ -1,0 +1,18 @@
+<div class="certificate-card" *ngIf="certificate">
+    <h3>Pet: {{ certificate.pet.petName }}</h3>  
+    <!-- Button to fetch and view PDF -->
+    <button class="btn" (click)="fetchPdf(certificate.id_certificate)">
+      View Certificate
+    </button>
+  
+    <!-- Display the PDF when available -->
+    <div *ngIf="certificatePdfUrl" style="margin-top: 20px;">
+      <iframe
+        [src]="certificatePdfUrl"
+        width="100%"
+        height="600px"
+        style="border: 1px solid #ccc; border-radius: 8px;"
+      ></iframe>
+    </div>
+  </div>
+  
