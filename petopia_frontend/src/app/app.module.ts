@@ -110,6 +110,8 @@ import { ShelterSignCertificateComponent } from './simple-user/shelter/shelter-s
 import { ShelterCertificateDetailsComponent } from './simple-user/shelter/shelter-certificate-details/shelter-certificate-details.component';
 import { CommunityListComponent } from './admin/community/community-list/community-list.component';
 import { CommunityDetailsComponent } from './admin/community/community-details/community-details.component';
+private chatWebSocketService: ChatWebSocketService,
+
 
 @NgModule({
   declarations: [
@@ -137,6 +139,9 @@ import { CommunityDetailsComponent } from './admin/community/community-details/c
     ConsultationDetailsModalComponent,
     ChartComponent,
     ProductsComponent,
+    MatchingComponent,
+    PetDetailsComponent,
+
     ProductCardComponent,
     CarouselComponent,
     BrandsComponent,

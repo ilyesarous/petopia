@@ -32,7 +32,7 @@ public class PreferencesController {
     }
     @DeleteMapping("/deletePreferences/{idPreferences}")
     @PreAuthorize("hasAuthority('ROLE_USER')")
-    void deleteChambre(@PathVariable int idPreferences){
+    void deletePreferences(@PathVariable int idPreferences){
         iPreferencesService.deletePreferences(idPreferences);
     }
     @GetMapping("/getAll")

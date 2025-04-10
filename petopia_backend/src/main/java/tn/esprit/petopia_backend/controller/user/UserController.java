@@ -16,9 +16,11 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Date;
 import java.util.Map;
 import java.util.Optional;
+import java.util.UUID;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:4200")
@@ -56,7 +58,7 @@ public class UserController {
                     reg.getEmail(),
                     new Date()
             );
-            notificationService.notifyNewSignup(notification);  
+            notificationService.notifyNewSignup(notification);
         }
 
         return ResponseEntity.ok(response);
@@ -97,12 +99,14 @@ public class UserController {
     @GetMapping("/admin/get-all-users")
     public ResponseEntity<ReqRes> getAllUsers(){
         return ResponseEntity.ok(usersManagementService.getAllUsers());
+
     }
 
     @GetMapping("/user/get-user/{userId}")
     @PreAuthorize("hasAnyAuthority('ROLE_USER','ROLE_ADMIN','ROLE_PARTNER','ROLE_SHELTER')")
     public ResponseEntity<ReqRes> getuserByID(@PathVariable Integer userId){
         return ResponseEntity.ok(usersManagementService.getUsersById(userId));
+
     }
 
     @GetMapping("/admin/get-users/{userId}")
@@ -131,5 +135,4 @@ public class UserController {
         boolean exists = usersManagementService.checkEmailExists(email);
         return ResponseEntity.ok(exists);
     }
-
 }

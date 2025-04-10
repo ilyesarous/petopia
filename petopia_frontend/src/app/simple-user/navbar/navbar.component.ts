@@ -14,6 +14,11 @@ export class NavbarComponent implements OnInit {
   isDropdownOpen = false;
   isMobileMenuOpen = false;
   selectedItem: string = 'Home';
+  showMatchingDropdown: boolean = false;
+  list:any[] = [
+    {id: 1, icon: 'bi bi-envelope'},
+    {id: 2, icon: 'bi bi-bell'},
+  ]
 
   ngOnInit() {
     this.authService.isAuthenticated.subscribe((status) => {
@@ -37,6 +42,7 @@ export class NavbarComponent implements OnInit {
     { id: 4, name: 'Events', link: '/events' },
     { id: 5, name: 'Vet', link: 'vet' },
     {id: 6, name: 'Adoption', link: 'adoption'},
+    {id: 6, name: 'Matching', link: 'matchy'},
   ];
 
   shelterPages = [

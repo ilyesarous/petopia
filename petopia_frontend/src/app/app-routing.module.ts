@@ -23,6 +23,8 @@ import { PostComponent } from './simple-user/post/post.component';
 import { EventListComponent } from './admin/Event/event-list/event-list.component';
 import { EventFormComponent } from './admin/Event/event-form/event-form.component';
 import { ParticipationFormComponent } from './simple-user/Event/participation-form/participation-form.component';
+import { MatchingComponent } from './simple-user/matching/matching/matching.component';
+import { PetDetailsComponent } from './simple-user/matching/pet-details/pet-details.component';
 
 import { PetAdoptionListComponent } from './simple-user/adoption/pet-adoption-list/pet-adoption-list.component';
 import { PetAdoptDetailsComponent } from './simple-user/adoption/pet-adopt-details/pet-adopt-details.component';
@@ -64,6 +66,8 @@ const routes: Routes = [
   { path: 'cart', component: CartComponent, canActivate: [AuthGuard]},
   { path: 'vet', component: DashPrincipaleHomeVetComponent, canActivate: [AuthGuard] },
   { path: 'vet/pet-growth/:id', component: PetGrowthVetComponent, canActivate: [AuthGuard] },
+  { path: 'matchy', component: MatchingComponent ,canActivate: [AuthGuard]  },
+  { path: 'pet-details/:id', component:PetDetailsComponent ,canActivate: [AuthGuard] },
   { path: 'events', component: EventListComponent, canActivate: [AuthGuard] },
   //{ path: 'participer', component: ParticipationFormComponent,canActivate: [AuthGuard] },
   { path: 'participate/:id', component: ParticipationFormComponent, canActivate: [AuthGuard] },

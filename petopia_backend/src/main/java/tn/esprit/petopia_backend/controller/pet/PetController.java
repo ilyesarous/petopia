@@ -42,6 +42,8 @@ public class PetController {
     private final CloudinaryService cloudinaryService;
 
     public PetController(PetService petService,IShelterService shelterService,CloudinaryService cloudinaryService) {
+
+    public PetController(PetService petService, IShelterService shelterService) {
         this.petService = petService;
         this.shelterService= shelterService;
         this.cloudinaryService = cloudinaryService;
@@ -205,12 +207,19 @@ public class PetController {
             return ResponseEntity.notFound().build();
         }
 
+        // Récupérer l'utilisateur connecté
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User user = (User) authentication.getPrincipal();
+        int currentUserId = user.getId_user();
+
         boolean hasPreferences = pet.getPreferences() != null;
         List<Pet> matchingPets = null;
 
         if (hasPreferences) {
             matchingPets = petService.getPetsByStatus(PetStatus.AVAILABLE)
                     .stream()
+                    .filter(p -> p.getIdPet() != petId) // Exclure le pet lui-même
+                    .filter(p -> p.getUser() == null || p.getUser().getId_user() != currentUserId) // Exclure les pets de l'utilisateur connecté
                     .filter(p -> matchesPreferences(p, pet.getPreferences()))
                     .collect(Collectors.toList());
         }
@@ -227,10 +236,17 @@ public class PetController {
     }
 
     private boolean matchesPreferences(Pet pet, Preferences preferences) {
-        return (preferences.getPreferred_breed() == null || pet.getBreed().equalsIgnoreCase(preferences.getPreferred_breed())) &&
+        System.out.println("Pet: " + pet.getPetName());
+        System.out.println("Breed: " + pet.getBreed() + " vs " + preferences.getPreferred_breed());
+        System.out.println("Age: " + pet.getPetAge() + " vs [" + preferences.getMin_age() + ", " + preferences.getMax_age() + "]");
+        System.out.println("Gender: " + pet.getGender().toString() + " vs " + preferences.getPreferred_gender());
+        System.out.println("Location: " + pet.getLocation() + " vs " + preferences.getPreferred_location());
+        boolean result = (preferences.getPreferred_breed() == null || pet.getBreed().equalsIgnoreCase(preferences.getPreferred_breed())) &&
                 (pet.getPetAge() >= preferences.getMin_age() && pet.getPetAge() <= preferences.getMax_age()) &&
                 (preferences.getPreferred_gender() == null || pet.getGender().toString().equalsIgnoreCase(preferences.getPreferred_gender())) &&
                 (preferences.getPreferred_location() == null || pet.getLocation().equalsIgnoreCase(preferences.getPreferred_location()));
+        System.out.println("Résultat: " + result);
+        return result;
     }
 
     @GetMapping("/user/pet/{petId}/matching-pets")
@@ -244,15 +260,21 @@ public class PetController {
             return ResponseEntity.notFound().build();
         }
 
+        // Récupérer l'utilisateur connecté
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User user = (User) authentication.getPrincipal();
+        int currentUserId = user.getId_user();
+
         // Vérifier si le pet a des préférences
         if (pet.getPreferences() == null) {
-            return ResponseEntity.ok(Collections.emptyList()); // Renvoie une liste vide si pas de préférences
+            return ResponseEntity.ok(Collections.emptyList());
         }
 
         // Trouver les pets correspondants aux préférences
         List<Pet> matchingPets = petService.getPetsByStatus(PetStatus.AVAILABLE)
                 .stream()
-                .filter(p -> p.getIdPet() != pet.getIdPet()) // Correction : utiliser != au lieu de equals()
+                .filter(p -> p.getIdPet() != petId) // Exclure le pet lui-même
+                .filter(p -> p.getUser() == null || p.getUser().getId_user() != currentUserId) // Exclure les pets de l'utilisateur connecté
                 .filter(p -> matchesPreferences(p, pet.getPreferences()))
                 .collect(Collectors.toList());
 

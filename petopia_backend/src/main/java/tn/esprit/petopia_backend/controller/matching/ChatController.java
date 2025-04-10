@@ -7,21 +7,44 @@ import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 import tn.esprit.petopia_backend.entities.user.ChatMessage;
+import tn.esprit.petopia_backend.services.matching.MessagingService;
 
 @Controller
 @RequiredArgsConstructor
 public class ChatController {
 
     private final SimpMessagingTemplate messagingTemplate;
+    private final MessagingService messagingService;
 
-    @MessageMapping("/chat.sendMessage") // Public chat
+    @MessageMapping("/user/chat.addUser")
+    @SendTo("/topic/public")
+    public ChatMessage addUser(
+            @Payload ChatMessage chatMessage
+    ) {
+        return chatMessage;
+    }
+
+    @MessageMapping("/chat.sendMessage")
     @SendTo("/topic/public")
     public ChatMessage sendMessage(@Payload ChatMessage chatMessage) {
         return chatMessage;
     }
 
-    @MessageMapping("/chat.sendPrivateMessage") // Private chat
+    @MessageMapping("/chat.sendPrivateMessage")
     public void sendPrivateMessage(@Payload ChatMessage chatMessage) {
-        messagingTemplate.convertAndSendToUser(chatMessage.getRecipient(), "/queue/messages", chatMessage);
+        // Save the message
+        messagingService.sendMessage(chatMessage);
+
+        // Send to both sender and recipient
+        messagingTemplate.convertAndSendToUser(
+                String.valueOf(chatMessage.getRecipient()),
+                "/queue/private-" + chatMessage.getMatchId(),
+                chatMessage
+        );
+        messagingTemplate.convertAndSendToUser(
+                String.valueOf(chatMessage.getSender()),
+                "/queue/private-" + chatMessage.getMatchId(),
+                chatMessage
+        );
     }
 }
