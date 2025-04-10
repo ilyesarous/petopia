@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 import tn.esprit.petopia_backend.entities.adoptions.AdoptionCertificate;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface AdoptionCertificateRepository extends JpaRepository<AdoptionCertificate, Integer> {
@@ -23,4 +24,5 @@ public interface AdoptionCertificateRepository extends JpaRepository<AdoptionCer
     List<AdoptionCertificate> findByShelterId(Integer shelterId);
 
 
-}
+    @Query("SELECT c FROM AdoptionCertificate c WHERE c.adoption.id_request = :adoptionId")
+    Optional<AdoptionCertificate> findByAdoptionId(@Param("adoptionId") Integer adoptionId);}

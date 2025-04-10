@@ -106,7 +106,11 @@ public class UserService {
             response.setExpirationTime("24Hrs");
             response.setMessage("Successfully Logged In");
             response.setUserId(String.valueOf(user.getId_user()));
-
+            if (user.getShelter() != null) {
+                response.setShelter_id(user.getShelter().getId_shelter());
+            } else {
+                response.setShelter_id(-1); // null
+            }
         } catch (UsernameNotFoundException e) {
             response.setStatusCode(404);
             response.setError("User not found.");

@@ -67,7 +67,21 @@
 
           return this.http.get(`${this.baseUrlAdmin}/get-user/${userId}`, { headers });
       }
-
+      getCurrentUserById(userId: number): Observable<any> {
+        const token = localStorage.getItem('token');
+        if (!token) {
+          console.error('No token found in localStorage');
+          return new Observable();
+        }
+      
+        const headers = new HttpHeaders({
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        });
+      
+        return this.http.get(`http://localhost:8082/petopia/user/get-user/${userId}`, { headers });
+      }
+      
     logout(): void {
       const token = localStorage.getItem('token');
 

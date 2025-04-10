@@ -1,0 +1,49 @@
+.certificate-card {
+    max-width: 900px;
+    margin: 40px auto;
+    padding: 30px;
+    border-radius: 16px;
+    background: #fff;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+    font-family: 'Helvetica Neue', sans-serif;
+    text-align: center;
+    transition: all 0.3s ease-in-out;
+  }
+  
+  .certificate-card h3 {
+    font-size: 24px;
+    color: #F83182; /* Rose */
+    margin-bottom: 10px;
+  }
+  
+  .certificate-card p {
+    font-size: 16px;
+    color: #333;
+    margin: 5px 0;
+  }
+  
+  .btn {
+    margin-top: 20px;
+    padding: 10px 24px;
+    font-size: 16px;
+    font-weight: bold;
+    border: none;
+    border-radius: 8px;
+    background: linear-gradient(to right, #F83182, #FF617C, #FE9A7A);
+    color: white;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  
+  .btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(248, 49, 130, 0.3);
+  }
+  
+  /* PDF Frame Styling */
+  iframe {
+    border: 2px solid #f2f2f2;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+  
