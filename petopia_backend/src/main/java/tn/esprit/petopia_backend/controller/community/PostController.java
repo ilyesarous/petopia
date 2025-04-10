@@ -2,6 +2,7 @@ package tn.esprit.petopia_backend.controller.community;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
@@ -94,19 +95,42 @@ public class PostController {
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<Post> updatePost(@PathVariable Long id, @RequestBody Post postDetails) {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        User currentUser = (User) auth.getPrincipal();
+    public ResponseEntity<Post> updatePost(
+            @PathVariable Long id,
+            @RequestParam("content") String content,
+            @RequestParam("postType") String postTypeStr,
+            @RequestParam(value = "file", required = false) MultipartFile file,
+            @RequestParam(value = "removeImage", required = false) boolean removeImage
+    ) throws IOException {
         Post existingPost = postService.getPostById(id);
-        if (existingPost == null) {
-            return ResponseEntity.notFound().build();
+        existingPost.setContent(content);
+        existingPost.setPostType(PostType.valueOf(postTypeStr));
+        existingPost.setDate(LocalDateTime.now());
+
+        if (removeImage) {
+            existingPost.setImage(null);
         }
-        // Check that the logged-in user is the owner
-        if (existingPost.getUser() == null || existingPost.getUser().getId_user() != currentUser.getId_user()) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+
+        if (file != null && !file.isEmpty()) {
+            String uploadedUrl = cloudinaryService.uploadImage(file);
+            String currentImages = existingPost.getImage();
+
+            if (currentImages != null && !currentImages.trim().isEmpty()) {
+                existingPost.setImage(currentImages + "," + uploadedUrl);
+            } else {
+                existingPost.setImage(uploadedUrl);
+            }
         }
-        return ResponseEntity.ok(postService.updatePost(id, postDetails));
+
+        Post updated = postService.updatePost(id,existingPost);
+        return ResponseEntity.ok(updated);
     }
+
+
+
+
+
+
 
 
     @DeleteMapping("/delete/{id}")

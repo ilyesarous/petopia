@@ -14,26 +14,63 @@
     <!-- Post menu: only visible if logged-in user is the post owner -->
     <div class="ms-auto post-menu" *ngIf="isPostOwner()">
       <i class="bi bi-three-dots pointer" (click)="post['menuOpen'] = !post['menuOpen']"></i>
-      <div class="dropdown-menu show position-absolute end-0 mt-1" *ngIf="post['menuOpen']">
+      <div class="dropdown-menu show position-absolute end-0 mt-1 post-dropdown" *ngIf="post['menuOpen']">
         <button class="dropdown-item" (click)="editPost()">Edit</button>
         <button class="dropdown-item" (click)="deletePost()">Delete</button>
       </div>
     </div>
+    
   </div>
 
   <!-- Post content: text and image -->
   <div class="card-body post-body">
     <!-- If in edit mode, show an input field for post content -->
-    <div *ngIf="post['isEditing']; else displayPostContent">
-      <textarea class="form-control" [(ngModel)]="post['editedContent']"></textarea>
-      <div class="mt-1">
-        <button class="btn btn-sm btn-primary me-2" (click)="updatePost()">Save</button>
-        <button class="btn btn-sm btn-secondary" (click)="cancelPostEdit()">Cancel</button>
-      </div>
-    </div>
-    <ng-template #displayPostContent>
-      <p class="mb-2">{{ post.content }}</p>
-    </ng-template>
+<!-- If in edit mode, show an input field for post content and image editing -->
+<div *ngIf="post['isEditing']; else displayPostContent">
+  <!-- Textarea for editing post content -->
+  <textarea 
+    class="form-control" 
+    [(ngModel)]="post['editedContent']" 
+    name="editedContent">
+  </textarea>
+
+  <!-- Display the existing image with an inline delete icon (if any) -->
+  <div class="existing-image-container mt-2" *ngIf="post.image">
+    <img [src]="post.image" alt="Current post image" class="existing-image" />
+    <button type="button" class="delete-image-btn" (click)="deleteExistingImage(post)" title="Delete this image">
+      <i class="bi bi-trash"></i>
+    </button>
+  </div>
+  
+  <!-- File input for adding an additional image -->
+  <div class="mt-2">
+    <input
+      type="file"
+      id="postFileInput"
+      (change)="onPostImageSelected($event)"
+      accept="image/*"
+      class="form-control"
+      hidden
+    />
+    <label for="postFileInput" class="btn btn-secondary mb-0">
+      <i class="bi bi-image me-1"></i> Add image
+    </label>
+    <span class="file-name ms-2" *ngIf="selectedPostImageFile">
+      {{ selectedPostImageFile.name }}
+    </span>
+  </div>
+
+  <!-- Save and Cancel Buttons -->
+  <div class="mt-1">
+    <button class="btn btn-sm btn-custom me-2" (click)="updatePost(post)">Save</button>
+    <button class="btn btn-sm btn-secondary" (click)="cancelPostEdit()">Cancel</button>
+  </div>
+</div>
+<ng-template #displayPostContent>
+  <p class="mb-2">{{ post.content }}</p>
+</ng-template>
+
+    
     <div *ngIf="post.image" class="post-images">
       <img *ngFor="let imgUrl of post.image.split(',')"
            [src]="imgUrl.trim()"
@@ -123,17 +160,18 @@
               <!-- Three-dots menu for comment owner -->
               <div *ngIf="isCommentOwner(comment)" class="comment-menu position-relative">
                 <i class="bi bi-three-dots pointer" (click)="toggleCommentMenu(comment)"></i>
-                <div class="dropdown-menu show position-absolute end-0 mt-1" *ngIf="comment['menuOpen']">
+                <div *ngIf="comment['menuOpen']" class="dropdown-menu show position-absolute end-0 mt-1 comment-dropdown">
                   <button class="dropdown-item" (click)="editComment(comment)">Edit</button>
                   <button class="dropdown-item" (click)="deleteComment(comment.id!)">Delete</button>
                 </div>
+                
               </div>
             </div>
             <!-- Inline editing for comment -->
             <div *ngIf="comment['isEditing']; else displayComment">
               <input type="text" class="form-control" [(ngModel)]="comment['editedContent']" />
               <div class="mt-1">
-                <button class="btn btn-sm btn-primary me-2" (click)="updateComment(comment)">Save</button>
+                <button class="btn btn-sm btn-custom me-2" (click)="updateComment(comment)">Save</button>
                 <button class="btn btn-sm btn-secondary" (click)="cancelEdit(comment)">Cancel</button>
               </div>
             </div>
@@ -156,15 +194,25 @@
       See more comments
     </button>
     <!-- Add Comment Input Area -->
-    <div class="add-comment d-flex align-items-center mt-3">
+    <form #commentForm="ngForm" (ngSubmit)="addComment(commentForm)" novalidate class="add-comment d-flex align-items-center mt-3">
       <i class="bi bi-person-circle comment-avatar"></i>
-      <input type="text"
-             class="form-control ms-2"
-             placeholder="Write a comment..."
-             [(ngModel)]="newComment"
-             (keyup.enter)="addComment()" />
-      <button class="btn btn-primary ms-2" (click)="addComment()">Comment</button>
-    </div>
+      <input 
+        type="text"
+        name="commentContent"
+        class="form-control ms-2"
+        placeholder="Write a comment..."
+        [(ngModel)]="newComment"
+        required
+        minlength="2" />
+      <!-- Display error message when the comment is invalid -->
+      <div *ngIf="(commentForm.submitted || commentForm.controls['commentContent']?.touched) && commentForm.controls['commentContent']?.invalid" class="text-danger ms-2">
+        Comment must be at least 2 characters.
+      </div>
+      <button class="btn btn-custom ms-2" type="submit" [disabled]="commentForm.invalid">
+        Comment
+      </button>
+    </form>
+    
   </div>
 </div>
 </div>

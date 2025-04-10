@@ -104,6 +104,8 @@ import { EventFormComponent } from './admin/Event/event-form/event-form.componen
 import { EventListComponent } from './admin/Event/event-list/event-list.component';
 import { ParticipationFormComponent } from './simple-user/Event/participation-form/participation-form.component';
 import { EventEditComponent } from './admin/Event/event-edit/event-edit.component';
+import { CommunityListComponent } from './admin/community/community-list/community-list.component';
+import { CommunityDetailsComponent } from './admin/community/community-details/community-details.component';
 
 @NgModule({
   declarations: [
@@ -177,6 +179,8 @@ import { EventEditComponent } from './admin/Event/event-edit/event-edit.componen
     EventListComponent,
     ParticipationFormComponent,
     EventEditComponent,
+    CommunityListComponent,
+    CommunityDetailsComponent,
   ],
   imports: [
     BrowserModule,

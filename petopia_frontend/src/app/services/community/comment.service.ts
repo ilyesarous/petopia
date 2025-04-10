@@ -13,8 +13,17 @@ export class CommentService {
   constructor(private http: HttpClient) {}
 
   getCommentsByPost(postId: number): Observable<Comment[]> {
-    return this.http.get<Comment[]>(`${this.baseUrl}/all?postId=${postId}`);
+    return this.http.get<Comment[]>(`${this.baseUrl}/post/${postId}`);
   }
+  
+  getAllComments(): Observable<Comment[]> {
+    return this.http.get<Comment[]>(`${this.baseUrl}/all`); // adjust URL as per your backend
+  }
+  getCommentById(id: number): Observable<Comment> {
+    return this.http.get<Comment>(`${this.baseUrl}/${id}`);
+  }
+  
+  
 
   addComment(userId: number, postId: number, content: string): Observable<Comment> {
     const formData = new FormData();

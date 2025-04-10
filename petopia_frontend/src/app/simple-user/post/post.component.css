@@ -1,60 +1,75 @@
+/* Updated Post Card Styling */
 .post-card {
-  border: none;
+  border: 1px solid #F83182; /* Added border to organize each post */
   border-radius: 8px;
-  .card-header {
-    background-color: #fff;
-    border-bottom: none;
-  }
-  .post-header {
-    .post-avatar {
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      object-fit: cover;
-    }
-    .post-author {
-      font-size: 0.95rem;
-    }
-    .post-time {
-      font-size: 0.8rem;
-    }
-    .post-menu {
-      cursor: pointer;
-    }
-  }
-  .post-body {
-    background-color: #fff;
-    p {
-      font-size: 0.9rem;
-    }
-  }
-  .post-actions {
-    background-color: #fff;
-    button {
-      color: #666;
-      font-size: 0.85rem;
-      i {
-        margin-right: 5px;
-      }
-      &:hover {
-        text-decoration: underline;
-      }
-    }
-  }
-  .avatars-liked {
-    img {
-      width: 30px;
-      height: 30px;
-      border-radius: 50%;
-      margin-right: -8px;
-      border: 2px solid #fff;
-    }
-  }
-  .post-comments {
-    background-color: #fff;
-    border-radius: 0 0 8px 8px;
-  }
+  padding: 1rem;             /* Added internal spacing */
+  margin-bottom: 1rem;       /* Spacing between posts */
+  background-color: #fff;
 }
+
+.post-card .card-header {
+  background-color: #fff;
+  border-bottom: none;
+}
+
+.post-card .post-header .post-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.post-card .post-header .post-author {
+  font-size: 0.95rem;
+}
+
+.post-card .post-header .post-time {
+  font-size: 0.8rem;
+}
+
+.post-card .post-header .post-menu {
+  cursor: pointer;
+}
+
+.post-card .post-body {
+  background-color: #fff;
+}
+
+.post-card .post-body p {
+  font-size: 0.9rem;
+}
+
+.post-card .post-actions {
+  background-color: #fff;
+}
+
+.post-card .post-actions button {
+  color: #666;
+  font-size: 0.85rem;
+}
+
+.post-card .post-actions button i {
+  margin-right: 5px;
+}
+
+.post-card .post-actions button:hover {
+  text-decoration: underline;
+}
+
+.post-card .avatars-liked img {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  margin-right: -8px;
+  border: 2px solid #fff;
+}
+
+.post-card .post-comments {
+  background-color: #fff;
+  border-radius: 0 0 8px 8px;
+}
+
+/* Custom Modal Styling */
 .custom-modal .modal-content {
   background: linear-gradient(135deg, #F83182 0%, #FE9A7A 100%);
   border: none;
@@ -81,12 +96,16 @@
   background-color: rgba(0, 0, 0, 0.2);
   border: none;
 }
+
+/* Additional Styles */
 .post-header {
   padding-left: 0.5rem !important;  /* remove left padding */
 }
+
 .pointer {
   cursor: pointer;
 }
+
 .see-more-comments {
   text-decoration: none !important;  /* Remove underline */
   color: #343a40;                     /* Darker color */
@@ -96,17 +115,111 @@
   border: none;
   background: none;
   padding: 0;
-
-  &:hover {
-    color: #212529;                   /* Even darker on hover */
-    text-decoration: none;
-  }
 }
+
+.see-more-comments:hover {
+  color: #212529;                   /* Even darker on hover */
+  text-decoration: none;
+}
+
 .post-actions .btn-link:hover,
 .pointer:hover,
 .see-more-comments:hover {
   color: #F83182 !important;
 }
+
 .post-images img {
   margin-right: 0.5rem; /* Adjust spacing as needed */
+}
+
+.btn-custom {
+  background-color: #F83182 !important;
+  border-color: #F83182 !important;
+  color: #fff !important;
+}
+
+.btn-custom:hover,
+.btn-custom:focus,
+.btn-custom:active {
+  background-color: #d02a6b !important;
+  border-color: #d02a6b !important;
+  color: #fff !important;
+}
+
+/* Styles for Dropdown Items within Comment Menus */
+.comment-dropdown .dropdown-item {
+  background-color: transparent;
+  border: none;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.comment-dropdown .dropdown-item:hover,
+.comment-dropdown .dropdown-item:focus {
+  background-color: #F83182 !important; /* Pink background on hover */
+  color: #fff !important;              /* White text on hover */
+}
+
+/* Dropdown items in post menu become pink */
+.post-dropdown .dropdown-item {
+  background-color: transparent;
+  border: none;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.post-dropdown .dropdown-item:hover,
+.post-dropdown .dropdown-item:focus {
+  background-color: #F83182 !important;
+  color: #fff !important;
+}
+.custom-check-container {
+  border: 1px solid #ced4da; /* similar to Bootstrap's form-control border */
+  border-radius: 0.25rem;     /* rounded corners */
+  padding: 0.375rem 0.75rem;  /* similar vertical/horizontal padding */
+  background-color: #fff;     /* white background */
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;              /* space between checkbox and label */
+}
+
+.custom-check-container .form-check-input {
+  /* Optionally adjust the checkbox size if needed */
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+.custom-check-container .form-check-label {
+  margin-bottom: 0;         /* Remove default margin */
+  font-size: 1rem;
+  color: #495057;           /* Similar text color to form-control */
+}
+
+
+.existing-image-container {
+  position: relative; /* Allows the delete button to be positioned absolutely */
+  display: inline-block;
+  margin-bottom: 0.5rem;
+}
+
+.existing-image {
+  width: 100px;   /* Adjust as needed */
+  height: auto;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  display: block;
+}
+
+.delete-image-btn {
+  position: absolute;
+  top: 2px;        /* Adjust for closeness */
+  right: 2px;      /* Adjust for closeness */
+  background: rgba(255, 255, 255, 0.8); /* Semi-transparent background */
+  border: none;
+  color: #F83182;  /* Pink color */
+  font-size: 0.8rem; /* Smaller font size */
+  padding: 0;       /* Remove extra padding */
+  cursor: pointer;
+}
+
+.delete-image-btn:hover {
+  color: #d02a6b;
 }

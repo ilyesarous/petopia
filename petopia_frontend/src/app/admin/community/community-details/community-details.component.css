@@ -1,0 +1,120 @@
+.community-details {
+    font-family: 'Poppins', sans-serif;
+    background-color: #fff;
+    color: #333;
+    max-width: 900px;
+    margin: 30px auto;
+    padding: 32px;
+    border-radius: 20px;
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.05);
+  }
+  
+  .title {
+    font-size: 28px;
+    font-weight: bold;
+    color: #F83182;
+    margin-bottom: 32px;
+  }
+  
+  h4 {
+    font-weight: 600;
+    margin-bottom: 16px;
+    color: #FF617C;
+  }
+  
+  p {
+    margin-bottom: 10px;
+    font-size: 15px;
+    color: #444;
+  }
+  
+  img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 12px;
+    margin: 16px 0;
+  }
+  
+  strong {
+    color: #F83182;
+  }
+  
+  .section {
+    margin-bottom: 32px;
+  }
+  
+  .status-tag {
+    display: inline-block;
+    background: #FEE8F0;
+    color: #F83182;
+    font-size: 0.8rem;
+    padding: 4px 10px;
+    border-radius: 12px;
+    margin-left: 10px;
+  }
+  
+  .back-btn {
+    background: transparent;
+    border: 2px solid #F83182;
+    color: #F83182;
+    padding: 6px 16px;
+    font-weight: 600;
+    border-radius: 30px;
+    margin-top: 24px;
+    transition: 0.3s ease;
+  }
+  
+  .back-btn:hover {
+    background: #F83182;
+    color: white;
+  }
+  
+  .story-img {
+    width: 100%;
+    max-width: 500px;
+    border-radius: 14px;
+    margin: 12px 0;
+  }
+  .image-gallery {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin: 16px 0;
+  }
+  
+  .post-image {
+    width: 100%;
+    max-width: 200px;
+    height: auto;
+    border-radius: 12px;
+    object-fit: cover;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    transition: transform 0.2s ease;
+  }
+  
+  .post-image:hover {
+    transform: scale(1.03);
+  }
+  .delete-comment-btn {
+    background-color: transparent;
+    color: #dc3545;
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+    transition: 0.2s ease;
+  }
+  
+  .delete-comment-btn:hover {
+    color: #a51e2f;
+  }
+  
+  .success-alert {
+    position: fixed;
+    top: 1rem;
+    right: 1rem;
+    z-index: 1050;
+    min-width: 260px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    font-weight: 500;
+  }
+  

@@ -29,4 +29,11 @@ export class ReactionService {
   getReactionsByPost(postId: number): Observable<Reaction[]> {
     return this.http.get<Reaction[]>(`${this.baseUrl}/post/${postId}`);
   }
+  getAllReactions(): Observable<Reaction[]> {
+    return this.http.get<Reaction[]>(`${this.baseUrl}/all`);
+  }
+  getReactionById(id: number): Observable<Reaction> {
+    return this.http.get<Reaction>(`${this.baseUrl}/${id}`);
+  }
+  
 }

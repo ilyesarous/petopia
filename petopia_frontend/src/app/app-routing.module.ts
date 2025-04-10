@@ -48,6 +48,8 @@ import { ShelterHomeComponent } from './simple-user/shelter/shelter-home/shelter
 import { CartComponent } from './simple-user/store/cart/cart.component';
 import { ShelterListComponent } from './admin/shelter/shelter-list/shelter-list.component';
 import { ShelterDetailsComponent } from './admin/shelter/shelter-details/shelter-details.component';
+import { CommunityListComponent } from './admin/community/community-list/community-list.component';
+import { CommunityDetailsComponent } from './admin/community/community-details/community-details.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -113,6 +115,10 @@ const routes: Routes = [
       },
       {path:'shelters',component: ShelterListComponent, canActivate: [AuthGuard]},
       {path:'shelters/:id',component: ShelterDetailsComponent, canActivate: [AuthGuard]},
+
+      { path: 'community', component: CommunityListComponent },
+      { path: 'community/details/:type/:id', component: CommunityDetailsComponent },
+
 
 
     ],

@@ -132,44 +132,70 @@
     </div>
   </div>
 
-  <!-- Create a new post form -->
-  <div class="create-post card mb-3">
-    <div class="card-body">
-      <textarea
-        [(ngModel)]="newPostContent"
-        class="form-control"
-        placeholder="What's on your mind?"
-        rows="3"
-      ></textarea>
-      <!-- Select for Post Type -->
-      <select class="form-select mt-2" [(ngModel)]="newPostType">
-        <option [ngValue]="PostType.LOST_PET">Lost Pet</option>
-        <option [ngValue]="PostType.ADOPTION">Adoption</option>
-        <option [ngValue]="PostType.GENERAL">General</option>
-        <option [ngValue]="PostType.ADVICE">Advice</option>
-        <option [ngValue]="PostType.FOR_SALE">For Sale</option>
-      </select>
-      <div class="d-flex justify-content-between align-items-center mt-2">
-        <div class="file-input-container">
-          <input
-            type="file"
-            id="fileInput"
-            (change)="onFileSelected($event)"
-            accept="image/*"
-            multiple
-            hidden
-          />
-          <label for="fileInput" class="btn btn-secondary mb-0">
-            <i class="bi bi-image me-1"></i> Add image(s)
-          </label>
-          <span class="file-name ms-2" *ngIf="selectedFiles && selectedFiles.length">
-            {{ selectedFileNames }}
-          </span>
-        </div>
-        <button class="btn btn-custom" (click)="createPost()">Post</button>
+<!-- Create a new post form -->
+<form #postForm="ngForm" (ngSubmit)="createPost(postForm)" novalidate class="create-post card mb-3">
+  <div class="card-body">
+    <!-- Post Content -->
+    <textarea 
+      #postContentCtrl="ngModel"
+      name="postContent"
+      [(ngModel)]="newPostContent"
+      class="form-control" 
+      placeholder="What's on your mind?"
+      rows="3"
+      required
+      minlength="5">
+    </textarea>
+    <div *ngIf="(postForm.submitted || postContentCtrl.touched) && postForm.controls['postContent']?.invalid" class="text-danger mt-1">
+      Post content is required (at least 5 characters).
+    </div>
+
+    <!-- Select for Post Type -->
+    <select 
+    name="postType"
+    class="form-select mt-2"
+    [(ngModel)]="newPostType"
+    required>
+    <option value="" disabled [selected]="!newPostType">Select post type</option>
+    <option [ngValue]="PostType.LOST_PET">Lost Pet</option>
+    <option [ngValue]="PostType.ADOPTION">Adoption</option>
+    <option [ngValue]="PostType.GENERAL">General</option>
+    <option [ngValue]="PostType.ADVICE">Advice</option>
+    <option [ngValue]="PostType.FOR_SALE">For Sale</option>
+  </select>
+  <div *ngIf="(postForm.submitted || postForm.controls['postType']?.touched) && postForm.controls['postType']?.invalid" class="text-danger mt-1">
+    Please choose a post type.
+  </div>
+  
+
+    <!-- File Input and Submit Button -->
+    <div class="d-flex justify-content-between align-items-center mt-2">
+      <div class="file-input-container">
+        <input 
+          type="file" 
+          id="fileInput" 
+          (change)="onFileSelected($event)" 
+          accept="image/*" 
+          multiple 
+          hidden />
+        <label for="fileInput" class="btn btn-secondary mb-0">
+          <i class="bi bi-image me-1"></i> Add image(s)
+        </label>
+        <span class="file-name ms-2" *ngIf="selectedFiles && selectedFiles.length">
+          {{ selectedFileNames }}
+        </span>
       </div>
+      <button class="btn btn-custom" type="submit" [disabled]="postForm.invalid">
+        Post
+      </button>
     </div>
   </div>
+</form>
+
+
+
+
+
 
   <!-- List of posts -->
   <div class="row">

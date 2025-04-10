@@ -4,6 +4,7 @@ import { PostService } from '../../services/community/post.service';
 import { Story } from '../../models/community/story';
 import { StoryService } from '../../services/community/story.service';
 import { Router } from '@angular/router';
+import { NgForm } from '@angular/forms';
 
 @Component({
   selector: 'app-community',
@@ -23,6 +24,7 @@ export class CommunityComponent implements OnInit {
   newPostContent: string = '';
   selectedFiles: File[] = [];
   newPostType: PostType = PostType.GENERAL;
+  //newPostType: PostType | null = null;
   PostType = PostType;
 
   // For searching/filtering posts
@@ -156,36 +158,46 @@ export class CommunityComponent implements OnInit {
       ? this.selectedFiles.map(f => f.name).join(', ')
       : '';
   }
-  createPost(): void {
-    if (!this.newPostContent.trim() && (!this.selectedFiles || this.selectedFiles.length === 0)) {
+  createPost(postForm: NgForm): void {
+    // Check if post content is valid and the post type is chosen.
+    if (!this.newPostContent.trim() || this.newPostType === null) {
       return;
     }
+  
     const newPost: Post = {
       id: 0,
       title: '',
       content: this.newPostContent,
-      postType: this.newPostType,
+      postType: this.newPostType,  // now this.newPostType is guaranteed not to be null
       date: new Date(),
       user: undefined
     };
-
+  
     const formData = new FormData();
-    const normalizedPostType = this.newPostType.toString().trim().toUpperCase().replace(/ /g, '_');
+    const normalizedPostType = newPost.postType
+      .toString()
+      .trim()
+      .toUpperCase()
+      .replace(/ /g, '_');
     formData.append('content', newPost.content);
     formData.append('postType', normalizedPostType);
     this.selectedFiles.forEach(file => {
       formData.append('files', file, file.name);
     });
-
+  
     this.postService.createPost(newPost, formData).subscribe(post => {
       this.posts.unshift(post);
       this.originalPosts.unshift(post);
       this.newPostContent = '';
       this.selectedFiles = [];
       this.newPostType = PostType.GENERAL;
+ // Reset to null after successful submission
       this.updatePosts();
+      postForm.resetForm();
     });
   }
+  
+  
   updatePosts(): void {
     let filtered = this.originalPosts;
     if (this.searchQuery.trim()) {
