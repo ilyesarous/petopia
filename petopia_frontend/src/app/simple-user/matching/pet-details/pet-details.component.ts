@@ -52,6 +52,8 @@ export class PetDetailsComponent implements OnInit {
   }
 
   goBack() {
-    this.router.navigate(['/home/matchy']);
+    this.router.navigate(['/matchy']);
   }
+
+
 }

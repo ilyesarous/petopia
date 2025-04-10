@@ -7,17 +7,24 @@ import { Observable } from 'rxjs';
 })
 export class PetService {
   private apiUrl = 'http://localhost:8082/petopia';
-  private staticToken = 'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqaWhlZGpvb0BnbWFpbC5jb20iLCJyb2xlcyI6WyJST0xFX1VTRVIiXSwidXNlcklkIjoyLCJ1c2VybmFtZSI6ImppaGVkam9vQGdtYWlsLmNvbSIsImlhdCI6MTc0MzY0MTM5OSwiZXhwIjoxNzQzNzI3Nzk5fQ.YkFQqGW9KZRLLvD6S_nuqs9EndHWOfTXOAxtxa5W--c';
+  private staticToken = localStorage.getItem('token');
 
   constructor(private http: HttpClient) {}
 
   // Méthode privée pour générer les headers avec le token
-  private getAuthHeaders(): HttpHeaders {
-    return new HttpHeaders({
+
+
+
+private getAuthHeaders(): HttpHeaders {
+  const token = localStorage.getItem('token');
+  console.log('Token brut depuis localStorage:', token);
+  const headers = new HttpHeaders({
       'Content-Type': 'application/json',
-      'Authorization': `Bearer ${this.staticToken}`
-    });
-  }
+      'Authorization': `Bearer ${token}`
+  });
+  console.log('En-tête Authorization envoyé:', headers.get('Authorization'));
+  return headers;
+}
 
   getPetsByOwnerId(ownerId: number): Observable<any> {
     const headers = this.getAuthHeaders();
@@ -42,7 +49,8 @@ export class PetService {
     console.log('Headers pour addPreferences:', headers.get('Authorization'));
     return this.http.post(`${this.apiUrl}/user/preferences/addPreferences`, preferences, { headers });
   }
- 
+
+
   getPetById(petId: number): Observable<any> {
     const headers = this.getAuthHeaders();
     console.log('Headers for getPetById:', headers.get('Authorization'));
@@ -67,5 +75,5 @@ export class PetService {
     return this.http.delete<void>(`${this.apiUrl}/user/preferences/deletePreferences/${idPreferences}`, { headers });
 }
 
- 
+
 }

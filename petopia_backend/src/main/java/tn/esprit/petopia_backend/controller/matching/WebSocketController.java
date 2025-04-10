@@ -5,7 +5,8 @@ import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Controller;
-import tn.esprit.petopia_backend.entities.matching.ChatMessage;
+//import tn.esprit.petopia_backend.entities.matching.ChatMessage;
+import tn.esprit.petopia_backend.entities.user.ChatMessage;
 import tn.esprit.petopia_backend.services.matching.MessagingService;
 
 @Controller

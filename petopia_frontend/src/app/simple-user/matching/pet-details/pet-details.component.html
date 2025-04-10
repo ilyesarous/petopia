@@ -1,50 +1,57 @@
-<div class="container mt-4">
+<div class="container mt-5">
   <!-- Loader -->
   <div *ngIf="isLoading" class="text-center py-4">
-    <p>Loading pet details...</p>
+    <p>Loading pet details... 🐾</p>
   </div>
 
   <!-- Pet Details -->
-  <div *ngIf="!isLoading && pet" class="card border-0 shadow-sm">
-    <div class="card-header" style="background: linear-gradient(135deg, #F83182 0%, #FF617C 50%, #FE9A7A 100%); color: white;">
-      <div class="d-flex justify-content-between align-items-center">
-        <h5 class="mb-0">
-          <i class="fas fa-paw me-2"></i> {{ pet.petName }} Details
-        </h5>
-        <button class="btn-close btn-close-white" (click)="goBack()"></button>
-      </div>
+  <div *ngIf="!isLoading && pet" class="pet-card border-0 shadow-sm">
+    <!-- Header with Gradient -->
+    <div class="card-header d-flex justify-content-between align-items-center">
+      <h5 class="mb-0">
+        <i class="fas fa-paw me-2"></i> {{ pet.petName }} 🐶
+      </h5>
+      <button class="btn-close btn-close-white" (click)="goBack()"></button>
     </div>
+
+    <!-- Card Body -->
     <div class="card-body">
-      <div class="row">
+      <div class="row align-items-center">
+        <!-- Pet Image -->
         <div class="col-md-4 text-center">
-          <img [src]="pet.petImage || 'assets/images/default-pet.png'" alt="{{ pet.petName }}" class="img-fluid rounded mb-3" style="max-height: 250px; object-fit: cover;">
+          <img src="../../../../assets/images/pet/11416.jpg" alt="{{ pet.petName }}" class="img-fluid rounded-circle mb-3 pet-image">
+          <p class="text-muted small">{{ pet.petAge }} years old • {{ pet.location || 'Nearby' }}</p>
         </div>
+
+        <!-- Pet Info -->
         <div class="col-md-8">
-          <h6>Pet Information</h6>
-          <p><strong>Breed:</strong> {{ pet.breed || 'Not specified' }}</p>
-          <p><strong>Age:</strong> {{ pet.petAge }} years</p>
-          <p><strong>Gender:</strong> {{ pet.gender || 'Not specified' }}</p>
-          <p><strong>Location:</strong> {{ pet.location || 'Not specified' }}</p>
-          <p><strong>Status:</strong> {{ pet.status || 'Not specified' }}</p>
-        </div>
-      </div>
-      <hr>
-      <div class="row mt-3">
-        <div class="col-12">
-          <h6>Owner Information</h6>
-          <p><strong>Name:</strong> {{ pet.user?.username || 'Unknown' }}</p>
-          <p><strong>Email:</strong> {{ pet.user?.email || 'Not available' }}</p>
-          <p><strong>ID:</strong> {{ pet.user?.id_user || 'Not available' }}</p>
+          <h6 class="section-title">About {{ pet.petName }} 🐾</h6>
+          <div class="info-grid">
+            <p><strong>Breed:</strong> {{ pet.breed || 'Not specified' }}</p>
+            <p><strong>Gender:</strong> {{ pet.gender || 'Not specified' }}</p>
+            <p><strong>Status:</strong> {{ pet.status || 'Looking for a home!' }}</p>
+          </div>
+
+          <!-- Owner Info -->
+          <hr class="my-4">
+          <h6 class="section-title">My Human 👤</h6>
+          <div class="info-grid">
+            <p><strong>Name:</strong> {{ pet.user?.name || 'Unknown' }}</p>
+            <p><strong>Email:</strong> {{ pet.user?.email || 'Not available' }}</p>
+          </div>
         </div>
       </div>
     </div>
-    <div class="card-footer text-end">
-      <button class="btn btn-secondary" (click)="goBack()">Back</button>
+
+    <!-- Card Footer -->
+    <div class="card-footer text-center">
+      <button class="btn btn-tinder-primary me-3" >Love Me! 🐕</button>
+      <button class="btn btn-tinder-secondary" (click)="goBack()">Back</button>
     </div>
   </div>
 
   <!-- Error or No Data Message -->
   <div *ngIf="!isLoading && !pet" class="text-center py-4">
-    <p>{{ errorMessage || 'No pet details available for this ID.' }}</p>
+    <p>{{ errorMessage || 'No pet details available for this ID. 🐾' }}</p>
   </div>
 </div>

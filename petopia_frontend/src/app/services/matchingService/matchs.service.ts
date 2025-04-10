@@ -1,15 +1,16 @@
-// src/app/services/matchingService/matches.service.ts
+// src/app/services/matchingService/matchs.service.ts
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import {Match} from 'src/app/models/matching/match';
+import { Match } from 'src/app/models/matching/match';
+import { FriendWithPets } from 'src/app/models/matching/friend-with-pets';
 
 @Injectable({
   providedIn: 'root'
 })
 export class MatchsService {
   private apiUrl = 'http://localhost:8082/petopia';
-  private staticToken = 'eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJqaWhlZGpvb0BnbWFpbC5jb20iLCJyb2xlcyI6WyJST0xFX1VTRVIiXSwidXNlcklkIjoyLCJ1c2VybmFtZSI6ImppaGVkam9vQGdtYWlsLmNvbSIsImlhdCI6MTc0MzY0MTM5OSwiZXhwIjoxNzQzNzI3Nzk5fQ.YkFQqGW9KZRLLvD6S_nuqs9EndHWOfTXOAxtxa5W--c';
+  private staticToken = localStorage.getItem('token');
 
   constructor(private http: HttpClient) {}
 
@@ -21,21 +22,27 @@ export class MatchsService {
     });
   }
 
-  // Récupérer les matchs en attente
-    getPendingMatches(): Observable<Match[]> {
-      const headers = this.getAuthHeaders();
-      console.log('Headers pour getPendingMatches:', headers.get('Authorization'));
-      return this.http.get<Match[]>(`${this.apiUrl}/user/matches/pending`, { headers });
-    }
+  // Récupérer tous les matchs
+  getAllMatches(): Observable<Match[]> {
+    const headers = this.getAuthHeaders();
+    return this.http.get<Match[]>(`${this.apiUrl}/user/matches/getAll`, { headers });
+  }
 
- // Accepter un match
+  // Récupérer les matchs en attente
+  getPendingMatches(): Observable<Match[]> {
+    const headers = this.getAuthHeaders();
+    console.log('Headers pour getPendingMatches:', headers.get('Authorization'));
+    return this.http.get<Match[]>(`${this.apiUrl}/user/matches/pending`, { headers });
+  }
+
+  // Accepter un match
   acceptMatch(matchId: number): Observable<any> {
     const headers = this.getAuthHeaders();
     console.log('Headers pour acceptMatch:', headers.get('Authorization'));
     return this.http.post(`${this.apiUrl}/user/matches/accept/${matchId}`, {}, { headers });
   }
 
-  // Créer un match (déplacé depuis PetService)
+  // Créer un match
   createMatch(pet1Id: number, pet2Id: number): Observable<any> {
     const headers = this.getAuthHeaders();
     const body = { pet1Id, pet2Id };
@@ -51,4 +58,16 @@ export class MatchsService {
     console.log('Headers pour deleteMatch:', headers.get('Authorization'));
     return this.http.delete(`${this.apiUrl}/user/matches/deleteMatches/${matchId}`, { headers });
   }
+
+  //Récupérer la liste des amis (matchs acceptés)
+  getAcceptedFriends(): Observable<any[]> {
+    const headers = this.getAuthHeaders();
+    // Correction de l'URL : supprimer l'espace avant "/user/matches/friends"
+    return this.http.get<any[]>(`${this.apiUrl}/user/matches/friends`, { headers });
+  }
+
+ /* getAcceptedFriends(): Observable<FriendWithPets[]> {
+    const headers = this.getAuthHeaders();
+    return this.http.get<FriendWithPets[]>(`${this.apiUrl}/user/matches/friends`,{ headers });
+  }*/
 }
