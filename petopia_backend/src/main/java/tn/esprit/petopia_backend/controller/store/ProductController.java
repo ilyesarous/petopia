@@ -23,7 +23,7 @@ public class ProductController {
     private ProductService productService;
     private UserService userService;
 
-    @GetMapping("partner/product/get/{id}")
+    @GetMapping("partner/product/{id}")
     public List<Product> findAllById(@PathVariable int id) {
         return productService.findProductsById(id);
     }

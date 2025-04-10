@@ -43,6 +43,7 @@ import { GameComponent } from './simple-user/vet/tic-tac-toe/game/game.component
 import { AdoptionDetailsComponent } from './simple-user/shelter/adoption-details/adoption-details.component';
 import { ShelterHomeComponent } from './simple-user/shelter/shelter-home/shelter-home.component';
 import { CartComponent } from './simple-user/store/cart/cart.component';
+import { HomePartnerComponent } from './simple-user/store/partner/home-partner/home-partner.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -51,6 +52,7 @@ const routes: Routes = [
   { path: 'products/:id', component: ProductDetailComponent, canActivate: [AuthGuard] },
   { path: 'favorites', component: FavoriteComponent, canActivate: [AuthGuard]},
   { path: 'cart', component: CartComponent, canActivate: [AuthGuard]},
+  { path: 'partner/home', component: HomePartnerComponent, canActivate: [AuthGuard]},
   { path: 'vet', component: DashPrincipaleHomeVetComponent, canActivate: [AuthGuard] },
   { path: 'vet/pet-growth/:id', component: PetGrowthVetComponent, canActivate: [AuthGuard] },
   { path: 'vet/treatment-pets', component: TreatmentPetsComponent, canActivate: [AuthGuard] },

@@ -37,6 +37,17 @@
             </a>
           </li>
         </ng-container>
+        <ng-container *ngIf="isAuthenticated && role === 'ROLE_PARTNER'">
+          <li class="nav-item" *ngFor="let page of partnerPages">
+            <a class="nav-link"
+               [routerLink]="page.link"
+               routerLinkActive="active"
+               (click)="selectedItem = page.name"
+               [ngClass]="{'is-selected': selectedItem === page.name}">
+              {{ page.name }}
+            </a>
+          </li>
+        </ng-container>
 
 
         <!-- Signup & Login (for guests) -->
