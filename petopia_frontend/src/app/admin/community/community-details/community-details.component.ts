@@ -26,9 +26,9 @@ export class CommunityDetailsComponent implements OnInit {
   reaction?: Reaction;
   story?: Story;
   comments: Comment[] = [];
-reactions: Reaction[] = [];
-postImages: string[] = [];
-showCommentDeleteSuccess: boolean = false;
+  reactions: Reaction[] = [];
+  postImages: string[] = [];
+  showCommentDeleteSuccess: boolean = false;
 
 
 
@@ -49,11 +49,7 @@ showCommentDeleteSuccess: boolean = false;
       case 'post':
         this.postService.getPostById(this.id).subscribe(post => {
           this.post = post;
-      
-          // Split image string by "," and remove any empty strings
           this.postImages = post.image?.split(',').map(img => img.trim()).filter(img => img) || [];
-          
-          // Fetch comments & reactions
           this.commentService.getCommentsByPost(this.id).subscribe(data => this.comments = data);
           this.reactionService.getReactionsByPost(this.id).subscribe(data => this.reactions = data);
         });
@@ -80,4 +76,15 @@ showCommentDeleteSuccess: boolean = false;
       });
     }
   }
+  getReactionIcon(type: string): string {
+    switch (type) {
+      case 'LIKE': return 'bi bi-hand-thumbs-up-fill text-primary';
+      case 'LOVE': return 'bi bi-heart-fill text-danger';
+      case 'WOW': return 'bi bi-emoji-surprise-fill text-warning';
+      case 'HAHA': return 'bi bi-emoji-laughing-fill text-orange';
+      case 'SAD': return 'bi bi-emoji-frown-fill text-secondary';
+      default: return 'bi bi-star-fill text-muted';
+    }
+  }
+  
 }

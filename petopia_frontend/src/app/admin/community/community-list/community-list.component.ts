@@ -44,6 +44,7 @@ showDeleteSuccess: boolean = false;
     this.postService.getPosts().subscribe(data => {
       this.posts = data.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
       this.filteredPosts = [...this.posts];
+      this.setupPostPagination();
     });
   
     this.commentService.getAllComments().subscribe(data => {
@@ -60,6 +61,8 @@ showDeleteSuccess: boolean = false;
     this.storyService.getStories().subscribe(data => {
       this.stories = data.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
       this.filteredStories = [...this.stories];
+      this.setupStoryPagination();
+
     });
   }
   
@@ -78,19 +81,14 @@ showDeleteSuccess: boolean = false;
       post.postType?.toLowerCase().includes(query) ||
       post.user?.name?.toLowerCase().includes(query)
     );
-  
-    this.filteredComments = this.comments.filter(comment =>
-      comment.user?.name?.toLowerCase().includes(query)
-    );
-  
-    this.filteredReactions = this.reactions.filter(reaction =>
-      reaction.user?.name?.toLowerCase().includes(query)
-    );
+    this.setupPostPagination();
   
     this.filteredStories = this.stories.filter(story =>
       story.user?.name?.toLowerCase().includes(query)
     );
+    this.setupStoryPagination();
   }
+  
   deletePost(id: number): void {
     if (confirm('Are you sure you want to delete this post?')) {
       this.postService.deletePost(id).subscribe(() => {
@@ -112,5 +110,44 @@ showDeleteSuccess: boolean = false;
       });
     }
   }
+    // Post pagination
+  currentPostPage: number = 1;
+  postPageSize: number = 5;
+  totalPostPages: number = 0;
+  paginatedPosts: Post[] = [];
+  postPageNumbers: number[] = [];
+
+  // Story pagination
+  currentStoryPage: number = 1;
+  storyPageSize: number = 5;
+  totalStoryPages: number = 0;
+  paginatedStories: Story[] = [];
+  storyPageNumbers: number[] = [];
+  setupPostPagination(): void {
+    this.totalPostPages = Math.ceil(this.filteredPosts.length / this.postPageSize);
+    this.postPageNumbers = Array.from({ length: this.totalPostPages }, (_, i) => i + 1);
+    this.changePostPage(1);
+  }
+
+  changePostPage(page: number): void {
+    this.currentPostPage = page;
+    const start = (page - 1) * this.postPageSize;
+    const end = start + this.postPageSize;
+    this.paginatedPosts = this.filteredPosts.slice(start, end);
+  }
+
+  setupStoryPagination(): void {
+    this.totalStoryPages = Math.ceil(this.filteredStories.length / this.storyPageSize);
+    this.storyPageNumbers = Array.from({ length: this.totalStoryPages }, (_, i) => i + 1);
+    this.changeStoryPage(1);
+  }
+
+  changeStoryPage(page: number): void {
+    this.currentStoryPage = page;
+    const start = (page - 1) * this.storyPageSize;
+    const end = start + this.storyPageSize;
+    this.paginatedStories = this.filteredStories.slice(start, end);
+  }
+
   
 }
