@@ -1,76 +1,89 @@
 <div *ngIf="showCommentDeleteSuccess" class="alert alert-success success-alert">
-    <i class="bi bi-check-circle me-2"></i> Comment deleted successfully!
-  </div>
-  
+  <i class="bi bi-check-circle me-2"></i> Comment deleted successfully!
+</div>
+
 <div class="community-details container py-4">
+  <div class="text-start mb-3">
     <button class="back-btn" (click)="router.navigate(['/dashboard/community'])">
-        ← Back to Community
-      </button>
-      
-      
-    <h2 class="title">Community Detail</h2>
+      <i class="bi bi-arrow-left-circle me-2"></i> Back to Community
+    </button>
     
-  
-<!-- Post Detail -->
-<div *ngIf="post">
-    <h4>{{ post.title }}</h4>
-    <p>{{ post.content }}</p>
-<!-- Images -->
-<div *ngIf="postImages.length > 0" class="image-gallery mb-3">
-    <img *ngFor="let img of postImages" [src]="img" alt="Post Image" class="post-image" />
   </div>
-      <p><strong>Type:</strong> {{ post.postType }}</p>
-    <p><strong>Author:</strong> {{ post.user?.name }}</p>
-    <p><strong>Date:</strong> {{ post.date | date:'short' }}</p>
+  <h2 class="title text-center mb-4">Post Detail</h2>
   
+
+  <!-- Post Detail -->
+  <div *ngIf="post">
+    <h4 class="mb-2">{{ post.title }}</h4>
+    <p class="mb-3">
+      <strong class="text-pink">Content:</strong> {{ post.content }}
+    </p>
+    
+    <!-- Images -->
+    <div *ngIf="postImages.length > 0" class="image-gallery mb-4">
+      <img *ngFor="let img of postImages" [src]="img" alt="Post Image" class="post-image" />
+    </div>
+
+    <p><strong>Type:</strong> {{ post.postType }}</p>
+    <p><strong>Author:</strong> {{ post.user?.name }}</p>
+    <p><strong>Date:</strong> {{ post.date | date:'dd/MM/yyyy HH:mm' }}</p>
+
     <!-- Reactions -->
     <div class="section" *ngIf="reactions.length">
-      <h5>Reactions</h5>
-      <ul>
-        <li *ngFor="let r of reactions">{{ r.user?.name }} — {{ r.type }}</li>
+      <h5 class="mb-3">Reactions</h5>
+      <div class="reaction-grid">
+        <div *ngFor="let r of reactions" class="reaction-card">
+          <span class="reaction-type">
+            <i [ngClass]="getReactionIcon(r.type)" class="me-1"></i>
+            {{ r.type }}
+          </span>
+          <div class="reacted-by">by <strong>{{ r.user?.name }}</strong></div>
+        </div>
+      </div>
+    </div>
+    
+    
+
+    <!-- Comments -->
+    <div class="section" *ngIf="comments.length">
+      <h5 class="mb-3">Comments</h5>
+      <ul class="list-unstyled">
+        <li *ngFor="let c of comments" class="comment-box mb-3 p-3">
+          <div class="d-flex justify-content-between align-items-start">
+            <div>
+              <span class="comment-user">{{ c.user?.name }}</span>
+              <p class="mb-1">{{ c.content }}</p>
+            </div>
+            <button class="btn btn-sm delete-comment-btn" (click)="deleteComment(c.id!)">
+              <i class="bi bi-trash"></i>
+            </button>
+          </div>
+        </li>
       </ul>
     </div>
-  
-<!-- Comments -->
-<div class="section" *ngIf="comments.length">
-    <h5>Comments</h5>
-    <ul class="list-unstyled">
-      <li *ngFor="let c of comments" class="d-flex justify-content-between align-items-start mb-2">
-        <div>
-          <strong>{{ c.user?.name }}</strong>: {{ c.content }}
-        </div>
-        <button class="btn btn-sm delete-comment-btn" (click)="deleteComment(c.id!)">
-          <i class="bi bi-trash"></i>
-        </button>
-      </li>
-    </ul>
+    
+
+  <!-- Comment Detail -->
+  <div *ngIf="comment">
+    <h4>Comment</h4>
+    <p>{{ comment.content }}</p>
+    <p><strong>Author:</strong> {{ comment.user?.name }}</p>
+    <p><strong>Date:</strong> {{ comment.date | date:'short' }}</p>
   </div>
-  
+
+  <!-- Reaction Detail -->
+  <div *ngIf="reaction">
+    <h4>Reaction</h4>
+    <p><strong>User:</strong> {{ reaction.user?.name }}</p>
+    <p><strong>Type:</strong> {{ reaction.type }}</p>
   </div>
-  
-  
-    <!-- Comment Detail -->
-    <div *ngIf="comment">
-      <h4>Comment</h4>
-      <p>{{ comment.content }}</p>
-      <p><strong>Author:</strong> {{ comment.user?.name }}</p>
-      <p><strong>Date:</strong> {{ comment.date | date:'short' }}</p>
-    </div>
-  
-    <!-- Reaction Detail -->
-    <div *ngIf="reaction">
-      <h4>Reaction</h4>
-      <p><strong>User:</strong> {{ reaction.user?.name }}</p>
-      <p><strong>Type:</strong> {{ reaction.type }}</p>
-    </div>
-  
-    <!-- Story Detail -->
-    <div *ngIf="story">
-      <h4>Story by {{ story.user.name }}</h4>
-      <p *ngIf="story.text">{{ story.text }}</p>
-      <img *ngIf="story.image" [src]="story.image" class="img-fluid my-2" />
-      <p><strong>Created:</strong> {{ story.createdAt | date:'short' }}</p>
-      <p><strong>Expires:</strong> {{ story.expiresAt | date:'short' }}</p>
-    </div>
+
+  <!-- Story Detail -->
+  <div *ngIf="story">
+    <h4>Story by {{ story.user.name }}</h4>
+    <p *ngIf="story.text">{{ story.text }}</p>
+    <img *ngIf="story.image" [src]="story.image" class="img-fluid my-2" />
+    <p><strong>Created:</strong> {{ story.createdAt | date:'short' }}</p>
+    <p><strong>Expires:</strong> {{ story.expiresAt | date:'short' }}</p>
   </div>
-  
+</div>

@@ -67,7 +67,7 @@
   
   .search-box input {
     width: 100%;
-    max-width: 400px; /* Smaller than before */
+    max-width: 400px; 
     min-width: 280px;
     border-radius: 30px;
     padding: 10px 20px;
@@ -120,6 +120,40 @@
     min-width: 260px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
     font-weight: 500;
+  }
+  .pagination-controls {
+    display: flex;
+    justify-content: center;
+    margin-top: 2rem;
+    gap: 8px;
+  }
+  
+  .pagination-controls .btn {
+    background-color: #fefefe;
+    color: #F83182;
+    border: 2px solid #F83182;
+    padding: 8px 16px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.3s ease;
+  }
+  
+  .pagination-controls .btn:hover {
+    background-color: #F83182;
+    color: #fff;
+  }
+  
+  .pagination-controls .btn.active {
+    background-color: #F83182;
+    color: white;
+    font-weight: bold;
+    box-shadow: 0 0 8px rgba(248, 49, 130, 0.3);
+  }
+  
+  .pagination-controls .btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
   }
   
   
