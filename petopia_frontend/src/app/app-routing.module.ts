@@ -48,6 +48,10 @@ import { ShelterHomeComponent } from './simple-user/shelter/shelter-home/shelter
 import { CartComponent } from './simple-user/store/cart/cart.component';
 import { ShelterListComponent } from './admin/shelter/shelter-list/shelter-list.component';
 import { ShelterDetailsComponent } from './admin/shelter/shelter-details/shelter-details.component';
+import { MyAdoptionsComponent } from './simple-user/adoption/my-adoptions/my-adoptions.component';
+import { AddShelterComponent } from './simple-user/adoption/add-shelter/add-shelter.component';
+import { ShelterSignCertificateComponent } from './simple-user/shelter/shelter-sign-certificate/shelter-sign-certificate.component';
+import { ShelterCertificateDetailsComponent } from './simple-user/shelter/shelter-certificate-details/shelter-certificate-details.component';
 import { CommunityListComponent } from './admin/community/community-list/community-list.component';
 import { CommunityDetailsComponent } from './admin/community/community-details/community-details.component';
 
@@ -79,9 +83,11 @@ const routes: Routes = [
   { path: 'adoption', component: PetAdoptionListComponent },
   { path: 'adoption/pets/:id', component: PetAdoptDetailsComponent },
   { path: 'adoption/form/:idPet', component: AdoptPetComponent },
+  { path:'adoption/requests', component: MyAdoptionsComponent},
   { path: 'shelter/info', component: ShelterInfoComponent },
   { path: 'shelter/pets', component: ShelterPetListComponent },
   { path: 'shelter/pets/add', component: ShelterAddPetComponent },
+  {path: 'add-shelter', component: AddShelterComponent},
   {
     path: 'shelter/adoption-requests',
     component: ShelterAdoptionRequestsComponent,
@@ -95,6 +101,8 @@ const routes: Routes = [
     path: 'shelter/adoption-requests/:id',
     component: AdoptionDetailsComponent,
   },
+  {path:"shelter/sign-certificate/:id",component: ShelterSignCertificateComponent,canActivate: [AuthGuard]},
+  { path: 'shelter/certificate/:id', component: ShelterCertificateDetailsComponent },
   { path: 'dashboard', component: DashbordComponent, canActivate: [AuthGuard],
     children: [
       { path: 'user', component: ChartComponent },

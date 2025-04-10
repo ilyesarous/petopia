@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { Adoption } from 'src/app/models/adoption/adoption/Adoption';
 import { Shelter } from 'src/app/models/adoption/shelter/Shelter';
 import { AdoptionService } from 'src/app/services/adoptions/adoption/adoption.service';
+import { CertificateService } from 'src/app/services/adoptions/certificate/certificate.service';
 import { ShelterService } from 'src/app/services/adoptions/shelter/shelter.service';
 import { PetService } from 'src/app/services/pets/pet.service';
 
@@ -29,7 +30,8 @@ export class ShelterAdoptionRequestsComponent implements OnInit {
     private adoptionService: AdoptionService,
     private shelterService: ShelterService,
     private petService: PetService,
-    private router: Router
+    private router: Router,
+    private certificateService: CertificateService
   ) {}
   
 
@@ -106,30 +108,60 @@ export class ShelterAdoptionRequestsComponent implements OnInit {
   
 
   approveRequest(request: Adoption): void {
-    request.status = 'APPROVED';
-  
-    this.adoptionService.updateAdoption(request.id_request, request).subscribe({
-      next: () => {
-        // Update the pet's status to ADOPTED
-        const updatedPet = { ...request.pet, status: 'ADOPTED' };
-        this.petService.updatePetWithImage(updatedPet.idPet, this.createFormData(updatedPet)).subscribe({
-          next: () => {
-            alert('Request approved and pet marked as adopted!');
-            this.allAdoptionRequests = this.allAdoptionRequests.filter(r => r.id_request !== request.id_request);
-            this.applyFilter();
-          },
-          error: (err) => {
-            console.error('Error updating pet status:', err);
-            alert('Request approved, but failed to update pet status.');
+  request.status = 'APPROVED';
+
+  this.adoptionService.updateAdoption(request.id_request, request).subscribe({
+    next: () => {
+      // ✅ Step 1: Update the pet's status to ADOPTED
+      const updatedPet = { ...request.pet, status: 'ADOPTED' };
+      this.petService.updatePetWithImage(updatedPet.idPet, this.createFormData(updatedPet)).subscribe({
+        next: () => {
+          alert('Request approved and pet marked as adopted!');
+          const shelterId = request.shelter?.id_shelter || this.shelter?.id_shelter;
+
+          if (!shelterId) {
+            console.error('No shelter ID found for this request!');
+            alert('Error: Cannot create certificate because shelter info is missing.');
+            return;
           }
-        });
-      },
-      error: (err) => {
-        console.error('Error approving request:', err);
-        alert('Error approving request. Please try again.');
-      }
-    });
-  }
+          
+          const payload = {
+            pet_id_pet: request.pet.idPet,
+            shelter_id_shelter: shelterId,
+            user_id_user: request.requester.id_user
+          };
+          this.certificateService.createCertificate(request.id_request, payload).subscribe({
+            next: (cert) => {
+              if (!cert.id_certificate) {
+                console.error('Certificate creation failed or malformed response:', cert);
+                return;
+              }
+              this.router.navigate(['/shelter/sign-certificate', cert.id_certificate]);
+            },
+            error: (err) => {
+              console.error('Error creating certificate:', err);
+              alert('Pet status updated but certificate creation failed.');
+            }
+          });
+          
+          
+          
+
+          this.applyFilter();
+        },
+        error: (err) => {
+          console.error('Error updating pet status:', err);
+          alert('Request approved, but failed to update pet status.');
+        }
+      });
+    },
+    error: (err) => {
+      console.error('Error approving request:', err);
+      alert('Error approving request. Please try again.');
+    }
+  });
+}
+
   
   rejectRequest(request: Adoption): void {
     request.status = 'REJECTED';

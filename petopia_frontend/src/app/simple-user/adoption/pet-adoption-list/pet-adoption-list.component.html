@@ -39,6 +39,7 @@
   </div>
 </div>
 
+
 <div class="dream-pet-search-section container my-5">
   <div class="dream-pet-card">
     <div class="content">
@@ -95,7 +96,13 @@
 
 <!-- Pet List Section -->
 <div class="container py-5">
-  <h2 class="text-center mb-4">Our Lovely Pets</h2>
+  <div class="pet-title-bar d-flex flex-column flex-md-row justify-content-between align-items-center mb-4">
+    <h2 class="mb-3 mb-md-0">Our Lovely Pets</h2>
+    <button class="btn btn-outline-primary adoption-requests-btn" [routerLink]="['/adoption/requests']">
+      <i class="bi bi-list-check me-2"></i> My Adoption Requests
+    </button>
+  </div>
+  
   <div class="row">
     <!-- Loop over filteredPets instead of pets -->
     <div *ngFor="let pet of filteredPets" class="col-md-4 mb-4">
