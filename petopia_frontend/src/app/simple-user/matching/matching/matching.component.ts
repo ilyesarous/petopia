@@ -8,6 +8,7 @@ import { FriendWithPets } from 'src/app/models/matching/friend-with-pets';
 import { MessagingService } from 'src/app/services/matchingService/messaging.service';
 import { ChatWebSocketService } from 'src/app/services/matchingService/chat-web-socket.service';
 import { WebSocketService } from 'src/app/services/user/web-socket-service.service';
+import { Pet } from 'src/app/models/pet/Pet';
 @Component({
   selector: 'app-matching',
   templateUrl: './matching.component.html',
@@ -58,7 +59,7 @@ export class MatchingComponent implements OnInit {
     private matchsService: MatchsService,
     private messagingService: MessagingService,
   //  private chatWebSocketService: ChatWebSocketService,
-   private WebSocketService: WebSocketService,
+  //  private WebSocketService: WebSocketService,
 
     private router: Router
   ) {
@@ -355,7 +356,7 @@ export class MatchingComponent implements OnInit {
         user: friendPet.user,
         matchedPets: [friendPet]
       };
-      this.openChat(friend);
+      this.openChat(friend, friendPet);
       this.closeMatchConfirmation();
     }
   }
@@ -381,11 +382,11 @@ export class MatchingComponent implements OnInit {
     );
   }
 
-  openChat(friend: FriendWithPets) {
+  openChat(friend: FriendWithPets, pet: Pet) {
     // Sélectionner le premier pet par défaut (ou implémenter une logique pour choisir un pet spécifique)
     this.selectedFriend = {
       user: friend.user,
-      petName: friend.matchedPets[0]?.petName || 'Unknown Pet', // Prendre le nom du premier pet
+      petName: pet.petName, // Prendre le nom du premier pet
       matchedPets: friend.matchedPets
     };
     this.showChat = true;

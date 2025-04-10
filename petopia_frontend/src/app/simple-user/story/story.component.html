@@ -3,6 +3,6 @@
     <img *ngIf="story.image" [src]="story.image" alt="Story image" />
   </div>
   <p class="story-owner mt-2 small">
-    {{ story.user?.name || 'Unknown User' }}
+    {{ story.user!.name || 'Unknown User' }}
   </p>
   </div>

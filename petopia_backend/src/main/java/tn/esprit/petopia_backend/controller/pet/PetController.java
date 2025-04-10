@@ -42,8 +42,6 @@ public class PetController {
     private final CloudinaryService cloudinaryService;
 
     public PetController(PetService petService,IShelterService shelterService,CloudinaryService cloudinaryService) {
-
-    public PetController(PetService petService, IShelterService shelterService) {
         this.petService = petService;
         this.shelterService= shelterService;
         this.cloudinaryService = cloudinaryService;
