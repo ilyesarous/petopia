@@ -1,8 +1,10 @@
 package tn.esprit.petopia_backend.services.adoptions;
 
 
+import tn.esprit.petopia_backend.dto.PKISignatureRequest;
 import tn.esprit.petopia_backend.entities.adoptions.AdoptionCertificate;
 import java.util.List;
+import java.util.Optional;
 
 public interface IAdoptionCertificateService {
     AdoptionCertificate createCertificateFromAdoption(Integer adoptionId, Integer petId, Integer shelterId, Integer userId);
@@ -16,4 +18,7 @@ public interface IAdoptionCertificateService {
     List<AdoptionCertificate> getCertificatesByPetId(Integer petId);
     List<AdoptionCertificate> getCertificatesByShelterId(Integer shelterId);
    byte[] generateCertificatePdf(Integer certificateId);
+    Optional<AdoptionCertificate> getCertificateByAdoptionId(Integer adoptionId);
+    boolean verifyAndStorePKISignature(PKISignatureRequest req);
+    boolean verifyAndStoreUserPKISignature(PKISignatureRequest req);
 }

@@ -200,3 +200,74 @@
     cursor: not-allowed;
   }
   
+  /* Certificate Actions */
+  .certificate-actions {
+    margin-top: 0.5rem;
+  }
+  
+  .certificate-actions button {
+    margin-right: 0.5rem;
+  }
+  .status-and-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-left: auto;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+  }
+  
+  .status-pill {
+    padding: 6px 16px;
+    border-radius: 50px;
+    font-weight: 600;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    color: white;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+  }
+  
+  .status-pill.pending {
+    background-color: #FE9A7A;
+  }
+  
+  .status-pill.approved {
+    background-color: #2DAF7D;
+  }
+  
+  .status-pill.rejected {
+    background-color: #FF617C;
+  }
+  
+  .cert-btn {
+    border: none;
+    padding: 8px 14px;
+    border-radius: 50px;
+    font-weight: 600;
+    font-size: 0.85rem;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  
+  .cert-btn.sign {
+    background-color: #F83182;
+    color: white;
+  }
+  
+  .cert-btn.sign:hover {
+    background-color: #e0216f;
+  }
+  
+  .cert-btn.view {
+    background-color: #f1f1f1;
+    color: #444;
+    border: 2px solid #ccc;
+  }
+  
+  .cert-btn.view:hover {
+    background-color: #e6e6e6;
+  }
+  

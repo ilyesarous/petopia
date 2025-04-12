@@ -114,6 +114,8 @@ import { MatchingComponent } from './simple-user/matching/matching/matching.comp
 import { PetDetailsComponent } from './simple-user/matching/pet-details/pet-details.component';
 
 import { HomePartnerComponent } from './simple-user/store/partner/home-partner/home-partner.component';
+import { UserSignCertificateComponent } from './simple-user/adoption/user-sign-certificate/user-sign-certificate.component';
+import { UserViewCertificateComponent } from './simple-user/adoption/user-view-certificate/user-view-certificate.component';
 
 
 @NgModule({
@@ -197,7 +199,9 @@ import { HomePartnerComponent } from './simple-user/store/partner/home-partner/h
     ShelterCertificateDetailsComponent,
     CommunityListComponent,
     CommunityDetailsComponent,
-    HomePartnerComponent
+    HomePartnerComponent,
+    UserSignCertificateComponent,
+    UserViewCertificateComponent
   ],
   imports: [
     BrowserModule,

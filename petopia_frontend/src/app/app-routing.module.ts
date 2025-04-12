@@ -57,6 +57,8 @@ import { ShelterSignCertificateComponent } from './simple-user/shelter/shelter-s
 import { ShelterCertificateDetailsComponent } from './simple-user/shelter/shelter-certificate-details/shelter-certificate-details.component';
 import { CommunityListComponent } from './admin/community/community-list/community-list.component';
 import { CommunityDetailsComponent } from './admin/community/community-details/community-details.component';
+import { UserSignCertificateComponent } from './simple-user/adoption/user-sign-certificate/user-sign-certificate.component';
+import { UserViewCertificateComponent } from './simple-user/adoption/user-view-certificate/user-view-certificate.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -90,6 +92,8 @@ const routes: Routes = [
   { path: 'adoption/pets/:id', component: PetAdoptDetailsComponent },
   { path: 'adoption/form/:idPet', component: AdoptPetComponent },
   { path:'adoption/requests', component: MyAdoptionsComponent},
+  { path:'adoption/signCertificate/:id', component: UserSignCertificateComponent},
+  { path:'adoption/certificate/:id', component: UserViewCertificateComponent},
   { path: 'shelter/info', component: ShelterInfoComponent },
   { path: 'shelter/pets', component: ShelterPetListComponent },
   { path: 'shelter/pets/add', component: ShelterAddPetComponent },
