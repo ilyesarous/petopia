@@ -2,6 +2,8 @@ import { Component, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { AuthService } from 'src/app/services/user/auth.service';
 import { StripePaymentService } from 'src/app/services/vet/payment/stripe-payment.service';
+import { Consultation } from 'src/app/models/vet/consultation';
+import { ConsultationService } from 'src/app/services/vet/consultations/consultation.service';
 
 @Component({
   selector: 'app-vet-selection-popup',
@@ -14,36 +16,53 @@ export class VetSelectionPopupComponent {
   selectedVetId: number | null = null;
   isLoading = true;
   error: string | null = null;
+  consultations: Consultation[] = [];
+  selectedConsultationId: number | null = null;
 
   constructor(
     public dialogRef: MatDialogRef<VetSelectionPopupComponent>,
     private authService: AuthService,
     private stripeService: StripePaymentService,
+    private consultationService: ConsultationService,
     @Inject(MAT_DIALOG_DATA) public data: any
   ) {
-    this.loadVets();
+    this.loadConsultations();
   }
 
-  loadVets(): void {
-    this.authService.getAllVets().subscribe({
-      next: (vets) => {
-        console.log('Liste des vétérinaires:', vets);
-        this.vets = vets; // Mettre à jour la liste des vétérinaires
-        this.isLoading = false; // Désactiver le loading
+  loadConsultations(): void {
+    const userId = localStorage.getItem('userId');
+    if (!userId) {
+      this.error = 'User not authenticated';
+      this.isLoading = false;
+      return;
+    }
+
+    this.consultationService.getConsultationsByUserId(parseInt(userId, 10)).subscribe({
+      next: (consultations) => {
+        // Filtrer pour ne garder que les consultations avec statut 'accepted'
+        this.consultations = consultations.filter(consult => consult.statusT === 'accepted');
+        this.isLoading = false;
       },
       error: (err) => {
-        console.error('Error loading vets:', err);
-        this.error = 'Failed to load veterinarians';
+        console.error('Error loading consultations:', err);
+        this.error = 'Failed to load your consultations';
         this.isLoading = false;
       }
     });
   }
 
-  selectVet(): void {
-    if (this.selectedVetId) {
+  proceedToPayment(): void {
+    if (this.selectedConsultationId) {
       const userId = localStorage.getItem('userId');
       if (!userId) {
         this.error = 'User not authenticated';
+        return;
+      }
+
+      // Trouver la consultation sélectionnée
+      const selectedConsultation = this.consultations.find(c => c.idConsultation === this.selectedConsultationId);
+      if (!selectedConsultation) {
+        this.error = 'Selected consultation not found';
         return;
       }
 
@@ -54,7 +73,7 @@ export class VetSelectionPopupComponent {
         description: 'Veterinary services payment',
         paymentDate: new Date().toISOString(),
         userId: parseInt(userId, 10),
-        vetId: this.selectedVetId
+        vetId: selectedConsultation.uservet.id_user 
       };
 
       this.stripeService.createCheckoutSessionWithVet(paymentRequest).subscribe({
