@@ -12,12 +12,12 @@
         </div>
         
         <div class="card-body">
-            <div class="form-group mb-4 input-container" [@floatLabel]="petId ? 'filled' : 'empty'">
+            <div class="form-group mb-4 input-container" [@floatLabel]="petRefVet ? 'filled' : 'empty'">
                 <input type="number" 
                        class="form-control" 
-                       id="petId" 
-                       [(ngModel)]="petId" 
-                       placeholder="Enter Pet ID">
+                       id="petRefVet" 
+                       [(ngModel)]="petRefVet" 
+                       placeholder="Enter Pet Reference (e.g. 131, 919)">
             </div>
             
             <button class="btn submit-btn" 

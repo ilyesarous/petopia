@@ -6,6 +6,7 @@ import { Router } from '@angular/router';
 import { jsPDF } from 'jspdf';
 import html2canvas from 'html2canvas';
 import { Medicament_Prescription } from 'src/app/models/vet/diagnosis';
+import { PetService } from 'src/app/services/pets/pet.service';
 
 @Component({
   selector: 'app-treatment-pets',
@@ -42,6 +43,7 @@ export class TreatmentPetsComponent implements OnInit {
   searchTerm: string = '';
   selectedType: string = 'all';
   petId: number | null = null;
+  petRefVet: number | null = null; 
   sortOrder: 'asc' | 'desc' = 'desc';
   qrCodeError = false;
 
@@ -51,7 +53,10 @@ export class TreatmentPetsComponent implements OnInit {
   // Diagnosis types
   diagnosisTypes: string[] = ['all', 'Preventive', 'Maintenance', 'Emergency', 'Diagnostic'];
 
-  constructor(private diagnosisService: DiagnosisService, private router: Router) { }
+  constructor(private diagnosisService: DiagnosisService, 
+              private router: Router,
+              private petService: PetService
+  ) { }
 
   ngOnInit(): void {
     this.loadDiagnoses();
@@ -85,10 +90,24 @@ export class TreatmentPetsComponent implements OnInit {
   }
 
   navigateToDiagnosis() {
-    if (this.petId) {
-      this.router.navigate(['vet/treatment-specific-pet', this.petId]);
+    if (this.petRefVet) {
+      this.petService.getPetByRefVet(this.petRefVet).subscribe(
+        (pet) => {
+          if (pet) {
+            this.router.navigate(['vet/treatment-specific-pet', pet.idPet]);
+          } else {
+            // Gérer le cas où le pet n'est pas trouvé
+            alert('No pet found with this reference number');
+          }
+        },
+        (error) => {
+          console.error('Error finding pet:', error);
+          alert('Error finding pet');
+        }
+      );
     }
   }
+
 /*
   selectDiagnosis(idDiagnosis: number): void {
     this.diagnosisService.getDiagnosisById(idDiagnosis).subscribe(

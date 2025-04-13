@@ -6,7 +6,7 @@
   <component name="ChangeListManager">
     <list default="true" id="d82146aa-c391-488d-a5e9-d2774f899f12" name="Changes" comment="fix: fixed app module ts">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/petopia_backend/src/main/java/tn/esprit/petopia_backend/entities/pet/Pet.java" beforeDir="false" afterPath="$PROJECT_DIR$/petopia_backend/src/main/java/tn/esprit/petopia_backend/entities/pet/Pet.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/petopia_backend/src/main/java/tn/esprit/petopia_backend/controller/pet/PetController.java" beforeDir="false" afterPath="$PROJECT_DIR$/petopia_backend/src/main/java/tn/esprit/petopia_backend/controller/pet/PetController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/petopia_backend/src/main/java/tn/esprit/petopia_backend/repositories/pet/PetRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/petopia_backend/src/main/java/tn/esprit/petopia_backend/repositories/pet/PetRepository.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/petopia_backend/src/main/java/tn/esprit/petopia_backend/services/pet/PetService.java" beforeDir="false" afterPath="$PROJECT_DIR$/petopia_backend/src/main/java/tn/esprit/petopia_backend/services/pet/PetService.java" afterDir="false" />
     </list>
@@ -139,7 +139,7 @@
       <workItem from="1744206168119" duration="15736000" />
       <workItem from="1744376578394" duration="1273000" />
       <workItem from="1744559779635" duration="83000" />
-      <workItem from="1744560681983" duration="5858000" />
+      <workItem from="1744560681983" duration="6848000" />
     </task>
     <task id="LOCAL-00001" summary="fix: fixed app module ts">
       <option name="closed" value="true" />

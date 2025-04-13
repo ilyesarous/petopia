@@ -54,5 +54,9 @@ export class PetService {
 
   getUnassignedPets(): Observable<Pet[]> {
     return this.http.get<Pet[]>(`${this.apiUrl}/pet/unassigned`);
-  } 
+  }
+  
+  getPetByRefVet(petRefVet: number): Observable<Pet> {
+    return this.http.get<Pet>(`${this.apiUrl}/auth/pet/ref/${petRefVet}`);
+  }
 }

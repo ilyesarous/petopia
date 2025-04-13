@@ -29,5 +29,7 @@ public interface PetRepository extends JpaRepository<Pet,Integer>
     @Query("SELECT p FROM Pet p WHERE p.user.id_user IS NULL")
     List<Pet> findAllUnassignedPets();
 
+    Optional<Pet> findByPetRefVet(int petRefVet);
+
 
 }
