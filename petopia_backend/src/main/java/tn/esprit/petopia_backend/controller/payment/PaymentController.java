@@ -10,11 +10,13 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.view.RedirectView;
 import tn.esprit.petopia_backend.entities.payment.PaymentRequest;
 import tn.esprit.petopia_backend.entities.user.User;
+import tn.esprit.petopia_backend.repositories.payment.PaymentRepository;
 import tn.esprit.petopia_backend.repositories.user.UserRepository;
 import tn.esprit.petopia_backend.services.payment.PaymentService;
 
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -144,6 +146,12 @@ public class PaymentController {
     public ResponseEntity<Double> getVetRevenue(@PathVariable Long vetId) {
         Double revenue = paymentService.getTotalRevenueForVet(vetId);
         return ResponseEntity.ok(revenue);
+    }
+
+    @GetMapping("/vet-payments/{vetId}")
+    public ResponseEntity<List<PaymentRequest>> getPaymentsByVet(@PathVariable Long vetId) {
+        List<PaymentRequest> payments = paymentService.findByUserVetId(vetId);
+        return ResponseEntity.ok(payments);
     }
 
 }

@@ -44,6 +44,7 @@ import { InfoSpecificVetComponent } from './simple-user/vet/info-specific-vet/in
 import { QrCodeVetScannerComponent } from './simple-user/vet/qr-code-vet-scanner/qr-code-vet-scanner.component';
 import { UserRatingVetComponent } from './simple-user/vet/user-rating-vet/user-rating-vet.component';
 import { InfoRatingVetComponent } from './simple-user/vet/info-rating-vet/info-rating-vet.component';
+import { PaymentVetComponent } from './simple-user/vet/payment-vet/payment-vet.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -69,6 +70,7 @@ const routes: Routes = [
   { path: 'vet/qrcode-vet-scanner' , component: QrCodeVetScannerComponent, canActivate: [AuthGuard] },
   { path: 'vet/RatingVet/:id' , component: UserRatingVetComponent, canActivate: [AuthGuard] },
   { path: 'vet/info-rating-vet', component:InfoRatingVetComponent, canActivate: [AuthGuard] },
+  { path: 'vet/payment/:id', component: PaymentVetComponent, canActivate: [AuthGuard] },
 
 
   { path: 'dashboard', component: DashbordComponent, canActivate: [AuthGuard],

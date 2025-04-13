@@ -80,5 +80,9 @@ async redirectToCheckout(sessionId: string) {
   getVetRevenue(vetId: number): Observable<number> {
     return this.http.get<number>(`${this.apiUrl}/revenue/${vetId}`);
   }
+
+  getVetPayments(vetId: number): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/vet-payments/${vetId}`);
+  }
   
 }
