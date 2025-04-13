@@ -17,6 +17,8 @@ import tn.esprit.petopia_backend.services.community.IPostService;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @RestController
@@ -99,38 +101,37 @@ public class PostController {
             @PathVariable Long id,
             @RequestParam("content") String content,
             @RequestParam("postType") String postTypeStr,
-            @RequestParam(value = "file", required = false) MultipartFile file,
-            @RequestParam(value = "removeImage", required = false) boolean removeImage
+            @RequestParam(value = "files", required = false) MultipartFile[] files,
+            @RequestParam(value = "image", required = false) String image
     ) throws IOException {
         Post existingPost = postService.getPostById(id);
         existingPost.setContent(content);
         existingPost.setPostType(PostType.valueOf(postTypeStr));
         existingPost.setDate(LocalDateTime.now());
 
-        if (removeImage) {
-            existingPost.setImage(null);
+        List<String> finalImages = new ArrayList<>();
+
+        // 1. Include existing images (except deleted ones)
+        if (image != null && !image.trim().isEmpty()) {
+            finalImages.addAll(Arrays.asList(image.split(",")));
         }
 
-        if (file != null && !file.isEmpty()) {
-            String uploadedUrl = cloudinaryService.uploadImage(file);
-            String currentImages = existingPost.getImage();
-
-            if (currentImages != null && !currentImages.trim().isEmpty()) {
-                existingPost.setImage(currentImages + "," + uploadedUrl);
-            } else {
-                existingPost.setImage(uploadedUrl);
+        // 2. Append all uploaded files
+        if (files != null && files.length > 0) {
+            for (MultipartFile file : files) {
+                if (!file.isEmpty()) {
+                    String uploadedUrl = cloudinaryService.uploadImage(file);
+                    finalImages.add(uploadedUrl);
+                }
             }
         }
 
-        Post updated = postService.updatePost(id,existingPost);
+        // 3. Set final image list
+        existingPost.setImage(String.join(",", finalImages));
+
+        Post updated = postService.updatePost(id, existingPost);
         return ResponseEntity.ok(updated);
     }
-
-
-
-
-
-
 
 
     @DeleteMapping("/delete/{id}")
