@@ -1,9 +1,5 @@
 <div class="certificate-card" *ngIf="certificate">
     <h3>Pet: {{ certificate.pet.petName }}</h3>  
-    <!-- Button to fetch and view PDF -->
-    <button class="btn" (click)="fetchPdf(certificate.id_certificate)">
-      View Certificate
-    </button>
   
     <!-- Display the PDF when available -->
     <div *ngIf="certificatePdfUrl" style="margin-top: 20px;">

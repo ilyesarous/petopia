@@ -7,6 +7,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import tn.esprit.petopia_backend.dto.PKISignatureRequest;
 import tn.esprit.petopia_backend.entities.adoptions.AdoptionCertificate;
 import tn.esprit.petopia_backend.repositories.adoptions.AdoptionCertificateRepository;
 import tn.esprit.petopia_backend.services.adoptions.CertificatePdfGenerator;
@@ -139,5 +140,32 @@ public class AdoptionCertificateController {
 
         return new ResponseEntity<>(pdf, headers, HttpStatus.OK);
     }
+    @GetMapping("/adoption/{adoptionId}")
+    @PreAuthorize("hasAnyAuthority('ROLE_SHELTER','ROLE_USER')")
+    public ResponseEntity<AdoptionCertificate> getCertificateByAdoptionId(@PathVariable Integer adoptionId) {
+        return certificateService.getCertificateByAdoptionId(adoptionId)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
+
+    @PostMapping("/shelterSignWithPKI")
+    @PreAuthorize("hasAuthority('ROLE_SHELTER')")
+    public ResponseEntity<?> shelterSignWithPKI(@RequestBody PKISignatureRequest request) {
+        boolean isValid = certificateService.verifyAndStorePKISignature(request);
+        if (!isValid) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid signature");
+        }
+        return ResponseEntity.ok("Signature verified and stored.");
+    }
+    @PostMapping("/userSignWithPKI")
+    @PreAuthorize("hasAuthority('ROLE_USER')")
+    public ResponseEntity<?> userSignWithPKI(@RequestBody PKISignatureRequest request) {
+        boolean isValid = certificateService.verifyAndStoreUserPKISignature(request);
+        if (!isValid) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid digital signature");
+        }
+        return ResponseEntity.ok("User signature verified and saved.");
+    }
+
 
 }
