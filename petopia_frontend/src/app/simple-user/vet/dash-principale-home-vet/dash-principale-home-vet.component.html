@@ -81,7 +81,9 @@
                         </div>
                         
                         <div class="consultation-type" 
-                             [style.backgroundColor]="getConsultationColor(appointment.consultationT)">
+                            [style.backgroundColor]="getConsultationColor(appointment.consultationT)"
+                            [routerLink]="appointment.consultationT === 'meet' ? '/vet/meet' : null"
+                            [queryParams]="appointment.consultationT === 'meet' ? { consultationId: appointment.idConsultation, vetId: appointment.uservet.id_user } : null">
                             {{appointment.consultationT === 'meet' ? 'Online' : 'At Vet'}}
                         </div>
                     </div>
