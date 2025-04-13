@@ -29,7 +29,9 @@
                             {{ consultation.statusT }}
                         </span>
                     </div>
-                    <button class="rdv-action" (click)="cancelAppointment(consultation.idConsultation)" *ngIf="consultation.statusT === 'waiting'">
+                    <button class="rdv-action" 
+                            (click)="cancelAppointment(consultation.idConsultation)" 
+                            *ngIf="consultation.statusT === 'waiting' || consultation.statusT === 'accepted'">
                         Cancel
                     </button>
                 </div>
