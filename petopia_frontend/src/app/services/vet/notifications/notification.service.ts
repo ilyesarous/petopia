@@ -16,6 +16,11 @@ export class NotificationService {
     return this.http.get<Notification[]>(`${this.apiUrl}/retriveAllNotification`);
   }
 
+  // Méthode pour prendre l'ID utilisateur en paramètre
+  getUserNotifications(userId: number): Observable<Notification[]> {
+    return this.http.get<Notification[]>(`${this.apiUrl}/retrieveUserNotifications/${userId}`);
+  }
+
   updateNotificationStatus(idNotification: number, seen: boolean): Observable<void> {
     const url = `${this.apiUrl}/updateNotificationStatus/${idNotification}`;
     return this.http.put<void>(url, { seen }); // Envoyer { seen } dans le corps de la requête

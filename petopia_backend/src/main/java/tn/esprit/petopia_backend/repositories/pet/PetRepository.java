@@ -38,5 +38,7 @@ public interface PetRepository extends JpaRepository<Pet,Integer>
 """)
     List<Pet> findAllUnassignedPets(@Param("userId") Integer userId);
 
+    Optional<Pet> findByPetRefVet(int petRefVet);
+
 
 }

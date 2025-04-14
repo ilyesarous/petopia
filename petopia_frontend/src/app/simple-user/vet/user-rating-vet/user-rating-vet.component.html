@@ -1,0 +1,25 @@
+<div class="rating-container">
+    <h2 class="rating-title">Évaluation du vétérinaire</h2>
+  
+    <div class="add-rating-form">
+      <h3>Ajouter votre évaluation</h3>
+      
+      <div class="rating-input">
+        <label>Note (1-5):</label>
+        <div class="star-rating">
+          <span *ngFor="let star of [1,2,3,4,5]" 
+                (click)="ratingValue = star"
+                [style.color]="star <= ratingValue ? '#F83182' : '#ccc'">
+            ★
+          </span>
+        </div>
+      </div>
+      
+      <div class="comment-input">
+        <label>Commentaire:</label>
+        <textarea [(ngModel)]="comment" placeholder="Votre commentaire..."></textarea>
+      </div>
+      
+      <button class="submit-btn" (click)="addRating()">Envoyer l'évaluation</button>
+    </div>
+  </div>

@@ -113,6 +113,8 @@ export class LoginComponent implements OnInit {
         }
       //  else if (role === 'ROLE_VET') this.router.navigate(['/vet-dashboard']);
        else if (role === 'ROLE_PARTNER') this.router.navigate(['/partner/home']);
+        else if (role === 'ROLE_VET') this.router.navigate(['/vet']);
+       // else if (role === 'ROLE_PARTNER') this.router.navigate(['/partner-dashboard']);
         else this.router.navigate(['/']);
       }, 500);
     } catch (error) {

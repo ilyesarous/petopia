@@ -138,4 +138,14 @@
       );
     }
 
+    getAllVets(): Observable<any> {
+      const token = localStorage.getItem('token');
+      const headers = new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      });
+    
+      return this.http.get(`${this.baseUrl}/vets`, { headers });
+    }
+
   }

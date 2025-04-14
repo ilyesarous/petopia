@@ -279,5 +279,14 @@ public class PetController {
         return ResponseEntity.ok(matchingPets);
     }
 
+    @GetMapping("/auth/pet/ref/{petRefVet}")
+    public ResponseEntity<Pet> getPetByRefVet(@PathVariable int petRefVet) {
+        Pet pet = petService.getPetByRefVet(petRefVet);
+        if (pet == null) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(pet);
+    }
+
 
 }

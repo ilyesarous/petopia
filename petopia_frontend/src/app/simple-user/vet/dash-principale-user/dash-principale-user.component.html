@@ -1,11 +1,14 @@
-<div class="dashboard">
-    <div class="header">
-        <div class="welcome-container">
-            <h1 class="welcome-text">Welcome back</h1>
+<div class="dashboard-container">
+    <div class="dashboard-header">
+        <div class="header-content">
+            <h1 class="welcome-title">Welcome back! 👋</h1>
             <div class="right-elements">
                 <div class="game-icon" routerLink="/vet/tic-tac-toe">
                     🎮 
                 </div>
+                <div class="rate-vet" routerLink="/vet/qrcode-vet-scanner">
+                    👨‍⚕️ Rate Vet ⭐
+                </div>                
                 <div class="notification-container">
                     <app-notification-vet></app-notification-vet>
                 </div>
@@ -13,58 +16,81 @@
         </div>
     </div>
 
-    <div class="stats-grid-container">
-        <div class="stats-row">
-            <!-- 1ere ligne (3 cartes) -->
-            <div class="stat-card patients" routerLink="/vet/appointment-user">
-                <h3>🗓️ Appointment</h3>
-                <div class="stat-card patients">Click to view</div>
-            </div>
-    
-            <div class="stat-card appointments" (click)="handlePaymentClick()">
-                <h3>💳 Payment</h3>
-                <div class="stat-card appointments">Click to pay</div>
-            </div>
-    
-            <div class="stat-card treatments" (click)="redirectToUrlDogBreedRecognition()">
-                <h3>🐕 Dog Breed Recognition</h3>
-                <div class="stat-card treatments">Click to view</div>
-            </div>
+    <div class="dashboard-cards">
+        <div class="cards-row">
+            <!-- Première ligne de cartes -->
+            <mat-card class="feature-card appointment-card" matRipple routerLink="/vet/appointment-user">
+                <div class="card-icon">🗓️</div>
+                <mat-card-content>
+                    <h3>Appointments</h3>
+                    <p>View and manage your appointments</p>
+                </mat-card-content>
+            </mat-card>
 
+            <mat-card class="feature-card payment-card" matRipple (click)="openVetSelectionDialog()">
+                <div class="card-icon">💳</div>
+                <mat-card-content>
+                    <h3>Payments</h3>
+                    <p>Select vet and process payments</p>
+                </mat-card-content>
+            </mat-card>
+
+            <mat-card class="feature-card recognition-card" matRipple (click)="redirectToUrlDogBreedRecognition()">
+                <div class="card-icon">🐕</div>
+                <mat-card-content>
+                    <h3>Dog Breed Recognition</h3>
+                    <p>Identify dog breeds with AI</p>
+                </mat-card-content>
+            </mat-card>
         </div>
     </div>
 
     <div class="pets-section">
         <h2 class="pets-title">My animals</h2>
         
+        <div *ngIf="loading" class="loading-message">
+            Loading pets...
+        </div>
+
+        <div *ngIf="!loading && userPets.length === 0" class="no-pets-message">
+            You don't have any pets yet. 
+        </div>
+        
         <div class="pets-grid">
-            <!-- Animal 1 -->
-            <div class="pet-card" [routerLink]="['/vet/treatment-specific-pets-user', 1]">
+            <!-- Boucle sur les animaux de l'utilisateur -->
+            <div *ngFor="let pet of userPets" class="pet-card" [routerLink]="['/vet/treatment-specific-pets-user', pet.idPet]">
                 <div class="pet-image-container">
-                    <img src="assets/images/logo.png" alt="Rex" class="pet-image">
+                    <img [src]="pet.petImage || 'assets/images/logo.png'" [alt]="pet.petName" class="pet-image">
                 </div>
                 <div class="pet-info">
-                    <h3 class="pet-name" color style="color: #ff4766;">Dodo</h3>
-                    <p class="pet-breed">Dobermann</p>
-                    <p class="pet-details">5 ans · 32 kg</p>
-                    <span class="pet-type-badge" style="background-color: #FE9A7A;">Dog</span>
-                </div>
-            </div>
-    
-            <!-- Animal 2 -->
-            <div class="pet-card" [routerLink]="['/vet/treatment-specific-pets-user', 2]">
-                <div class="pet-image-container">
-                    <img src="assets/images/logo.png" alt="Luna" class="pet-image">
-                </div>
-                <div class="pet-info">
-                    <h3 class="pet-name" color style="color: #ff4766;">Sisi</h3>
-                    <p class="pet-breed">Chihuahua</p>
-                    <p class="pet-details">3 ans · 4.5 kg</p>
-                    <span class="pet-type-badge" style="background-color: #FE9A7A;">Dog</span>
+                    <h3 class="pet-name" style="color: #ff4766;">{{ pet.petName }}</h3>
+                    <p class="pet-breed">{{ pet.breed }}</p>
+                    <p class="pet-details">{{ pet.petAge }} ans · {{ pet.gender }} </p>
+                    <span class="pet-type-badge" style="background-color: #FE9A7A;">{{ pet.species }}</span>
                 </div>
             </div>
         </div>
-    </div>    
+    </div>  
+    
+    <!-- Map Section -->
+    <div class="map-section">
+        <h1 class="welcome-text">Vet Location</h1>
+        <div class="map-controls">
+            <div *ngIf="selectedLocation" class="selected-location">
+                Selected location: {{ selectedLocation }}
+            </div>
+            <button class="location-button" (click)="locateMe()">
+                <i class="fas fa-location-arrow"></i> My Current Location
+            </button>
+            <button class="nearest-vet-button" (click)="findNearestVetToMyLocation()">
+                <i class="fas fa-map-marker-alt"></i> Find Nearest Vet
+            </button>
+        </div>
+        
+        <div id="map"></div>
+    </div>
+    
+    <br>
 </div>
 
 <app-chatbot></app-chatbot>

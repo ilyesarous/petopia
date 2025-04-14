@@ -1,0 +1,74 @@
+<div class="container">
+    <div class="video-container">
+      <div class="button-group">
+        <button 
+          class="scan-button" 
+          (click)="startScanning()" 
+          [disabled]="isScanning"
+          [ngClass]="{'scanning': isScanning}">
+          {{ isScanning ? 'Scanning...' : 'Start Scanning' }}
+        </button>
+  
+        <button 
+          class="scan-button" 
+          (click)="stopScanning()" 
+          [disabled]="!isScanning"
+          [ngClass]="{'scanning': !isScanning}">
+          Stop Scanning
+        </button>
+      </div>
+  
+      <video id="video" width="300" height="200" [hidden]="!isScanning"></video>
+    </div>
+  
+    <div class="message-container">
+      <div *ngIf="errorMessage" class="error-message">
+        {{ errorMessage }}
+      </div>
+  
+      <div *ngIf="isScanning" class="scanning-hint">
+        <p>Scanning QR code...</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="ratings-container">
+    <h2 class="h2">All Reviews for Veterinarians</h2>
+    
+    <div class="ratings-grid">
+      <div class="rating-card" *ngFor="let rating of ratings">
+        <div class="card-header">
+        </div>
+        <div class="card-body">
+          <div class="rating-info">
+            <div class="user-info">
+              <h4>Client:</h4>
+              <p>{{rating.userclientR.name || 'Anonymous'}}</p>
+            </div>
+            
+            <div class="vet-info">
+              <h4>Veterinarian:</h4>
+              <p>{{rating.uservetR.name || 'Unknown Veterinarian'}}</p>
+              <p><i class="fas fa-envelope" style="color: #FF617C;"></i> {{rating.uservetR.email || ''}}</p>  
+              <p><i class="fas fa-phone" style="color: #FF617C;"></i> {{rating.uservetR.phoneNumber || ''}}</p>
+            </div>
+          </div>
+          
+          <div class="rating-details">
+            <div class="rating-stars">
+              Rating: 
+              <span *ngFor="let star of [1,2,3,4,5]"
+                    [style.color]="star <= rating.note ? '#F83182' : '#ccc'">
+                ★
+              </span>
+              ({{rating.note}}/5)
+            </div>
+            <div class="comment">
+              <p>"{{rating.comment || 'No comment'}}"</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  

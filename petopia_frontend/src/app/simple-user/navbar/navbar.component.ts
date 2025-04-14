@@ -40,7 +40,7 @@ export class NavbarComponent implements OnInit {
     { id: 2, name: 'Store', link: '/products' },
     { id: 3, name: 'Community Hub', link: 'community' },
     { id: 4, name: 'Events', link: '/events' },
-    { id: 5, name: 'Vet', link: 'vet' },
+    { id: 5, name: 'Vet', link: '/vet/dash-principale-user' },
     {id: 6, name: 'Adoption', link: 'adoption'},
     {id: 7, name: 'Matching', link: 'matchy'},
   ];
@@ -55,6 +55,13 @@ export class NavbarComponent implements OnInit {
     {id: 0, name: 'Home', link: 'partner/home'},
     {id: 1, name: 'add new product', link: 'partner/product/add'},
   ]
+
+  VETpages = [
+    { id: 1, name: 'Vet Dashboard', link: '/vet' },
+    { id: 2, name: 'Locations', link: '/vet/location' },
+    { id: 3, name: 'Vet Info', link: 'vet/info-specific-vet/:id' },
+    { id: 4, name: 'ratings', link: 'vet/info-rating-vet' },
+  ];
   constructor(private authService: AuthService, private router: Router) {}
 
 

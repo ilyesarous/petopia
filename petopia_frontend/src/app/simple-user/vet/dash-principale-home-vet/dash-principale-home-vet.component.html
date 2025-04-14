@@ -1,3 +1,4 @@
+
 <div class="dashboard">
     <div class="header">
         <div class="welcome-container">
@@ -19,7 +20,7 @@
             <!-- Première ligne (3 cartes) -->
             <div class="stat-card patients">
                 <h3>🐕‍🦺 Total Patients 🐈‍⬛</h3>
-                <div class="stat-card patients">11</div>
+                <div class="stat-card patients">{{ totalPatients }}</div>
             </div>
     
             <div class="stat-card appointments">
@@ -27,9 +28,9 @@
                 <div class="stat-card appointments">{{totalAppointments}}</div>
             </div>
     
-            <div class="stat-card treatments">
+            <div class="stat-card treatments" routerLink="/vet/payment/:id">
                 <h3>💵 Revenue</h3>
-                <div class="stat-card treatments">$11</div>
+                <div class="stat-card treatments">TND{{ vetRevenue | number:'1.2-2' }}</div>
             </div>
         </div>
     
@@ -80,7 +81,9 @@
                         </div>
                         
                         <div class="consultation-type" 
-                             [style.backgroundColor]="getConsultationColor(appointment.consultationT)">
+                            [style.backgroundColor]="getConsultationColor(appointment.consultationT)"
+                            [routerLink]="appointment.consultationT === 'meet' ? '/vet/meet' : null"
+                            [queryParams]="appointment.consultationT === 'meet' ? { consultationId: appointment.idConsultation, vetId: appointment.uservet.id_user } : null">
                             {{appointment.consultationT === 'meet' ? 'Online' : 'At Vet'}}
                         </div>
                     </div>
@@ -94,23 +97,31 @@
                 </ng-template>
             </div>
         </div>
-
         <div class="recent-patients-section">
             <div class="section">
                 <div class="section-header">
                     <h2>Patients List</h2>
-                    <a href="#" class="view-link">View All</a>
                 </div>
                 
-                <div class="patient-item">
-                    <div class="pet-avatar">
-                        <span>M</span>
+                <div *ngIf="loadingPets" class="loading-message">
+                    Loading patients...
+                </div>
+                
+                <div *ngIf="!loadingPets && uniquePets.length === 0" class="no-patients">
+                    No patients found
+                </div>
+                
+                <div *ngFor="let pet of uniquePets" class="patient-item">
+                    <div class="pet-avatar" 
+                         [style.backgroundImage]="'url(' + (pet.petImage || defaultPetImage) + ')'">
+                        <span *ngIf="!pet.petImage">
+                            {{getPetInitial(pet.petName)}}
+                        </span>
                     </div>
                     
                     <div class="pet-info">
-                        <h4>Max</h4>
-                        <p>Dog • Golden Retriever</p>
-                        <p class="last-visit">Last visit: 2 days ago</p>
+                        <h4>{{ pet.petName }}</h4>
+                        <p>{{ pet.breed }} . {{ pet.petAge }} years . {{ pet.gender }}</p>
                     </div>
                 </div>
             </div>

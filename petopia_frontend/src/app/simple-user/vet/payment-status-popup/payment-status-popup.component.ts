@@ -25,7 +25,9 @@ export class PaymentStatusPopupComponent {
 
   closeDialog(): void {
     this.dialogRef.close();
-    window.location.replace('/home/vet/dash-principale-user');
+    //window.location.replace('/vet/dash-principale-user');
+    window.location.href = '/vet/dash-principale-user';
+
   }
 
 }

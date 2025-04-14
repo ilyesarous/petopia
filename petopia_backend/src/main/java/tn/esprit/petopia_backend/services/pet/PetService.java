@@ -102,5 +102,8 @@ public class PetService {
     }
 
 
+    public Pet getPetByRefVet(int petRefVet) {
+        return petRepository.findByPetRefVet(petRefVet).orElse(null);
+    }
 
 }

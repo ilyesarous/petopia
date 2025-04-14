@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Consultation } from 'src/app/models/vet/consultation';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import {Pet} from "src/app/models/pet/Pet"; 
 
 @Injectable({
   providedIn: 'root'
@@ -43,6 +44,14 @@ export class ConsultationService {
 
   deleteConsultation(id: number): Observable<any> {
     return this.http.delete(`${this.apiUrl}/deleteConsultations/${id}`, this.httpOptions);
+  }
+
+  getUniquePetsForVet(vetId: number): Observable<Pet[]> {
+    return this.http.get<Pet[]>(`${this.apiUrl}/vet/${vetId}/pets`, this.httpOptions);
+  }
+
+  getConsultationsByUserId(userId: number): Observable<Consultation[]> {
+    return this.http.get<Consultation[]>(`${this.apiUrl}/retrieveConsultationsByUser/${userId}`, this.httpOptions);
   }
 
 }

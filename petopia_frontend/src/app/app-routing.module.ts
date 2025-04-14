@@ -59,6 +59,13 @@ import { CommunityListComponent } from './admin/community/community-list/communi
 import { CommunityDetailsComponent } from './admin/community/community-details/community-details.component';
 import { UserSignCertificateComponent } from './simple-user/adoption/user-sign-certificate/user-sign-certificate.component';
 import { UserViewCertificateComponent } from './simple-user/adoption/user-view-certificate/user-view-certificate.component';
+//import { VetSelectionPopupComponent } from './simple-user/vet/vet-selection-popup/vet-selection-popup.component';
+import { LocationVetComponent } from './simple-user/vet/location-vet/location-vet.component';
+import { InfoSpecificVetComponent } from './simple-user/vet/info-specific-vet/info-specific-vet.component';
+import { QrCodeVetScannerComponent } from './simple-user/vet/qr-code-vet-scanner/qr-code-vet-scanner.component';
+import { UserRatingVetComponent } from './simple-user/vet/user-rating-vet/user-rating-vet.component';
+import { InfoRatingVetComponent } from './simple-user/vet/info-rating-vet/info-rating-vet.component';
+import { PaymentVetComponent } from './simple-user/vet/payment-vet/payment-vet.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -86,6 +93,15 @@ const routes: Routes = [
   { path: 'vet/tic-tac-toe', component:  GameComponent, canActivate: [AuthGuard]},
   { path: 'vet/treatment-specific-pets-user/:id', component: TreatmentSpecificPetsUserComponent, canActivate: [AuthGuard]},
   { path: 'vet/meet', component: VideoConsultationComponent, canActivate: [AuthGuard]},
+  //{path : 'vet/select-vet' , component : VetSelectionPopupComponent, canActivate: [AuthGuard]},
+  { path: 'vet/location', component: LocationVetComponent, canActivate: [AuthGuard] },
+  { path: 'vet/info-specific-vet/:id', component: InfoSpecificVetComponent, canActivate: [AuthGuard] },
+  { path: 'vet/qrcode-vet-scanner' , component: QrCodeVetScannerComponent, canActivate: [AuthGuard] },
+  { path: 'vet/RatingVet/:id' , component: UserRatingVetComponent, canActivate: [AuthGuard] },
+  { path: 'vet/info-rating-vet', component:InfoRatingVetComponent, canActivate: [AuthGuard] },
+  { path: 'vet/payment/:id', component: PaymentVetComponent, canActivate: [AuthGuard] },
+
+
   { path: 'community', component: CommunityComponent},
   { path: 'post/:id', component: PostComponent, canActivate: [AuthGuard] },
   { path: 'adoption', component: PetAdoptionListComponent },
@@ -118,7 +134,6 @@ const routes: Routes = [
       { path: 'user', component: ChartComponent },
       { path: 'store', component: StoreDashComponent },
       { path: 'vet', component: DashPrincipaleComponent },
-      { path: 'tic-tac-toe', component: GameComponent },
       { path: 'consultations', component: ConsultationListComponent },
       { path: 'diagnosis', component: DiagnosisListComponent },
       { path: 'notifications', component: NotificationListComponent },

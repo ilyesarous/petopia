@@ -80,9 +80,9 @@ def main():
 #st.sidebar.button("Download CSV", on_click=download_csv)
  
 st.sidebar.markdown(
-    '<a href="http://localhost:4200/home/vet" target="_blank">'
+    '<a href="http://localhost:4200/vet" target="_blank">'
     '<button style="background-color: #F83182; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer;">'
-    'Go to Angular App'
+    'Return'
     '</button>'
     '</a>',
     unsafe_allow_html=True

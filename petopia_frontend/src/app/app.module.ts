@@ -116,6 +116,22 @@ import { PetDetailsComponent } from './simple-user/matching/pet-details/pet-deta
 import { HomePartnerComponent } from './simple-user/store/partner/home-partner/home-partner.component';
 import { UserSignCertificateComponent } from './simple-user/adoption/user-sign-certificate/user-sign-certificate.component';
 import { UserViewCertificateComponent } from './simple-user/adoption/user-view-certificate/user-view-certificate.component';
+import { faLightbulb } from '@fortawesome/free-solid-svg-icons';
+import { faPaw, faHeart, faHandHoldingHeart, faInfoCircle,faCommentDots, faCamera,faPen } from '@fortawesome/free-solid-svg-icons';
+import {  ShelterInfoComponent } from './simple-user/shelter/shelter-info/shelter-info.component';
+import { ShelterPetListComponent } from './simple-user/shelter/shelter-pet-list/shelter-pet-list.component';
+import { ShelterAddPetComponent } from './simple-user/shelter/shelter-add-pet/shelter-add-pet.component';
+import { ShelterAdoptionRequestsComponent } from './simple-user/shelter/shelter-adoption-requests/shelter-adoption-requests.component';
+import { VetSelectionPopupComponent } from './simple-user/vet/vet-selection-popup/vet-selection-popup.component';
+import { MatRadioModule } from '@angular/material/radio';
+import { MatCardModule } from '@angular/material/card';
+import { MatRippleModule } from '@angular/material/core';
+import { LocationVetComponent } from './simple-user/vet/location-vet/location-vet.component';
+import { InfoSpecificVetComponent } from './simple-user/vet/info-specific-vet/info-specific-vet.component';
+import { QrCodeVetScannerComponent } from './simple-user/vet/qr-code-vet-scanner/qr-code-vet-scanner.component';
+import { UserRatingVetComponent } from './simple-user/vet/user-rating-vet/user-rating-vet.component';
+import { InfoRatingVetComponent } from './simple-user/vet/info-rating-vet/info-rating-vet.component';
+import { PaymentVetComponent } from './simple-user/vet/payment-vet/payment-vet.component';
 
 
 @NgModule({
@@ -146,7 +162,6 @@ import { UserViewCertificateComponent } from './simple-user/adoption/user-view-c
     ProductsComponent,
     MatchingComponent,
     PetDetailsComponent,
-
     ProductCardComponent,
     CarouselComponent,
     BrandsComponent,
@@ -165,6 +180,13 @@ import { UserViewCertificateComponent } from './simple-user/adoption/user-view-c
     ShelterPetListComponent,
     ShelterAddPetComponent,
     ShelterAdoptionRequestsComponent,
+    VetSelectionPopupComponent,
+    LocationVetComponent,
+    InfoSpecificVetComponent,
+    QrCodeVetScannerComponent,
+    UserRatingVetComponent,
+    InfoRatingVetComponent,
+    PaymentVetComponent,
     AdoptionDetailsComponent,
     ShelterHomeComponent,
     CommunityComponent,
@@ -173,7 +195,6 @@ import { UserViewCertificateComponent } from './simple-user/adoption/user-view-c
     CommentComponent,
     StoryComponent,
     RelativeTimePipe,
-
     TreatmentPetsComponent,
     TreatmentSpecificPetsComponent,
     NotificationVetComponent,
@@ -221,7 +242,10 @@ import { UserViewCertificateComponent } from './simple-user/adoption/user-view-c
     BrowserAnimationsModule,
     FontAwesomeModule,
     MatIconModule,
-    MatDialogModule
+    MatDialogModule,
+    MatRadioModule,
+    MatCardModule,
+    MatRippleModule,
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }

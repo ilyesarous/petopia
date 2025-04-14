@@ -25,6 +25,7 @@ import tn.esprit.petopia_backend.entities.reclamation.Reclamation;
 import tn.esprit.petopia_backend.entities.store.Cart;
 import tn.esprit.petopia_backend.entities.store.Feedback;
 import tn.esprit.petopia_backend.entities.store.Product;
+import tn.esprit.petopia_backend.entities.vet.Rating_Vet;
 
 
 import java.util.Collection;
@@ -59,17 +60,24 @@ public class User implements UserDetails {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Reclamation> listReclamation;
 
-    //1 user client inajem yekou barchaa consultationett
+
+    //Vet
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "userclient")
     @JsonIgnore
     private Set<Consultations> consultationList;
 
-    //1 user vet andou barchaa consultationett
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "uservet")
     @JsonIgnore
     private Set<Consultations> consultationsvetList;
 
-    //1 user  andou barchaa notif
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "userclientR")
+    @JsonIgnore
+    private Set<Rating_Vet> RatingUserToVetList;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "uservetR")
+    @JsonIgnore
+    private Set<Rating_Vet> RatingVetList;
+
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
     @JsonIgnore
     private Set<Notification> notificationsList;
