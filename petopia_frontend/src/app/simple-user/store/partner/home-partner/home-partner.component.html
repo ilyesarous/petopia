@@ -111,7 +111,7 @@
                   </span>
                 </td>
                 <td class="actions">
-                  <button class="btn-edit" (click)="editProduct(product.product_id)">
+                  <button class="btn-edit" (click)="editProduct(product)">
                     <i class="bi bi-pencil-square"></i>
                   </button>
                   <button class="btn-delete" (click)="confirmDelete(product.product_id)">
@@ -124,33 +124,18 @@
         </div>
       </div>
   
-      <!-- Charts Section -->
-      <div class="analytics-section">
-        <div class="chart-card">
-          <h3>Monthly Sales</h3>
-          <div class="chart-container">
-            <canvas #salesChart></canvas>
-          </div>
-        </div>
-        
-        <div class="chart-card">
-          <h3>Top Selling Products</h3>
-          <div class="chart-container">
-            <canvas #productsChart></canvas>
-          </div>
-        </div>
-      </div>
-    </div>
   
     <!-- Add Product Modal -->
     <div class="modal" *ngIf="showAddProductModal">
       <div class="modal-content">
         <span class="close" (click)="closeModal()">&times;</span>
-        <app-a
+        <app-add-product
           *ngIf="showAddProductModal"
+          [product]="currentProduct"
+          [isEditMode]="isEditMode"
           (productAdded)="handleProductAdded($event)"
           (cancel)="closeModal()">
-        </app-a>
+        </app-add-product>
       </div>
     </div>
   </div>

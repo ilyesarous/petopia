@@ -84,9 +84,9 @@
   
     <!-- Form Actions -->
     <div class="form-actions">
-      <button type="button" class="btn-cancel" routerLink="/admin/store">Cancel</button>
+      <button type="button" class="btn-cancel" (click)="onCancel()">Cancel</button>
       <button type="submit" class="btn-submit" [disabled]="productForm.invalid || isSubmitting">
-        <span *ngIf="!isSubmitting">{{ editingProduct ? 'Update' : 'Create' }} Product</span>
+        <span *ngIf="!isSubmitting">{{ isEditMode ? 'Update' : 'Create' }} Product</span>
         <span *ngIf="isSubmitting">Processing...</span>
       </button>
     </div>

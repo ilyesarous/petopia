@@ -6,12 +6,12 @@ import tn.esprit.petopia_backend.entities.store.Cart;
 import tn.esprit.petopia_backend.entities.store.CartProduct;
 import tn.esprit.petopia_backend.entities.store.Product;
 import tn.esprit.petopia_backend.entities.user.User;
-import tn.esprit.petopia_backend.repositories.store.CartProductRepository;
 import tn.esprit.petopia_backend.repositories.store.CartRepository;
 import tn.esprit.petopia_backend.repositories.store.ProductRepository;
 import tn.esprit.petopia_backend.services.store.interfaces.ICartService;
 import tn.esprit.petopia_backend.services.user.UserService;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -55,6 +55,7 @@ public class CartService implements ICartService {
         cart.setTotal_price(cart.getTotal_price() - product.getProduct_price());
         return repository.save(cart);
     }
+
     @Override
     public Cart increaseProductQuantityById(int idUser, int idProduct) {
         Cart cart = findCartByUser(idUser);
@@ -67,28 +68,30 @@ public class CartService implements ICartService {
     }
 
     @Override
-    public void clearCart(int idUser){
+    public void clearCart(int idUser) {
         Cart cart = findCartByUser(idUser);
-        for (CartProduct cp : cart.getCartProducts()){
+        for (CartProduct cp : cart.getCartProducts()) {
             cp.getProduct().setAvailableQuantity(cp.getProduct().getAvailableQuantity() + cp.getQuantity());
         }
         cart.setTotal_price(0);
         cart.getCartProducts().clear();
         repository.save(cart);
     }
+
     @Override
-    public Cart removeItem(int idUser, int idProduct){
+    public Cart removeItem(int idUser, int idProduct) {
         Cart cart = findCartByUser(idUser);
-        for (CartProduct cp : cart.getCartProducts()){
-            if (cp.getProduct().getProduct_id() == idProduct){
+        for (CartProduct cp : cart.getCartProducts()) {
+            if (cp.getProduct().getProduct_id() == idProduct) {
                 cp.getProduct().setAvailableQuantity(cp.getProduct().getAvailableQuantity() + cp.getQuantity());
-                cart.setTotal_price(cart.getTotal_price() - (cp.getProduct().getProduct_price()*cp.getQuantity()));
+                cart.setTotal_price(cart.getTotal_price() - (cp.getProduct().getProduct_price() * cp.getQuantity()));
                 cart.getCartProducts().remove(cp);
                 return repository.save(cart);
             }
         }
         return cart;
     }
+
     @Override
     public String checkout(int idUser) {
         Cart cart = findCartByUser(idUser);
@@ -104,4 +107,30 @@ public class CartService implements ICartService {
     public List<Cart> findAll() {
         return repository.findAll();
     }
+
+    /*public List<CartProduct>getTopProducts(int idUser){
+        Cart cart = findCartByUser(idUser);
+        return cartProductService.getTopProducts(cart);
+    }*/
+
+    public List<Product> getBestSaledProducts() {
+        List<Product> bestSaledProducts = new ArrayList<>();
+        for (CartProduct cp : cartProductService.getTopProducts()) {
+            bestSaledProducts.add(cp.getProduct());
+        }
+        return bestSaledProducts;
+    }
+
+    public List<Product> getBestSaledProductsByUser(int idUser) {
+        List<Product> bestSaledProducts = new ArrayList<>();
+        for (CartProduct cp : cartProductService.getTopProductsByUserId(idUser)) {
+            bestSaledProducts.add(cp.getProduct());
+        }
+        return bestSaledProducts;
+    }
+
+    public Double totalPrice(int idUser) {
+        return cartProductService.getTotalSalesByUser(idUser);
+    }
+
 }

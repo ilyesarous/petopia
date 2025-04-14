@@ -1,6 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { Product } from 'src/app/models/product/Product';
 
 @Injectable({
   providedIn: 'root',
@@ -66,4 +67,5 @@ export class CartService {
       headers: this.getAuthHeaders(),
     });
   }
+
 }

@@ -18,7 +18,7 @@ export class FeedbackService {
   }
   create(feedback: Feedback) {
     return this.http.post(
-      `${this.url}/add/${+feedback.user_id}/${+feedback.productId}`,
+      `${this.url}/add/${feedback.user.id_user}/${+feedback.productId}`,
       feedback,
       {
         headers: this.getAuthHeaders(),
@@ -31,4 +31,11 @@ export class FeedbackService {
       headers: this.getAuthHeaders(),
     });
   }
+
+  deleteFeedback(feedbackId: number): Observable<any> {
+    return this.http.delete(`${this.url}/delete/${feedbackId}`, {
+      headers: this.getAuthHeaders(),
+    });
+  }
+
 }
