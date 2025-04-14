@@ -18,7 +18,7 @@ export class CommunityComponent implements OnInit {
 
   // Stories
   stories: Story[] = [];
-  chunkedStories: Story[][] = []; // Each sub-array is one carousel slide
+  chunkedStories: Story[][] = []; 
 
   // For creating posts
   newPostContent: string = '';
@@ -50,6 +50,8 @@ export class CommunityComponent implements OnInit {
   activeStoryIndex: number = -1; // index into stories array; -1 means no active popup
   progress: number = 0;          // progress bar percentage (0 to 100)
   popupTimer: any;               // reference for the interval timer
+  selectedStoryFilePreview: string | null = null;
+
 
   constructor(
     private postService: PostService,
@@ -67,6 +69,7 @@ export class CommunityComponent implements OnInit {
       // Sort posts newest first
       this.posts = data.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
       this.originalPosts = [...this.posts];
+      this.updatePosts();
     });
   }
 
@@ -95,6 +98,11 @@ export class CommunityComponent implements OnInit {
 
   toggleCreateStory(): void {
     this.showCreateStory = !this.showCreateStory;
+    if (!this.showCreateStory) {
+      this.newStoryText = '';
+      this.selectedStoryFile = null;
+      this.selectedStoryFilePreview = null;
+    }
     console.log('showCreateStory:', this.showCreateStory);
   }
 
@@ -102,9 +110,22 @@ export class CommunityComponent implements OnInit {
     const target = event.target as HTMLInputElement;
     if (target.files && target.files.length > 0) {
       this.selectedStoryFile = target.files[0];
-      console.log('Story file selected:', this.selectedStoryFile);
+  
+      const fileType = this.selectedStoryFile.type;
+      const reader = new FileReader();
+  
+      reader.onload = (e: any) => {
+        this.selectedStoryFilePreview = e.target.result;
+      };
+  
+      // Only preview if it's an image or video
+      if (fileType.startsWith('image/') || fileType.startsWith('video/')) {
+        reader.readAsDataURL(this.selectedStoryFile);
+      }
     }
   }
+  
+  
 
   createStory(): void {
     if (!this.selectedStoryFile) {
@@ -117,21 +138,22 @@ export class CommunityComponent implements OnInit {
       return;
     }
     const userId = parseInt(userIdStr, 10);
-
+  
     const formData = new FormData();
     formData.append('file', this.selectedStoryFile, this.selectedStoryFile.name);
     formData.append('text', this.newStoryText);
-    console.log('Creating story with:', { userId, formData });
-
+  
     this.storyService.createStory(userId, formData).subscribe({
       next: (story) => {
         console.log('Story created:', story);
-        // Insert the new story at the start
+  
         this.stories.unshift(story);
-        // Re-chunk the updated array if needed
         this.chunkedStories = this.chunkArray(this.stories, 8);
+  
+        // ✅ Reset everything AFTER successful creation
         this.newStoryText = '';
         this.selectedStoryFile = null;
+        this.selectedStoryFilePreview = null;
         this.showCreateStory = false;
       },
       error: (err) => {
@@ -139,6 +161,7 @@ export class CommunityComponent implements OnInit {
       }
     });
   }
+  
 
   // Return the selected story file name
   get selectedStoryFileNames(): string {
@@ -186,8 +209,9 @@ export class CommunityComponent implements OnInit {
     });
   
     this.postService.createPost(newPost, formData).subscribe(post => {
-      this.posts.unshift(post);
-      this.originalPosts.unshift(post);
+      this.originalPosts = [post, ...this.originalPosts];
+this.updatePosts(); // this will call setupPagination and update the UI cleanly
+
       this.newPostContent = '';
       this.selectedFiles = [];
       this.newPostType = PostType.GENERAL;
@@ -215,6 +239,7 @@ export class CommunityComponent implements OnInit {
       );
     }
     this.posts = filtered;
+    this.setupPagination();
   }
   filterByType(type: PostType): void {
     this.selectedPostType = type;
@@ -276,7 +301,6 @@ export class CommunityComponent implements OnInit {
     return null;
   }
 
-  // Opens the story popup for a given index (called from (click) on story card)
   openStoryPopup(index: number): void {
     // Clear any existing popup timer if running
     if (this.popupTimer) {
@@ -287,7 +311,6 @@ export class CommunityComponent implements OnInit {
     this.startProgressTimer();
   }
 
-  // Starts the progress timer (5 seconds total, update every 50ms)
   startProgressTimer(): void {
     const totalDuration = 5000; // 5 seconds
     const updateInterval = 50;  // update every 50ms
@@ -302,7 +325,6 @@ export class CommunityComponent implements OnInit {
     }, updateInterval);
   }
 
-  // Closes the popup and clears the timer
   closeStoryPopup(): void {
     this.activeStoryIndex = -1;
     this.progress = 0;
@@ -311,7 +333,6 @@ export class CommunityComponent implements OnInit {
     }
   }
 
-  // Navigates to the next story if available
   nextStory(event?: Event): void {
     if (event) {
       event.stopPropagation(); // prevent closing the popup when clicking arrow
@@ -355,5 +376,29 @@ export class CommunityComponent implements OnInit {
   onStoryCardClick(index: number): void {
     this.openStoryPopup(index);
   }
+  isImageFile(): boolean {
+    return this.selectedStoryFile?.type?.startsWith('image/') ?? false;
+  }
+  
+  isVideoFile(): boolean {
+    return this.selectedStoryFile?.type?.startsWith('video/') ?? false;
+  }
+  // Pagination for posts
+currentPage: number = 1;
+pageSize: number = 5;
+totalPages: number = 0;
+paginatedPosts: Post[] = [];
+
+setupPagination(): void {
+  this.totalPages = Math.ceil(this.posts.length / this.pageSize);
+  this.changePage(1);
+}
+
+changePage(page: number): void {
+  this.currentPage = page;
+  const start = (page - 1) * this.pageSize;
+  const end = start + this.pageSize;
+  this.paginatedPosts = this.posts.slice(start, end);
+}
 
 }
