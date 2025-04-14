@@ -116,6 +116,7 @@ import { PetDetailsComponent } from './simple-user/matching/pet-details/pet-deta
 import { HomePartnerComponent } from './simple-user/store/partner/home-partner/home-partner.component';
 import { UserSignCertificateComponent } from './simple-user/adoption/user-sign-certificate/user-sign-certificate.component';
 import { UserViewCertificateComponent } from './simple-user/adoption/user-view-certificate/user-view-certificate.component';
+import { DreamPetComponent } from './simple-user/adoption/dream-pet/dream-pet.component';
 
 
 @NgModule({
@@ -201,7 +202,8 @@ import { UserViewCertificateComponent } from './simple-user/adoption/user-view-c
     CommunityDetailsComponent,
     HomePartnerComponent,
     UserSignCertificateComponent,
-    UserViewCertificateComponent
+    UserViewCertificateComponent,
+    DreamPetComponent
   ],
   imports: [
     BrowserModule,

@@ -59,6 +59,7 @@ import { CommunityListComponent } from './admin/community/community-list/communi
 import { CommunityDetailsComponent } from './admin/community/community-details/community-details.component';
 import { UserSignCertificateComponent } from './simple-user/adoption/user-sign-certificate/user-sign-certificate.component';
 import { UserViewCertificateComponent } from './simple-user/adoption/user-view-certificate/user-view-certificate.component';
+import { DreamPetComponent } from './simple-user/adoption/dream-pet/dream-pet.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -94,6 +95,7 @@ const routes: Routes = [
   { path:'adoption/requests', component: MyAdoptionsComponent},
   { path:'adoption/signCertificate/:id', component: UserSignCertificateComponent},
   { path:'adoption/certificate/:id', component: UserViewCertificateComponent},
+  {path:'adoption/dream-pet', component: DreamPetComponent},
   { path: 'shelter/info', component: ShelterInfoComponent },
   { path: 'shelter/pets', component: ShelterPetListComponent },
   { path: 'shelter/pets/add', component: ShelterAddPetComponent },

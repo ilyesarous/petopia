@@ -1,0 +1,435 @@
+@import url('https://fonts.googleapis.com/css2?family=Poetsen+One&display=swap');
+.dream-pe-section{
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+.dream-pe-section h2, .dream-pe-section h3{
+    align-self: center;
+    font-family: "Poetsen One", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+}
+.dream-pe-section h2{
+    color: rgb(60 60 60);
+    font-size: 40px;
+}
+.dream-pe-section h3{
+    color: rgb(134 134 134);
+    font-size: 20px;
+}
+
+.body-content{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    margin-top: 80px;
+    padding: 0 20px;
+}
+.vertical-timeline {
+    width: 400px;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 9px 8px 12px -1px #e3e3e3;
+    border-radius: 6px;
+    align-items: flex-start;
+    position: relative;
+    padding: 6px 16px;
+    margin: 0 0 0 10px;
+  }
+  
+  .vertical-timeline::before {
+    content: '';
+    position: absolute;
+    top: 69px;
+    bottom: 0;
+    left: 9%;
+    width: 4px;
+    background-color: #F83182;
+    transform: translateX(-50%);
+    z-index: 0;
+    height: 400px;
+  }
+  
+  .timeline-step {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: flex-start;
+    margin: 2rem 0;
+  }
+  
+  .circle {
+    background-color: #fff;
+    border: 3px solid #F83182;
+    color: #F83182;
+    font-weight: bold;
+    font-size: 1.2rem;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 2;
+    margin-right: 10px;
+  }
+  
+  .label {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 4px;
+  }
+  
+  .description {
+    font-size: 0.95rem;
+    color: #555;
+    max-width: 300px;
+    line-height: 1.4;
+  }
+  
+  .pet-ai-generator {
+    width: 100%;
+    margin: 0;
+    padding: 1.5rem;
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+    transition: box-shadow 0.3s ease-in-out;
+    font-family: 'Segoe UI', sans-serif;
+    
+  }
+
+  .pet-ai-generator svg{
+    width: 25px;
+    margin: 0 5px 0 0;
+  }
+  
+  .pet-ai-generator:hover {
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.12);
+  }
+  
+  .ai-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1rem;
+    font-weight: 600;
+    font-size: 1.1rem;
+    color: #333;
+  }
+  
+  .ai-header img {
+    width: 28px;
+    height: 28px;
+    margin-right: 8px;
+  }
+  
+  .input-wrapper {
+    display: flex;
+    align-items: flex-start;
+    border: 2px solid #F83182;
+    border-radius: 12px;
+    padding: 0.5rem 1rem;
+    background-color: #fafafa;
+    transition: border-color 0.3s ease;
+  }
+  
+  .input-wrapper textarea {
+    flex: 1;
+    border: none;
+    background: transparent;
+    font-size: 1rem;
+    padding: 0.5rem 0;
+    outline: none;
+    color: #333;
+    resize: none;
+    line-height: 1.4;
+    overflow-y: auto;
+    min-height: 100px;
+  }
+  
+  .input-wrapper textarea::placeholder {
+    color: #aaa;
+  }
+  
+  .input-wrapper:focus-within {
+    border-color: #ff4f98;
+    box-shadow: 0 0 8px rgba(248, 49, 130, 0.3);
+  }
+  
+  .char-count {
+    text-align: right;
+    font-size: 0.85rem;
+    margin-top: 0.4rem;
+    color: #999;
+    padding-right: 4px;
+  }  
+  
+  .generate-btn {
+    background: #F83182;
+    border: none;
+    color: white;
+    font-size: 1.2rem;
+    padding: 0.6rem 0.9rem;
+    border-radius: 8px;
+    cursor: pointer;
+    align-self: flex-end;
+    margin-left: 1rem;
+    height: fit-content;
+    align-self: flex-start;
+    margin-top: auto;
+    transition: background 0.3s ease;
+  }
+  
+  .generate-btn:hover {
+    background: #d81a68;
+  }
+
+  .generate-content{
+    flex-grow: 1;
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+  }
+
+  .loading-block {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 1.5rem 0 0 0;
+    padding: 1rem;
+    border: 2px dashed #fca3c2;
+    border-radius: 12px;
+    background: #fff5f9;
+    animation: fadeIn 0.6s ease-in;
+    width: 100%;
+  }
+  
+  .loading-block img {
+    width: 150px;
+    height: 150px;
+    margin-bottom: 0.5rem;
+  }
+  
+  .loading-text {
+    font-size: 1.4rem;
+    font-weight: 600;
+    color: #F83182;
+    display: flex;
+    align-items: center;
+  }
+  
+  .dot-animation::after {
+    content: '';
+    display: inline-block;
+    animation: dots 1.5s steps(3, end) infinite;
+  }
+  
+  @keyframes dots {
+    0% { content: ''; }
+    33% { content: '.'; }
+    66% { content: '..'; }
+    100% { content: '...'; }
+  }
+  
+  @keyframes fadeIn {
+    from { opacity: 0; transform: scale(0.95); }
+    to { opacity: 1; transform: scale(1); }
+  }
+  
+  .generated-pet-block {
+    width: 100%;
+    margin: 2rem 0;
+    padding: 1.5rem;
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    animation: fadeIn 0.5s ease-in-out;
+  }
+  .image-gen-holder{
+    display: flex;
+    justify-content: center;
+  }
+  .generated-pet-block img {
+    width: 400px;
+    height: 400px;
+    object-fit: cover;
+    border-radius: 12px;
+    box-shadow: 0 4px 16px rgba(248, 49, 130, 0.1);
+    margin-bottom: 0.2rem;
+  }
+  
+  .action-buttons {
+    display: flex;
+    justify-content: flex-start;
+    gap: 0.5rem;
+    flex-direction: column;
+    margin-left: 10px;
+  }
+  
+  .action-buttons button {
+    border: none;
+    padding: 0.5rem;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: transform 0.2s ease, background 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 10px rgba(248, 49, 130, 0.2);
+  }
+
+  .action-buttons button.accept{
+    background: green;
+  }
+  .action-buttons button.regen{
+    background: red;
+  }
+
+  .action-buttons button.accept:hover{
+    background-color: rgb(0, 97, 0);
+  }
+  .action-buttons button.regen:hover{
+    background-color: rgb(203, 0, 0);
+  }
+  
+  .action-buttons button:hover {
+    transform: scale(1.05);
+  }
+  
+  .action-buttons svg {
+    width: 32px;
+    height: 32px;
+  }
+  .generated-pet-block h3{
+    margin: 10px auto 15px auto;
+    font-family: "Poetsen One", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+  }
+
+  .pets-list{
+    width: 35%;
+    min-height: 100%;
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+    margin-left: 30px;
+    box-shadow: 9px 8px 12px -1px #e3e3e3;
+    border-radius: 6px;
+  }
+  .pets-list h2{
+    font-family: "Poetsen One", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+  }
+  .pets-list p{
+    margin: 50px auto;
+  }
+  .pets-list img{
+    margin: 50px auto 0 auto;
+    width: 100px;
+    height: 100px;
+  }
+  .pets-list p.loading-text{
+    margin: -10px auto 50px auto;
+  }
+  .pets-list p.no-pets{
+    margin: 50px auto;
+  }
+
+  .similar-pets-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    margin-top: 1.5rem;
+  }
+  
+  .similar-pet-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #f7f9fc;
+    border-radius: 20px;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.08);
+    padding: 1rem 1.5rem;
+    transition: transform 0.2s ease;
+  }
+  
+  .similar-pet-card:hover {
+    transform: translateY(-3px);
+  }
+  
+  .similar-pet-card img {
+    width: 70px;
+    height: 70px;
+    border-radius: 10%;
+    object-fit: cover;
+    margin-right: 1.2rem;
+  }
+  
+  .similar-pet-info {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  
+  .similar-pet-info h5 {
+    margin: 0;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #333;
+  }
+  
+  .similar-pet-info p {
+    margin: 2px 0;
+    font-size: 0.95rem;
+    color: #444;
+  }
+  
+  .similarity {
+    font-size: 0.85rem;
+    color: #777;
+    margin-top: 4px;
+  }
+  
+  .similar-actions {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 0.4rem;
+  }
+  
+  .details-link {
+    color: #F83182;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: underline;
+    transition: color 0.2s;
+  }
+  
+  .details-link:hover {
+    color: #c61b63;
+  }
+  
+  .adopt-btn {
+    background-color: #2DAF7D;
+    color: white;
+    border: none;
+    border-radius: 30px;
+    padding: 6px 16px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    transition: background-color 0.3s;
+    white-space: nowrap;
+  }
+  
+  .adopt-btn:hover {
+    background-color: #249966;
+  }
+  
