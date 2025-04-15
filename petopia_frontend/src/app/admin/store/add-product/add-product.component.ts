@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -18,6 +18,10 @@ export class AddProductComponent {
   categories: string[] = ['FOOD', 'ACCESSORY', 'TOYS', 'CLOTHES'];
   currentProductId: number | null = null;
   userId: number = 0;
+  @Input() product: any = null;
+  @Input() isEditMode: boolean = false;
+  @Output() productAdded = new EventEmitter<any>();
+  @Output() cancel = new EventEmitter<void>();
   constructor(
     private fb: FormBuilder,
     private productService: ProductService,
@@ -43,22 +47,24 @@ export class AddProductComponent {
     this.userId = localStorage.getItem('userId')
       ? parseInt(localStorage.getItem('userId')!)
       : 0;
-    this.route.params.subscribe((params) => {
-      if (params['id']) {
-        this.editingProduct = true;
-        this.currentProductId = +params['id'];
-        this.loadProduct(this.currentProductId);
+      if (this.isEditMode && this.product) {
+        this.loadProductData(this.product);
       }
-    });
   }
 
-  loadProduct(id: number): void {
-    this.productService.getProductById(id).subscribe((product) => {
-      this.productForm.patchValue(product);
-      if (product.product_image) {
-        this.previewUrl = product.product_image;
-      }
+  loadProductData(product: any): void {
+    this.productForm.patchValue({
+      product_name: product.product_name,
+      product_description: product.product_description,
+      old_price: product.old_price,
+      cuppon_price: product.cuppon_price,
+      category: product.category,
+      availableQuantity: product.availableQuantity
     });
+    
+    if (product.product_image) {
+      this.previewUrl = product.product_image;
+    }
   }
 
   onFileSelected(event: any): void {
@@ -90,21 +96,23 @@ export class AddProductComponent {
     const formData = new FormData();
     this.productData = this.productForm.value;
 
-    // Append all form data
     Object.keys(this.productData).forEach((key) => {
       if (key !== 'product_image') {
         formData.append(key, this.productData[key]);
       }
     });
 
-    // Append image file if selected
     if (this.selectedFile) {
       formData.append('product_image', this.selectedFile);
+    }else {
+      formData.append('product_image', new File([], ''));
     }
 
-    if (this.editingProduct && this.currentProductId) {
-      // this.updateProduct(formData);
+    if (this.isEditMode && this.product) {
+      formData.append('product_id', this.product.product_id.toString());
+      this.updateProduct(formData);
     } else {
+      console.log(formData);
       this.createProduct(formData);
     }
   }
@@ -117,9 +125,10 @@ export class AddProductComponent {
         100;
     formData.append('product_price', priviousProce.toString());
     formData.append('id_user', this.userId.toString());
+    
     this.productService.addProduct(formData).subscribe({
-      next: () => {
-        this.router.navigate(['/products']);
+      next: (newProduct) => {
+        this.productAdded.emit(newProduct);
       },
       error: (err) => {
         console.error('Error creating product:', err);
@@ -129,11 +138,16 @@ export class AddProductComponent {
   }
 
   updateProduct(formData: FormData): void {
-    if (!this.currentProductId) return;
-
-    this.productService.updateProduct(formData).subscribe({
-      next: () => {
-        this.router.navigate(['products']);
+    const priviousProce =
+      this.productForm.get('old_price')?.value -
+      (this.productForm.get('old_price')?.value *
+        this.productForm.get('cuppon_price')?.value) /
+        100;
+    formData.append('product_price', priviousProce.toString());
+    formData.append('id_user', this.userId.toString());
+    this.productService.updateProductPartner(formData).subscribe({
+      next: (updatedProduct) => {
+        this.productAdded.emit(updatedProduct);
       },
       error: (err) => {
         console.error('Error updating product:', err);
@@ -141,4 +155,9 @@ export class AddProductComponent {
       },
     });
   }
+
+  onCancel(): void {
+    this.cancel.emit();
+  }
+
 }

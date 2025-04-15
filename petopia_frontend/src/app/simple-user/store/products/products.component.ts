@@ -22,14 +22,21 @@ export class ProductsComponent implements OnInit {
   cartItemCount: number = 0; // You'll want to update this dynamically
   p: number = 1; // Page actuelle
   itemsPerPage: number = 4; // Nombre d'éléments par page
-
+  bestSeller: Product[] = [];
   categories: any[] = [];
 
   constructor(private service: ProductService, private cartService: CartService, private router: Router) {}
 
   ngOnInit() {
+    this.getBestSellers();
     this.getAllProducts();
     this.loadRecentSearches(); 
+  }
+
+  getBestSellers() {
+    this.service.getBestSellers().subscribe((data) => {
+      this.bestSeller = data;
+    });
   }
 
   onSearch() {

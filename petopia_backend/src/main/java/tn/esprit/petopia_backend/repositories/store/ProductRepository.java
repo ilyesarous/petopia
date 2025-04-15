@@ -4,6 +4,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
+import tn.esprit.petopia_backend.entities.store.CartProduct;
 import tn.esprit.petopia_backend.entities.store.Product;
 import tn.esprit.petopia_backend.entities.user.User;
 

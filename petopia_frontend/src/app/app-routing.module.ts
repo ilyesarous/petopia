@@ -57,6 +57,7 @@ import { ShelterSignCertificateComponent } from './simple-user/shelter/shelter-s
 import { ShelterCertificateDetailsComponent } from './simple-user/shelter/shelter-certificate-details/shelter-certificate-details.component';
 import { CommunityListComponent } from './admin/community/community-list/community-list.component';
 import { CommunityDetailsComponent } from './admin/community/community-details/community-details.component';
+import { AddProductComponent } from './admin/store/add-product/add-product.component';
 import { UserSignCertificateComponent } from './simple-user/adoption/user-sign-certificate/user-sign-certificate.component';
 import { UserViewCertificateComponent } from './simple-user/adoption/user-view-certificate/user-view-certificate.component';
 //import { VetSelectionPopupComponent } from './simple-user/vet/vet-selection-popup/vet-selection-popup.component';
@@ -79,6 +80,8 @@ const routes: Routes = [
   { path: 'favorites', component: FavoriteComponent, canActivate: [AuthGuard]},
   { path: 'cart', component: CartComponent, canActivate: [AuthGuard]},
   { path: 'partner/home', component: HomePartnerComponent, canActivate: [AuthGuard]},
+  { path: 'partner/edit/:idProduct', component: AddProductComponent, canActivate: [AuthGuard]},
+
   { path: 'matchy', component: MatchingComponent ,canActivate: [AuthGuard]  },
   { path: 'pet-details/:id', component:PetDetailsComponent ,canActivate: [AuthGuard] },
   { path: 'events', component: EventListComponent, canActivate: [AuthGuard] },
