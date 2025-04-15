@@ -116,12 +116,6 @@ import { PetDetailsComponent } from './simple-user/matching/pet-details/pet-deta
 import { HomePartnerComponent } from './simple-user/store/partner/home-partner/home-partner.component';
 import { UserSignCertificateComponent } from './simple-user/adoption/user-sign-certificate/user-sign-certificate.component';
 import { UserViewCertificateComponent } from './simple-user/adoption/user-view-certificate/user-view-certificate.component';
-import { faLightbulb } from '@fortawesome/free-solid-svg-icons';
-import { faPaw, faHeart, faHandHoldingHeart, faInfoCircle,faCommentDots, faCamera,faPen } from '@fortawesome/free-solid-svg-icons';
-import {  ShelterInfoComponent } from './simple-user/shelter/shelter-info/shelter-info.component';
-import { ShelterPetListComponent } from './simple-user/shelter/shelter-pet-list/shelter-pet-list.component';
-import { ShelterAddPetComponent } from './simple-user/shelter/shelter-add-pet/shelter-add-pet.component';
-import { ShelterAdoptionRequestsComponent } from './simple-user/shelter/shelter-adoption-requests/shelter-adoption-requests.component';
 import { VetSelectionPopupComponent } from './simple-user/vet/vet-selection-popup/vet-selection-popup.component';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatCardModule } from '@angular/material/card';
@@ -228,7 +222,7 @@ import { XpBarComponent } from './simple-user/Event/xp-bar/xp-bar.component';
     CommunityDetailsComponent,
     HomePartnerComponent,
     UserSignCertificateComponent,
-    UserViewCertificateComponent
+    UserViewCertificateComponent,
     ParticipationListComponent,
     EventParticipantsComponent,
     ServiceAnimalListComponent,
