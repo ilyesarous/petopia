@@ -32,13 +32,16 @@ export class DreamPetComponent implements OnInit {
 
   loggerB() {
     if (!this.petDescription.trim()) return;
-
+  
     this.generationLoading = true;
     this.imagePath = "";
-
-    // Generate an image from the pet description
+  
+    this.similarPets = [];
+    this.showRecommendations = false;
+  
     this.imageGenService.generateImage(this.petDescription).subscribe({
       next: (res) => {
+        console.log("✅ Image generated:", res.image_result);
         this.imagePath = res.image_result;
         this.generationLoading = false;
       },
@@ -48,6 +51,7 @@ export class DreamPetComponent implements OnInit {
       }
     });
   }
+  
 
   getSimilarPets() {
     if (!this.imagePath.trim()) return;
@@ -55,11 +59,10 @@ export class DreamPetComponent implements OnInit {
     this.petsLoading = true;
     this.showRecommendations = false;
 
-    // Step 1: Get recommended pet IDs and similarity percentages using image URL
-    this.imageGenService.recommendSimilarPetsFromImage(this.imagePath).subscribe({
+    this.imageGenService.recommendSimilarPetsFromImage(this.petDescription).subscribe({
       next: (res) => {
         const matches = res.matches;
-        const recommendedIdMap = new Map<number, number>(); // Map<idPet, similarity>
+        const recommendedIdMap = new Map<number, number>(); 
 
         matches.forEach((match: any) => {
           const petId = +match.properties;
@@ -67,17 +70,14 @@ export class DreamPetComponent implements OnInit {
           recommendedIdMap.set(petId, similarity);
         });
 
-        // Step 2: Fetch recommended pets by ID
         const petRequests = Array.from(recommendedIdMap.keys()).map(id =>
           this.petService.getPetById(id)
         );
 
         forkJoin(petRequests).subscribe({
           next: (recommendedPets: Pet[]) => {
-            // Step 3: Get all unassigned pets
             this.petService.getUnassignedPets(this.userId).subscribe({
               next: (unassignedPets: Pet[]) => {
-                // Step 4: Filter pets that are in both lists
                 const unassignedIds = unassignedPets.map(p => p.idPet);
                 this.similarPets = recommendedPets
                   .filter(pet => unassignedIds.includes(pet.idPet))

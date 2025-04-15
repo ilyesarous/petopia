@@ -13,7 +13,15 @@ def generate_description_from_url(image_url: str) -> str:
             {
                 "role": "user",
                 "content": [
-                    { "type": "text", "text": "Describe this image in detail, like for a catalog or alt text in frensh plz ." },
+                     {
+                        "type": "text",
+                        "text": (
+                            "Observe this image and describe the pet in realistic detail. "
+                            "Include fur color and length, size, eye color, ear shape, and any special markings. "
+                            "If the pet is a cat or dog, identify the breed if possible. "
+                            "Respond in French if the pet looks like a French breed or context, otherwise in English."
+                        )
+                    },
                     {
                         "type": "image_url",
                         "image_url": {

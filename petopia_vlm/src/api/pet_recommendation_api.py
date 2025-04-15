@@ -1,18 +1,18 @@
 from flask import Blueprint, request, jsonify
-from src.service.find_similar_pets_service import find_similar_pets_from_image
+from src.service.find_similar_pets_service import find_similar_pets
 
 pet_recommendation_api = Blueprint('pet_recommendation_api', __name__)
 
 @pet_recommendation_api.route('/recommendations', methods=['POST'])
 def recommend_pets():
     data = request.get_json()
-    image_url = data.get("image_url")
+    description = data.get("description")
 
-    if not image_url:
-        return jsonify({"error": "Missing image_url"}), 400
+    if not description :
+        return jsonify({"error": "Missing description "}), 400
 
     try:
-        matches = find_similar_pets_from_image(image_url)
+        matches = find_similar_pets(description)
         return jsonify({"matches": matches})
     except Exception as e:
         return jsonify({"error": str(e)}), 500

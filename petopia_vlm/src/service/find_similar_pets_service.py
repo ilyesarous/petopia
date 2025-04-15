@@ -4,8 +4,6 @@ from openai import OpenAI
 import weaviate
 from src.connection.weaviate_client import client
 from weaviate.classes.query import MetadataQuery
-from src.service.image_description_service import generate_description_from_url
-
 
 # Load environment variables
 weaviate_url = os.getenv("WEAVIATE_URL")
@@ -17,34 +15,31 @@ llm = OpenAI(api_key=openai_api_key)
 
 client_weaviate=client
 
-
-def find_similar_pets_from_image(image_url: str):
-    # Step 1: Generate text from image
-    description = generate_description_from_url(image_url)
-
-    # Step 2: Generate embedding from that description
+def find_similar_pets(description: str):
+    # 1. Generate embedding for the input description
     embed_resp = llm.embeddings.create(
-        model="text-embedding-3-small",
+        model="text-embedding-3-small",  # Use the correct embedding model
         input=description
     )
     vector = embed_resp.data[0].embedding
 
-    # Step 3: Query Weaviate for similarity
-    collection = client.collections.get("ImageDescription")
-    response = collection.query.near_vector(
-        near_vector=vector,
+
+    jeopardy = client.collections.get("ImageDescription")
+    response = jeopardy.query.near_vector(
+        near_vector=vector, # your query vector goes here
         limit=50,
         return_metadata=MetadataQuery(distance=True)
     )
+    matches=[]
+    
 
-    # Step 4: Convert distance to similarity %
-    matches = []
-    for obj in response.objects:
-        distance = obj.metadata.distance
+    for o in response.objects:
+        distance = o.metadata.distance
+        # Transform distance into similarity percentage
+        # Assume distance is between -2 and 2 (adjust accordingly if needed)
         similarity_percentage = ((2 - distance) / 4) * 100
-        matches.append({
-            "properties": obj.properties.get("image_id"),
-            "similarity_percentage": similarity_percentage
-        })
+        matches.append({"properties": o.properties.get("image_id"), "similarity_percentage": similarity_percentage})
 
+        
+    # 6. Return the top 3 matches
     return matches

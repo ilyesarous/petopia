@@ -13,10 +13,10 @@ export class ImageGenerationService {
   generateImage(description: string): Observable<any> {
     return this.http.post<any>(`${this.apiUrl}/generate-image`, { description });
   }
-  recommendSimilarPetsFromImage(imageUrl: string) {
+  recommendSimilarPetsFromImage(desc: string) {
     return this.http.post<{ matches: any[] }>(
       `${this.apiUrl}/recommendations`,
-      { image_url: imageUrl }
+      { description: desc }
     );
   }
   

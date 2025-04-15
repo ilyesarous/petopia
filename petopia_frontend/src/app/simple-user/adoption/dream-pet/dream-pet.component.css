@@ -190,7 +190,6 @@
   .generate-content{
     flex-grow: 1;
     display: flex;
-    justify-content: space-between;
     flex-direction: column;
   }
 

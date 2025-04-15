@@ -6,6 +6,7 @@ from src.connection.weaviate_client import store_description
 
 image_api = Blueprint("image_api", __name__)
 
+
 @image_api.route("/description", methods=["POST"])
 def generate_description():
     data = request.get_json()

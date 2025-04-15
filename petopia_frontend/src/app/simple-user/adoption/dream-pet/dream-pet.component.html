@@ -63,6 +63,7 @@
               <div *ngIf="generationLoading" class="loading-block">
                 <img src="/assets/images/paw-loader.gif" alt="Loading..." />
                 <p class="loading-text">Generating your pet<span class="dot-animation"></span></p>
+                
               </div>
               <div *ngIf="!generationLoading && imagePath.length > 0" class="generated-pet-block">
                 <h3>Generated Pet</h3>
@@ -84,18 +85,20 @@
                 </div>
                 </div>
               </div>
+              
         </div>          
-        <div *ngIf="!petsLoading && similarPets.length === 0" class="pets-list">
-            <h2>Pets List</h2>
+        <div *ngIf="!petsLoading && similarPets.length === 0 " class="pets-list">
+            <h2>Similar Pets</h2>
             <p class="no-pets">No Pets Available</p>
         </div>
         <div *ngIf="petsLoading" class="pets-list">
-            <h2>Pets List</h2>
+            <h2>Similar Pets</h2>
             <img src="/assets/images/paw-loader.gif" alt="Loading..." />
             <p class="loading-text">Generating your pet<span class="dot-animation"></span></p>
         </div>
-        <div class="similar-pets-list">
-          <div *ngFor="let pet of similarPets" class="similar-pet-card">
+        <div class="similar-pets-list pets-list" *ngIf=" similarPets.length > 0">
+          <h2>Similar Pets</h2>
+          <div *ngFor="let pet of similarPets.slice(0, 2)" class="similar-pet-card">
 
             <img [src]="pet.petImage" alt="{{ pet.petName }}" />
             <div class="similar-pet-info">
