@@ -249,3 +249,15 @@ textarea.form-input {
         grid-template-columns: repeat(2, 1fr);
     }
 }
+.loading-message {
+    padding: 8px;
+    color: #666;
+    font-style: italic;
+    font-size: 0.9em;
+}
+
+.no-pets-message {
+    padding: 8px;
+    color: #f44336;
+    font-size: 0.9em;
+}

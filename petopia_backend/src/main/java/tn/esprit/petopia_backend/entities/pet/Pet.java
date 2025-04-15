@@ -30,12 +30,23 @@ public class Pet {
     private int idPet;
     private String petName;
     private int petAge;
+    private int petRefVet;
+    @Lob
+    @Column(columnDefinition = "LONGBLOB")
+    private byte[] petImageBytes;
     private String breed;
     private String location;
     private float attitudeX;
     private float attitudeY;
+    @Transient
     private String petImage;
-
+    public void setPetImage(String imageData) {
+        if (imageData != null && imageData.startsWith("data:image")) {
+            this.petImageBytes = Base64.getDecoder().decode(imageData.substring(imageData.indexOf(",") + 1));
+        } else {
+            this.petImageBytes = Base64.getDecoder().decode(imageData);
+        }
+    }
 
 
 

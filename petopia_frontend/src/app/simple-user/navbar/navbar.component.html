@@ -1,5 +1,5 @@
 <nav class="navbar navbar-expand-lg" *ngIf="role !== 'ROLE_ADMIN'">
-<div class="container">
+  <div class="container">
     <!-- Brand Logo -->
     <a class="navbar-brand" routerLink="/" (click)="reloadPage($event)">
       <img src="/assets/images/logo.png" alt="Petopia Logo" class="navbar-logo">
@@ -15,16 +15,40 @@
         <!-- Dynamic Pages for Authenticated Users -->
         <ng-container *ngIf="isAuthenticated && role === 'ROLE_USER'">
           <li class="nav-item" *ngFor="let page of pages">
-            <a class="nav-link"
+            <!-- Regular nav items -->
+            <a *ngIf="page.name !== 'Events'"
+               class="nav-link"
                [routerLink]="page.link"
                routerLinkActive="active"
                (click)="selectedItem = page.name"
                [ngClass]="{'is-selected': selectedItem === page.name}">
               {{ page.name }}
             </a>
+
+            <!-- Events with dropdown -->
+            <div *ngIf="page.name === 'Events'" class="nav-item dropdown" (mouseenter)="showEventsDropdown = true" (mouseleave)="showEventsDropdown = false">
+              <a class="nav-link dropdown-toggle"
+                 [routerLink]="page.link"
+                 routerLinkActive="active"
+                 (click)="selectedItem = page.name; $event.preventDefault()"
+                 [ngClass]="{'is-selected': selectedItem === page.name}">
+                {{ page.name }}
+              </a>
+              <div class="dropdown-menu" [ngClass]="{'show': showEventsDropdown}">
+                <a class="dropdown-item"
+                   routerLink="/events"
+                   (click)="selectedItem = 'Events'">
+                  All Events
+                </a>
+                <a class="dropdown-item"
+                   routerLink="/services"
+                   (click)="selectedItem = 'Services'">
+                  Animal Services
+                </a>
+              </div>
+            </div>
           </li>
         </ng-container>
-
         <!-- Dynamic Pages for Shelter Users -->
         <ng-container *ngIf="isAuthenticated && role === 'ROLE_SHELTER'">
           <li class="nav-item" *ngFor="let page of shelterPages">
@@ -48,6 +72,20 @@
             </a>
           </li>
         </ng-container>
+
+        <!-- Dynamic Pages for Authenticated Users -->
+        <ng-container *ngIf="isAuthenticated && role === 'ROLE_VET'">
+          <li class="nav-item" *ngFor="let page of VETpages">
+            <a class="nav-link"
+               [routerLink]="page.link"
+               routerLinkActive="active"
+               (click)="selectedItem = page.name"
+               [ngClass]="{'is-selected': selectedItem === page.name}">
+              {{ page.name }}
+            </a>
+          </li>
+        </ng-container>
+        <!-- Rest of your existing code remains the same -->
 
 
         <!-- Signup & Login (for guests) -->

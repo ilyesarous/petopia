@@ -179,4 +179,25 @@ export class TreatmentSpecificPetsComponent implements OnInit {
       default: return '#F83182';
     }
   }
+
+  predefinedMedications: string[] = [
+    'Gabrovet',
+    'Zeleris',
+    'OXYMED',
+    'TYLOFORT 200',
+    'VERIDIUM',
+    'FENZOL',
+    'DALBEN',
+    'DOUVISTOME',
+    'MELOXIDYL'
+  ];
+
+  getAvailableMedications(index: number): string[] {
+    const selectedMedications = this.diagnosisForm.value.medicamentPrescriptions
+      .map((m: any) => m.medicament)
+      .filter((m: string | null, i: number) => m && i !== index);
+    
+    return this.predefinedMedications.filter(m => !selectedMedications.includes(m));
+  }
+
 }

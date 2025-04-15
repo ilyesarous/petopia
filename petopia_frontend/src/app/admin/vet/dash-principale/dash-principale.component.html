@@ -32,6 +32,75 @@
         </div>
       </div>
       
+    
+      <div class="dashboard-card">
+        <p>{{"🗺️📍"}}</p>
+        <h3>Veterinary Locations</h3>
+        <p>{{ totalLocations }}</p>
+      </div>
+<!-- Map Section -->
+<div class="map-section">
+  <div class="map-controls">
+      <div *ngIf="selectedLocation" class="selected-location">
+          Selected location: {{ selectedLocation }}
+      </div>
+      <button class="location-button" (click)="locateMe()">
+          <i class="fas fa-location-arrow"></i> 
+      </button>
+  </div>
+  <div id="map"></div>
+  <div *ngIf="addingMode" class="adding-mode-info">
+      Click on the map to add your veterinary location
+  </div>
+ 
+  <br>
 
+  <div class="dashboard-card">
+    <p>{{"🗺️📍"}}</p>
+    <h3>Veterinary Ratings</h3>
+    <p>{{ totalRatings }}</p>
+  </div>
 
+  <br>
 
+  
+  <div class="ratings-container">
+    <h2 class="h2">All Reviews for Veterinarians</h2>
+    
+    <div class="ratings-grid">
+      <div class="rating-card" *ngFor="let rating of ratings">
+        <div class="card-header">
+        </div>
+        <div class="card-body">
+          <div class="rating-info">
+            <div class="user-info">
+              <h4>Client:</h4>
+              <p>{{rating.userclientR.name || 'Anonymous'}}</p>
+            </div>
+            
+            <div class="vet-info">
+              <h4>Veterinarian:</h4>
+              <p>{{rating.uservetR.name || 'Unknown Veterinarian'}}</p>
+              <p><i class="fas fa-envelope" style="color: #FF617C;"></i> {{rating.uservetR.email || ''}}</p>  
+              <p><i class="fas fa-phone" style="color: #FF617C;"></i> {{rating.uservetR.phoneNumber || ''}}</p>
+            </div>
+          </div>
+          
+          <div class="rating-details">
+            <div class="rating-stars">
+              Rating: 
+              <span *ngFor="let star of [1,2,3,4,5]"
+                    [style.color]="star <= rating.note ? '#F83182' : '#ccc'">
+                ★
+              </span>
+              ({{rating.note}}/5)
+            </div>
+            <div class="comment">
+              <p>"{{rating.comment || 'No comment'}}"</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  

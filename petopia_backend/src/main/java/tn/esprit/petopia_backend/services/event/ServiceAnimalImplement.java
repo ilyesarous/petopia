@@ -3,7 +3,9 @@ package tn.esprit.petopia_backend.services.event;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tn.esprit.petopia_backend.entities.event.ServiceAnimal;
+import tn.esprit.petopia_backend.entities.user.User;
 import tn.esprit.petopia_backend.repositories.event.ServiceAnimalRepository;
+import tn.esprit.petopia_backend.services.user.UserService;
 
 import java.util.List;
 import java.util.Optional;
@@ -13,6 +15,8 @@ public class ServiceAnimalImplement implements IServiceAnimalService {
 
     @Autowired
     private ServiceAnimalRepository serviceAnimalRepository;
+    @Autowired
+    private UserService userService;
     @Override
     public List<ServiceAnimal> getAllServiceAnimals() {
         return serviceAnimalRepository.findAll();
@@ -25,7 +29,11 @@ public class ServiceAnimalImplement implements IServiceAnimalService {
 
     @Override
     public ServiceAnimal createServiceAnimal(ServiceAnimal serviceAnimal) {
+        User user = userService.getUsersById(serviceAnimal.getOrganisateurServiceAnimal().getId_user()).getOurUsers();
+        serviceAnimal.setOrganisateurServiceAnimal(user);
         return serviceAnimalRepository.save(serviceAnimal);
+
+
     }
 
     @Override

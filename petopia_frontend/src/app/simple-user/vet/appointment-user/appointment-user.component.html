@@ -1,4 +1,3 @@
-<h1>Appointment Management</h1>
 <div class="appointment-container">
     <!-- Onglets de navigation -->
     <div class="tabs">
@@ -30,7 +29,9 @@
                             {{ consultation.statusT }}
                         </span>
                     </div>
-                    <button class="rdv-action" (click)="cancelAppointment(consultation.idConsultation)" *ngIf="consultation.statusT === 'waiting'">
+                    <button class="rdv-action" 
+                            (click)="cancelAppointment(consultation.idConsultation)" 
+                            *ngIf="consultation.statusT === 'waiting' || consultation.statusT === 'accepted'">
                         Cancel
                     </button>
                 </div>
@@ -58,31 +59,44 @@
     </div>
 
     <!-- Take an Appointment Section -->
-    <div class="content-section hidden" id="prendre-rdv-content">
-        <h1>Take an Appointment</h1>
-        
-        <form class="rdv-form" (ngSubmit)="submitAppointment()">
-            <div class="form-section">
-                <h2>Animal</h2>
-                <div class="form-group">
-                    <label>Select an Animal</label>
-                    <select class="form-input" [(ngModel)]="selectedPetId" name="pet" required>
-                        <option value="">-- Choose --</option>
-                        <option value="1">Pet 1</option>
-                        <option value="2">Pet 2</option>
-                    </select>
+<div class="content-section hidden" id="prendre-rdv-content">
+    <h1>Take an Appointment</h1>
+    
+    <form class="rdv-form" (ngSubmit)="submitAppointment()">
+        <div class="form-section">
+            <h2>Animal</h2>
+            <div class="form-group">
+                <label>Select an Animal</label>
+                <select class="form-input" [(ngModel)]="selectedPetId" name="pet" required>
+                    <option value="">-- Choose --</option>
+                    <option *ngFor="let pet of userPets" [value]="pet.idPet">
+                        {{ pet.petName }} ({{ pet.species }})
+                    </option>
+                </select>
+                <div *ngIf="loadingPets" class="loading-message">
+                    Loading your pets...
+                </div>
+                <div *ngIf="!loadingPets && userPets.length === 0" class="no-pets-message">
+                    You don't have any pets registered.
                 </div>
             </div>
+        </div>
 
-            <div class="form-section">
-                <h2>Vet</h2>
-                <div class="form-group">
-                    <label>Select a Vet</label>
-                    <select class="form-input">
-                        <option value="">-- Choose --</option>
-                    </select>
+        <div class="form-section">
+            <h2>Vet</h2>
+            <div class="form-group">
+                <label>Select a Vet</label>
+                <select class="form-input" [(ngModel)]="selectedVetId" name="vet" required>
+                    <option value="">-- Choose --</option>
+                    <option *ngFor="let vet of vets" [value]="vet.id_user">
+                        {{ vet.name }} - {{ vet.email }}
+                    </option>
+                </select>
+                <div *ngIf="loadingVets" class="loading-message">
+                    Loading available vets...
                 </div>
             </div>
+        </div>
             
             <div class="form-section">
                 <h2>Date</h2>

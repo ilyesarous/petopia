@@ -1,0 +1,55 @@
+<div class="form-container">
+  <h2>{{ isEditMode ? 'Edit' : 'Add New' }} Animal Service</h2>
+  <form [formGroup]="serviceForm" (ngSubmit)="onSubmit()" class="service-form">
+    <div class="form-group">
+      <label for="type">Service Type*</label>
+      <select id="type" formControlName="typeService" required>
+        <option *ngFor="let type of serviceTypes" [value]="type">{{type | titlecase}}</option>
+      </select>
+      <div *ngIf="serviceForm.get('typeService')?.invalid && 
+                 (serviceForm.get('typeService')?.dirty || serviceForm.get('typeService')?.touched)"
+           class="error-message">
+        Service type is required
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="price">Price*</label>
+      <input type="number" id="price" formControlName="prixServiceAnimal" 
+             required min="0">
+      <div *ngIf="serviceForm.get('prixServiceAnimal')?.invalid && 
+                 (serviceForm.get('prixServiceAnimal')?.dirty || serviceForm.get('prixServiceAnimal')?.touched)"
+           class="error-message">
+        <div *ngIf="serviceForm.get('prixServiceAnimal')?.errors?.['required']">
+          Price is required
+        </div>
+        <div *ngIf="serviceForm.get('prixServiceAnimal')?.errors?.['min']">
+          Price must be 0 or greater
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="description">Description*</label>
+      <textarea id="description" formControlName="descriptionServiceAnimal" 
+                required></textarea>
+      <div *ngIf="serviceForm.get('descriptionServiceAnimal')?.invalid && 
+                 (serviceForm.get('descriptionServiceAnimal')?.dirty || serviceForm.get('descriptionServiceAnimal')?.touched)"
+           class="error-message">
+        Description is required
+      </div>
+    </div>
+
+    <div class="form-group checkbox-group">
+      <input type="checkbox" id="availability" formControlName="disponibilite">
+      <label for="availability">Available</label>
+    </div>
+
+    <div class="form-actions">
+      <button type="button" (click)="goBack()" class="cancel-button">Cancel</button>
+      <button type="submit" class="submit-button" [disabled]="serviceForm.invalid">
+        {{ isEditMode ? 'Update' : 'Add' }} Service
+      </button>
+    </div>
+  </form>
+</div>

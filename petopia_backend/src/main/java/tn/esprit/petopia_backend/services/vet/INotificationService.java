@@ -10,4 +10,7 @@ public interface INotificationService {
     void deleteNotification(int idNotification);
     List<Notification> retriveAllNotification();
     Notification retriveNotification(int idNotification);
+
+    List<Notification> getNotificationsByUserId(Integer userId);
+
 }

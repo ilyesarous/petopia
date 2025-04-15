@@ -27,7 +27,35 @@ public class PaymentRequest {
     private Date paymentDate;
 
     @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "user_id_user")
     private User user;
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "vet_id_user")
+    private User userVet;
+
+
+    @Transient // Ce champ ne sera pas persisté
+    private Integer userId;
+
+    @Transient
+    private Integer vetId;
+
+    public Integer getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Integer userId) {
+        this.userId = userId;
+    }
+
+    public Integer getVetId() {
+        return vetId;
+    }
+
+    public void setVetId(Integer vetId) {
+        this.vetId = vetId;
+    }
 
     // Getters et Setters
     public Double getAmount() {
@@ -46,6 +74,46 @@ public class PaymentRequest {
         this.currency = currency;
     }
 
+    public User getUserVet() {
+        return userVet;
+    }
+
+    public void setUserVet(User userVet) {
+        this.userVet = userVet;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public TypePayment getType() {
+        return type;
+    }
+
+    public void setType(TypePayment type) {
+        this.type = type;
+    }
+
+    public Date getPaymentDate() {
+        return paymentDate;
+    }
+
+    public void setPaymentDate(Date paymentDate) {
+        this.paymentDate = paymentDate;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
     public String getDescription() {
         return description;
     }
@@ -53,4 +121,5 @@ public class PaymentRequest {
     public void setDescription(String description) {
         this.description = description;
     }
+
 }

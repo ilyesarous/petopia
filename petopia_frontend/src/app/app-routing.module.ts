@@ -57,8 +57,20 @@ import { ShelterSignCertificateComponent } from './simple-user/shelter/shelter-s
 import { ShelterCertificateDetailsComponent } from './simple-user/shelter/shelter-certificate-details/shelter-certificate-details.component';
 import { CommunityListComponent } from './admin/community/community-list/community-list.component';
 import { CommunityDetailsComponent } from './admin/community/community-details/community-details.component';
+import { AddProductComponent } from './admin/store/add-product/add-product.component';
 import { UserSignCertificateComponent } from './simple-user/adoption/user-sign-certificate/user-sign-certificate.component';
 import { UserViewCertificateComponent } from './simple-user/adoption/user-view-certificate/user-view-certificate.component';
+//import { VetSelectionPopupComponent } from './simple-user/vet/vet-selection-popup/vet-selection-popup.component';
+import { LocationVetComponent } from './simple-user/vet/location-vet/location-vet.component';
+import { InfoSpecificVetComponent } from './simple-user/vet/info-specific-vet/info-specific-vet.component';
+import { QrCodeVetScannerComponent } from './simple-user/vet/qr-code-vet-scanner/qr-code-vet-scanner.component';
+import { UserRatingVetComponent } from './simple-user/vet/user-rating-vet/user-rating-vet.component';
+import { InfoRatingVetComponent } from './simple-user/vet/info-rating-vet/info-rating-vet.component';
+import { PaymentVetComponent } from './simple-user/vet/payment-vet/payment-vet.component';
+import { ParticipationListComponent } from './simple-user/Event/participation-list/participation-list.component';
+import { EventParticipantsComponent } from './admin/Event/event-participants/event-participants.component';
+import { ServiceAnimalListComponent } from './simple-user/Event/service-animal-list/service-animal-list.component';
+import { AddServiceAnimalComponent } from './simple-user/Event/add-service-animal/add-service-animal.component';
 import { DreamPetComponent } from './simple-user/adoption/dream-pet/dream-pet.component';
 
 const routes: Routes = [
@@ -69,11 +81,16 @@ const routes: Routes = [
   { path: 'favorites', component: FavoriteComponent, canActivate: [AuthGuard]},
   { path: 'cart', component: CartComponent, canActivate: [AuthGuard]},
   { path: 'partner/home', component: HomePartnerComponent, canActivate: [AuthGuard]},
+  { path: 'partner/edit/:idProduct', component: AddProductComponent, canActivate: [AuthGuard]},
+
   { path: 'matchy', component: MatchingComponent ,canActivate: [AuthGuard]  },
   { path: 'pet-details/:id', component:PetDetailsComponent ,canActivate: [AuthGuard] },
   { path: 'events', component: EventListComponent, canActivate: [AuthGuard] },
   //{ path: 'participer', component: ParticipationFormComponent,canActivate: [AuthGuard] },
   { path: 'participate/:id', component: ParticipationFormComponent, canActivate: [AuthGuard] },
+  { path: 'participations', component: ParticipationListComponent, canActivate: [AuthGuard]},
+  { path: 'services', component: ServiceAnimalListComponent, canActivate: [AuthGuard] },
+  { path: 'services/add', component: AddServiceAnimalComponent, canActivate: [AuthGuard] },
 
   { path: 'vet', component: DashPrincipaleHomeVetComponent, canActivate: [AuthGuard] },
   { path: 'vet/pet-growth/:id', component: PetGrowthVetComponent, canActivate: [AuthGuard] },
@@ -87,6 +104,15 @@ const routes: Routes = [
   { path: 'vet/tic-tac-toe', component:  GameComponent, canActivate: [AuthGuard]},
   { path: 'vet/treatment-specific-pets-user/:id', component: TreatmentSpecificPetsUserComponent, canActivate: [AuthGuard]},
   { path: 'vet/meet', component: VideoConsultationComponent, canActivate: [AuthGuard]},
+  //{path : 'vet/select-vet' , component : VetSelectionPopupComponent, canActivate: [AuthGuard]},
+  { path: 'vet/location', component: LocationVetComponent, canActivate: [AuthGuard] },
+  { path: 'vet/info-specific-vet/:id', component: InfoSpecificVetComponent, canActivate: [AuthGuard] },
+  { path: 'vet/qrcode-vet-scanner' , component: QrCodeVetScannerComponent, canActivate: [AuthGuard] },
+  { path: 'vet/RatingVet/:id' , component: UserRatingVetComponent, canActivate: [AuthGuard] },
+  { path: 'vet/info-rating-vet', component:InfoRatingVetComponent, canActivate: [AuthGuard] },
+  { path: 'vet/payment/:id', component: PaymentVetComponent, canActivate: [AuthGuard] },
+
+
   { path: 'community', component: CommunityComponent},
   { path: 'post/:id', component: PostComponent, canActivate: [AuthGuard] },
   { path: 'adoption', component: PetAdoptionListComponent },
@@ -120,7 +146,6 @@ const routes: Routes = [
       { path: 'user', component: ChartComponent },
       { path: 'store', component: StoreDashComponent },
       { path: 'vet', component: DashPrincipaleComponent },
-      { path: 'tic-tac-toe', component: GameComponent },
       { path: 'consultations', component: ConsultationListComponent },
       { path: 'diagnosis', component: DiagnosisListComponent },
       { path: 'notifications', component: NotificationListComponent },
@@ -128,6 +153,7 @@ const routes: Routes = [
 
       { path: 'events', component: EventListComponent },
       { path: 'add-event', component: EventFormComponent },
+      {path: 'event-participants/:id',component: EventParticipantsComponent,},
 
       {
         path: 'dog-breed-recognition',

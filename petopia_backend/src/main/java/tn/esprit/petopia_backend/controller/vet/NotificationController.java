@@ -59,4 +59,12 @@ public class NotificationController {
     Notification retriveNotification(@PathVariable int idNotification){
         return notificationService.retriveNotification(idNotification);
     }
+
+    @GetMapping("/retrieveUserNotifications/{userId}")
+    public ResponseEntity<List<Notification>> retrieveUserNotifications(@PathVariable Integer userId) {
+        List<Notification> notifications = notificationService.getNotificationsByUserId(userId);
+        return ResponseEntity.ok(notifications);
+    }
+
+
 }

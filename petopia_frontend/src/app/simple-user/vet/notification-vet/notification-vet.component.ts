@@ -13,12 +13,14 @@ export class NotificationVetComponent implements OnInit {
   unreadCount = 0;
   showAddForm = false;
   newNotification: { message: string } = { message: '' };
+  userId: number | null = null;
 
   constructor(
     private notificationService: NotificationService,
     private notificationState: NotificationStateService
   ) { }
 
+  /*
   ngOnInit(): void {
     this.loadNotifications();
     
@@ -33,6 +35,39 @@ export class NotificationVetComponent implements OnInit {
 
   loadNotifications(): void {
     this.notificationService.getAllNotifications().subscribe({
+      next: (data) => {
+        this.notifications = data;
+        this.sortNotifications();
+        this.updateUnreadCount();
+      },
+      error: (err) => {
+        console.error('Error loading notifications', err);
+      }
+    });
+  }
+    */
+
+  ngOnInit(): void {
+    // Récupérez l'ID de l'utilisateur connecté
+    const userIdStr = localStorage.getItem('userId');
+    this.userId = userIdStr ? parseInt(userIdStr) : null;
+    
+    if (this.userId) {
+      this.loadNotifications();
+    }
+    
+    this.notificationState.showNotifications$.subscribe(show => {
+      this.showNotifications = show;
+      if (show && this.userId) {
+        this.loadNotifications();
+      }
+    });
+  }
+
+  loadNotifications(): void {
+    if (!this.userId) return;
+    
+    this.notificationService.getUserNotifications(this.userId).subscribe({
       next: (data) => {
         this.notifications = data;
         this.sortNotifications();
@@ -95,7 +130,7 @@ export class NotificationVetComponent implements OnInit {
     if (diffInSeconds < 86400) return `${Math.floor(diffInSeconds / 3600)} hours ago`;
     return `${Math.floor(diffInSeconds / 86400)} days ago`;
   }
-
+/*
   addNotification(): void {
     if (!this.newNotification.message.trim()) return;
 
@@ -112,6 +147,28 @@ export class NotificationVetComponent implements OnInit {
         this.updateUnreadCount();
         this.newNotification.message = ''; // Réinitialise le champ
         this.showAddForm = false; // Cache le formulaire
+      },
+      error: (err) => {
+        console.error('Error adding notification', err);
+      }
+    });
+  }
+*/
+  addNotification(): void {
+    if (!this.newNotification.message.trim() || !this.userId) return;
+
+    const notificationToAdd = {
+      message: this.newNotification.message,
+      seen: false,
+      user: { id_user: this.userId } // Utilisez l'ID de l'utilisateur connecté
+    };
+
+    this.notificationService.addNotification(notificationToAdd).subscribe({
+      next: (addedNotification) => {
+        this.notifications.unshift(addedNotification);
+        this.updateUnreadCount();
+        this.newNotification.message = '';
+        this.showAddForm = false;
       },
       error: (err) => {
         console.error('Error adding notification', err);

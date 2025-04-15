@@ -1,3 +1,4 @@
+import { GeminiService } from './../../services/community/gemini.service';
 import { Component, OnInit } from '@angular/core';
 import { Post, PostType } from '../../models/community/post';
 import { PostService } from '../../services/community/post.service';
@@ -5,6 +6,7 @@ import { Story } from '../../models/community/story';
 import { StoryService } from '../../services/community/story.service';
 import { Router } from '@angular/router';
 import { NgForm } from '@angular/forms';
+
 
 @Component({
   selector: 'app-community',
@@ -52,11 +54,21 @@ export class CommunityComponent implements OnInit {
   popupTimer: any;               // reference for the interval timer
   selectedStoryFilePreview: string | null = null;
 
+  // ai post generation
+  topic = '';
+  generatedContent = '';
+  loading = false;
+  // bad words detection
+  postErrorMessage: string = '';
+
+
+
 
   constructor(
     private postService: PostService,
     private storyService: StoryService,
-    private router: Router
+    private router: Router,
+    private geminiService: GeminiService
   ) {}
 
   ngOnInit(): void {
@@ -183,9 +195,10 @@ export class CommunityComponent implements OnInit {
   }
   createPost(postForm: NgForm): void {
     // Check if post content is valid and the post type is chosen.
-    if (!this.newPostContent.trim() || this.newPostType === null) {
+    if (!this.newPostContent || !this.newPostContent.trim() || this.newPostType === null) {
       return;
     }
+    
   
     const newPost: Post = {
       id: 0,
@@ -208,17 +221,24 @@ export class CommunityComponent implements OnInit {
       formData.append('files', file, file.name);
     });
   
-    this.postService.createPost(newPost, formData).subscribe(post => {
-      this.originalPosts = [post, ...this.originalPosts];
-this.updatePosts(); // this will call setupPagination and update the UI cleanly
-
-      this.newPostContent = '';
-      this.selectedFiles = [];
-      this.newPostType = PostType.GENERAL;
- // Reset to null after successful submission
-      this.updatePosts();
-      postForm.resetForm();
+    this.postService.createPost(newPost, formData).subscribe({
+      next: (post) => {
+        this.originalPosts = [post, ...this.originalPosts];
+        this.updatePosts();
+        this.newPostContent = '';
+        this.selectedFiles = [];
+        this.newPostType = PostType.GENERAL;
+        postForm.resetForm();
+      },
+      error: (err) => {
+        if (err.status === 400 && err.error) {
+          this.postErrorMessage = err.error;
+        } else {
+          this.postErrorMessage = "An error occurred while creating the post.";
+        }
+      }
     });
+    
   }
   
   
@@ -400,5 +420,60 @@ changePage(page: number): void {
   const end = start + this.pageSize;
   this.paginatedPosts = this.posts.slice(start, end);
 }
+
+// generatePostFromAI() {
+//   if (!this.topic?.trim()) return;
+
+//   this.loading = true;
+
+//   this.geminiService.generatePost(this.topic).subscribe({
+//     next: (response: string) => {
+//       console.log("✅ AI Response:", response);
+//       this.newPostContent = response; // ✅ Inject into main post content field
+//       this.loading = false;
+//     },
+//     error: (err) => {
+//       console.error('❌ AI generation error:', err);
+//       this.loading = false;
+//     }
+//   });
+// }
+generatePostFromAI(): void {
+  this.loading = true;
+  this.geminiService.generatePost(this.topic).subscribe({
+    next: (response: string) => {
+      this.newPostContent = response;
+
+      // Wait for DOM to render updated content before expanding
+      setTimeout(() => {
+        const textarea = document.querySelector(
+          'textarea[name="postContent"]'
+        ) as HTMLTextAreaElement;
+        if (textarea) {
+          textarea.style.height = 'auto';
+          textarea.style.height = textarea.scrollHeight + 'px';
+        }
+      }, 50);
+
+      this.loading = false;
+    },
+    error: (err) => {
+      console.error('AI generation failed:', err);
+      this.loading = false;
+    },
+  });
+}
+
+autoGrowTextArea(event: Event): void {
+  const textarea = event.target as HTMLTextAreaElement;
+  textarea.style.height = 'auto';
+  textarea.style.height = textarea.scrollHeight + 'px';
+}
+
+
+
+
+
+
 
 }

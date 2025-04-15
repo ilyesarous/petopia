@@ -11,6 +11,27 @@
     color: #F83182;
 }
 
+.rate-vet {
+    background: linear-gradient(135deg, #F83182, #FF617C, #FE9A7A);
+    color: white;
+    font-weight: bold;
+    padding: 12px 24px;
+    border-radius: 30px;
+    text-align: center;
+    cursor: pointer;
+    font-size: 18px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    width: fit-content;
+    box-shadow: 0 8px 16px rgba(248, 49, 130, 0.3);
+    margin: 16px auto;
+  }
+  
+  .rate-vet:hover {
+    transform: scale(1.05);
+    box-shadow: 0 10px 20px rgba(248, 49, 130, 0.4);
+  }
+  
+
 .header {
     width: 100%;
     margin-bottom: 20px;
@@ -204,3 +225,329 @@
     font-weight: bold;
     color: #2E2E3A;
 }
+
+.loading-message {
+    text-align: center;
+    padding: 20px;
+    font-size: 1.2rem;
+    color: #666;
+}
+
+.no-pets-message {
+    text-align: center;
+    padding: 20px;
+    font-size: 1.2rem;
+    color: #666;
+    margin-bottom: 20px;
+}
+
+/* Styles globaux */
+:host {
+    display: block;
+    min-height: 100vh;
+    background-color: #f8f9fa;
+}
+
+.dashboard-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+/* En-tête */
+.dashboard-header {
+    margin-bottom: 2.5rem;
+}
+
+.header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.welcome-title {
+    font-size: 2rem;
+    font-weight: 600;
+    color: #ff0095;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.header-actions {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+}
+
+.game-button {
+    transition: all 0.3s ease;
+    background-color: #f0f4f8;
+    border-radius: 12px;
+}
+
+.game-button:hover {
+    transform: scale(1.1);
+    background-color: #e2e8f0;
+}
+
+.game-icon {
+    font-size: 1.5rem;
+}
+
+.notification-wrapper {
+    position: relative;
+}
+
+/* Cartes de fonctionnalités */
+.dashboard-cards {
+    margin-top: 1.5rem;
+}
+
+.cards-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+}
+
+.feature-card {
+    border-radius: 16px !important;
+    overflow: hidden;
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    border: none !important;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.feature-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+.card-icon {
+    font-size: 2.5rem;
+    margin: 1.5rem 0 0 1.5rem;
+}
+
+mat-card-content {
+    padding: 1.5rem;
+    flex-grow: 1;
+}
+
+mat-card-content h3 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #2d3748;
+    margin: 0 0 0.5rem 0;
+}
+
+mat-card-content p {
+    color: #718096;
+    margin: 0;
+    font-size: 0.95rem;
+}
+
+mat-card-actions {
+    padding: 0 1.5rem 1.5rem !important;
+    display: flex;
+    justify-content: flex-end;
+}
+
+/* Couleurs spécifiques aux cartes */
+.appointment-card {
+    border-top: 4px solid #f83182 !important;
+}
+
+.payment-card {
+    border-top: 4px solid #f83182 !important;
+}
+
+.recognition-card {
+    border-top: 4px solid #f83182 !important;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .dashboard-container {
+        padding: 1.5rem;
+    }
+    
+    .header-content {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+    
+    .cards-row {
+        grid-template-columns: 1fr;
+    }
+}
+
+
+/* Map Styles */
+.map-section {
+    margin-top: 30px;
+    padding: 20px;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+#map {
+    height: 400px;
+    width: 100%;
+    border-radius: 8px;
+    margin-top: 15px;
+}
+
+.selected-location {
+    margin-top: 10px;
+    padding: 10px;
+    background: #f5f5f5;
+    border-radius: 5px;
+    font-style: italic;
+}
+
+/* Map Controls */
+.map-controls {
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.location-button {
+    background-color: #3f51b5;
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    transition: background-color 0.3s;
+}
+
+.location-button:hover {
+    background-color: #303f9f;
+}
+
+.location-button i {
+    font-size: 16px;
+}
+
+/* Styles for Map Popup */
+.custom-popup {
+    font-family: 'Arial', sans-serif;
+    padding: 10px;
+    min-width: 250px;
+  }
+  
+  .custom-popup h3 {
+    margin: 0 0 10px 0;
+    padding-bottom: 5px;
+    border-bottom: 1px solid #F83182;
+  }
+  
+  .popup-details {
+    margin-bottom: 10px;
+  }
+  
+  .popup-details p {
+    margin: 5px 0;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+  }
+  
+  .popup-details i {
+    width: 16px;
+    text-align: center;
+  }
+  
+  /* Leaflet Popup Customization */
+  .leaflet-popup-content-wrapper {
+    border-radius: 8px !important;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.2) !important;
+    border: 1px solid #F83182;
+  }
+  
+  .leaflet-popup-content {
+    margin: 10px !important;
+  }
+  
+  .leaflet-popup-tip {
+    background: #F83182 !important;
+  }
+
+  .nearest-vet-popup {
+    font-family: 'Arial', sans-serif;
+    padding: 10px;
+    min-width: 200px;
+  }
+  
+  .nearest-vet-popup h4 {
+    color: #F83182;
+    margin-top: 0;
+    border-bottom: 1px solid #FF617C;
+    padding-bottom: 5px;
+  }
+
+  .nearest-vet-button {
+    background-color: #FE9A7A;
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    transition: background-color 0.3s;
+    margin-left: 10px;
+  }
+  
+  .nearest-vet-button:hover {
+    background-color: #FF617C;
+  }
+
+  .nearest-vet-popup {
+    font-family: 'Arial', sans-serif;
+    padding: 10px;
+    min-width: 250px;
+    background: white;
+    border-radius: 8px;
+  }
+  
+  .leaflet-popup-content-wrapper {
+    border-radius: 8px !important;
+    border: 2px solid #F83182 !important;
+  }
+  
+  .leaflet-popup-tip {
+    background: #F83182 !important;
+  }
+  
+  .nearest-vet-popup h4 {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 0;
+  }
+  
+  .nearest-vet-popup p {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  
+  .nearest-vet-popup i {
+    width: 16px;
+    text-align: center;
+  }

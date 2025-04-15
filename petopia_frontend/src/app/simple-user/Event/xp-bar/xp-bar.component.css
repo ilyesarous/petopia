@@ -1,0 +1,25 @@
+/* xp-bar.component.css */
+.xp-container {
+    width: 100%;
+    margin: 10px 0;
+  }
+  
+  .xp-info {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 5px;
+    font-size: 0.9rem;
+  }
+  
+  .progress-bar {
+    height: 10px;
+    background-color: #e0e0e0;
+    border-radius: 5px;
+    overflow: hidden;
+  }
+  
+  .progress {
+    height: 100%;
+    background-color: #4CAF50;
+    transition: width 0.3s ease;
+  }

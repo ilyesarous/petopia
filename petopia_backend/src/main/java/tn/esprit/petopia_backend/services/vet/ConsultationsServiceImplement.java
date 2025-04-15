@@ -90,4 +90,13 @@ public class ConsultationsServiceImplement implements IConsultationsService{
     public Consultations retriveConsultations(int idConsultation) {
         return consultationsRepository.findById(idConsultation).orElse(null);
     }
+
+    @Override
+    public List<Pet> getUniquePetsForVet(Long vetId) {
+        return consultationsRepository.findDistinctPetsByVetId(vetId);
+    }
+
+    public List<Consultations> getConsultationsByUserId(Integer userId) {
+        return consultationsRepository.findByUserId(userId);
+    }
 }

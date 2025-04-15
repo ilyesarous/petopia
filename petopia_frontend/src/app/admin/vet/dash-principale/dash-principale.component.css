@@ -112,3 +112,229 @@ button {
     font-weight: bold;
     color: #333;
   }
+
+  /* Map Styles */
+.map-section {
+  margin-top: 30px;
+  padding: 20px;
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+#map {
+  height: 400px;
+  width: 100%;
+  border-radius: 8px;
+  margin-top: 15px;
+}
+
+.selected-location {
+  margin-top: 10px;
+  padding: 10px;
+  background: #f5f5f5;
+  border-radius: 5px;
+  font-style: italic;
+}
+
+/* Map Controls */
+.map-controls {
+  margin-bottom: 10px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.location-button {
+  background-color: #F83182;
+  color: white;
+  border: none;
+  padding: 8px 15px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  transition: background-color 0.3s;
+}
+
+.location-button:hover {
+  background-color: #FE9A7A;
+}
+
+.location-button i {
+  font-size: 16px;
+}
+
+/* Add Location Button */
+.add-location-button {
+  background-color: #F83182;
+  color: white;
+  border: none;
+  padding: 8px 15px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  transition: background-color 0.3s;
+  margin-left: 10px;
+}
+
+.add-location-button:hover {
+  background-color: #FE9A7A;
+}
+
+.add-location-button.active {
+  background-color: #F44336;
+}
+
+.adding-mode-info {
+  margin-top: 10px;
+  padding: 10px;
+  background-color: #FFF9C4;
+  border-left: 4px solid #FFC107;
+  color: #5D4037;
+  font-style: italic;
+}
+
+.temp-marker {
+  background: none;
+  border: none;
+}
+
+.temp-marker div {
+  font-size: 24px;
+  color: #ff0000;
+  text-shadow: 0 0 3px #fff;
+}
+
+.welcome-text {
+  margin: 0;
+  font-size: 24px;
+  color: #F83182;
+}
+.popup-actions {
+  margin-top: 10px;
+  text-align: center;
+}
+
+/* Styles for Map Popup */
+.custom-popup {
+  font-family: 'Arial', sans-serif;
+  padding: 10px;
+  min-width: 250px;
+}
+
+.custom-popup h3 {
+  margin: 0 0 10px 0;
+  padding-bottom: 5px;
+  border-bottom: 1px solid #F83182;
+}
+
+.popup-details {
+  margin-bottom: 10px;
+}
+
+.popup-details p {
+  margin: 5px 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.popup-details i {
+  width: 16px;
+  text-align: center;
+}
+
+.popup-actions {
+  margin-top: 15px;
+  text-align: center;
+}
+
+/* Leaflet Popup Customization */
+.leaflet-popup-content-wrapper {
+  border-radius: 8px !important;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.2) !important;
+}
+
+.leaflet-popup-content {
+  margin: 10px !important;
+}
+
+.leaflet-popup-tip {
+  background: #F83182 !important;
+}
+
+
+.ratings-container {
+  max-width: 1200px;
+  margin: 2rem auto;
+  padding: 1rem;
+}
+
+.ratings-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: 1.5rem;
+  margin-top: 2rem;
+}
+
+.rating-card {
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+.card-header {
+  background-color: #FF617C;
+  color: white;
+  padding: 1rem;
+}
+
+.card-header h3 {
+  margin: 0;
+}
+
+.card-body {
+  padding: 1.5rem;
+}
+
+.rating-info {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+.user-info, .vet-info {
+  flex: 1;
+}
+
+.user-info h4, .vet-info h4 {
+  margin-top: 0;
+  color: #F83182;
+}
+
+.rating-details {
+  margin-top: 1.5rem;
+}
+
+.rating-stars {
+  font-size: 1.2rem;
+  margin-bottom: 1rem;
+}
+
+.comment {
+  font-style: italic;
+  padding: 0.5rem;
+  background-color: #f5f5f5;
+  border-radius: 4px;
+}
+
+.h2 {
+  color: #F83182;
+}
+
