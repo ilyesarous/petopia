@@ -10,6 +10,9 @@ export class FeedbackService {
   constructor(private http: HttpClient) {}
   private url = 'http://localhost:8082/petopia/user/feedback';
   token: string = localStorage.getItem('token') || '';
+  userId = localStorage.getItem('userId')
+    ? parseInt(localStorage.getItem('userId')!)
+    : 0;
 
   private getAuthHeaders(): HttpHeaders {
     return new HttpHeaders({
@@ -18,7 +21,7 @@ export class FeedbackService {
   }
   create(feedback: Feedback) {
     return this.http.post(
-      `${this.url}/add/${feedback.user.id_user}/${+feedback.productId}`,
+      `${this.url}/add/${this.userId}/${+feedback.productId}`,
       feedback,
       {
         headers: this.getAuthHeaders(),
