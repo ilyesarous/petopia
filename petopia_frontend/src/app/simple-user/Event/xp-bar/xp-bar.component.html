@@ -1,0 +1,10 @@
+<!-- xp-bar.component.html -->
+<div class="xp-container">
+    <div class="xp-info">
+      <span class="level">Niveau {{ level }}</span>
+      <span class="xp">{{ currentXp }}/{{ xpNeeded }} XP</span>
+    </div>
+    <div class="progress-bar">
+      <div class="progress" [style.width.%]="progressPercentage"></div>
+    </div>
+  </div>

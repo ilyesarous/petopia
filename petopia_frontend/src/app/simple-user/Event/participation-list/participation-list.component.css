@@ -1,0 +1,222 @@
+/* Main container */
+.participation-container {
+    font-family: 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem;
+    color: #333;
+  }
+  
+  /* Title */
+  .title {
+    color: #d82172;
+    font-size: 1.8rem;
+    font-weight: 600;
+    margin-bottom: 2rem;
+    position: relative;
+    padding-bottom: 0.5rem;
+  }
+  
+  .title::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 60px;
+    height: 3px;
+    background: linear-gradient(to right, #e88a6a, #d82172);
+    border-radius: 3px;
+  }
+  
+  /* Participation list */
+  .participation-list {
+    display: grid;
+    gap: 1.2rem;
+  }
+  
+  /* Participation card */
+  .participation-card {
+    display: flex;
+    align-items: center;
+    background: white;
+    border-radius: 12px;
+    padding: 1.2rem;
+    box-shadow: 0 4px 15px rgba(232, 138, 106, 0.1);
+    transition: transform 0.2s, box-shadow 0.2s;
+    border-left: 4px solid #e88a6a;
+  }
+  
+  .participation-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(232, 138, 106, 0.15);
+  }
+  
+  .participation-card.pending {
+    border-left-color: #FFA500;
+  }
+  
+  .participation-card.confirmed {
+    border-left-color: #4CAF50;
+  }
+  
+  .participation-card.cancelled {
+    border-left-color: #9E9E9E;
+    opacity: 0.8;
+  }
+  
+  .event-icon {
+    font-size: 1.8rem;
+    margin-right: 1.2rem;
+    color: #e6516c;
+  }
+  
+  .event-details {
+    flex: 1;
+  }
+  
+  .event-name {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 0.4rem;
+    color: #444;
+  }
+  
+  .event-meta {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    font-size: 0.9rem;
+    color: #666;
+  }
+  
+  .date {
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+  }
+  
+  .status-badge {
+    padding: 0.2rem 0.6rem;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: capitalize;
+  }
+  
+  .pending .status-badge {
+    background-color: #FFF3E0;
+    color: #FFA500;
+  }
+  
+  .confirmed .status-badge {
+    background-color: #E8F5E9;
+    color: #4CAF50;
+  }
+  
+  .cancelled .status-badge {
+    background-color: #F5F5F5;
+    color: #9E9E9E;
+  }
+  
+  .event-actions {
+    display: flex;
+    gap: 0.5rem;
+  }
+  
+  .action-btn {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: none;
+    background: #f5f5f5;
+    color: #e6516c;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .action-btn:hover {
+    background: #e6516c;
+    color: white;
+  }
+  
+  /* Empty state */
+  .empty-state {
+    text-align: center;
+    padding: 3rem 1rem;
+    background: #fafafa;
+    border-radius: 12px;
+    border: 1px dashed #e88a6a;
+  }
+  
+  .empty-icon {
+    font-size: 3rem;
+    color: #e6516c;
+    margin-bottom: 1rem;
+  }
+  
+  .empty-text {
+    color: #666;
+    margin-bottom: 1.5rem;
+    font-size: 1.1rem;
+  }
+  
+  .discover-btn {
+    background: linear-gradient(to right, #e88a6a, #e6516c);
+    color: white;
+    border: none;
+    padding: 0.8rem 1.5rem;
+    border-radius: 25px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+    box-shadow: 0 4px 10px rgba(232, 81, 108, 0.3);
+  }
+  
+  .discover-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(232, 81, 108, 0.4);
+  }
+  
+  /* Responsive */
+  @media (max-width: 600px) {
+    .participation-card {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    
+    .event-icon {
+      margin-right: 0;
+      margin-bottom: 1rem;
+    }
+    
+    .event-meta {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.5rem;
+    }
+  }.loading-state {
+    text-align: center;
+    padding: 20px;
+    color: #666;
+  }
+  
+  .action-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 5px;
+    margin: 0 5px;
+    color: #666;
+    transition: color 0.3s;
+  }
+  
+  .action-btn:hover {
+    color: #ff4444; /* Red color on hover */
+  }
+  
+  .action-btn i {
+    font-size: 1.2em;
+  }

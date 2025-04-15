@@ -57,4 +57,16 @@
   button:hover:not(:disabled) {
     background-color: #ff617c;
   }
+  .back-button {
+    background-color: #f83182; /* Couleur grise pour le bouton retour */
+    margin-top: 20px;
+  }
   
+  .back-button:hover {
+    background-color: #5a6268; /* Couleur plus foncée au survol */
+  }
+  
+  /* Style pour le formulaire quand l'utilisateur est déjà inscrit */
+  .event-form-container:has(.alert.alert-warning) {
+    padding-bottom: 20px; /* Espace supplémentaire en bas */
+  }

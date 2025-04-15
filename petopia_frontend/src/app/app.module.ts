@@ -133,6 +133,12 @@ import { UserRatingVetComponent } from './simple-user/vet/user-rating-vet/user-r
 import { InfoRatingVetComponent } from './simple-user/vet/info-rating-vet/info-rating-vet.component';
 import { PaymentVetComponent } from './simple-user/vet/payment-vet/payment-vet.component';
 
+import { ParticipationListComponent } from './simple-user/Event/participation-list/participation-list.component';
+import { EventParticipantsComponent } from './admin/Event/event-participants/event-participants.component';
+import { ServiceAnimalListComponent } from './simple-user/Event/service-animal-list/service-animal-list.component';
+import { AddServiceAnimalComponent } from './simple-user/Event/add-service-animal/add-service-animal.component';
+import { CountdownComponent } from './simple-user/Event/countdown/countdown.component';
+import { XpBarComponent } from './simple-user/Event/xp-bar/xp-bar.component';
 
 @NgModule({
   declarations: [
@@ -223,6 +229,12 @@ import { PaymentVetComponent } from './simple-user/vet/payment-vet/payment-vet.c
     HomePartnerComponent,
     UserSignCertificateComponent,
     UserViewCertificateComponent
+    ParticipationListComponent,
+    EventParticipantsComponent,
+    ServiceAnimalListComponent,
+    AddServiceAnimalComponent,
+    CountdownComponent,
+    XpBarComponent,
   ],
   imports: [
     BrowserModule,

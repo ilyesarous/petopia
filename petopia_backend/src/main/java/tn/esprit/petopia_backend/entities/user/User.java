@@ -9,6 +9,7 @@ import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import tn.esprit.petopia_backend.entities.event.Coupon;
 import tn.esprit.petopia_backend.entities.event.Event;
 
 import tn.esprit.petopia_backend.entities.adoptions.Shelter;
@@ -28,6 +29,7 @@ import tn.esprit.petopia_backend.entities.store.Product;
 import tn.esprit.petopia_backend.entities.vet.Rating_Vet;
 
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
@@ -48,10 +50,15 @@ public class User implements UserDetails {
     private String email;
     private String password;
     private Boolean locked = false;
+    private Integer nb_points = 0;
+    private int level = 1;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Coupon> coupons = new ArrayList<>();
+
 
     @Enumerated(EnumType.STRING)
     private UserRole role;
-    private Integer nb_points = 0;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore

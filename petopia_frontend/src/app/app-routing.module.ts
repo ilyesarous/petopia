@@ -66,6 +66,10 @@ import { QrCodeVetScannerComponent } from './simple-user/vet/qr-code-vet-scanner
 import { UserRatingVetComponent } from './simple-user/vet/user-rating-vet/user-rating-vet.component';
 import { InfoRatingVetComponent } from './simple-user/vet/info-rating-vet/info-rating-vet.component';
 import { PaymentVetComponent } from './simple-user/vet/payment-vet/payment-vet.component';
+import { ParticipationListComponent } from './simple-user/Event/participation-list/participation-list.component';
+import { EventParticipantsComponent } from './admin/Event/event-participants/event-participants.component';
+import { ServiceAnimalListComponent } from './simple-user/Event/service-animal-list/service-animal-list.component';
+import { AddServiceAnimalComponent } from './simple-user/Event/add-service-animal/add-service-animal.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -80,6 +84,9 @@ const routes: Routes = [
   { path: 'events', component: EventListComponent, canActivate: [AuthGuard] },
   //{ path: 'participer', component: ParticipationFormComponent,canActivate: [AuthGuard] },
   { path: 'participate/:id', component: ParticipationFormComponent, canActivate: [AuthGuard] },
+  { path: 'participations', component: ParticipationListComponent, canActivate: [AuthGuard]},
+  { path: 'services', component: ServiceAnimalListComponent, canActivate: [AuthGuard] },
+  { path: 'services/add', component: AddServiceAnimalComponent, canActivate: [AuthGuard] },
 
   { path: 'vet', component: DashPrincipaleHomeVetComponent, canActivate: [AuthGuard] },
   { path: 'vet/pet-growth/:id', component: PetGrowthVetComponent, canActivate: [AuthGuard] },
@@ -141,6 +148,7 @@ const routes: Routes = [
 
       { path: 'events', component: EventListComponent },
       { path: 'add-event', component: EventFormComponent },
+      {path: 'event-participants/:id',component: EventParticipantsComponent,},
 
       {
         path: 'dog-breed-recognition',

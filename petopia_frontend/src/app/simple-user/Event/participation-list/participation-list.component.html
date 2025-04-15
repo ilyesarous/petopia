@@ -1,0 +1,92 @@
+
+<!-- participation-list.component.html -->
+<!-- <div class="user-progress">
+  <app-xp-bar [currentXp]="userXp" [level]="userLevel"></app-xp-bar>
+  
+  <div *ngIf="userCoupons.length > 0" class="coupons-section">
+    <h4>Vos coupons de réduction</h4>
+    <div class="coupons-grid">
+      <div *ngFor="let coupon of userCoupons" class="coupon-card" [class.used]="coupon.isUsed">
+        <div class="coupon-value">{{ coupon.discountPercentage }}%</div>
+        <div class="coupon-code">{{ coupon.code }}</div>
+        <div class="coupon-expiry">Expire le {{ coupon.expirationDate | date:'shortDate' }}</div>
+        <button *ngIf="!coupon.isUsed" class="use-btn">Utiliser</button>
+        <div *ngIf="coupon.isUsed" class="used-label">Utilisé</div>
+      </div>
+    </div>
+  </div>
+</div> -->
+
+<!-- Ajoutez ceci avant la liste des participations -->
+
+
+<div class="participation-container">
+  <h3 class="title">My Participations</h3>
+
+  <div *ngIf="isLoading" class="loading-state">
+    <p>loading...</p>
+  </div>
+
+  <div *ngIf="!isLoading && participations.length > 0; else noParticipation" class="participation-list">
+    <div *ngFor="let p of participations" class="participation-card" [ngClass]="{
+      'pending': p.statusParticipation === 'PENDING',
+      'confirmed': p.statusParticipation === 'CONFIRMED',
+      'cancelled': p.statusParticipation === 'CANCELLED'
+    }">
+      <div class="event-icon">🎉</div>
+      <div class="event-details">
+        <h4 class="event-name">{{ p.event.nameEvent }}</h4>
+        <div class="event-meta">
+          <span class="date">📅 Inscrit in {{ p.dateInscription | date:'mediumDate' }}</span>
+          <span class="status-badge">{{ p.statusParticipation | lowercase }}</span>
+        </div>
+
+ <!-- Compte à rebours dynamique
+ <div *ngIf="p.timeRemaining !== undefined" class="countdown-section">
+  <div *ngIf="p.timeRemaining > 0" class="countdown-display">
+    {{ formatTime(p.timeRemaining) }}
+  </div>
+  <div *ngIf="p.timeRemaining <= 0" class="event-passed">
+    Événement terminé
+  </div>
+</div> -->
+
+
+<div *ngIf="p.timeRemaining !== undefined">
+  <div *ngIf="p.timeRemaining > 0" class="countdown">
+    <span class="countdown-label">Temps restant :</span>
+    <span class="countdown-value">{{ formatTime(p.timeRemaining) }}</span>
+  </div>
+  <div *ngIf="p.timeRemaining <= 0" class="event-ended">
+    Événement terminé
+  </div>
+</div>
+
+
+      </div>
+
+
+      <div class="event-actions">
+        <button class="action-btn" *ngIf="p.statusParticipation === 'PENDING' ||  p.statusParticipation === 'CONFIRMED'">
+          <i class="fas fa-check"></i>
+        </button>
+        <button 
+          class="action-btn" 
+          (click)="deleteParticipation(p.idParticipation)"
+          *ngIf="p.statusParticipation !== 'CANCELLED'"
+          title="Annuler la participation">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <ng-template #noParticipation>
+    <div class="empty-state">
+      <div class="empty-icon">📋</div>
+      <p class="empty-text">No participation found.</p>
+      <button [routerLink]="['/events']" class="discover-btn">Discover new events</button>
+    </div>
+  </ng-template>
+</div>
+

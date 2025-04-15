@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import tn.esprit.petopia_backend.entities.event.Enum.ServiceType;
+import tn.esprit.petopia_backend.entities.user.User;
 
 import java.util.List;
 
@@ -31,4 +32,6 @@ public class ServiceAnimal {
     @OneToMany(mappedBy = "serviceAnimal", cascade = CascadeType.ALL)
     @JsonIgnore
     private List<ReservationService> reservations;
+    @ManyToOne
+    private User organisateurServiceAnimal;
 }

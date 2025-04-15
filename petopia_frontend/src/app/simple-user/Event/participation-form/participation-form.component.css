@@ -57,4 +57,208 @@
   button:hover:not(:disabled) {
     background-color: #ff617c;
   }
+  .close-button {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+  }
   
+  .close-button .fas {
+    font-size: 1.5em;
+    color: #333; /* Couleur de la croix */
+  }
+  
+  .close-button:hover .fas {
+    color: red; /* Optionnel : couleur de la croix lors du survol */
+  }
+  /* Ajoutez ces règles à votre CSS existant */
+
+.alert.alert-warning {
+  background-color: #fff3cd;
+  color: #856404;
+  padding: 15px;
+  border-radius: 10px;
+  margin-bottom: 20px;
+  border: 1px solid #ffeeba;
+  text-align: center;
+}
+
+.back-button {
+  background-color: #f83182; /* Couleur grise pour le bouton retour */
+  margin-top: 20px;
+}
+
+.back-button:hover {
+  background-color: #5a6268; /* Couleur plus foncée au survol */
+}
+
+/* Style pour le formulaire quand l'utilisateur est déjà inscrit */
+.event-form-container:has(.alert.alert-warning) {
+  padding-bottom: 20px; /* Espace supplémentaire en bas */
+}
+
+/* Styles complémentaires */
+.alert.alert-info {
+  background-color: #e7f5ff;
+  color: #0c5460;
+  padding: 15px;
+  border-radius: 10px;
+  margin-bottom: 20px;
+  border: 1px solid #bee5eb;
+}
+
+.alert-content {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.alert-content i {
+  font-size: 1.5em;
+}
+
+.btn-participations {
+  background-color: #f83182;
+  color: white;
+  border: none;
+  padding: 8px 15px;
+  border-radius: 8px;
+  margin-top: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.btn-participations:hover {
+  background-color: #ff617c;
+}
+
+.form-input {
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.form-input:focus {
+  border-color: #f83182;
+  box-shadow: 0 0 0 3px rgba(248, 49, 130, 0.2);
+  outline: none;
+}
+
+.form-actions {
+  margin-top: 25px;
+}
+
+.submit-button i {
+  margin-right: 8px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .event-form-container {
+    padding: 20px;
+    margin: 20px 15px;
+  }
+  
+  h2 {
+    font-size: 1.5em;
+  }
+}
+
+/* Style pour la carte "Déjà inscrit" */
+.already-registered-card {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(248, 49, 130, 0.15);
+  padding: 25px;
+  margin-bottom: 30px;
+  border-top: 4px solid #f83182;
+}
+
+.card-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.card-header i {
+  font-size: 28px;
+  color: #4CAF50;
+  margin-right: 12px;
+}
+
+.card-header h3 {
+  margin: 0;
+  color: #f83182;
+  font-size: 1.4em;
+}
+
+.card-body p {
+  color: #555;
+  margin-bottom: 20px;
+  font-size: 1.1em;
+}
+
+.card-details {
+  background: #ffe9f0;
+  border-radius: 8px;
+  padding: 15px;
+  margin: 15px 0;
+}
+
+.detail-item {
+  display: flex;
+  align-items: center;
+  margin: 10px 0;
+}
+
+.detail-item i {
+  color: #f83182;
+  width: 24px;
+  text-align: center;
+  margin-right: 10px;
+}
+
+.card-actions {
+  display: flex;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.action-btn {
+  flex: 1;
+  padding: 12px;
+  border-radius: 8px;
+  border: none;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: all 0.3s ease;
+}
+
+.action-btn i {
+  font-size: 16px;
+}
+
+.primary {
+  background-color: #f83182;
+  color: white;
+}
+
+.primary:hover {
+  background-color: #ff617c;
+  transform: translateY(-2px);
+}
+
+.secondary {
+  background-color: white;
+  color: #f83182;
+  border: 2px solid #f83182;
+}
+
+.secondary:hover {
+  background-color: #ffe9f0;
+}

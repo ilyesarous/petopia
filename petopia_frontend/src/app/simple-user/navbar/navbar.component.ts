@@ -19,6 +19,8 @@ export class NavbarComponent implements OnInit {
     {id: 1, icon: 'bi bi-envelope'},
     {id: 2, icon: 'bi bi-bell'},
   ]
+  showEventsDropdown = false; // Add this line
+
 
   ngOnInit() {
     this.authService.isAuthenticated.subscribe((status) => {
