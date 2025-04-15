@@ -1,0 +1,124 @@
+.container {
+    font-family: 'Poppins', sans-serif;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+  
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+  }
+  
+  .header h1 {
+    color: #333;
+    font-weight: 600;
+  }
+  
+  .add-button {
+    background-color: #F83182;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: all 0.3s ease;
+  }
+  
+  .add-button:hover {
+    background-color: #e02a72;
+    transform: translateY(-2px);
+  }
+  
+  .filters {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 20px;
+  }
+  
+  .filters input, .filters select {
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-family: 'Poppins', sans-serif;
+    width: 250px;
+  }
+  
+  .services-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+  }
+  
+  .service-card {
+    background: white;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    cursor: pointer;
+  }
+  
+  .service-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+  }
+  
+  .service-header {
+    padding: 15px;
+    color: white;
+    font-weight: 500;
+  }
+  
+  .service-header.DOG_WALKING {
+    background: linear-gradient(135deg, #F83182 0%, #FF617C 100%);
+  }
+  
+  .service-header.PET_SITTING {
+    background: linear-gradient(135deg, #FF617C 0%, #FE9A7A 100%);
+  }
+  
+  .service-header.GROOMING {
+    background: linear-gradient(135deg, #FE9A7A 0%, #ffb38a 100%);
+  }
+  
+  .service-body {
+    padding: 15px;
+  }
+  
+  .service-body p {
+    color: #666;
+    margin-bottom: 15px;
+  }
+  
+  .service-details {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .service-details .price {
+    font-weight: 600;
+    color: #333;
+    font-size: 1.2em;
+  }
+  
+  .service-details .availability {
+    padding: 5px 10px;
+    border-radius: 15px;
+    font-size: 0.8em;
+    font-weight: 500;
+  }
+  
+  .service-details .availability.available {
+    background-color: rgba(0, 200, 83, 0.1);
+    color: #00C853;
+  }
+  
+  .service-details .availability:not(.available) {
+    background-color: rgba(255, 0, 0, 0.1);
+    color: #FF0000;
+  }

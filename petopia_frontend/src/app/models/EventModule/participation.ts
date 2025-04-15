@@ -3,7 +3,9 @@ import { Event } from 'src/app/models/EventModule/appevent'; // Assure-toi que l
 export enum ParticipationStatus {
   PENDING = 'PENDING',
   CONFIRMED = 'CONFIRMED',
-  CANCELED = 'CANCELED'
+  CANCELED = 'CANCELLED'
+    
+
 }
 
 
@@ -13,6 +15,8 @@ export interface Participation {
     event: Event;                      // L'événement auquel on participe
     participant: any; // Objet simplifié aussi
     statusParticipation: ParticipationStatus;
+    timeRemaining?: number; // ajoutez cette propriété
+
   }
   
   

@@ -1,3 +1,5 @@
+import { Participation } from "./participation";
+
 export interface Event {
     idEvent: number;
     nameEvent: string;
@@ -12,5 +14,7 @@ export interface Event {
     visibiliteEvent: string;
     statusEvent: string;
     organisateur?: any; // tu peux typifier ça plus tard si besoin
+    participations?: Participation[]; // Add this line
+
   }
   

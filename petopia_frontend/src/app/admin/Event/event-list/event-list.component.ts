@@ -7,6 +7,9 @@ import { ParticipationService } from 'src/app/services/Event/participation.servi
 import { Event } from 'src/app/models/EventModule/appevent'; // Assurez-vous que le chemin est correct
 
 import { ViewChild, ElementRef } from '@angular/core';
+import { EventNotification, EventNotificationService } from 'src/app/services/Event/EventNotification';
+import { Subscription } from 'rxjs';
+
 
 
 declare var bootstrap: any; 
@@ -14,6 +17,7 @@ declare var bootstrap: any;
   selector: 'app-event-list',
   templateUrl: './event-list.component.html',
   styleUrls: ['./event-list.component.css']
+  
 })
 export class EventListComponent implements OnInit {
   events: any[] = [];
@@ -21,14 +25,38 @@ export class EventListComponent implements OnInit {
   selectedEvent: Event | null = null; // L'événement sélectionné pour participer
   @ViewChild('editEventModal') editEventModal!: ElementRef;
   role: string = '';
-
- 
   editMode: boolean = false;  // Pour contrôler l’affichage du formulaire d’édition
   eventToEdit: Event | null = null;  // Contient l’événement à modifier
-
   showParticipationPopup: boolean = false;
+  notifications: EventNotification[] = [];
 
-  constructor(private eventService: EventService, private router: Router,private authService: AuthService, private participationService: ParticipationService) {}
+  filters: any = {};
+
+
+  private notificationSubscription!: Subscription;
+  private eventsSubscription!: Subscription;
+  private roleSubscription!: Subscription;
+
+  
+  filtersExpanded: boolean = false;
+  eventTypes = [
+    { value: 'PROMENADE', label: 'Promenade' },
+    { value: 'RANDONNEE', label: 'Randonnée' },
+    { value: 'PHOTO_SEANCE', label: 'Séance photo' }
+  ];
+  statusOptions = [
+    { value: 'ACTIF', label: 'Actif' },
+    { value: 'ANNULE', label: 'Annulé' },
+    { value: 'TERMINE', label: 'Terminé' }
+  ];
+
+
+  
+  constructor(private eventService: EventService,
+                private router: Router,
+                private authService: AuthService, 
+                private participationService: ParticipationService,
+                private notificationService: EventNotificationService) {}
 
   ngOnInit(): void {
           // Pour chaque événement, récupérer l'organisateur si c'est un ID
@@ -51,11 +79,66 @@ export class EventListComponent implements OnInit {
         // Charger les événements au démarrage
         this.eventService.loadEvents();
 
-        // Vérifier si l'utilisateur est un admin
-      
-        
+        // Vérifier si l'utilisateur est un admin  
+
+
+            // ✅ Subscribe to notifications
+    this.notificationService.getNotifications().subscribe((notifs) => {
+      this.notifications = notifs;
+    });
+    //this.setupSubscriptions();
+
 }
 
+// ngOnDestroy(): void {
+//   this.cleanupSubscriptions();
+// }
+
+// private setupSubscriptions(): void {
+//   this.roleSubscription = this.authService.role.subscribe((role) => {
+//     this.role = role || '';
+//   });
+
+//   this.eventsSubscription = this.eventService.events$.subscribe((data) => {
+//     this.events = data;
+//     this.loadOrganizers();
+//   });
+
+//   this.notificationSubscription = this.notificationService.getNotifications().subscribe((notifs) => {
+//     this.notifications = notifs;
+//   });
+// }
+
+// private loadOrganizers(): void {
+//   this.events.forEach(event => {
+//     if (event.organisateur) {
+//       this.authService.getUserById(event.organisateur).subscribe(user => {
+//         event.organisateur = user;
+//       });
+//     }
+//   });
+// }
+
+// private cleanupSubscriptions(): void {
+//   this.roleSubscription?.unsubscribe();
+//   this.eventsSubscription?.unsubscribe();
+//   this.notificationSubscription?.unsubscribe();
+// }
+
+// In event-list.component.ts
+getAvailablePlaces(event: Event): number {
+  if (!event.participations || event.participations.length === 0) {
+    return event.placesMaxEvent;
+  }
+  return event.placesMaxEvent - event.participations.length;
+}
+clearNotifications() {
+  this.notifications = [];
+}
+
+dismissNotification(notification: any) {
+  this.notifications = this.notifications.filter(n => n !== notification);
+}
   loadEvents() {
     
     this.eventService.getEvents().subscribe(
@@ -129,7 +212,6 @@ updateEvent(): void {
   }
 }
 
-
 editEvent(event: Event): void {
   this.eventToEdit = { ...event }; // Clone
   setTimeout(() => {
@@ -138,20 +220,49 @@ editEvent(event: Event): void {
   }, 0);
 }
 
-
 cancelEdit(): void {
   this.eventToEdit = null;
   this.editMode = false;
 }
 
+// saveUpdatedEvent(): void {
+//   if (this.eventToEdit) {
+//     this.eventService.updateEvent(this.eventToEdit.idEvent, this.eventToEdit).subscribe({
+//       next: () => {
+//         alert('Événement mis à jour avec succès');
+//         this.editMode = false;
+//         this.eventToEdit = null;
+//         this.eventService.loadEvents();
+//       },
+//       error: (err) => {
+//         console.error('Erreur de mise à jour', err);
+//         alert('Erreur lors de la mise à jour');
+//       }
+//     });
+//   }
+// }
+
 saveUpdatedEvent(): void {
   if (this.eventToEdit) {
     this.eventService.updateEvent(this.eventToEdit.idEvent, this.eventToEdit).subscribe({
-      next: () => {
+      next: (updatedEvent) => {
+        // Update the specific event in the array
+        const index = this.events.findIndex(e => e.idEvent === updatedEvent.idEvent);
+        if (index !== -1) {
+          this.events[index] = updatedEvent;
+        }
+        
+        // Properly close the modal
+        const modalElement = document.getElementById('editEventModal');
+        if (modalElement) {
+          document.activeElement && (document.activeElement as HTMLElement).blur(); // retire le focus
+
+          const modal = bootstrap.Modal.getInstance(modalElement);
+          modal?.hide();
+          modalElement.removeAttribute('aria-hidden'); // Fix accessibility warning
+        }
+        
         alert('Événement mis à jour avec succès');
-        this.editMode = false;
-        this.eventToEdit = null;
-        this.eventService.loadEvents();
       },
       error: (err) => {
         console.error('Erreur de mise à jour', err);
@@ -166,9 +277,28 @@ toggleDetails(event: any): void {
 }
 
 
+// Dans la classe EventListComponent
+viewParticipants(eventId: number): void {
+  this.router.navigate(['/dashboard/event-participants', eventId]);
+}
+
+
+applyFilters(): void {
+  this.eventService.filterEvents(this.filters).subscribe();
+}
+
+resetFilters(): void {
+  this.filters = {};
+  this.eventService.loadEvents();
+}
 
 
 
+
+
+toggleFilterExpansion() {
+  this.filtersExpanded = !this.filtersExpanded;
+}
 
 
 }

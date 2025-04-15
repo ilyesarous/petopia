@@ -33,6 +33,9 @@ public class Event {
     private Float longitudeEvent;
     private double prixEvent;
     private int placesMaxEvent;
+    private Integer availablePlaces;
+    private Integer countdownDuration; // en minutes (optionnel)
+
 
     @Enumerated(EnumType.STRING)
     private EventType eventType;

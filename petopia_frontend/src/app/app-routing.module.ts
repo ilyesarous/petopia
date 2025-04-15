@@ -48,6 +48,10 @@ import { ShelterHomeComponent } from './simple-user/shelter/shelter-home/shelter
 import { CartComponent } from './simple-user/store/cart/cart.component';
 import { ShelterListComponent } from './admin/shelter/shelter-list/shelter-list.component';
 import { ShelterDetailsComponent } from './admin/shelter/shelter-details/shelter-details.component';
+import { ParticipationListComponent } from './simple-user/Event/participation-list/participation-list.component';
+import { EventParticipantsComponent } from './admin/Event/event-participants/event-participants.component';
+import { ServiceAnimalListComponent } from './simple-user/Event/service-animal-list/service-animal-list.component';
+import { AddServiceAnimalComponent } from './simple-user/Event/add-service-animal/add-service-animal.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -61,6 +65,9 @@ const routes: Routes = [
   { path: 'events', component: EventListComponent, canActivate: [AuthGuard] },
   //{ path: 'participer', component: ParticipationFormComponent,canActivate: [AuthGuard] },
   { path: 'participate/:id', component: ParticipationFormComponent, canActivate: [AuthGuard] },
+  { path: 'participations', component: ParticipationListComponent, canActivate: [AuthGuard]},
+  { path: 'services', component: ServiceAnimalListComponent, canActivate: [AuthGuard] },
+  { path: 'services/add', component: AddServiceAnimalComponent, canActivate: [AuthGuard] },
 
   { path: 'vet/treatment-pets', component: TreatmentPetsComponent, canActivate: [AuthGuard] },
   { path: 'vet/treatment-specific-pet/:id', component: TreatmentSpecificPetsComponent, canActivate: [AuthGuard]},
@@ -106,6 +113,7 @@ const routes: Routes = [
 
       { path: 'events', component: EventListComponent },
       { path: 'add-event', component: EventFormComponent },
+      {path: 'event-participants/:id',component: EventParticipantsComponent,},
 
       {
         path: 'dog-breed-recognition',

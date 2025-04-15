@@ -104,6 +104,12 @@ import { EventFormComponent } from './admin/Event/event-form/event-form.componen
 import { EventListComponent } from './admin/Event/event-list/event-list.component';
 import { ParticipationFormComponent } from './simple-user/Event/participation-form/participation-form.component';
 import { EventEditComponent } from './admin/Event/event-edit/event-edit.component';
+import { ParticipationListComponent } from './simple-user/Event/participation-list/participation-list.component';
+import { EventParticipantsComponent } from './admin/Event/event-participants/event-participants.component';
+import { ServiceAnimalListComponent } from './simple-user/Event/service-animal-list/service-animal-list.component';
+import { AddServiceAnimalComponent } from './simple-user/Event/add-service-animal/add-service-animal.component';
+import { CountdownComponent } from './simple-user/Event/countdown/countdown.component';
+import { XpBarComponent } from './simple-user/Event/xp-bar/xp-bar.component';
 
 @NgModule({
   declarations: [
@@ -177,6 +183,12 @@ import { EventEditComponent } from './admin/Event/event-edit/event-edit.componen
     EventListComponent,
     ParticipationFormComponent,
     EventEditComponent,
+    ParticipationListComponent,
+    EventParticipantsComponent,
+    ServiceAnimalListComponent,
+    AddServiceAnimalComponent,
+    CountdownComponent,
+    XpBarComponent,
   ],
   imports: [
     BrowserModule,

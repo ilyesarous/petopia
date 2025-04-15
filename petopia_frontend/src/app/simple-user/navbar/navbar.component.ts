@@ -14,6 +14,8 @@ export class NavbarComponent implements OnInit {
   isDropdownOpen = false;
   isMobileMenuOpen = false;
   selectedItem: string = 'Home';
+  showEventsDropdown = false; // Add this line
+
 
   ngOnInit() {
     this.authService.isAuthenticated.subscribe((status) => {
