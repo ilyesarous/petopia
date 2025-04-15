@@ -21,6 +21,7 @@ export class FeedbacksComponent implements OnInit {
   itemsPerPage: number = 5; // Items per page
   totalItems: number = 0;
   userId: number = 0;
+  user : any = {user_id : 0}
 
   constructor(
     private fb: FormBuilder,
@@ -39,6 +40,7 @@ export class FeedbacksComponent implements OnInit {
     this.userId = localStorage.getItem('userId')
     ? parseInt(localStorage.getItem('userId')!)
     : 0;
+    this.user = {user_id: this.userId}
     this.loadFeedbacks();
   }
 
@@ -63,7 +65,7 @@ export class FeedbacksComponent implements OnInit {
       // Submit to your backend
       this.feedbackService.create(this.feedbackForm.value).subscribe(() => {
         this.feedbackForm.setValue({
-          user : {user_id: this.userId},
+          user: this.user,
           productId: this.route.snapshot.paramMap.get('id'), 
           stars_number: 5,
           description: '',

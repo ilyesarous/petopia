@@ -97,4 +97,9 @@ public class CartProductService implements ICartProductService {
         }
         return total;
     }
+
+    public Float getTotalSalesByProductId(int idProduct) {
+        Product product = productService.findById(idProduct);
+        return cartProductRepository.findByProduct(product).getTotal();
+    }
 }

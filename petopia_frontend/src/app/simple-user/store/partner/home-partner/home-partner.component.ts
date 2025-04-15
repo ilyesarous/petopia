@@ -1,23 +1,164 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Chart, registerables } from 'chart.js';
+import {
+  ApexAxisChartSeries,
+  ApexChart,
+  ApexDataLabels,
+  ApexFill,
+  ApexGrid,
+  ApexLegend,
+  ApexNonAxisChartSeries,
+  ApexPlotOptions,
+  ApexResponsive,
+  ApexStroke,
+  ApexTooltip,
+  ApexXAxis,
+  ApexYAxis,
+  ChartComponent,
+} from 'ng-apexcharts';
 import { Product } from 'src/app/models/product/Product';
 import { DashboardService } from 'src/app/services/store/partner/dashboard.service';
 import { ProductService } from 'src/app/services/store/products/product.service';
+
+interface stats {
+  totalProducts: number;
+  averageRating: number;
+  totalSales: number;
+  totalRevenue: number;
+  topSellingProducts: Product[];
+  topSellingProductIds: number[];
+  listTotalByProduct: number[];
+}
+export type ChartOptions = {
+  series: ApexAxisChartSeries | ApexNonAxisChartSeries;
+  chart: ApexChart;
+  dataLabels?: ApexDataLabels;
+  plotOptions?: ApexPlotOptions;
+  responsive?: ApexResponsive[];
+  xaxis?: ApexXAxis;
+  yaxis?: ApexYAxis;
+  legend?: ApexLegend;
+  labels?: string[];
+  colors?: string[];
+  grid?: ApexGrid;
+  tooltip?: ApexTooltip;
+  stroke?: ApexStroke;
+  fill?: ApexFill;
+};
 
 @Component({
   selector: 'app-home-partner',
   templateUrl: './home-partner.component.html',
   styleUrls: ['./home-partner.component.css'],
 })
-
 export class HomePartnerComponent implements OnInit {
-  @ViewChild('progressChart') progressChartRef!: ElementRef;
-  @ViewChild('topProductsChart') topProductsChartRef!: ElementRef;
-  @ViewChild('dailySalesChart') dailySalesChartRef!: ElementRef;
-  
-  progressChart!: Chart;
-  topProductsChart!: Chart;
+  @ViewChild('chart') chart!: ChartComponent;
+
+  public summaryChartOptions: ChartOptions = {
+    series: [],
+    chart: {
+      type: 'bar',
+      height: 350,
+      toolbar: { show: false },
+      zoom: { enabled: false },
+    },
+    plotOptions: {
+      bar: {
+        horizontal: false,
+        columnWidth: '55%',
+        borderRadius: 4, // Rounded corners
+      },
+    },
+    dataLabels: { enabled: false },
+    xaxis: {
+      categories: [],
+      axisBorder: { show: false },
+      axisTicks: { show: false },
+      labels: {
+        style: { colors: '#666', fontSize: '12px' },
+      },
+    },
+    yaxis: {
+      labels: {
+        style: { colors: '#666', fontSize: '12px' },
+      },
+    },
+    grid: {
+      borderColor: '#f0f0f0',
+      strokeDashArray: 3,
+    },
+    colors: ['#e88a6a', '#e6516c'],
+    tooltip: {
+      enabled: true,
+      style: { fontSize: '12px' },
+    },
+  };
+
+  public topProductsChartOptions: ChartOptions = {
+    series: [],
+    chart: {
+      type: 'bar',
+      height: 350,
+      toolbar: { show: false },
+    },
+    plotOptions: {
+      bar: {
+        horizontal: true,
+        borderRadius: 4,
+        dataLabels: { position: 'top' },
+      },
+    },
+    dataLabels: {
+      enabled: true,
+      style: { colors: ['#fff'] },
+    },
+    xaxis: {
+      categories: [],
+      position: 'top',
+      axisBorder: { show: false },
+      axisTicks: { show: false },
+      labels: {
+        style: { colors: '#666', fontSize: '12px' },
+      },
+    },
+    yaxis: {
+      labels: {
+        style: { colors: '#666', fontSize: '12px' },
+      },
+    },
+    grid: {
+      borderColor: '#f0f0f0',
+      strokeDashArray: 3,
+    },
+    colors: ['#d82172'],
+    tooltip: {
+      enabled: true,
+      style: { fontSize: '12px' },
+    },
+  };
+
+  public ratingChartOptions: ChartOptions = {
+    series: [0],
+    chart: {
+      type: 'radialBar',
+      height: 350,
+      toolbar: { show: false },
+    },
+    plotOptions: {
+      radialBar: {
+        hollow: { size: '70%' },
+        track: { background: '#f0f0f0' },
+        dataLabels: {
+          name: { fontSize: '16px', color: '#666' },
+          value: { fontSize: '22px', color: '#333', fontWeight: 'bold' },
+        },
+      },
+    },
+    labels: [''],
+    colors: ['#e6516c'],
+    stroke: { lineCap: 'round' },
+  };
+
   loading = true;
   error: string | null = null;
 
@@ -25,7 +166,7 @@ export class HomePartnerComponent implements OnInit {
   searchQuery: string = '';
   recentSearches: string[] = [];
   filteredProducts: Product[] = [];
-  
+
   categoryFilter = '';
   categories = ['ACCESSORY', 'FOOD', 'TOY', 'GROOMING'];
   showAddProductModal = false;
@@ -35,19 +176,20 @@ export class HomePartnerComponent implements OnInit {
   isEditMode: boolean = false;
   constructor(
     private productService: ProductService,
-    private dashboardService: DashboardService,
-    private route: Router
+    private dashboardService: DashboardService
   ) {
     Chart.register(...registerables);
   }
 
   partnerName = 'John Doe'; // Replace with actual partner name
-  stats = {
+  stats: stats = {
     totalProducts: 0,
     averageRating: 0,
     totalSales: 0,
     totalRevenue: 0,
-    // topSellingProducts:
+    topSellingProducts: [],
+    topSellingProductIds: [],
+    listTotalByProduct: [],
   };
 
   ngOnInit(): void {
@@ -58,8 +200,6 @@ export class HomePartnerComponent implements OnInit {
     this.loadRecentSearches();
     this.loadDashboardData();
   }
-
-
   onSearch() {
     if (!this.searchQuery.trim()) {
       this.filteredProducts = [...this.listProducts];
@@ -68,6 +208,14 @@ export class HomePartnerComponent implements OnInit {
 
     this.filterProducts(this.searchQuery);
     this.addToRecentSearches(this.searchQuery);
+  }
+
+  // In your component class
+  getStarFill(star: number): string {
+    const rating = this.stats.averageRating || 0;
+    if (star <= rating) return 'filled';
+    if (star < rating) return 'partial';
+    return '';
   }
 
   filterProducts(query: string) {
@@ -94,12 +242,15 @@ export class HomePartnerComponent implements OnInit {
   loadDashboardData(): void {
     this.dashboardService.getDashboardData(this.idUser).subscribe({
       next: (data) => {
-        console.log('Dashboard data:', data);
-        
-        this.stats.averageRating = data.averageRating;
+        this.stats.averageRating = parseFloat(data.averageRating.toFixed(1));
         this.stats.totalSales = data.totalSales;
         this.stats.totalRevenue = data.totalRevenue;
-        this.stats.topSellingProducts = data.topSellingProducts
+        this.stats.topSellingProducts = data.topSellingProducts;
+        this.stats.topSellingProductIds = data.topSellingProducts.map(
+          (p: any) => p.product_id
+        );
+        this.stats.listTotalByProduct = data.listTotalByProduct;
+        this.initCharts();
         this.loading = false;
       },
       error: (err) => this.handleError(err),
@@ -116,6 +267,246 @@ export class HomePartnerComponent implements OnInit {
   applySearch(term: string) {
     this.searchQuery = term;
     this.onSearch();
+  }
+
+  initCharts(): void {
+    // Summary Chart (Revenue vs Sales)
+    this.summaryChartOptions = {
+      series: [
+        {
+          name: 'Revenue',
+          data: [this.stats.totalRevenue || 0],
+          color: '#e88a6a',
+        },
+        {
+          name: 'Sales',
+          data: [this.stats.totalSales || 0],
+          color: '#e6516c',
+        },
+      ],
+      chart: {
+        type: 'bar',
+        height: 350,
+        stacked: false,
+      },
+      plotOptions: {
+        bar: {
+          horizontal: false,
+          columnWidth: '45%',
+        },
+      },
+      dataLabels: {
+        enabled: false,
+      },
+      xaxis: {
+        categories: ['Performance Metrics'],
+        axisBorder: {
+          show: false,
+        },
+        axisTicks: {
+          show: false,
+        },
+        labels: {
+          style: {
+            colors: '#666',
+            fontSize: '12px',
+          },
+        },
+      },
+      yaxis: {
+        title: {
+          text: 'Amount',
+          style: {
+            color: '#666',
+            fontSize: '12px',
+          },
+        },
+        labels: {
+          formatter: (value: number) => `$${value.toLocaleString()}`,
+          style: {
+            colors: '#666',
+          },
+        },
+        axisBorder: {
+          show: true,
+          color: '#f0f0f0',
+        },
+      },
+      grid: {
+        borderColor: '#f0f0f0',
+        strokeDashArray: 3,
+      },
+      tooltip: {
+        y: {
+          formatter: (value: number) => `$${value.toLocaleString()}`,
+        },
+      },
+    };
+
+    // Top Products Chart
+    this.topProductsChartOptions = {
+      series: [
+        {
+          name: 'Revenue',
+          data: this.stats.listTotalByProduct?.slice(0, 3) || [],
+          color: '#d82172',
+        },
+      ],
+      chart: {
+        type: 'bar',
+        height: 350,
+      },
+      plotOptions: {
+        bar: {
+          horizontal: true,
+          borderRadius: 4,
+          dataLabels: {
+            position: 'top',
+          },
+        },
+      },
+      dataLabels: {
+        enabled: true,
+        formatter: (val: number) => `$${val.toLocaleString()}`,
+        offsetX: 0,
+        style: {
+          fontSize: '12px',
+          colors: ['#fff'],
+        },
+      },
+      xaxis: {
+        categories:
+          this.stats.topSellingProducts
+            ?.slice(0, 5)
+            .map((p) => p.product_name) || [],
+        position: 'top',
+        axisBorder: {
+          show: false,
+        },
+        axisTicks: {
+          show: false,
+        },
+        labels: {
+          show: true,
+          style: {
+            colors: '#666',
+            fontSize: '12px',
+          },
+          formatter: (value: string) =>
+            value.length > 15 ? `${value.substring(0, 15)}...` : value,
+        },
+        title: {
+          text: 'Revenue',
+          offsetY: -10,
+          style: {
+            color: '#666',
+            fontSize: '12px',
+          },
+        },
+      },
+      yaxis: {
+        labels: {
+          show: true,
+          style: {
+            colors: '#666',
+            fontSize: '12px',
+          },
+        },
+        axisBorder: {
+          show: true,
+          color: '#f0f0f0',
+        },
+      },
+      grid: {
+        borderColor: '#f0f0f0',
+        strokeDashArray: 3,
+      },
+      tooltip: {
+        y: {
+          formatter: (val: number) => `$${val.toLocaleString()}`,
+        },
+      },
+    };
+
+    // Rating Chart
+    this.ratingChartOptions = {
+      series: [this.stats.averageRating ? this.stats.averageRating * 20 : 0],
+      chart: {
+        type: 'radialBar',
+        height: 350,
+      },
+      colors: ['#e6516c'],
+      plotOptions: {
+        radialBar: {
+          startAngle: -135,
+          endAngle: 135,
+          hollow: {
+            margin: 0,
+            size: '70%',
+          },
+          dataLabels: {
+            name: {
+              offsetY: -10,
+              color: '#666',
+              fontSize: '13px',
+            },
+            value: {
+              color: '#333',
+              fontSize: '30px',
+              fontWeight: 'bold',
+              show: true,
+              formatter: (val: number) => (val / 20).toFixed(1),
+            },
+          },
+          track: {
+            background: '#f0f0f0',
+            strokeWidth: '97%',
+            margin: 5,
+          },
+        },
+      },
+      labels: ['Average Rating'],
+      stroke: {
+        lineCap: 'round',
+      },
+      responsive: [
+        {
+          breakpoint: 480,
+          options: {
+            chart: {
+              height: 300,
+            },
+          },
+        },
+      ],
+    };
+  }
+  getRankColor(index: number): string {
+    const colors = ['#e88a6a', '#e6516c', '#d82172'];
+    return colors[index] || '#d82172';
+  }
+
+  getRatingClass(): string {
+    if (this.stats.averageRating >= 4) return 'positive';
+    if (this.stats.averageRating >= 3) return 'neutral';
+    return 'negative';
+  }
+
+  getRatingIcon(): string {
+    if (this.stats.averageRating >= 4) return 'bi bi-emoji-smile';
+    if (this.stats.averageRating >= 3) return 'bi bi-emoji-neutral';
+    return 'bi bi-emoji-frown';
+  }
+
+  getRatingMessage(): string {
+    if (this.stats.averageRating >= 4)
+      return 'Excellent customer satisfaction!';
+    if (this.stats.averageRating >= 3) return 'Good, but could improve';
+    return 'Needs improvement';
+  }
+
+  isTopSelling(product: Product): boolean {
+    return this.stats.topSellingProductIds.includes(product.product_id);
   }
 
   removeRecentSearch(term: string, event: Event) {
@@ -163,12 +554,14 @@ export class HomePartnerComponent implements OnInit {
     this.isEditMode = false;
     this.showAddProductModal = true;
   }
-  
+
   // Update your handleProductAdded method to handle both add and edit
   handleProductAdded(updatedProduct: Product): void {
     if (this.isEditMode) {
       // Update existing product in the list
-      const index = this.listProducts.findIndex(p => p.product_id === updatedProduct.product_id);
+      const index = this.listProducts.findIndex(
+        (p) => p.product_id === updatedProduct.product_id
+      );
       if (index !== -1) {
         this.listProducts[index] = updatedProduct;
         this.filteredProducts = [...this.listProducts];
@@ -192,7 +585,7 @@ export class HomePartnerComponent implements OnInit {
           this.filteredProducts = [...this.listProducts];
           this.stats.totalProducts--;
         },
-        error: (err) => console.error('Failed to delete product', err)
+        error: (err) => console.error('Failed to delete product', err),
       });
     }
   }

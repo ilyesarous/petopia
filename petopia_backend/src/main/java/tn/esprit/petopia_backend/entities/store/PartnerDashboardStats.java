@@ -2,6 +2,7 @@ package tn.esprit.petopia_backend.entities.store;
 
 import lombok.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -14,4 +15,5 @@ public class PartnerDashboardStats {
     private double totalRevenue;
     private double averageRating;
     private List<Product> topSellingProducts;
+    private List<Float> listTotalByProduct = new ArrayList<>();
 }

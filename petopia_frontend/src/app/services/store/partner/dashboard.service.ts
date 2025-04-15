@@ -9,7 +9,9 @@ interface stats {
   averageRating: number,
   totalSales: number,
   totalRevenue: number,
-  topSellingProducts: Product[]
+  topSellingProducts: Product[],
+  topSellingProductsId: number[]
+  listTotalByProduct: number[]
 }
 
 @Injectable({
