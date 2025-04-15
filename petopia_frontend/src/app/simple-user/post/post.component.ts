@@ -6,6 +6,8 @@ import { Comment } from '../../models/community/comment';
 import { CommentService } from '../../services/community/comment.service';
 import { PostService } from '../../services/community/post.service';
 import { NgForm } from '@angular/forms';
+import { TranslationService } from 'src/app/services/community/translation.service';
+
 
 @Component({
   selector: 'app-post',
@@ -35,11 +37,20 @@ selectedPostImagePreviews: string[] = [];
 
   likeSound = new Audio('https://res.cloudinary.com/dkdx59xe9/video/upload/v1709508219/Facebook_Like_Sound_Effect_nbc6ju.mp3');
 
+  //translation
+  translatedPost: string | null = null;
+translatedComments: { [id: number]: string } = {};
+selectedLanguage: string = 'en';
+
+
+
 
   constructor(
     private reactionService: ReactionService,
     private commentService: CommentService,
-    private postService: PostService
+    private postService: PostService,
+    private translationService: TranslationService
+
   ) {}
 
   ngOnInit(): void {
@@ -307,6 +318,28 @@ selectedPostImagePreviews: string[] = [];
         return 'bg-light text-dark';
     }
   }
+  translatePost(): void {
+    const textToTranslate = this.post.content;
+    if (!textToTranslate) return;
+  
+    this.translationService.translate(textToTranslate, this.selectedLanguage).subscribe({
+      next: (translated: string) => {
+        this.translatedPost = translated;
+        console.log('✅ Translated:', translated);
+      },
+      error: (err) => {
+        console.error('❌ Translation failed:', err);
+      }
+    });
+  }
+  
+    
+    
+  
+  
+  
+
+  
   
 
 }

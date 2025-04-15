@@ -22,7 +22,8 @@ public class Post {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
+    @Lob
+    @Column(columnDefinition = "TEXT")
     private String content;
     @Lob
     @Column(columnDefinition = "TEXT")
