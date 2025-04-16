@@ -377,4 +377,33 @@
   box-shadow: 0 0 0 0.1rem rgba(248, 49, 130, 0.25);
 }
 
+.btn-link {
+  font-size: 0.85rem;
+  color: #F83182;
+  font-weight: 500;
+}
+.btn-link:hover {
+  text-decoration: underline;
+  color: #d02a6b;
+}
 
+.post-content-wrapper {
+  position: relative;
+}
+
+.toggle-content-btn {
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: #F83182;
+  border: none;
+  background: none;
+  cursor: pointer;
+  padding: 0;
+  margin-top: 4px;
+  display: inline-block;
+}
+
+.toggle-content-btn:hover {
+  text-decoration: underline;
+  color: #d02a6b;
+}

@@ -41,6 +41,11 @@ selectedPostImagePreviews: string[] = [];
   translatedPost: string | null = null;
 translatedComments: { [id: number]: string } = {};
 selectedLanguage: string = 'en';
+// view more
+expanded: boolean = false;
+readonly MAX_LENGTH = 450;
+MAX_TRANSLATED_LENGTH = 350;
+translatedExpanded: boolean = false;
 
 
 
@@ -332,7 +337,26 @@ selectedLanguage: string = 'en';
       }
     });
   }
+
+  get displayContent(): string {
+    return this.expanded || this.post.content.length <= this.MAX_LENGTH
+      ? this.post.content
+      : this.post.content.slice(0, this.MAX_LENGTH) + '...';
+  }
   
+  toggleExpanded(): void {
+    this.expanded = !this.expanded;
+  }
+  get displayTranslatedPost(): string {
+    if (!this.translatedPost) return '';
+    return this.translatedExpanded || this.translatedPost.length <= this.MAX_TRANSLATED_LENGTH
+      ? this.translatedPost
+      : this.translatedPost.slice(0, this.MAX_TRANSLATED_LENGTH) + '...';
+  }
+  
+  toggleTranslatedExpanded(): void {
+    this.translatedExpanded = !this.translatedExpanded;
+  }
     
     
   
