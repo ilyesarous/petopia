@@ -138,4 +138,10 @@ public class UserController {
         return usersManagementService.getAllVets();
     }
 
+    @GetMapping("/auth/retrive-All-users")
+    public ResponseEntity<ReqRes> retriveAllUsers(){
+        return ResponseEntity.ok(usersManagementService.getAllUsers());
+    }
+
+
 }

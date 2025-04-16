@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { NotificationService } from 'src/app/services/vet/notifications/notification.service';
 import { Notification } from 'src/app/models/vet/notification';
 import { NotificationStateService } from 'src/app/services/vet/notifications/notification-state.service';
+import { AuthService } from 'src/app/services/user/auth.service';
+
 @Component({
   selector: 'app-notification-vet',
   templateUrl: './notification-vet.component.html',
@@ -14,52 +16,42 @@ export class NotificationVetComponent implements OnInit {
   showAddForm = false;
   newNotification: { message: string } = { message: '' };
   userId: number | null = null;
+  users: any[] = [];
+  selectedUsers: number[] = [];
+  showUserSelection = false;
 
   constructor(
     private notificationService: NotificationService,
-    private notificationState: NotificationStateService
+    private notificationState: NotificationStateService,
+    private authService: AuthService
   ) { }
 
-  /*
+  
   ngOnInit(): void {
-    this.loadNotifications();
-    
-    this.notificationState.showNotifications$.subscribe(show => {
-      this.showNotifications = show;
-      if (show) {
-        this.loadNotifications();
-      }
-    });
-  }
-
-
-  loadNotifications(): void {
-    this.notificationService.getAllNotifications().subscribe({
-      next: (data) => {
-        this.notifications = data;
-        this.sortNotifications();
-        this.updateUnreadCount();
-      },
-      error: (err) => {
-        console.error('Error loading notifications', err);
-      }
-    });
-  }
-    */
-
-  ngOnInit(): void {
-    // Récupérez l'ID de l'utilisateur connecté
     const userIdStr = localStorage.getItem('userId');
     this.userId = userIdStr ? parseInt(userIdStr) : null;
     
     if (this.userId) {
       this.loadNotifications();
+      this.loadAllUsers(); // Charger la liste des utilisateurs
     }
     
     this.notificationState.showNotifications$.subscribe(show => {
       this.showNotifications = show;
       if (show && this.userId) {
         this.loadNotifications();
+      }
+    });
+  }
+
+  loadAllUsers(): void {
+    this.authService.RetriveAllUsers().subscribe({
+      next: (response) => {
+        // Accédez à la propriété ourUsersList de la réponse
+        this.users = response.ourUsersList || [];
+      },
+      error: (err) => {
+        console.error('Error loading users', err);
       }
     });
   }
@@ -130,50 +122,57 @@ export class NotificationVetComponent implements OnInit {
     if (diffInSeconds < 86400) return `${Math.floor(diffInSeconds / 3600)} hours ago`;
     return `${Math.floor(diffInSeconds / 86400)} days ago`;
   }
-/*
+
   addNotification(): void {
     if (!this.newNotification.message.trim()) return;
-
-    // Créez un objet Notification complet si nécessaire
-    const notificationToAdd = {
+  
+    // Si aucun utilisateur n'est sélectionné, envoyer seulement à l'utilisateur connecté
+    if (this.selectedUsers.length === 0 && this.userId) {
+      this.selectedUsers.push(this.userId);
+    }
+  
+    // Créer une notification pour chaque utilisateur sélectionné
+    const notificationsToAdd = this.selectedUsers.map(userId => ({
       message: this.newNotification.message,
       seen: false,
-      user: { id_user: 1 } // Remplacez par l'ID de l'utilisateur approprié
-    };
-
-    this.notificationService.addNotification(notificationToAdd).subscribe({
-      next: (addedNotification) => {
-        this.notifications.unshift(addedNotification); // Ajoute au début du tableau
-        this.updateUnreadCount();
-        this.newNotification.message = ''; // Réinitialise le champ
-        this.showAddForm = false; // Cache le formulaire
-      },
-      error: (err) => {
-        console.error('Error adding notification', err);
-      }
+      user: { id_user: userId }
+    }));
+  
+    // Envoyer chaque notification
+    notificationsToAdd.forEach(notification => {
+      this.notificationService.addNotification(notification).subscribe({
+        next: (addedNotification) => {
+          this.notifications.unshift(addedNotification);
+          this.updateUnreadCount();
+        },
+        error: (err) => {
+          console.error('Error adding notification', err);
+        }
+      });
     });
+  
+    // Réinitialiser le formulaire
+    this.newNotification.message = '';
+    this.selectedUsers = [];
+    this.showAddForm = false;
+    this.showUserSelection = false;
   }
-*/
-  addNotification(): void {
-    if (!this.newNotification.message.trim() || !this.userId) return;
 
-    const notificationToAdd = {
-      message: this.newNotification.message,
-      seen: false,
-      user: { id_user: this.userId } // Utilisez l'ID de l'utilisateur connecté
-    };
-
-    this.notificationService.addNotification(notificationToAdd).subscribe({
-      next: (addedNotification) => {
-        this.notifications.unshift(addedNotification);
-        this.updateUnreadCount();
-        this.newNotification.message = '';
-        this.showAddForm = false;
-      },
-      error: (err) => {
-        console.error('Error adding notification', err);
-      }
-    });
+  toggleUserSelection(): void {
+    this.showUserSelection = !this.showUserSelection;
+  }
+  
+  isUserSelected(userId: number): boolean {
+    return this.selectedUsers.includes(userId);
+  }
+  
+  toggleUserSelectionStatus(userId: number): void {
+    const index = this.selectedUsers.indexOf(userId);
+    if (index === -1) {
+      this.selectedUsers.push(userId);
+    } else {
+      this.selectedUsers.splice(index, 1);
+    }
   }
   
 }

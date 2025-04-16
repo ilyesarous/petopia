@@ -1,8 +1,8 @@
 <div class="notification-container">
-  <!-- Notification Bell Icon (inchangé) -->
+  <!-- Notification Bell Icon -->
   <div class="relative">
     <button (click)="toggleNotifications()" class="notification-bell">
-      <span class="material-icons text-black hover:text-rose">notifications</span>
+      <span class="material-icons">notifications</span>
       <span *ngIf="unreadCount > 0" class="notification-badge">{{unreadCount}}</span>
     </button>
   </div>
@@ -17,64 +17,130 @@
       <!-- Header -->
       <div class="notification-header">
         <h3>Notifications</h3>
-        <div class="flex items-center">
+        <div class="header-actions">
           <span *ngIf="unreadCount > 0" class="unread-counter">{{unreadCount}} unread</span>
-          <!-- Bouton Add Notification -->
-          <button (click)="showAddForm = !showAddForm; $event.stopPropagation()" class="add-button">
-            <span class="material-icons text-white hover:text-gray-200">add</span>
+          <button (click)="showAddForm = !showAddForm; $event.stopPropagation()" class="icon-button">
+            <span class="material-icons">add</span>
           </button>
-          <button (click)="toggleNotifications()" class="close-button">
-            <span class="material-icons text-white hover:text-gray-200">close</span>
+          <button (click)="toggleNotifications()" class="icon-button">
+            <span class="material-icons">close</span>
           </button>
         </div>
       </div>
 
-      <!-- Formulaire d'ajout -->
-      <div *ngIf="showAddForm" class="add-notification-form">
-        <form (ngSubmit)="addNotification()" (click)="$event.stopPropagation()">
-          <div class="form-group">
-            <label for="notificationMessage">Message:</label>
-            <textarea id="notificationMessage" [(ngModel)]="newNotification.message" 
-                      name="message" required class="form-textarea"></textarea>
-          </div>
-          <div class="form-actions">
-            <button type="button" (click)="showAddForm = false" class="cancel-button">
-              Cancel
-            </button>
-            <button type="submit" class="submit-button">
-              Add Notification
-            </button>
-          </div>
-        </form>
-      </div>
-
-      <!-- Notifications List (inchangé) -->
-      <div class="notification-list">
-        <div *ngFor="let notification of notifications" 
-               (click)="markAsRead(notification)"
-               class="notification-item"
-               [class.unread]="!notification.seen">
-            <div class="notification-icon" [ngClass]="{'bg-rose': !notification.seen, 'bg-gray-200': notification.seen}">
-              <span *ngIf="!notification.seen" class="material-icons text-white">schedule</span>
-              <span *ngIf="notification.seen" class="material-icons text-green-500">check_circle</span>
+      <!-- Main Content Area -->
+      <div class="notification-main-content">
+        <!-- Add Notification Form -->
+        <div *ngIf="showAddForm" class="add-notification-form">
+          <form (ngSubmit)="addNotification()" (click)="$event.stopPropagation()">
+            <div class="form-group">
+              <label for="notificationMessage">Message:</label>
+              <textarea id="notificationMessage" [(ngModel)]="newNotification.message" 
+                        name="message" required class="form-textarea"></textarea>
             </div>
             
-            <div class="notification-details">
-              <div class="notification-title-row">
-                <span class="notification-time">{{getTimeAgo(notification.notif_date)}}</span>
+            <div class="form-group">
+              <button type="button" (click)="toggleUserSelection()" class="select-users-button">
+                <span class="material-icons">group</span>
+                {{showUserSelection ? 'Hide Users' : 'Select Users'}}
+              </button>
+              <div *ngIf="selectedUsers.length > 0" class="selected-users-count">
+                {{selectedUsers.length}} selected
               </div>
-              <p class="notification-message">{{notification.message}}</p>
             </div>
             
-            <button (click)="deleteNotification(notification.idNotification, $event)" class="delete-button">
-              <span class="material-icons text-rose hover:text-rose-700">delete</span>
-            </button>
+            <!-- Users Selection List -->
+            <div *ngIf="showUserSelection" class="users-selection-container">
+              <div class="users-selection-list">
+                <!-- Myself Option -->
+                <div *ngIf="userId" class="user-selection-item myself" 
+                    (click)="toggleUserSelectionStatus(userId)" 
+                    [class.selected]="isUserSelected(userId)">
+                  <div class="user-avatar">
+                    <span class="material-icons">person</span>
+                  </div>
+                  <div class="user-info">
+                    <span class="user-name">Myself</span>
+                    <span class="user-role-badge myself-badge">You</span>
+                  </div>
+                  <div class="user-checkbox">
+                    <input type="checkbox" [checked]="isUserSelected(userId)" 
+                          (click)="$event.stopPropagation()">
+                  </div>
+                </div>
+              
+                <!-- Other Users -->
+                <div class="user-selection-item" 
+                    *ngFor="let user of users" 
+                    [class.selected]="isUserSelected(user.id_user)"
+                    [class.vet]="user.role === 'VET'"
+                    [class.admin]="user.role === 'ADMIN'"
+                    [class.user]="user.role === 'USER'"
+                    (click)="toggleUserSelectionStatus(user.id_user)">
+                  <div class="user-avatar">
+                    <span class="material-icons">
+                      {{ user.role === 'VET' ? 'pets' : user.role === 'ADMIN' ? 'security' : 'person' }}
+                    </span>
+                  </div>
+                  <div class="user-info">
+                    <span class="user-name">{{user.name}}</span>
+                    <span class="user-email">{{user.email}}</span>
+                    <span class="user-role-badge" 
+                          [class.vet-badge]="user.role === 'VET'"
+                          [class.admin-badge]="user.role === 'ADMIN'"
+                          [class.user-badge]="user.role === 'USER'">
+                      {{user.role}}
+                    </span>
+                  </div>
+                  <div class="user-checkbox">
+                    <input type="checkbox" [checked]="isUserSelected(user.id_user)" 
+                          (click)="$event.stopPropagation()">
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <div class="form-actions">
+              <button type="button" (click)="showAddForm = false" class="cancel-button">
+                Cancel
+              </button>
+              <button type="submit" class="submit-button">
+                <span class="material-icons">send</span>
+                Send
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <!-- Notifications List -->
+        <div class="notification-list-container">
+          <div class="notification-list">
+            <div *ngFor="let notification of notifications" 
+                  (click)="markAsRead(notification)"
+                  class="notification-item"
+                  [class.unread]="!notification.seen">
+                <div class="notification-icon" [ngClass]="{'unread-icon': !notification.seen, 'read-icon': notification.seen}">
+                  <span *ngIf="!notification.seen" class="material-icons">notifications</span>
+                  <span *ngIf="notification.seen" class="material-icons">done_all</span>
+                </div>
+                
+                <div class="notification-details">
+                  <div class="notification-meta">
+                    <span class="notification-time">{{getTimeAgo(notification.notif_date)}}</span>
+                    <button (click)="deleteNotification(notification.idNotification, $event)" class="delete-button">
+                      <span class="material-icons">delete</span>
+                    </button>
+                  </div>
+                  <p class="notification-message">{{notification.message}}</p>
+                </div>
+              </div>
+              
+              <div *ngIf="notifications.length === 0" class="empty-notifications">
+                <span class="material-icons">notifications_off</span>
+                <p>No notifications yet</p>
+              </div>
           </div>
-          
-          <div *ngIf="notifications.length === 0" class="empty-notifications">
-            <span class="material-icons text-gray-400">sentiment_neutral</span>
-            <p>No notifications yet</p>
-          </div>
+        </div>
       </div>
     </div>
   </div>
