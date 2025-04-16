@@ -3,6 +3,7 @@ from src.connection.connect import conn
 from flask import Blueprint, request, jsonify
 from src.service.image_description_service import generate_description_from_url
 from src.connection.weaviate_client import store_description
+from src.connection.weaviate_client import client  # update this path if needed
 
 image_api = Blueprint("image_api", __name__)
 

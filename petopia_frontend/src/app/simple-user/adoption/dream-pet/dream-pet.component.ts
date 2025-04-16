@@ -85,7 +85,7 @@ export class DreamPetComponent implements OnInit {
                     ...pet,
                     similarity: recommendedIdMap.get(pet.idPet)
                   }));
-
+                  console.log(this.similarPets);
                 this.showRecommendations = true;
                 this.petsLoading = false;
               },
