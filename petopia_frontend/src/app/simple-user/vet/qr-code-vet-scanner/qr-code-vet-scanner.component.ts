@@ -16,6 +16,11 @@ export class QrCodeVetScannerComponent implements OnInit {
   isScanning: boolean = false;
   errorMessage: string | null = null;
   ratings: RatingVet[] = [];
+  uniqueVets: string[] = [];
+  selectedVet: string = '';
+  filteredRatings: RatingVet[] = [];
+  topRatedVet: {name: string, average: number, count: number} | null = null;
+
 
   constructor(private router: Router,
               private ratingService: VetRatingService
@@ -99,6 +104,9 @@ export class QrCodeVetScannerComponent implements OnInit {
     this.ratingService.getAllRatings().subscribe({
       next: (ratings) => {
         this.ratings = ratings;
+        this.filteredRatings = [...ratings];
+        this.extractUniqueVets();
+        this.calculateTopRatedVet(ratings); // Ajout de cet appel
       },
       error: (err) => {
         console.error('Failed to load ratings:', err);
@@ -106,5 +114,53 @@ export class QrCodeVetScannerComponent implements OnInit {
     });
   }
 
+  private extractUniqueVets(): void {
+    // Extraire les noms uniques des vétérinaires
+    const allVetNames = this.ratings.map(r => r.uservetR.name || 'Unknown Veterinarian');
+    this.uniqueVets = [...new Set(allVetNames)].sort();
+  }
+
+  filterRatings(): void {
+    if (!this.selectedVet) {
+      this.filteredRatings = [...this.ratings];
+    } else {
+      this.filteredRatings = this.ratings.filter(rating => 
+        (rating.uservetR.name || 'Unknown Veterinarian') === this.selectedVet
+      );
+    }
+  }
+
+  private calculateTopRatedVet(ratings: RatingVet[]): void {
+    // Créer un objet pour stocker les données par vétérinaire
+    const vetStats: {[key: string]: {total: number, count: number}} = {};
+  
+    // Calculer le total et le nombre de notes par vétérinaire
+    ratings.forEach(rating => {
+      const vetName = rating.uservetR.name || 'Unknown Veterinarian';
+      if (!vetStats[vetName]) {
+        vetStats[vetName] = {total: 0, count: 0};
+      }
+      vetStats[vetName].total += rating.note;
+      vetStats[vetName].count++;
+    });
+  
+    // Calculer les moyennes et trouver le meilleur
+    let topVet = null;
+    let highestAvg = 0;
+  
+    for (const [name, stats] of Object.entries(vetStats)) {
+      const average = stats.total / stats.count;
+      if (average > highestAvg) {
+        highestAvg = average;
+        topVet = {
+          name,
+          average: parseFloat(average.toFixed(2)), // Arrondir à 2 décimales
+          count: stats.count
+        };
+      }
+    }
+  
+    this.topRatedVet = topVet;
+  }
   
 }
