@@ -132,7 +132,8 @@ import { EventParticipantsComponent } from './admin/Event/event-participants/eve
 import { ServiceAnimalListComponent } from './simple-user/Event/service-animal-list/service-animal-list.component';
 import { AddServiceAnimalComponent } from './simple-user/Event/add-service-animal/add-service-animal.component';
 import { CountdownComponent } from './simple-user/Event/countdown/countdown.component';
-import { XpBarComponent } from './simple-user/Event/xp-bar/xp-bar.component';
+import { XpBarComponent } from './simple-user/Event/xp-bar/xp-bar.component';import { DreamPetComponent } from './simple-user/adoption/dream-pet/dream-pet.component';
+
 
 @NgModule({
   declarations: [
@@ -223,6 +224,7 @@ import { XpBarComponent } from './simple-user/Event/xp-bar/xp-bar.component';
     HomePartnerComponent,
     UserSignCertificateComponent,
     UserViewCertificateComponent,
+    DreamPetComponent,
     ParticipationListComponent,
     EventParticipantsComponent,
     ServiceAnimalListComponent,

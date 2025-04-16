@@ -91,6 +91,6 @@ export class PetAdoptionListComponent implements OnInit {
       });
   }
   goToDreamPetPage(): void {
-    this.router.navigate(['/dream-pet']);
+    this.router.navigate(['/adoption/dream-pet']);
   }
 }

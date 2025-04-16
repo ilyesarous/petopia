@@ -71,6 +71,7 @@ import { ParticipationListComponent } from './simple-user/Event/participation-li
 import { EventParticipantsComponent } from './admin/Event/event-participants/event-participants.component';
 import { ServiceAnimalListComponent } from './simple-user/Event/service-animal-list/service-animal-list.component';
 import { AddServiceAnimalComponent } from './simple-user/Event/add-service-animal/add-service-animal.component';
+import { DreamPetComponent } from './simple-user/adoption/dream-pet/dream-pet.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -120,6 +121,7 @@ const routes: Routes = [
   { path:'adoption/requests', component: MyAdoptionsComponent},
   { path:'adoption/signCertificate/:id', component: UserSignCertificateComponent},
   { path:'adoption/certificate/:id', component: UserViewCertificateComponent},
+  {path:'adoption/dream-pet', component: DreamPetComponent},
   { path: 'shelter/info', component: ShelterInfoComponent },
   { path: 'shelter/pets', component: ShelterPetListComponent },
   { path: 'shelter/pets/add', component: ShelterAddPetComponent },

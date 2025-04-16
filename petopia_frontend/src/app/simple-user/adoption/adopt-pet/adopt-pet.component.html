@@ -71,12 +71,17 @@
             <small *ngIf="fileError" class="text-danger d-block mt-2">
               {{ fileError }}
             </small>
+            <small *ngIf="cinError" class="text-danger d-block mt-2">
+              {{ cinError }}
+            </small>
+            
           </div>
 
           <!-- Image Preview -->
           <div *ngIf="previewUrl" class="cin-preview right">
             <img [src]="previewUrl" alt="CIN Preview" />
           </div>
+          
         </div>
       </div>
 
