@@ -1,3 +1,20 @@
+
+/* Conteneur du graphique */
+.graph-container {
+  background: white;
+  border-radius: 18px;
+  padding: 2rem;
+  margin-bottom: 3rem;
+  box-shadow: 0 10px 30px rgba(120, 81, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  transition: all 0.4s ease;
+}
+
+.graph-container:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 35px rgba(248, 49, 130, 0.15);
+}
+
 /* General Styles */
 body {
     font-family: Arial, sans-serif;

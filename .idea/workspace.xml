@@ -4,17 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d82146aa-c391-488d-a5e9-d2774f899f12" name="Changes" comment="fix: fixed app module ts">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/petopia_backend/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/petopia_backend/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/petopia_backend/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/petopia_backend/src/main/resources/application.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/petopia_frontend/angular.json" beforeDir="false" afterPath="$PROJECT_DIR$/petopia_frontend/angular.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/petopia_frontend/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/petopia_frontend/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/petopia_frontend/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/petopia_frontend/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/petopia_frontend/src/app/app.module.ts" beforeDir="false" afterPath="$PROJECT_DIR$/petopia_frontend/src/app/app.module.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/petopia_frontend/src/app/simple-user/vet/pet-growth-vet/pet-growth-vet.component.ts" beforeDir="false" afterPath="$PROJECT_DIR$/petopia_frontend/src/app/simple-user/vet/pet-growth-vet/pet-growth-vet.component.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/petopia_frontend/tsconfig.app.json" beforeDir="false" afterPath="$PROJECT_DIR$/petopia_frontend/tsconfig.app.json" afterDir="false" />
-    </list>
+    <list default="true" id="d82146aa-c391-488d-a5e9-d2774f899f12" name="Changes" comment="fix: fixed app module ts" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -148,7 +138,7 @@
       <workItem from="1744628668924" duration="81000" />
       <workItem from="1744724040307" duration="17991000" />
       <workItem from="1744797063756" duration="1281000" />
-      <workItem from="1744839807334" duration="4922000" />
+      <workItem from="1744839807334" duration="4927000" />
     </task>
     <task id="LOCAL-00001" summary="fix: fixed app module ts">
       <option name="closed" value="true" />

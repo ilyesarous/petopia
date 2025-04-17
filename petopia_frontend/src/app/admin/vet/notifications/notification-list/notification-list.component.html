@@ -1,3 +1,10 @@
+<div class="graph-container">
+  <app-notification-stats
+    [seenCount]="seenCount"
+    [unseenCount]="unseenCount">
+  </app-notification-stats>
+</div> 
+
 <div *ngIf="notifications.length > 0; else noNotifications">
     <h2>Notifications</h2>
     <table>
@@ -51,5 +58,3 @@
   <ng-template #noNotifications>
     <p>No notifications available.</p>
   </ng-template>
-  
-  <button routerLink="/dashboard/vet" class="back-button">Back</button>

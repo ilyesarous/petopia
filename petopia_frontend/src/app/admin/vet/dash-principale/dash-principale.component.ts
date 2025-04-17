@@ -5,8 +5,6 @@ import { ConsultationService } from 'src/app/services/vet/consultations/consulta
 import { Component, OnInit } from '@angular/core';
 import { VetLocationService } from 'src/app/services/vet/location/vet-location.service';
 import { VetRatingService } from 'src/app/services/vet/rating/vet-rating.service';
-import { NotificationStateService } from 'src/app/services/vet/notifications/notification-state.service';
-
 
 @Component({
   selector: 'app-dash-principale',
@@ -14,9 +12,6 @@ import { NotificationStateService } from 'src/app/services/vet/notifications/not
   styleUrls: ['./dash-principale.component.css'],
 })
 export class DashPrincipaleComponent implements OnInit {
-
-  seenCount: number = 0; // Nombre de notifications vues
-  unseenCount: number = 0; // Nombre de notifications non vues
 
   totalNotifications: number = 0;
   totalDiagnoses: number = 0;
@@ -35,28 +30,12 @@ export class DashPrincipaleComponent implements OnInit {
     private consultationService: ConsultationService,
     private vetLocationService: VetLocationService,
     private vetRatingService: VetRatingService,
-    private notificationState: NotificationStateService,
   ) { }
 
   ngOnInit(): void {
-    this.loadNotificationStats();
     this.loadTotalCounts();
   }
 
-  loadNotificationStats(): void {
-    this.notificationService.getAllNotifications().subscribe(
-      (notifications: any[]) => {
-        console.log('Notifications:', notifications); // Les données sont bien récupérées
-        this.seenCount = notifications.filter(n => n.seen).length;
-        this.unseenCount = notifications.filter(n => !n.seen).length;
-        console.log('Seen Count:', this.seenCount); // Doit afficher 2
-        console.log('Unseen Count:', this.unseenCount); // Doit afficher 1
-      },
-      (error) => {
-        console.error('Error fetching notifications', error);
-      }
-    );
-  }
 
   loadTotalCounts(): void {
     // Récupérer le nombre total de notifications
