@@ -5,7 +5,7 @@ import { ConsultationService } from 'src/app/services/vet/consultations/consulta
 import { Component, OnInit } from '@angular/core';
 import { VetLocationService } from 'src/app/services/vet/location/vet-location.service';
 import { VetRatingService } from 'src/app/services/vet/rating/vet-rating.service';
-import { RatingVet } from 'src/app/models/vet/rating-vet';
+import { NotificationStateService } from 'src/app/services/vet/notifications/notification-state.service';
 
 
 @Component({
@@ -34,7 +34,8 @@ export class DashPrincipaleComponent implements OnInit {
     private petGrowthService: PetGrowthsService,
     private consultationService: ConsultationService,
     private vetLocationService: VetLocationService,
-    private vetRatingService: VetRatingService
+    private vetRatingService: VetRatingService,
+    private notificationState: NotificationStateService,
   ) { }
 
   ngOnInit(): void {
