@@ -86,7 +86,8 @@ import { QrCodeVetScannerComponent } from './simple-user/vet/qr-code-vet-scanner
 import { UserRatingVetComponent } from './simple-user/vet/user-rating-vet/user-rating-vet.component';
 import { InfoRatingVetComponent } from './simple-user/vet/info-rating-vet/info-rating-vet.component';
 import { PaymentVetComponent } from './simple-user/vet/payment-vet/payment-vet.component';
-
+import { VetLocationsComponent } from './admin/vet/locations/vet-locations/vet-locations.component';
+import { VetRateComponent } from './admin/vet/rate/vet-rate/vet-rate.component';
 
 @NgModule({
   declarations: [
@@ -149,7 +150,9 @@ import { PaymentVetComponent } from './simple-user/vet/payment-vet/payment-vet.c
     QrCodeVetScannerComponent,
     UserRatingVetComponent,
     InfoRatingVetComponent,
-    PaymentVetComponent
+    PaymentVetComponent,
+    VetLocationsComponent,
+    VetRateComponent,
   ],
   imports: [
     BrowserModule,
@@ -172,7 +175,7 @@ import { PaymentVetComponent } from './simple-user/vet/payment-vet/payment-vet.c
     MatCardModule,
     MatRippleModule,
   ],
-  providers: [
+  providers: [ 
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }
   ],
   bootstrap: [AppComponent]
