@@ -112,6 +112,7 @@ import { CommunityListComponent } from './admin/community/community-list/communi
 import { CommunityDetailsComponent } from './admin/community/community-details/community-details.component';
 import { MatchingComponent } from './simple-user/matching/matching/matching.component';
 import { PetDetailsComponent } from './simple-user/matching/pet-details/pet-details.component';
+import { MatchbackComponent } from './admin/matching/matchback/matchback.component';
 
 
 
@@ -196,6 +197,7 @@ import { PetDetailsComponent } from './simple-user/matching/pet-details/pet-deta
     ShelterCertificateDetailsComponent,
     CommunityListComponent,
     CommunityDetailsComponent,
+    MatchbackComponent,
   ],
   imports: [
     BrowserModule,

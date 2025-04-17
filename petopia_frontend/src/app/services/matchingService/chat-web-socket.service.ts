@@ -1,121 +1,253 @@
 import { Injectable } from '@angular/core';
-import { Client } from '@stomp/stompjs';
+import { Client, IMessage } from '@stomp/stompjs';
 import SockJS from 'sockjs-client';
-import { Subject, Observable } from 'rxjs';
-import { ChatMessage } from 'src/app/services/matchingService/messaging.service';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { ChatMessage } from 'src/app/models/matching/chat-message';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ChatWebSocketService {
-  private stompClient: Client | null = null; // Changed to nullable to delay initialization
-  private chatMessagesByMatch: Map<number, ChatMessage[]> = new Map();
-  private chatMessageSubject = new Subject<{ matchId: number; message: ChatMessage }>();
-  public connected = false;
+  private stompClient: Client | null = null;
+  private messagesSubject = new BehaviorSubject<ChatMessage[]>([]);
+  private connected = false;
+  private currentMatchId: number | null = null;
+  private isInitializing = false;
+  private subscriptions: { [matchId: number]: string } = {};
 
   constructor() {
-    // Remove immediate initialization from constructor
     console.log('ChatWebSocketService instantiated');
   }
 
-  // Lazy initialization method
   public initializeWebSocket(): void {
     if (this.stompClient) {
       console.log('WebSocket already initialized');
       return;
     }
-
-    try {
-      this.stompClient = new Client({
-        webSocketFactory: () => new SockJS('http://localhost:8082/ws'), // Correct port
-        reconnectDelay: 5000,
-        debug: (str) => console.log(str)
-      });
-
-      this.stompClient.onConnect = (frame) => {
-        console.log('Chat WebSocket Connected: ' + frame);
-        this.connected = true;
-        this.chatMessageSubject.next({
-          matchId: 0,
-          message: {
-            matchId: 0,
-            senderId: 0,
-            receiverId: 0,
-            content: 'Connected',
-            type: 'CONNECTION',
-            timestamp: new Date().toISOString()
-          }
-        });
-      };
-
-      this.stompClient.onStompError = (error) => {
-        console.error('Chat WebSocket Error:', error);
-        this.connected = false;
-      };
-
-      this.stompClient.onDisconnect = () => {
-        console.log('Chat WebSocket Disconnected');
-        this.connected = false;
-      };
-
-      this.stompClient.activate();
-    } catch (error) {
-      console.error('Failed to initialize WebSocket:', error);
-      this.stompClient = null; // Reset on failure
-    }
-  }
-
-  subscribeToMatch(matchId: number, userId: number): void {
-    if (!this.stompClient) {
-      console.warn('WebSocket not initialized. Initializing now...');
-      this.initializeWebSocket();
-    }
-
-    if (!this.connected) {
-      console.warn('WebSocket not connected yet. Retrying in 1s for match:', matchId);
-      setTimeout(() => this.subscribeToMatch(matchId, userId), 1000);
+    if (this.isInitializing) {
+      console.log('WebSocket initialization already in progress');
       return;
     }
 
-    const destination = `/user/${userId}/queue/private-${matchId}`;
+    this.isInitializing = true;
     try {
-      this.stompClient!.subscribe(destination, (message) => {
-        const parsedMessage: ChatMessage = JSON.parse(message.body);
-        console.log(`Received message for match ${matchId}:`, parsedMessage);
-
-        if (!this.chatMessagesByMatch.has(matchId)) {
-          this.chatMessagesByMatch.set(matchId, []);
-        }
-        this.chatMessagesByMatch.get(matchId)!.push(parsedMessage);
-        this.chatMessageSubject.next({ matchId, message: parsedMessage });
+      this.stompClient = new Client({
+        webSocketFactory: () => {
+          const url = 'http://localhost:8082/petopia/ws';
+          console.log('Creating SockJS connection to', url);
+          return new SockJS(url);
+        },
+        connectHeaders: {
+          Authorization: localStorage.getItem('token') ? `Bearer ${localStorage.getItem('token')}` : ''
+        },
+        reconnectDelay: 5000,
+        heartbeatIncoming: 4000,
+        heartbeatOutgoing: 4000,
+        debug: (str) => console.log('STOMP Debug:', str)
       });
+
+      this.stompClient.onConnect = (frame) => {
+        console.log('Chat WebSocket Connected:', frame);
+        this.connected = true;
+        if (this.currentMatchId) {
+          this.subscribeToMatch(this.currentMatchId);
+        }
+        this.isInitializing = false;
+      };
+
+      this.stompClient.onStompError = (error) => {
+        console.error('STOMP Error:', error);
+        this.connected = false;
+        this.isInitializing = false;
+      };
+
+      this.stompClient.onWebSocketError = (error) => {
+        console.error('WebSocket Error:', error);
+        this.connected = false;
+        this.isInitializing = false;
+      };
+
+      this.stompClient.onWebSocketClose = (event) => {
+        console.error('WebSocket Closed:', event);
+        this.connected = false;
+        this.isInitializing = false;
+      };
+
+      this.stompClient.activate();
+      console.log('WebSocket activation initiated');
+    } catch (error) {
+      console.error('Failed to initialize WebSocket:', error);
+      this.stompClient = null;
+      this.isInitializing = false;
+    }
+  }
+
+  async subscribeToMatch(matchId: number): Promise<void> {
+    this.currentMatchId = matchId;
+    if (!this.stompClient) {
+      console.warn('WebSocket not initialized. Initializing now...');
+      this.initializeWebSocket();
+      try {
+        await this.waitForConnection();
+      } catch (error) {
+        console.error('Failed to subscribe: WebSocket not connected', error);
+        return;
+      }
+    }
+
+    if (!this.connected) {
+      console.error('WebSocket not connected');
+      return;
+    }
+
+    if (this.subscriptions[matchId]) {
+      console.log(`Unsubscribing from existing subscription for match ${matchId}, subscription ID: ${this.subscriptions[matchId]}`);
+      try {
+        this.stompClient!.unsubscribe(this.subscriptions[matchId]);
+        console.log(`Successfully unsubscribed from match ${matchId}`);
+      } catch (error) {
+        console.error(`Error unsubscribing from match ${matchId}:`, error);
+      }
+      delete this.subscriptions[matchId];
+    }
+
+    const destination = `/queue/private-${matchId}`;
+    try {
+      const subscription = this.stompClient!.subscribe(destination, (message: IMessage) => {
+        try {
+          const parsedMessage: ChatMessage = JSON.parse(message.body);
+          console.log(`Received message for match ${matchId} [Message ID: ${message.headers['message-id']}]:`, parsedMessage);
+          const currentMessages = this.messagesSubject.value;
+          const index = currentMessages.findIndex(msg => msg.id === parsedMessage.id);
+          if (index !== -1) {
+            // Mettre à jour le message existant
+            currentMessages[index] = { ...currentMessages[index], ...parsedMessage };
+          } else {
+            // Ajouter un nouveau message
+            currentMessages.push(parsedMessage);
+          }
+          this.messagesSubject.next([...currentMessages]);
+        } catch (error) {
+          console.error('Error parsing WebSocket message:', error);
+        }
+      });
+      this.subscriptions[matchId] = subscription.id;
+      console.log(`Subscribed to ${destination}, subscription ID: ${subscription.id}`);
     } catch (error) {
       console.error('Error subscribing to match:', matchId, error);
     }
   }
 
-  sendChatMessage(matchId: number, message: ChatMessage): void {
-    if (!this.stompClient || !this.connected) {
-      console.error('WebSocket not connected or not initialized. Cannot send message.');
+  private waitForConnection(): Promise<void> {
+    return new Promise((resolve, reject) => {
+      if (this.connected) {
+        resolve();
+        return;
+      }
+      const maxAttempts = 10;
+      let attempts = 0;
+      const interval = setInterval(() => {
+        if (this.connected) {
+          clearInterval(interval);
+          resolve();
+        } else if (attempts >= maxAttempts) {
+          clearInterval(interval);
+          reject(new Error('WebSocket connection timeout'));
+        }
+        attempts++;
+      }, 1000);
+    });
+  }
+
+  async sendChatMessage(message: ChatMessage): Promise<void> {
+    if (!this.stompClient) {
+      console.warn('WebSocket not initialized. Initializing now...');
+      this.initializeWebSocket();
+      try {
+        await this.waitForConnection();
+      } catch (error) {
+        console.error('Failed to send message: WebSocket not connected', error);
+        return;
+      }
+    }
+
+    if (!this.connected) {
+      console.error('WebSocket not connected');
       return;
     }
 
     try {
-      this.stompClient.publish({
-        destination: '/app/chat.sendPrivateMessage',
+      const userId = localStorage.getItem('userId') ? parseInt(localStorage.getItem('userId')!) : 0;
+      const username = localStorage.getItem('username') || 'unknown';
+      if (!message.senderId) message.senderId = userId;
+      if (!message.sender) message.sender = username;
+
+      this.stompClient?.publish({
+        destination: `/app/match/${message.matchId}`,
         body: JSON.stringify(message)
       });
+      console.log('Message sent to WebSocket:', message);
     } catch (error) {
       console.error('Error sending message:', error);
     }
   }
 
-  getChatMessages(matchId: number): ChatMessage[] {
-    return this.chatMessagesByMatch.get(matchId) || [];
+  async sendReaction(messageId: number, matchId: number, reaction: string): Promise<void> {
+    if (!this.stompClient || !this.connected) {
+      console.warn('WebSocket not initialized or not connected. Initializing now...');
+      this.initializeWebSocket();
+      try {
+        await this.waitForConnection();
+      } catch (error) {
+        console.error('Failed to send reaction: WebSocket not connected', error);
+        return;
+      }
+    }
+
+    try {
+      const userId = localStorage.getItem('userId') ? parseInt(localStorage.getItem('userId')!) : 0;
+      const username = localStorage.getItem('username') || 'unknown';
+
+      const reactionMessage: ChatMessage = {
+        id: messageId,
+        matchId: matchId,
+        senderId: userId,
+        sender: username,
+        content: reaction,
+        type: 'REACTION',
+        timestamp: new Date().toISOString(),
+        receiverId: 0,
+        recipient: ''
+      };
+
+      this.stompClient?.publish({
+        destination: `/app/match/${matchId}/reaction`,
+        body: JSON.stringify(reactionMessage)
+      });
+      console.log('Reaction sent to WebSocket:', reactionMessage);
+    } catch (error) {
+      console.error('Error sending reaction:', error);
+    }
   }
 
-  onNewChatMessage(): Observable<{ matchId: number; message: ChatMessage }> {
-    return this.chatMessageSubject.asObservable();
+  getMessages(): Observable<ChatMessage[]> {
+    return this.messagesSubject.asObservable();
+  }
+
+  loadMessages(messages: ChatMessage[]): void {
+    console.log('Loading messages:', messages);
+    const currentMessages = this.messagesSubject.value;
+    // Fusionner les messages pour éviter les duplications
+    const updatedMessages = [...currentMessages];
+    messages.forEach(newMsg => {
+      const index = updatedMessages.findIndex(msg => msg.id === newMsg.id);
+      if (index !== -1) {
+        updatedMessages[index] = { ...updatedMessages[index], ...newMsg };
+      } else {
+        updatedMessages.push(newMsg);
+      }
+    });
+    this.messagesSubject.next(updatedMessages);
   }
 
   isConnected(): boolean {
@@ -125,11 +257,21 @@ export class ChatWebSocketService {
   disconnect(): void {
     if (this.stompClient) {
       try {
+        Object.keys(this.subscriptions).forEach((matchId) => {
+          this.stompClient!.unsubscribe(this.subscriptions[+matchId]);
+          console.log(`Unsubscribed from match ${matchId}`);
+        });
+        this.subscriptions = {};
         this.stompClient.deactivate();
+        console.log('WebSocket deactivated');
+      } catch (error) {
+        console.error('Error deactivating WebSocket:', error);
+      } finally {
         this.stompClient = null;
         this.connected = false;
-      } catch (error) {
-        console.error('Error disconnecting WebSocket:', error);
+        this.isInitializing = false;
+        this.messagesSubject.next([]);
+        console.log('WebSocket disconnected');
       }
     }
   }

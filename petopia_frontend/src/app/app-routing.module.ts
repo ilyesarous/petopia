@@ -56,6 +56,7 @@ import { ShelterSignCertificateComponent } from './simple-user/shelter/shelter-s
 import { ShelterCertificateDetailsComponent } from './simple-user/shelter/shelter-certificate-details/shelter-certificate-details.component';
 import { CommunityListComponent } from './admin/community/community-list/community-list.component';
 import { CommunityDetailsComponent } from './admin/community/community-details/community-details.component';
+import { MatchbackComponent } from './admin/matching/matchback/matchback.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -130,6 +131,8 @@ const routes: Routes = [
 
       { path: 'community', component: CommunityListComponent },
       { path: 'community/details/:type/:id', component: CommunityDetailsComponent },
+      { path: 'match-back', component: MatchbackComponent },
+
 
 
 
