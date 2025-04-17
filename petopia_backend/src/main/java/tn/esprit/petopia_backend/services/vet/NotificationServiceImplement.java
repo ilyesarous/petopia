@@ -49,4 +49,10 @@ public class NotificationServiceImplement implements INotificationService{
     public Notification retriveNotification(int idNotification) {
         return notificationRepository.findById(idNotification).orElse(null);
     }
+
+    public List<Notification> getNotificationsByUserId(Integer userId) {
+        return notificationRepository.findByUserId(userId);
+    }
+
+
 }

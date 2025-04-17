@@ -65,5 +65,30 @@ export class CertificateService {
         responseType: 'blob'
       });
     }
+    getCertificateByAdoptionId(adoptionId: number): Observable<AdoptionCertificate> {
+      return this.http.get<AdoptionCertificate>(`${this.apiUrl}/adoption/${adoptionId}`);
+    }
+    signAsShelterPKI(payload: {
+      base64SignatureImage: string;
+      base64DigitalSignature: string;
+      base64PublicKey: string;
+      certificateId: number;
+      timestamp: string;
+    }): Observable<any> {
+      return this.http.post(`${this.apiUrl}/shelterSignWithPKI`, payload, {
+        responseType: 'text' as 'json'  
+      });
+    }
+    signAsUserPKI(payload: {
+      base64SignatureImage: string;
+      base64DigitalSignature: string;
+      base64PublicKey: string;
+      certificateId: number;
+      timestamp: string;
+    }): Observable<any> {
+      return this.http.post(`${this.apiUrl}/userSignWithPKI`, payload, {
+        responseType: 'text' as 'json'  
+      });
+    }
     
   }

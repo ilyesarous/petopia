@@ -115,6 +115,27 @@ import { PetDetailsComponent } from './simple-user/matching/pet-details/pet-deta
 import { MatchbackComponent } from './admin/matching/matchback/matchback.component';
 
 
+import { HomePartnerComponent } from './simple-user/store/partner/home-partner/home-partner.component';
+import { UserSignCertificateComponent } from './simple-user/adoption/user-sign-certificate/user-sign-certificate.component';
+import { UserViewCertificateComponent } from './simple-user/adoption/user-view-certificate/user-view-certificate.component';
+import { VetSelectionPopupComponent } from './simple-user/vet/vet-selection-popup/vet-selection-popup.component';
+import { MatRadioModule } from '@angular/material/radio';
+import { MatCardModule } from '@angular/material/card';
+import { MatRippleModule } from '@angular/material/core';
+import { LocationVetComponent } from './simple-user/vet/location-vet/location-vet.component';
+import { InfoSpecificVetComponent } from './simple-user/vet/info-specific-vet/info-specific-vet.component';
+import { QrCodeVetScannerComponent } from './simple-user/vet/qr-code-vet-scanner/qr-code-vet-scanner.component';
+import { UserRatingVetComponent } from './simple-user/vet/user-rating-vet/user-rating-vet.component';
+import { InfoRatingVetComponent } from './simple-user/vet/info-rating-vet/info-rating-vet.component';
+import { PaymentVetComponent } from './simple-user/vet/payment-vet/payment-vet.component';
+
+import { ParticipationListComponent } from './simple-user/Event/participation-list/participation-list.component';
+import { EventParticipantsComponent } from './admin/Event/event-participants/event-participants.component';
+import { ServiceAnimalListComponent } from './simple-user/Event/service-animal-list/service-animal-list.component';
+import { AddServiceAnimalComponent } from './simple-user/Event/add-service-animal/add-service-animal.component';
+import { CountdownComponent } from './simple-user/Event/countdown/countdown.component';
+import { XpBarComponent } from './simple-user/Event/xp-bar/xp-bar.component';import { DreamPetComponent } from './simple-user/adoption/dream-pet/dream-pet.component';
+
 
 @NgModule({
   declarations: [
@@ -144,7 +165,6 @@ import { MatchbackComponent } from './admin/matching/matchback/matchback.compone
     ProductsComponent,
     MatchingComponent,
     PetDetailsComponent,
-
     ProductCardComponent,
     CarouselComponent,
     BrandsComponent,
@@ -163,6 +183,13 @@ import { MatchbackComponent } from './admin/matching/matchback/matchback.compone
     ShelterPetListComponent,
     ShelterAddPetComponent,
     ShelterAdoptionRequestsComponent,
+    VetSelectionPopupComponent,
+    LocationVetComponent,
+    InfoSpecificVetComponent,
+    QrCodeVetScannerComponent,
+    UserRatingVetComponent,
+    InfoRatingVetComponent,
+    PaymentVetComponent,
     AdoptionDetailsComponent,
     ShelterHomeComponent,
     CommunityComponent,
@@ -171,7 +198,6 @@ import { MatchbackComponent } from './admin/matching/matchback/matchback.compone
     CommentComponent,
     StoryComponent,
     RelativeTimePipe,
-
     TreatmentPetsComponent,
     TreatmentSpecificPetsComponent,
     NotificationVetComponent,
@@ -198,6 +224,16 @@ import { MatchbackComponent } from './admin/matching/matchback/matchback.compone
     CommunityListComponent,
     CommunityDetailsComponent,
     MatchbackComponent,
+    HomePartnerComponent,
+    UserSignCertificateComponent,
+    UserViewCertificateComponent,
+    DreamPetComponent,
+    ParticipationListComponent,
+    EventParticipantsComponent,
+    ServiceAnimalListComponent,
+    AddServiceAnimalComponent,
+    CountdownComponent,
+    XpBarComponent,
   ],
   imports: [
     BrowserModule,
@@ -217,7 +253,10 @@ import { MatchbackComponent } from './admin/matching/matchback/matchback.compone
     BrowserAnimationsModule,
     FontAwesomeModule,
     MatIconModule,
-    MatDialogModule
+    MatDialogModule,
+    MatRadioModule,
+    MatCardModule,
+    MatRippleModule,
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }

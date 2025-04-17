@@ -25,10 +25,14 @@ export class ShelterCertificateDetailsComponent {
   ngOnInit(): void {
     const certId = Number(this.route.snapshot.paramMap.get('id'));
     this.certificateService.getCertificateById(certId).subscribe({
-      next: (cert) => this.certificate = cert,
+      next: (cert) => {
+        this.certificate = cert;
+        this.fetchPdf(cert.id_certificate); 
+      },
       error: (err) => console.error('Error fetching certificate:', err)
     });
   }
+  
 
 
  

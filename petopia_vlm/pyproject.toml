@@ -1,0 +1,26 @@
+[project]
+name = "petopia"
+version = "0.1.0"
+description = ""
+authors = [
+    {name = "ebenharb@jems-group.com",email = "ebenharb@jems-group.com"}
+]
+readme = "README.md"
+requires-python = ">=3.11,<4.0"
+
+dependencies = [
+    "openai (>=1.73.0,<2.0.0)",
+    "mysql-connector-python (>=9.2.0,<10.0.0)",
+    "dotenv (>=0.9.9,<0.10.0)",
+    "flask (>=3.1.0,<4.0.0)",
+    "flask-cors (>=5.0.1,<6.0.0)",
+    "weaviate-client (>=4.13.2,<5.0.0)",
+]
+
+[tool.poetry]
+packages = [{include = "petopia", from = "src"}]
+
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"

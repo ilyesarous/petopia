@@ -4,7 +4,7 @@
         <div class="card-body p-4" style="background: linear-gradient(135deg, #F83182 0%, #FF617C 50%, #FE9A7A 100%);">
             <div class="row align-items-center">
                 <div class="col-md-2 text-center">
-                    <img [src]="petDetails.petImage || 'assets/images/profile.png'" 
+                    <img [src]="petDetails.petImage || 'assets/images/logo.png'" 
                          alt="Pet Image" 
                          class="img-fluid rounded-circle border border-4 border-white shadow"
                          style="width: 120px; height: 120px; object-fit: cover;">
@@ -27,10 +27,6 @@
                         <div class="me-4 mb-2">
                             <span class="badge bg-white text-dark me-2">Gender:</span>
                             <span>{{ petDetails.gender }}</span>
-                        </div>
-                        <div class="me-4 mb-2">
-                            <span class="badge bg-white text-dark me-2">Health Status:</span>
-                            <span>{{ petDetails.healthStatus }}</span>
                         </div>
                     </div>
                 </div>

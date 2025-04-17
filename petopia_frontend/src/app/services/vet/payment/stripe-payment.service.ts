@@ -23,52 +23,43 @@ export class StripePaymentService {
     private router: Router
   ) { }
 
-  createCheckoutSession(): Observable<any> {
-    const paymentRequest = {
-      amount: this.defaultPaymentDetails.amount,
-      currency: 'tnd',
-      type: 'VET',
-      description: this.defaultPaymentDetails.description,
-      paymentDate: new Date().toISOString(),
-      userId: 1
-    };
-  
-    return this.http.post(
-      `${this.apiUrl}/create-checkout-session`,
-      paymentRequest,
-      { 
-        headers: new HttpHeaders({'Content-Type': 'application/json'}),
-        withCredentials: false
-      }
-    );
-  }
-
-  async redirectToCheckout() {
-    try {
-      const response: any = await this.createCheckoutSession().toPromise();
-      const stripe = await loadStripe('pk_test_51OpFDfKiR2IT5FaSc8l7iJlaZ1MiLvSDyyfqBVO7DbzGr5whXochBfHg0l4ckTwNt5nZhMDi08y2OqKcCjD4J5nP00CUs4zvYR');
-
-      if (stripe) {
-        const { error } = await stripe.redirectToCheckout({
-          sessionId: response.sessionId
-        });
-
-        if (error) {
-          console.error('Error redirecting to checkout:', error);
-          this.showPaymentStatus('cancel');
-        }
-      }
-    } catch (error) {
-      console.error('Error creating checkout session:', error);
-      this.showPaymentStatus('cancel');
+  // stripe-payment.service.ts
+createCheckoutSessionWithVet(paymentRequest: any): Observable<any> {
+  return this.http.post(
+    `${this.apiUrl}/create-checkout-session`,
+    paymentRequest,
+    { 
+      headers: new HttpHeaders({'Content-Type': 'application/json'}),
+      withCredentials: false
     }
+  );
+}
+
+async redirectToCheckout(sessionId: string) {
+  try {
+    const stripe = await loadStripe('pk_test_51OpFDfKiR2IT5FaSc8l7iJlaZ1MiLvSDyyfqBVO7DbzGr5whXochBfHg0l4ckTwNt5nZhMDi08y2OqKcCjD4J5nP00CUs4zvYR');
+
+    if (stripe) {
+      const { error } = await stripe.redirectToCheckout({
+        sessionId: sessionId
+      });
+
+      if (error) {
+        console.error('Error redirecting to checkout:', error);
+        this.showPaymentStatus('cancel');
+      }
+    }
+  } catch (error) {
+    console.error('Error redirecting to checkout:', error);
+    this.showPaymentStatus('cancel');
   }
+}
 
   showPaymentStatus(status: 'success' | 'cancel', paymentDetails?: {amount: number, description: string}): void {
     // Utilise les détails fournis ou les valeurs par défaut
     const details = paymentDetails || this.defaultPaymentDetails;
     
-    this.router.navigate(['/home/vet/dash-principale-user'], {
+    this.router.navigate(['vet/dash-principale-user'], {
       queryParams: { payment_status: status }
     }).then(() => {
       setTimeout(() => {
@@ -85,4 +76,13 @@ export class StripePaymentService {
       }, 100);
     });
   }
+
+  getVetRevenue(vetId: number): Observable<number> {
+    return this.http.get<number>(`${this.apiUrl}/revenue/${vetId}`);
+  }
+
+  getVetPayments(vetId: number): Observable<any[]> {
+    return this.http.get<any[]>(`${this.apiUrl}/vet-payments/${vetId}`);
+  }
+  
 }

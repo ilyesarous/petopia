@@ -19,15 +19,7 @@ public class AdoptionCertificate {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id_certificate;
 
-    @OneToOne
-    private User user;
 
-    @OneToOne
-    private Pet pet;
-
-    @OneToOne
-    @JsonIgnore
-    private Shelter shelter;
 
     private LocalDateTime issued_date;
 
@@ -36,6 +28,19 @@ public class AdoptionCertificate {
 
     @Column(columnDefinition = "TEXT")
     private String shelter_signature;
+
+    @ManyToOne
+    @JoinColumn(foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
+    private User user;
+
+    @ManyToOne
+    @JoinColumn(foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
+    private Pet pet;
+
+    @ManyToOne
+    @JoinColumn(foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
+    @JsonIgnore
+    private Shelter shelter;
 
     @OneToOne
     @JsonIgnore

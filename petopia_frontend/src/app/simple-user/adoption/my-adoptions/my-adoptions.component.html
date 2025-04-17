@@ -7,7 +7,7 @@
         <div class="search-group">
           <input
             type="text"
-            placeholder="Search by pet name"
+            placeholder="Search by pet name, certificate"
             [(ngModel)]="searchText"
             (input)="applyFilter()"
           />
@@ -48,17 +48,31 @@
         </div>
   
         <!-- Right: Status Badge -->
-        <div class="adoption-status">
-          <span class="badge"
-            [ngClass]="{
-              'bg-warning': req.status === 'PENDING',
-              'bg-success': req.status === 'APPROVED',
-              'bg-danger': req.status === 'REJECTED'
-            }"
-          >
-            {{ req.status }}
-          </span>
+        <div class="status-and-actions">
+          <span class="status-pill" [ngClass]="{
+            'pending': req.status === 'PENDING',
+            'approved': req.status === 'APPROVED',
+            'rejected': req.status === 'REJECTED'
+          }">{{ req.status }}</span>
+        
+          <ng-container *ngIf="req.status === 'APPROVED' && certificatesMap[req.id_request] as cert">
+            <button
+              *ngIf="!cert.user_signature"
+              class="cert-btn sign"
+              (click)="goToSignCertificate(cert.id_certificate)">
+              Sign Certificate
+            </button>
+            <button
+              *ngIf="cert.user_signature"
+              class="cert-btn view"
+              (click)="goToViewCertificate(cert.id_certificate)">
+               View Certificate
+            </button>
+          </ng-container>
         </div>
+        
+        
+        
       </div>
     </div>
   

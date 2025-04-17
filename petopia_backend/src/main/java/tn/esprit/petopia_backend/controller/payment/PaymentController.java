@@ -9,10 +9,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.view.RedirectView;
 import tn.esprit.petopia_backend.entities.payment.PaymentRequest;
+import tn.esprit.petopia_backend.entities.user.User;
+import tn.esprit.petopia_backend.repositories.payment.PaymentRepository;
+import tn.esprit.petopia_backend.repositories.user.UserRepository;
 import tn.esprit.petopia_backend.services.payment.PaymentService;
 
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -21,14 +25,66 @@ import java.util.Map;
 public class PaymentController {
 
     private PaymentService paymentService;
+    private UserRepository userRepository;
+
+//    @PostMapping("/create-checkout-session")
+//    public ResponseEntity<Map<String, Object>> createCheckoutSession(@RequestBody PaymentRequest paymentRequest) throws StripeException {
+//        // Convertir le montant en TND en USD (taux de change approximatif)
+//        Double exchangeRate = 0.33; // 1 TND = 0.33 USD (vérifiez le taux actuel)
+//        Long amountInCents = (long) (paymentRequest.getAmount() * exchangeRate * 100);
+//
+//        // Création des paramètres pour la session Stripe
+//        SessionCreateParams params = SessionCreateParams.builder()
+//                .addPaymentMethodType(SessionCreateParams.PaymentMethodType.CARD)
+//                .setMode(SessionCreateParams.Mode.PAYMENT)
+//                .setSuccessUrl("http://localhost:8082/petopia/auth/api/payment/success")
+//                .setCancelUrl("http://localhost:8082/petopia/auth/api/payment/cancel")
+//                .addLineItem(
+//                        SessionCreateParams.LineItem.builder()
+//                                .setPriceData(
+//                                        SessionCreateParams.LineItem.PriceData.builder()
+//                                                .setCurrency("usd") // Utiliser USD au lieu de TND
+//                                                .setUnitAmount(amountInCents) // Montant en centimes
+//                                                .setProductData(
+//                                                        SessionCreateParams.LineItem.PriceData.ProductData.builder()
+//                                                                .setName(paymentRequest.getDescription())
+//                                                                .build()
+//                                                )
+//                                                .build()
+//                                ).setQuantity(1L)
+//                                .build()
+//                )
+//                .build();
+//        paymentService.savePayment(paymentRequest);
+//        // Création de la session Stripe
+//        Session session = Session.create(params);
+//
+//        // Création de la réponse avec l'ID de la session et l'URL de checkout
+//        Map<String, Object> result = new HashMap<>();
+//        result.put("sessionId", session.getId());
+//        result.put("checkoutUrl", session.getUrl());
+//
+//        // Retourne la réponse dans un format JSON
+//        return ResponseEntity.ok(result);
+//    }
+
 
     @PostMapping("/create-checkout-session")
-    public ResponseEntity<Map<String, Object>> createCheckoutSession(@RequestBody PaymentRequest paymentRequest) throws StripeException {
-        // Convertir le montant en TND en USD (taux de change approximatif)
-        Double exchangeRate = 0.33; // 1 TND = 0.33 USD (vérifiez le taux actuel)
+    public ResponseEntity<Map<String, Object>> createCheckoutSession(
+            @RequestBody PaymentRequest paymentRequest) throws StripeException {
+
+        User user = userRepository.findById(paymentRequest.getUserId())
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        User vet = userRepository.findById(paymentRequest.getVetId())
+                .orElseThrow(() -> new RuntimeException("Vet not found"));
+
+        paymentRequest.setUser(user);
+        paymentRequest.setUserVet(vet);
+
+        // Convertir le montant et créer la session Stripe
+        Double exchangeRate = 0.33;
         Long amountInCents = (long) (paymentRequest.getAmount() * exchangeRate * 100);
 
-        // Création des paramètres pour la session Stripe
         SessionCreateParams params = SessionCreateParams.builder()
                 .addPaymentMethodType(SessionCreateParams.PaymentMethodType.CARD)
                 .setMode(SessionCreateParams.Mode.PAYMENT)
@@ -63,6 +119,7 @@ public class PaymentController {
         return ResponseEntity.ok(result);
     }
 
+
 //    @GetMapping("/success")
 //    public String getSuccess() {
 //        return "Payment successful";
@@ -75,13 +132,26 @@ public class PaymentController {
 
     @GetMapping("/success")
     public RedirectView getSuccessVet() {
-        String redirectUrl = "http://localhost:4200/home/vet/dash-principale-user?payment_status=success";
+        String redirectUrl = "http://localhost:4200/vet/dash-principale-user?payment_status=success";
         return new RedirectView(redirectUrl);
     }
 
     @GetMapping("/cancel")
     public RedirectView cancelVet() {
-        String redirectUrl = "http://localhost:4200/home/vet/dash-principale-user?payment_status=cancel";
+        String redirectUrl = "http://localhost:4200/vet/dash-principale-user?payment_status=cancel";
         return new RedirectView(redirectUrl);
     }
+
+    @GetMapping("/revenue/{vetId}")
+    public ResponseEntity<Double> getVetRevenue(@PathVariable Long vetId) {
+        Double revenue = paymentService.getTotalRevenueForVet(vetId);
+        return ResponseEntity.ok(revenue);
+    }
+
+    @GetMapping("/vet-payments/{vetId}")
+    public ResponseEntity<List<PaymentRequest>> getPaymentsByVet(@PathVariable Long vetId) {
+        List<PaymentRequest> payments = paymentService.findByUserVetId(vetId);
+        return ResponseEntity.ok(payments);
+    }
+
 }

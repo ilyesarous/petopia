@@ -1,103 +1,153 @@
 <!-- Replace <app-feedbacks/> with this -->
 <section class="feedback-container">
-    <div class="feedback-header">
-      <h2 class="section-title">Customer Reviews</h2>
-      <div class="review-summary">
-        <div class="overall-rating">
-          <span class="rating-value">{{ averageRating | number:'1.1-1' }}</span>
-          <div class="stars">
-            <i *ngFor="let star of [1,2,3,4,5]" 
-               class="bi bi-star{{ star <= averageRating ? '-fill' : (star - 0.5 <= averageRating ? '-half' : '') }}"></i>
-          </div>
-          <span class="review-count">{{ feedbacks.length }} reviews</span>
+  <div class="feedback-header">
+    <h2 class="section-title">Customer Reviews</h2>
+    <div class="review-summary">
+      <div class="overall-rating">
+        <span class="rating-value">{{ averageRating | number : "1.1-1" }}</span>
+        <div class="stars">
+          <i
+            *ngFor="let star of [1, 2, 3, 4, 5]"
+            class="bi bi-star{{
+              star <= averageRating
+                ? '-fill'
+                : star - 0.5 <= averageRating
+                ? '-half'
+                : ''
+            }}"
+          ></i>
         </div>
-        <button class="review-btn" (click)="toggleFeedbackForm()">
-          <i class="bi bi-pencil"></i> Write a Review
+        <span class="review-count">{{ feedbacks.length }} reviews</span>
+      </div>
+      <button class="review-btn" (click)="toggleFeedbackForm()">
+        <i class="bi bi-pencil"></i> Write a Review
+      </button>
+    </div>
+  </div>
+
+  <!-- Review Form (Initially Hidden) -->
+  <div *ngIf="showFeedbackForm" class="review-form">
+    <h3>Share Your Experience</h3>
+    <form [formGroup]="feedbackForm" (submit)="submitFeedback()">
+      <div class="form-group">
+        <label>Rating</label>
+        <div class="star-rating">
+          <i
+            *ngFor="let star of [1, 2, 3, 4, 5]"
+            class="bi bi-star{{
+              star <= feedbackForm.get('stars_number')?.value ? '-fill' : ''
+            }}"
+            (click)="feedbackForm.get('stars_number')?.setValue(star)"
+          ></i>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Review</label>
+        <textarea
+          formControlName="description"
+          placeholder="What did you think of this product?"
+        ></textarea>
+        <span class="char-count"
+          >{{ feedbackForm.get("description")?.value?.length || 0 }}/200</span
+        >
+      </div>
+
+      <div class="form-actions">
+        <button
+          type="button"
+          class="btn-outline"
+          (click)="toggleFeedbackForm()"
+        >
+          Cancel
+        </button>
+        <button
+          type="submit"
+          class="btn-primary"
+          [disabled]="feedbackForm.invalid"
+        >
+          Submit Review
         </button>
       </div>
-    </div>
-  
-    <!-- Review Form (Initially Hidden) -->
-    <div *ngIf="showFeedbackForm" class="review-form">
-      <h3>Share Your Experience</h3>
-      <form [formGroup]="feedbackForm" (submit)="submitFeedback()">
-        <div class="form-group">
-          <label>Rating</label>
-          <div class="star-rating">
-            <i *ngFor="let star of [1,2,3,4,5]" 
-               class="bi bi-star{{ star <= feedbackForm.get('stars_number')?.value ? '-fill' : '' }}"
-               (click)="feedbackForm.get('stars_number')?.setValue(star)"></i>
-          </div>
-        </div>
-  
-        <div class="form-group">
-          <label>Review</label>
-          <textarea formControlName="description" placeholder="What did you think of this product?"></textarea>
-          <span class="char-count">{{ feedbackForm.get('description')?.value?.length || 0 }}/200</span>
-        </div>
-  
-        <div class="form-actions">
-          <button type="button" class="btn-outline" (click)="toggleFeedbackForm()">Cancel</button>
-          <button type="submit" class="btn-primary" [disabled]="feedbackForm.invalid">
-            Submit Review
-          </button>
-        </div>
-      </form>
-    </div>
-  
-    <!-- Reviews List -->
-    <div class="reviews-list">
-      <!-- Add paginate pipe to your ngFor -->
-      <div *ngFor="let feedback of feedbacks | paginate: { 
-            itemsPerPage: itemsPerPage, 
-            currentPage: p,
-            totalItems: totalItems
-          }" 
-          class="review-card">
-        <div class="reviewer-info">
-          <div class="avatar">{{ 'U' }}</div>
-          <div>
-            <p class="reviewer-name">{{ 'Anonymous' }}</p>
-            <div class="review-meta">
-              <div class="stars">
-                <i *ngFor="let star of [1,2,3,4,5]" 
-                   class="bi bi-star{{ star <= feedback.stars_number ? '-fill' : '' }}"></i>
-              </div>
-              <span class="review-date">{{ feedback.createdAt | date:'EEE, MMM yyyy' }}</span>
+    </form>
+  </div>
+
+  <!-- Reviews List -->
+  <div class="reviews-list">
+    <!-- Add paginate pipe to your ngFor -->
+    <div
+      *ngFor="
+        let feedback of feedbacks
+          | paginate
+            : {
+                itemsPerPage: itemsPerPage,
+                currentPage: p,
+                totalItems: totalItems
+              }
+      "
+      class="review-card"
+    >
+      <div class="reviewer-info">
+        <div class="avatar">{{ "U" }}</div>
+        <div class="w-100">
+          <div class="d-flex justify-content-between align-items-center">
+            <p class="reviewer-name">{{ "Anonymous" }}</p>
+            <div class="d-flex align-items-center" *ngIf="showActions(feedback)">
+              <button class="btn-edit">
+                <i class="bi bi-pencil-square"></i>
+              </button>
+              <button class="btn-delete" (click)="deleteFeedback(feedback.feedback_id)">
+                <i class="bi bi-trash"></i>
+              </button>
             </div>
           </div>
-        </div>
-        <div class="review-content">
-          <p>{{ feedback.description}}</p>
-        </div>
-        <div class="review-actions">
-          <button class="helpful-btn">
-            <i class="bi bi-hand-thumbs-up"></i> Helpful ({{ 0 }})
-          </button>
+          <div class="review-meta">
+            <div class="stars">
+              <i
+                *ngFor="let star of [1, 2, 3, 4, 5]"
+                class="bi bi-star{{
+                  star <= feedback.stars_number ? '-fill' : ''
+                }}"
+              ></i>
+            </div>
+            <span class="review-date">{{
+              feedback.createdAt | date : "EEE, MMM yyyy"
+            }}</span>
+          </div>
         </div>
       </div>
-      <div class="pagination-controls">
-        <pagination-controls 
-          (pageChange)="p = $event"
-          previousLabel="Prev"
-          nextLabel="Next"
-          screenReaderPaginationLabel="Pagination"
-          screenReaderPageLabel="page"
-          screenReaderCurrentLabel="You're on page"
-          [maxSize]="5"
-          [responsive]="true">
-        </pagination-controls>
+      <div class="review-content">
+        <p>{{ feedback.description }}</p>
       </div>
-  
-      <div *ngIf="feedbacks.length === 0" class="empty-reviews">
-        <div class="empty-icon">
-          <i class="bi bi-chat-square-quote"></i>
-        </div>
-        <h3>No Reviews Yet</h3>
-        <p>Be the first to share your thoughts about this product!</p>
-        <button class="btn-primary" (click)="toggleFeedbackForm()">
-          Write a Review
+      <div class="review-actions">
+        <button class="helpful-btn">
+          <i class="bi bi-hand-thumbs-up"></i> Helpful ({{ 0 }})
         </button>
       </div>
     </div>
-  </section>
+    <div class="pagination-controls">
+      <pagination-controls
+        (pageChange)="p = $event"
+        previousLabel="Prev"
+        nextLabel="Next"
+        screenReaderPaginationLabel="Pagination"
+        screenReaderPageLabel="page"
+        screenReaderCurrentLabel="You're on page"
+        [maxSize]="5"
+        [responsive]="true"
+      >
+      </pagination-controls>
+    </div>
+
+    <div *ngIf="feedbacks.length === 0" class="empty-reviews">
+      <div class="empty-icon">
+        <i class="bi bi-chat-square-quote"></i>
+      </div>
+      <h3>No Reviews Yet</h3>
+      <p>Be the first to share your thoughts about this product!</p>
+      <button class="btn-primary" (click)="toggleFeedbackForm()">
+        Write a Review
+      </button>
+    </div>
+  </div>
+</section>

@@ -7,6 +7,7 @@ import {
     animate, 
     transition 
 } from '@angular/animations';
+import { PetService } from 'src/app/services/pets/pet.service';
 
 @Component({
   selector: 'app-growth-traking-chose-id',
@@ -52,18 +53,37 @@ import {
 })
 export class GrowthTrakingChoseIdComponent {
 
-  petId: number | null = null;
+  petRefVet: number | null = null; 
   hoverState: 'normal' | 'hover' = 'normal'; 
 
   constructor(
       private router: Router,
+      private petService: PetService 
     ) {}
 
 
-  navigateToPetGrowth() {
-    if (this.petId) {
-      this.router.navigate(['/vet/pet-growth', this.petId]);
-    }
-  }
+    navigateToPetGrowth() {
+        if (this.petRefVet) {
+          // Vérification que c'est un nombre à 3 chiffres
+          if (this.petRefVet < 100 || this.petRefVet > 999) {
+            alert('Please enter a valid 3-digit reference number');
+            return;
+          }
+    
+          this.petService.getPetByRefVet(this.petRefVet).subscribe(
+            (pet) => {
+              if (pet) {
+                this.router.navigate(['/vet/pet-growth', pet.idPet]);
+              } else {
+                alert('No pet found with reference number: ' + this.petRefVet);
+              }
+            },
+            (error) => {
+              console.error('Error finding pet:', error);
+              alert('Error finding pet');
+            }
+          );
+        }
+      }
 
 }

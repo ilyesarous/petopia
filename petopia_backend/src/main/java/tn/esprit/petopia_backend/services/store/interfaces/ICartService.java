@@ -15,4 +15,5 @@ public interface ICartService {
     String checkout(int idCart);
     void clearCart(int idUser);
     Cart removeItem(int idUser, int idProduct);
+    List<Product> getBestSaledProducts();
 }

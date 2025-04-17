@@ -6,6 +6,8 @@ import { Comment } from '../../models/community/comment';
 import { CommentService } from '../../services/community/comment.service';
 import { PostService } from '../../services/community/post.service';
 import { NgForm } from '@angular/forms';
+import { TranslationService } from 'src/app/services/community/translation.service';
+
 
 @Component({
   selector: 'app-post',
@@ -14,23 +16,41 @@ import { NgForm } from '@angular/forms';
 })
 export class PostComponent implements OnInit {
   @Input() post!: Post;
-  showComments: boolean = false;
-  showAllComments: boolean = false;
-  showLikesPopup: boolean = false;
-  
+  showComments = false;
+  showAllComments = false;
+  showLikesPopup = false;
   userReaction: string | null = null;
-  newComment: string = '';
+  newComment = '';
   currentUserId: number | null = null;
-  isDeleted: boolean = false;  // Add flag for deletion
+  isDeleted = false;
+
   selectedPostImageFile: File | null = null;
-  removeImage: boolean = false;
+  selectedPostImagePreview: string | null = null;
+  removeImage = false;
+  selectedPostImageFiles: File[] = [];
+selectedPostImagePreviews: string[] = [];
+
+
+  activeCommentAction: string | null = null;
+  activeCommentId: number | null = null;
+  deletedImageIndexes: number[] = [];
+
+  likeSound = new Audio('https://res.cloudinary.com/dkdx59xe9/video/upload/v1709508219/Facebook_Like_Sound_Effect_nbc6ju.mp3');
+
+  //translation
+  translatedPost: string | null = null;
+translatedComments: { [id: number]: string } = {};
+selectedLanguage: string = 'en';
+
 
 
 
   constructor(
     private reactionService: ReactionService,
     private commentService: CommentService,
-    private postService: PostService
+    private postService: PostService,
+    private translationService: TranslationService
+
   ) {}
 
   ngOnInit(): void {
@@ -40,7 +60,7 @@ export class PostComponent implements OnInit {
     }
     if (this.currentUserId && this.post.reactions) {
       const existingReaction = this.post.reactions.find(
-        (r: Reaction) => r.user?.id_user === this.currentUserId
+        r => r.user?.id_user === this.currentUserId
       );
       if (existingReaction) {
         this.userReaction = existingReaction.type;
@@ -48,19 +68,57 @@ export class PostComponent implements OnInit {
     }
   }
 
-  toggleComments(): void {
-    this.showComments = !this.showComments;
-    if (!this.showComments) {
-      this.showAllComments = false;
+  // Reactions
+  addReaction(type: string): void {
+    this.likeSound.play().catch(e => console.error('Failed to play sound:', e));
+
+    const userIdStr = localStorage.getItem('userId');
+    if (!userIdStr) return;
+    const currentUserId = parseInt(userIdStr, 10);
+
+    const existingIndex = this.post.reactions?.findIndex(r => r.user?.id_user === currentUserId) ?? -1;
+    if (existingIndex !== -1) {
+      const existingReaction = this.post.reactions![existingIndex];
+      if (existingReaction.type === type) {
+        this.reactionService.removeReaction(existingReaction.id!).subscribe({
+          next: () => {
+            this.post.reactions!.splice(existingIndex, 1);
+            this.userReaction = null;
+          },
+          error: console.error
+        });
+      } else {
+        this.reactionService.updateReaction(existingReaction.id!, type).subscribe({
+          next: updated => {
+            this.post.reactions![existingIndex] = updated;
+            this.userReaction = type;
+          },
+          error: console.error
+        });
+      }
+    } else {
+      this.reactionService.addReaction(this.post.id, type).subscribe({
+        next: newReaction => {
+          this.post.reactions?.push(newReaction);
+          this.userReaction = type;
+        },
+        error: console.error
+      });
     }
   }
 
+  getReactionSummary(): string {
+    const count = this.post.reactions?.length ?? 0;
+    return count === 0 ? 'No Reactions' : `${count} Reaction${count > 1 ? 's' : ''}`;
+  }
+
+  toggleComments(): void {
+    this.showComments = !this.showComments;
+    if (!this.showComments) this.showAllComments = false;
+  }
+
   getDisplayedComments(): Comment[] {
-    return this.post.comments
-      ? this.showAllComments
-        ? this.post.comments
-        : this.post.comments.slice(0, 3)
-      : [];
+    return this.post.comments ? (this.showAllComments ? this.post.comments : this.post.comments.slice(0, 3)) : [];
   }
 
   openLikesPopup(): void {
@@ -71,137 +129,49 @@ export class PostComponent implements OnInit {
     this.showLikesPopup = false;
   }
 
-  getReactionSummary(): string {
-    if (!this.post.reactions || this.post.reactions.length === 0) {
-      return 'No Reactions';
-    }
-    const count = this.post.reactions.length;
-    return count === 1 ? '1 Reaction' : `${count} Reactions`;
-  }
-
-  addReaction(type: string): void {
-    const userIdStr = localStorage.getItem('userId');
-    if (!userIdStr) {
-      console.error('No userId found in localStorage. Please log in.');
-      return;
-    }
-    const currentUserId = parseInt(userIdStr, 10);
-
-    if (!this.post.reactions) {
-      this.post.reactions = [];
-    }
-    const existingIndex = this.post.reactions.findIndex(
-      r => r.user?.id_user === currentUserId
-    );
-    if (existingIndex !== -1) {
-      const existingReaction = this.post.reactions[existingIndex];
-      if (existingReaction.type === type) {
-        this.reactionService.removeReaction(existingReaction.id!).subscribe({
-          next: () => {
-            this.post.reactions!.splice(existingIndex, 1);
-            this.userReaction = null;
-          },
-          error: (err: any) => {
-            console.error('Error removing reaction:', err);
-          }
-        });
-      } else {
-        this.reactionService.updateReaction(existingReaction.id!, type).subscribe({
-          next: (updatedReaction: Reaction) => {
-            this.post.reactions![existingIndex] = updatedReaction;
-            this.userReaction = type;
-          },
-          error: (err: any) => {
-            console.error('Error updating reaction:', err);
-          }
-        });
-      }
-    } else {
-      this.reactionService.addReaction(this.post.id, type).subscribe({
-        next: (newReaction: Reaction) => {
-          this.post.reactions!.push(newReaction);
-          this.userReaction = type;
-        },
-        error: (err: any) => {
-          console.error('Error adding reaction:', err);
-        }
-      });
-    }
-  }
-
-  // Post editing/deleting for post owner
-
+  // Post
   isPostOwner(): boolean {
     return this.currentUserId !== null && this.post.user?.id_user === this.currentUserId;
   }
-
+  activePostAction: string | null = null;
+  activePostId: number | null = null;
+  
+  setActivePostAction(action: string, id: number): void {
+    this.activePostAction = action;
+    this.activePostId = id;
+  }
   editPost(): void {
     this.post['isEditing'] = true;
     this.post['editedContent'] = this.post.content;
+    this.post['editedPostType'] = this.post.postType;
     this.post['menuOpen'] = false;
   }
-
+  
   cancelPostEdit(): void {
     this.post['isEditing'] = false;
+  this.selectedPostImageFiles = [];
+  this.selectedPostImagePreviews = [];
+  this.deletedImageIndexes = [];
+ 
   }
 
-  updatePost(post: Post): void {
-    const updatedContent = post['editedContent'];
-    if (!updatedContent || !post.id) return;
-  
-    const formData = new FormData();
-    formData.append('content', updatedContent);
-    formData.append('postType', post.postType.toString().trim().toUpperCase().replace(/ /g, '_'));
-  
-    if (this.removeImage) {
-      formData.append('removeImage', 'true');
-    }
-  
-    if (this.selectedPostImageFile) {
-      formData.append('file', this.selectedPostImageFile, this.selectedPostImageFile.name);
-    }
-  
-    this.postService.updatePost(post.id, formData).subscribe({
-      next: (updatedPost: Post) => {
-        post.content = updatedPost.content;
-        post.image = updatedPost.image;
-        post.postType = updatedPost.postType;
-        post['isEditing'] = false;
-        this.selectedPostImageFile = null;
-        this.removeImage = false;
-      },
-      error: (err: any) => {
-        console.error('Error updating post:', err);
-      }
-    });
-  }
-  
-  
-  
-  
+
 
   deletePost(): void {
     if (!this.post.id) return;
     this.postService.deletePost(this.post.id).subscribe({
       next: () => {
-        console.log('Post deleted successfully');
-        // Set the deletion flag to hide the post from the UI
         this.isDeleted = true;
+
       },
-      error: (err: any) => {
-        console.error('Error deleting post:', err);
-      }
+      error: console.error
     });
   }
+  
 
-  // Comment methods (same as before)
+  // Comments
   toggleCommentMenu(comment: Comment): void {
-    (this.post.comments || []).forEach(c => {
-      if (c.id !== comment.id) {
-        c['menuOpen'] = false;
-      }
-    });
-    comment['menuOpen'] = !comment['menuOpen'];
+    (this.post.comments || []).forEach(c => c['menuOpen'] = c.id === comment.id ? !comment['menuOpen'] : false);
   }
 
   isCommentOwner(comment: Comment): boolean {
@@ -211,13 +181,9 @@ export class PostComponent implements OnInit {
   deleteComment(commentId: number): void {
     this.commentService.deleteComment(commentId).subscribe({
       next: () => {
-        if (this.post.comments) {
-          this.post.comments = this.post.comments.filter(c => c.id !== commentId);
-        }
+        this.post.comments = this.post.comments?.filter(c => c.id !== commentId);
       },
-      error: (err: any) => {
-        console.error('Error deleting comment:', err);
-      }
+      error: console.error
     });
   }
 
@@ -232,84 +198,148 @@ export class PostComponent implements OnInit {
   }
 
   updateComment(comment: Comment): void {
-    const updatedContent = comment['editedContent'];
-    if (!updatedContent || !comment.id) return;
-    this.commentService.updateComment(comment.id, updatedContent).subscribe({
-      next: (updatedComment: Comment) => {
-        comment.content = updatedComment.content;
+    if (!comment['editedContent'] || !comment.id) return;
+    this.commentService.updateComment(comment.id, comment['editedContent']).subscribe({
+      next: updated => {
+        comment.content = updated.content;
         comment['isEditing'] = false;
       },
-      error: (err: any) => {
-        console.error('Error updating comment:', err);
-      }
+      error: console.error
     });
   }
 
   addComment(commentForm: NgForm): void {
     if (!this.newComment.trim()) return;
     const userIdStr = localStorage.getItem('userId');
-    if (!userIdStr) {
-      console.error('No userId found in localStorage. Please log in.');
-      return;
-    }
+    if (!userIdStr) return;
     const currentUserId = parseInt(userIdStr, 10);
+
     this.commentService.addComment(currentUserId, this.post.id, this.newComment).subscribe({
-      next: (comment: Comment) => {
-        if (!this.post.comments) {
-          this.post.comments = [];
-        }
+      next: comment => {
+        this.post.comments = this.post.comments || [];
         this.post.comments.push(comment);
-        // Reset comment input and form state
         this.newComment = '';
         commentForm.resetForm();
       },
+      error: console.error
+    });
+  }
+
+  // Image Handling
+  onPostImageSelected(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    if (input.files?.length) {
+      Array.from(input.files).forEach(file => {
+        this.selectedPostImageFiles.push(file);
+  
+        const reader = new FileReader();
+        reader.onload = () => {
+          this.selectedPostImagePreviews.push(reader.result as string);
+        };
+        reader.readAsDataURL(file);
+      });
+  
+      // Reset input so same file can be picked again if needed
+      input.value = '';
+    }
+  }
+  
+
+  removeSelectedImage(index: number): void {
+    this.selectedPostImageFiles.splice(index, 1);
+    this.selectedPostImagePreviews.splice(index, 1);
+  }
+  
+
+  getImageList(): string[] {
+    return this.post.image?.split(',').filter(img => img.trim()) || [];
+  }
+  removeImageAtIndex(index: number): void {
+    this.deletedImageIndexes.push(index);
+  }
+  getFilteredImageList(): string[] {
+    return this.getImageList().filter((_, i) => !this.deletedImageIndexes.includes(i));
+  }
+
+  updatePost(post: Post): void {
+    const updatedContent = post['editedContent'];
+    const updatedPostType = post['editedPostType'];
+    if (!updatedContent || !updatedPostType || !post.id) return;
+  
+    const formData = new FormData();
+    formData.append('content', updatedContent);
+    formData.append('postType', updatedPostType.toString().trim().toUpperCase().replace(/ /g, '_'));
+  
+    const finalImages = this.getFilteredImageList().join(',');
+    formData.append('image', finalImages);
+  
+    this.selectedPostImageFiles.forEach(file => {
+      formData.append('files', file, file.name);
+    });
+  
+    this.postService.updatePost(post.id, formData).subscribe({
+      next: (updatedPost: Post) => {
+        post.content = updatedPost.content;
+        post.image = updatedPost.image;
+        post.postType = updatedPost.postType;
+        post['isEditing'] = false;
+        this.selectedPostImageFiles = [];
+        this.selectedPostImagePreviews = [];
+        this.deletedImageIndexes = [];
+      },
       error: (err: any) => {
-        console.error('Error adding comment:', err);
+        console.error('Error updating post:', err);
       }
     });
   }
-  onPostImageSelected(event: Event): void {
-    const target = event.target as HTMLInputElement;
-    if (target.files && target.files.length > 0) {
-      this.selectedPostImageFile = target.files[0];
-      console.log('Selected new post image file:', this.selectedPostImageFile);
-      // DO NOT do something like: post.image += this.selectedPostImageFile.name
+  
+    setActiveAction(action: string, id: any): void {
+    this.activeCommentAction = action;
+    this.activeCommentId = id;
+  }
+  getPostTypeBadgeClass(type: string): string {
+    switch (type) {
+      case 'LOST_PET':
+      case 'Lost Pet':
+        return 'bg-danger text-white';
+      case 'ADOPTION':
+      case 'Adoption':
+        return 'bg-success text-white';
+      case 'GENERAL':
+      case 'General':
+        return 'bg-secondary text-white';
+      case 'ADVICE':
+      case 'Advice':
+        return 'bg-info text-dark';
+      case 'FOR_SALE':
+      case 'For Sale':
+        return 'bg-warning text-dark';
+      default:
+        return 'bg-light text-dark';
     }
   }
+  translatePost(): void {
+    const textToTranslate = this.post.content;
+    if (!textToTranslate) return;
   
-  
-  
-  
-  // Toggle the removeImage flag when the user clicks the Remove image button
-  toggleRemoveImage(): void {
-    // Toggle the flag. If the user selects to remove the image, clear any chosen new file.
-    this.removeImage = !this.removeImage;
-    if (this.removeImage) {
-      this.selectedPostImageFile = null;
-    }
-  }
-  deleteExistingImage(post: Post): void {
-    // For simplicity, we'll clear the image completely.
-    // Alternatively, if posts can have multiple images (comma separated), you could remove the specific URL.
-    if (confirm('Are you sure you want to delete the current image?')) {
-      // Update the post by sending a flag to the backend (or modify post.image directly if you want local update).
-      // Here, assume the backend will clear the image when removeImage is "true".
-      const formData = new FormData();
-      formData.append('content', post['editedContent'] || post.content);
-      formData.append('postType', post.postType.toString().trim().toUpperCase().replace(/ /g, '_'));
-      formData.append('removeImage', 'true');
-      
-      this.postService.updatePost(post.id, formData).subscribe({
-        next: (updatedPost: Post) => {
-          post.image = updatedPost.image;  // should be null (or empty) if removed
-          // Optionally notify the user.
-        },
-        error: (err: any) => {
-          console.error('Error deleting image from post:', err);
-        }
-      });
-    }
+    this.translationService.translate(textToTranslate, this.selectedLanguage).subscribe({
+      next: (translated: string) => {
+        this.translatedPost = translated;
+        console.log('✅ Translated:', translated);
+      },
+      error: (err) => {
+        console.error('❌ Translation failed:', err);
+      }
+    });
   }
   
+    
+    
   
+  
+  
+
+  
+  
+
 }

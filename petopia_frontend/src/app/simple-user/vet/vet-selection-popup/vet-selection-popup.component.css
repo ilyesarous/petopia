@@ -1,0 +1,194 @@
+/* vet-selection-popup.component.css */
+.vet-selection-dialog {
+    padding: 16px;
+    max-width: 600px;
+    width: 100%;
+  }
+  
+  .dialog-title {
+    color: #F83182; /* Rose principal */
+    font-weight: 600;
+    margin-bottom: 16px;
+    text-align: center;
+    padding-bottom: 8px;
+    border-bottom: 2px solid #FF617C; /* Orange */
+  }
+  
+  .dialog-content {
+    padding: 16px 0;
+    max-height: 60vh;
+    overflow-y: auto;
+  }
+  
+  /* États de chargement et d'erreur */
+  .loading-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 0;
+  }
+  
+  .loading-text {
+    margin-top: 16px;
+    color: #FE9A7A; /* Jaune */
+    font-weight: 500;
+  }
+  
+  .error-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    background-color: #FFF5F7;
+    border-radius: 8px;
+  }
+  
+  .error-icon-container {
+    background-color: #F83182;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 12px;
+  }
+  
+  .error-icon {
+    color: white;
+    font-size: 32px;
+    width: 32px;
+    height: 32px;
+  }
+  
+  .error-message {
+    color: #F83182;
+    text-align: center;
+    font-weight: 500;
+  }
+  
+  /* Liste des vétérinaires */
+  .vet-radio-group {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    width: 100%;
+  }
+  
+  .vet-option {
+    margin: 0;
+  }
+  
+  .vet-option .mat-radio-container {
+    display: none;
+  }
+  
+  .vet-option.mat-radio-checked .vet-card {
+    border-color: #F83182;
+    background-color: #FFF5F7;
+  }
+  
+  .vet-card {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 16px;
+    border: 2px solid #e0e0e0;
+    border-radius: 12px;
+    transition: all 0.3s ease;
+    width: 100%;
+    cursor: pointer;
+  }
+  
+  .vet-card:hover {
+    border-color: #FF617C;
+  }
+  
+  .vet-avatar {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background-color: #FFE5EC;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .avatar-icon {
+    color: #F83182;
+    font-size: 32px;
+    width: 32px;
+    height: 32px;
+  }
+  
+  .vet-details {
+    flex: 1;
+  }
+  
+  .vet-name {
+    color: #F83182;
+    margin: 0 0 8px 0;
+    font-weight: 600;
+    font-size: 1.1em;
+  }
+  
+  .vet-contact {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  
+  .contact-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #666;
+    font-size: 0.9em;
+  }
+  
+  .contact-icon {
+    color: #FE9A7A; /* Jaune */
+    font-size: 18px;
+    width: 18px;
+    height: 18px;
+  }
+  
+  /* Actions */
+  .dialog-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    padding: 16px 0 0 0;
+    border-top: 1px solid #f0f0f0;
+  }
+  
+  .cancel-btn {
+    color: #666;
+  }
+  
+  .confirm-btn {
+    background-color: #F83182;
+    color: white;
+    font-weight: 500;
+  }
+  
+  .confirm-btn:disabled {
+    background-color: #e0e0e0;
+    color: #999;
+  }
+  
+  /* Animation */
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  
+  .vet-option {
+    animation: fadeIn 0.3s ease forwards;
+  }
+  
+  .vet-option:nth-child(1) { animation-delay: 0.1s; }
+  .vet-option:nth-child(2) { animation-delay: 0.2s; }
+  .vet-option:nth-child(3) { animation-delay: 0.3s; }
+  /* Ajoutez plus si nécessaire */

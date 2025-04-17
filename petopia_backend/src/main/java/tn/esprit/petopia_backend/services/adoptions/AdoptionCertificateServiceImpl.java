@@ -3,6 +3,7 @@ package tn.esprit.petopia_backend.services.adoptions;
 
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
+import tn.esprit.petopia_backend.dto.PKISignatureRequest;
 import tn.esprit.petopia_backend.entities.adoptions.Adoption;
 import tn.esprit.petopia_backend.entities.adoptions.AdoptionCertificate;
 import tn.esprit.petopia_backend.entities.adoptions.AdoptionStatus;
@@ -13,7 +14,13 @@ import tn.esprit.petopia_backend.repositories.adoptions.AdoptionCertificateRepos
 import tn.esprit.petopia_backend.repositories.adoptions.AdoptionRepository;
 import tn.esprit.petopia_backend.services.adoptions.IAdoptionCertificateService;
 
+import java.nio.charset.StandardCharsets;
+import java.security.KeyFactory;
+import java.security.PublicKey;
+import java.security.Signature;
+import java.security.spec.X509EncodedKeySpec;
 import java.time.LocalDateTime;
+import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
 
@@ -127,6 +134,73 @@ public class AdoptionCertificateServiceImpl implements IAdoptionCertificateServi
             throw new RuntimeException("Error generating certificate PDF", e);
         }
     }
+    @Override
+    public Optional<AdoptionCertificate> getCertificateByAdoptionId(Integer adoptionId) {
+        return certificateRepository.findByAdoptionId(adoptionId);
+    }
+    @Override
+    public boolean verifyAndStorePKISignature(PKISignatureRequest req) {
+        try {
+            String payload = "certificateId:" + req.getCertificateId() + ";timestamp:" + req.getTimestamp();
+            byte[] data = payload.getBytes(StandardCharsets.UTF_8);
+            byte[] signature = Base64.getDecoder().decode(req.getBase64DigitalSignature());
 
+            byte[] pubKeyBytes = Base64.getDecoder().decode(req.getBase64PublicKey());
+            X509EncodedKeySpec keySpec = new X509EncodedKeySpec(pubKeyBytes);
+            KeyFactory keyFactory = KeyFactory.getInstance("RSA");
+            PublicKey publicKey = keyFactory.generatePublic(keySpec);
+
+            Signature sig = Signature.getInstance("SHA256withRSA");
+            sig.initVerify(publicKey);
+            sig.update(data);
+
+            if (!sig.verify(signature)) {
+                return false;
+            }
+
+            // Optionally store the image signature + digital proof
+            AdoptionCertificate cert = certificateRepository.findById(req.getCertificateId())
+                    .orElseThrow(() -> new RuntimeException("Certificate not found"));
+
+            cert.setShelter_signature(req.getBase64SignatureImage());
+            certificateRepository.save(cert);
+            return true;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+    @Override
+    public boolean verifyAndStoreUserPKISignature(PKISignatureRequest req) {
+        try {
+            String payload = "certificateId:" + req.getCertificateId() + ";timestamp:" + req.getTimestamp();
+            byte[] data = payload.getBytes(StandardCharsets.UTF_8);
+            byte[] signature = Base64.getDecoder().decode(req.getBase64DigitalSignature());
+
+            byte[] publicKeyBytes = Base64.getDecoder().decode(req.getBase64PublicKey());
+            X509EncodedKeySpec keySpec = new X509EncodedKeySpec(publicKeyBytes);
+            KeyFactory keyFactory = KeyFactory.getInstance("RSA");
+            PublicKey publicKey = keyFactory.generatePublic(keySpec);
+
+            Signature sig = Signature.getInstance("SHA256withRSA");
+            sig.initVerify(publicKey);
+            sig.update(data);
+            boolean isValid = sig.verify(signature);
+
+            if (!isValid) return false;
+
+            AdoptionCertificate certificate = certificateRepository.findById(req.getCertificateId())
+                    .orElseThrow(() -> new RuntimeException("Certificate not found"));
+
+            certificate.setUser_signature(req.getBase64SignatureImage()); // Store canvas image
+            certificateRepository.save(certificate);
+
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
 }
 

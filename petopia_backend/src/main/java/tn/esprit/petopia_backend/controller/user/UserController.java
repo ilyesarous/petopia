@@ -99,14 +99,12 @@ public class UserController {
     @GetMapping("/admin/get-all-users")
     public ResponseEntity<ReqRes> getAllUsers(){
         return ResponseEntity.ok(usersManagementService.getAllUsers());
-
     }
 
     @GetMapping("/user/get-user/{userId}")
     @PreAuthorize("hasAnyAuthority('ROLE_USER','ROLE_ADMIN','ROLE_PARTNER','ROLE_SHELTER')")
     public ResponseEntity<ReqRes> getuserByID(@PathVariable Integer userId){
         return ResponseEntity.ok(usersManagementService.getUsersById(userId));
-
     }
 
     @GetMapping("/admin/get-users/{userId}")
@@ -135,4 +133,10 @@ public class UserController {
         boolean exists = usersManagementService.checkEmailExists(email);
         return ResponseEntity.ok(exists);
     }
+
+    @GetMapping("/auth/vets")
+    public List<User> getAllVeterinarians() {
+        return usersManagementService.getAllVets();
+    }
+
 }

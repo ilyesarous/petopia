@@ -1,0 +1,76 @@
+<div class="participants-container">
+  <h2>Liste des participants pour l'événement : {{eventName}}</h2>
+  
+  <div *ngIf="isLoading" class="loading-message">
+    <div class="spinner"></div>
+    Chargement en cours...
+  </div>
+
+  <div *ngIf="error" class="error-message">
+    <span class="error-icon">!</span>
+    {{error}}
+  </div>
+
+  <div *ngIf="!isLoading && !error">
+    <div *ngIf="participants.length === 0" class="no-participants">
+      <img src="https://cdn-icons-png.flaticon.com/512/4076/4076478.png" alt="No participants" width="80">
+      <p>Aucun participant pour cet événement.</p>
+    </div>
+
+    <div *ngIf="participants.length > 0" class="participants-list">
+      <table class="table">
+        <thead>
+          <tr>
+            
+            <th>Participant</th>
+            <th>Email</th>
+            <th>Date d'inscription</th>
+            <th>Statut</th>
+            <th>Actions</th>
+
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let participant of participants">
+            <td>{{participant.participant?.name || 'N/A'}}</td>
+            <td>{{participant.participant?.email || 'N/A'}}</td>
+            <td>{{participant.dateInscription | date:'short'}}</td>
+            <td>
+              <span *ngIf="!editingParticipations[participant.idParticipation!]" 
+                    class="status-badge status-{{participant.statusParticipation?.toLowerCase()}}">
+                {{participant.statusParticipation}}
+              </span>
+              <select *ngIf="editingParticipations[participant.idParticipation!]" 
+                      [(ngModel)]="participant.statusParticipation"
+                      class="status-select">
+                <option *ngFor="let status of statusOptions" [value]="status">
+                  {{status}}
+                </option>
+              </select>
+            </td>
+            <td class="actions-cell">
+              <button *ngIf="!editingParticipations[participant.idParticipation!]" 
+                      (click)="editParticipation(participant.idParticipation!)"
+                      class="btn-edit">
+                <i class="fas fa-edit"></i> Modifier
+              </button>
+              <div *ngIf="editingParticipations[participant.idParticipation!]" class="edit-actions">
+                <button (click)="saveParticipationStatus(participant)"
+                        class="btn-save">
+                  <i class="fas fa-check"></i> Valider
+                </button>
+                <button (click)="cancelEdit(participant.idParticipation!)"
+                        class="btn-cancel">
+                  <i class="fas fa-times"></i> Annuler
+                </button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <button (click)="goBack()" class="btn-back">Retour</button>
+</div>
+

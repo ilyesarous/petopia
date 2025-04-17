@@ -1,40 +1,39 @@
 <div class="event-form-container">
-  <h2>Participer à l'Événement</h2>
-  <form (ngSubmit)="onSubmit()">
+  <h2>Participer à un événement</h2>
+  
+  <!-- Show warning if already participating -->
+  <div *ngIf="alreadyParticipating" class="alert alert-warning">
+    Vous êtes déjà inscrit à cet événement.
+  </div>
 
-    <!-- ID Participation -->
-    
-
-    <!-- Date d'inscription -->
+  <form (ngSubmit)="onSubmit()" *ngIf="!alreadyParticipating">
+    <!-- Rest of your form -->
     <div class="form-group">
       <label for="dateInscription">Date d'inscription :</label>
       <input id="dateInscription" [value]="participation.dateInscription | date:'short'" readonly />
     </div>
 
-    <!-- Événement ID (assigné automatiquement depuis l'event sélectionné) -->
     <div class="form-group">
-      <label for="event">ID de l'Événement :</label>
-      <input id="event" [value]="participation.event?.idEvent" readonly />
+      <label for="event">Événement :</label>
+      <input id="event" [value]="eventDetails?.nameEvent" readonly />
     </div>
 
- 
-
-
-    <!-- Statut de participation -->
     <div class="form-group">
       <label for="statusParticipation">Statut :</label>
       <select id="statusParticipation" [(ngModel)]="participation.statusParticipation" name="statusParticipation">
-        <option *ngFor="let status of ['PENDING', 'APPROVED', 'REJECTED']" [value]="status">{{ status }}</option>
+        <option *ngFor="let status of ['PENDING', 'CONFIRMED', 'CANCELLED']" [value]="status">{{ status }}</option>
       </select>
     </div>
-
-    <!-- Boutons -->
+   
     <div class="form-group">
       <button type="submit">✅ Envoyer la participation</button>
     </div>
-    <div class="form-group">
-      <button type="button" (click)="close.emit()">❌ Fermer</button>
-    </div>
-
   </form>
+
+  <!-- Bouton de retour toujours visible -->
+  <div class="form-group">
+    <button type="button" (click)="goBack()" class="back-button">
+      <i class="fa fa-arrow-left"></i> Retour à la liste
+    </button>
+  </div>
 </div>

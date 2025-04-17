@@ -1,3 +1,4 @@
+import { GeminiService } from './../../services/community/gemini.service';
 import { Component, OnInit } from '@angular/core';
 import { Post, PostType } from '../../models/community/post';
 import { PostService } from '../../services/community/post.service';
@@ -5,6 +6,7 @@ import { Story } from '../../models/community/story';
 import { StoryService } from '../../services/community/story.service';
 import { Router } from '@angular/router';
 import { NgForm } from '@angular/forms';
+
 
 @Component({
   selector: 'app-community',
@@ -18,7 +20,7 @@ export class CommunityComponent implements OnInit {
 
   // Stories
   stories: Story[] = [];
-  chunkedStories: Story[][] = []; // Each sub-array is one carousel slide
+  chunkedStories: Story[][] = []; 
 
   // For creating posts
   newPostContent: string = '';
@@ -50,11 +52,23 @@ export class CommunityComponent implements OnInit {
   activeStoryIndex: number = -1; // index into stories array; -1 means no active popup
   progress: number = 0;          // progress bar percentage (0 to 100)
   popupTimer: any;               // reference for the interval timer
+  selectedStoryFilePreview: string | null = null;
+
+  // ai post generation
+  topic = '';
+  generatedContent = '';
+  loading = false;
+  // bad words detection
+  postErrorMessage: string = '';
+
+
+
 
   constructor(
     private postService: PostService,
     private storyService: StoryService,
-    private router: Router
+    private router: Router,
+    private geminiService: GeminiService
   ) {}
 
   ngOnInit(): void {
@@ -67,6 +81,7 @@ export class CommunityComponent implements OnInit {
       // Sort posts newest first
       this.posts = data.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
       this.originalPosts = [...this.posts];
+      this.updatePosts();
     });
   }
 
@@ -95,6 +110,11 @@ export class CommunityComponent implements OnInit {
 
   toggleCreateStory(): void {
     this.showCreateStory = !this.showCreateStory;
+    if (!this.showCreateStory) {
+      this.newStoryText = '';
+      this.selectedStoryFile = null;
+      this.selectedStoryFilePreview = null;
+    }
     console.log('showCreateStory:', this.showCreateStory);
   }
 
@@ -102,9 +122,22 @@ export class CommunityComponent implements OnInit {
     const target = event.target as HTMLInputElement;
     if (target.files && target.files.length > 0) {
       this.selectedStoryFile = target.files[0];
-      console.log('Story file selected:', this.selectedStoryFile);
+  
+      const fileType = this.selectedStoryFile.type;
+      const reader = new FileReader();
+  
+      reader.onload = (e: any) => {
+        this.selectedStoryFilePreview = e.target.result;
+      };
+  
+      // Only preview if it's an image or video
+      if (fileType.startsWith('image/') || fileType.startsWith('video/')) {
+        reader.readAsDataURL(this.selectedStoryFile);
+      }
     }
   }
+  
+  
 
   createStory(): void {
     if (!this.selectedStoryFile) {
@@ -117,21 +150,22 @@ export class CommunityComponent implements OnInit {
       return;
     }
     const userId = parseInt(userIdStr, 10);
-
+  
     const formData = new FormData();
     formData.append('file', this.selectedStoryFile, this.selectedStoryFile.name);
     formData.append('text', this.newStoryText);
-    console.log('Creating story with:', { userId, formData });
-
+  
     this.storyService.createStory(userId, formData).subscribe({
       next: (story) => {
         console.log('Story created:', story);
-        // Insert the new story at the start
+  
         this.stories.unshift(story);
-        // Re-chunk the updated array if needed
         this.chunkedStories = this.chunkArray(this.stories, 8);
+  
+        // ✅ Reset everything AFTER successful creation
         this.newStoryText = '';
         this.selectedStoryFile = null;
+        this.selectedStoryFilePreview = null;
         this.showCreateStory = false;
       },
       error: (err) => {
@@ -139,6 +173,7 @@ export class CommunityComponent implements OnInit {
       }
     });
   }
+  
 
   // Return the selected story file name
   get selectedStoryFileNames(): string {
@@ -160,9 +195,10 @@ export class CommunityComponent implements OnInit {
   }
   createPost(postForm: NgForm): void {
     // Check if post content is valid and the post type is chosen.
-    if (!this.newPostContent.trim() || this.newPostType === null) {
+    if (!this.newPostContent || !this.newPostContent.trim() || this.newPostType === null) {
       return;
     }
+    
   
     const newPost: Post = {
       id: 0,
@@ -185,16 +221,24 @@ export class CommunityComponent implements OnInit {
       formData.append('files', file, file.name);
     });
   
-    this.postService.createPost(newPost, formData).subscribe(post => {
-      this.posts.unshift(post);
-      this.originalPosts.unshift(post);
-      this.newPostContent = '';
-      this.selectedFiles = [];
-      this.newPostType = PostType.GENERAL;
- // Reset to null after successful submission
-      this.updatePosts();
-      postForm.resetForm();
+    this.postService.createPost(newPost, formData).subscribe({
+      next: (post) => {
+        this.originalPosts = [post, ...this.originalPosts];
+        this.updatePosts();
+        this.newPostContent = '';
+        this.selectedFiles = [];
+        this.newPostType = PostType.GENERAL;
+        postForm.resetForm();
+      },
+      error: (err) => {
+        if (err.status === 400 && err.error) {
+          this.postErrorMessage = err.error;
+        } else {
+          this.postErrorMessage = "An error occurred while creating the post.";
+        }
+      }
     });
+    
   }
   
   
@@ -215,6 +259,7 @@ export class CommunityComponent implements OnInit {
       );
     }
     this.posts = filtered;
+    this.setupPagination();
   }
   filterByType(type: PostType): void {
     this.selectedPostType = type;
@@ -276,7 +321,6 @@ export class CommunityComponent implements OnInit {
     return null;
   }
 
-  // Opens the story popup for a given index (called from (click) on story card)
   openStoryPopup(index: number): void {
     // Clear any existing popup timer if running
     if (this.popupTimer) {
@@ -287,7 +331,6 @@ export class CommunityComponent implements OnInit {
     this.startProgressTimer();
   }
 
-  // Starts the progress timer (5 seconds total, update every 50ms)
   startProgressTimer(): void {
     const totalDuration = 5000; // 5 seconds
     const updateInterval = 50;  // update every 50ms
@@ -302,7 +345,6 @@ export class CommunityComponent implements OnInit {
     }, updateInterval);
   }
 
-  // Closes the popup and clears the timer
   closeStoryPopup(): void {
     this.activeStoryIndex = -1;
     this.progress = 0;
@@ -311,7 +353,6 @@ export class CommunityComponent implements OnInit {
     }
   }
 
-  // Navigates to the next story if available
   nextStory(event?: Event): void {
     if (event) {
       event.stopPropagation(); // prevent closing the popup when clicking arrow
@@ -355,5 +396,84 @@ export class CommunityComponent implements OnInit {
   onStoryCardClick(index: number): void {
     this.openStoryPopup(index);
   }
+  isImageFile(): boolean {
+    return this.selectedStoryFile?.type?.startsWith('image/') ?? false;
+  }
+  
+  isVideoFile(): boolean {
+    return this.selectedStoryFile?.type?.startsWith('video/') ?? false;
+  }
+  // Pagination for posts
+currentPage: number = 1;
+pageSize: number = 5;
+totalPages: number = 0;
+paginatedPosts: Post[] = [];
+
+setupPagination(): void {
+  this.totalPages = Math.ceil(this.posts.length / this.pageSize);
+  this.changePage(1);
+}
+
+changePage(page: number): void {
+  this.currentPage = page;
+  const start = (page - 1) * this.pageSize;
+  const end = start + this.pageSize;
+  this.paginatedPosts = this.posts.slice(start, end);
+}
+
+// generatePostFromAI() {
+//   if (!this.topic?.trim()) return;
+
+//   this.loading = true;
+
+//   this.geminiService.generatePost(this.topic).subscribe({
+//     next: (response: string) => {
+//       console.log("✅ AI Response:", response);
+//       this.newPostContent = response; // ✅ Inject into main post content field
+//       this.loading = false;
+//     },
+//     error: (err) => {
+//       console.error('❌ AI generation error:', err);
+//       this.loading = false;
+//     }
+//   });
+// }
+generatePostFromAI(): void {
+  this.loading = true;
+  this.geminiService.generatePost(this.topic).subscribe({
+    next: (response: string) => {
+      this.newPostContent = response;
+
+      // Wait for DOM to render updated content before expanding
+      setTimeout(() => {
+        const textarea = document.querySelector(
+          'textarea[name="postContent"]'
+        ) as HTMLTextAreaElement;
+        if (textarea) {
+          textarea.style.height = 'auto';
+          textarea.style.height = textarea.scrollHeight + 'px';
+        }
+      }, 50);
+
+      this.loading = false;
+    },
+    error: (err) => {
+      console.error('AI generation failed:', err);
+      this.loading = false;
+    },
+  });
+}
+
+autoGrowTextArea(event: Event): void {
+  const textarea = event.target as HTMLTextAreaElement;
+  textarea.style.height = 'auto';
+  textarea.style.height = textarea.scrollHeight + 'px';
+}
+
+
+
+
+
+
 
 }

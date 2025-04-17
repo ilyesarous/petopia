@@ -30,6 +30,10 @@ public class Pet {
     private int idPet;
     private String petName;
     private int petAge;
+    private int petRefVet;
+    @Lob
+    @Column(columnDefinition = "LONGBLOB")
+    private byte[] petImageBytes;
     private String breed;
     private String location;
     private float attitudeX;

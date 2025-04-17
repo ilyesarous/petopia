@@ -7,6 +7,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDateTime;
+
 @Entity
 @Getter
 @Setter
@@ -23,5 +25,6 @@ public class CartProduct {
     private Product product;
     private int quantity;
     private float total;
+    private LocalDateTime createdAt;
 }
 

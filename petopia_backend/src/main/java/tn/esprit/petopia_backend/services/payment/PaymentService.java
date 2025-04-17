@@ -5,6 +5,8 @@ import org.springframework.stereotype.Service;
 import tn.esprit.petopia_backend.entities.payment.PaymentRequest;
 import tn.esprit.petopia_backend.repositories.payment.PaymentRepository;
 
+import java.util.List;
+
 @Service
 @AllArgsConstructor
 public class PaymentService implements IPaymentService {
@@ -13,5 +15,13 @@ public class PaymentService implements IPaymentService {
     @Override
     public PaymentRequest savePayment(PaymentRequest paymentRequest) {
         return paymentRepository.save(paymentRequest);
+    }
+
+    public Double getTotalRevenueForVet(Long vetId) {
+        return paymentRepository.calculateTotalRevenueByVetId(vetId);
+    }
+
+    public List<PaymentRequest> findByUserVetId(Long vetId) {
+        return paymentRepository.findByUserVetId(vetId);
     }
 }

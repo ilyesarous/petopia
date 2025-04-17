@@ -99,7 +99,13 @@ public class ShelterServiceImpl implements IShelterService {
 
 
     @Override
+    @Transactional
     public void deleteShelter(Integer id) {
+        List<User> users = userRepository.findUsersByShelterId(id);
+        for (User user : users) {
+            user.setShelter(null);
+        }
+        userRepository.saveAll(users);
         shelterRepository.deleteById(id);
     }
 

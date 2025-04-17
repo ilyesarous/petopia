@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ConsultationService } from 'src/app/services/vet/consultations/consultation.service';
 import { Consultation } from 'src/app/models/vet/consultation';
+import { PetService } from 'src/app/services/pets/pet.service';
+import { Pet } from 'src/app/models/pet/Pet';
+import { AuthService } from 'src/app/services/user/auth.service';
 
 @Component({
   selector: 'app-appointment-user',
@@ -11,20 +14,67 @@ export class AppointmentUserComponent implements OnInit {
   upcomingConsultations: Consultation[] = [];
   pastConsultations: Consultation[] = [];
   selectedPetId: number | null = null;
+  selectedVetId: number | null = null;
   selectedDate: string = '';
   selectedTime: string = '';
   consultationType: string = 'at_vet';
   endTime: string = '';
+  userId: number | null = null;
+  userPets: Pet[] = [];
+  vets: any[] = [];
+  loadingPets = true;
+  loadingVets = true;
 
-  constructor(private consultationService: ConsultationService) { }
+  constructor(
+    private consultationService: ConsultationService,
+    private petService: PetService,
+    private authService: AuthService
+  ) { }
 
   ngOnInit(): void {
-    this.loadConsultations();
+    this.userId = parseInt(localStorage.getItem('userId') || '0', 10);
+    if (this.userId) {
+      this.loadConsultations();
+      this.loadUserPets();
+      this.loadAllVets();
+    } else {
+      console.error('User ID not found in localStorage');
+    }
     this.initTabSwitching();
   }
 
+  loadUserPets(): void {
+    this.loadingPets = true;
+    this.petService.getPetsByOwnerId(this.userId!).subscribe({
+      next: (pets) => {
+        this.userPets = pets;
+        this.loadingPets = false;
+      },
+      error: (err) => {
+        console.error('Error loading pets:', err);
+        this.loadingPets = false;
+      }
+    });
+  }
+
+  loadAllVets(): void {
+    this.loadingVets = true;
+    this.authService.getAllVets().subscribe({
+      next: (vets) => {
+        this.vets = vets.filter((user: any) => user.role === 'VET');
+        this.loadingVets = false;
+      },
+      error: (err) => {
+        console.error('Error loading vets:', err);
+        this.loadingVets = false;
+      }
+    });
+  }
+
   loadConsultations(): void {
-    this.consultationService.getAllConsultations().subscribe({
+    if (!this.userId) return;
+
+    this.consultationService.getConsultationsByUserId(this.userId).subscribe({
       next: (consultations) => {
         const today = new Date();
         today.setHours(0, 0, 0, 0);
@@ -50,7 +100,7 @@ export class AppointmentUserComponent implements OnInit {
   }
 
   submitAppointment(): void {
-    if (!this.selectedPetId || !this.selectedDate || !this.selectedTime || !this.endTime) {
+    if (!this.selectedPetId || !this.selectedVetId || !this.selectedDate || !this.selectedTime || !this.endTime || !this.userId) {
       alert('Please fill all required fields');
       return;
     }
@@ -63,8 +113,8 @@ export class AppointmentUserComponent implements OnInit {
       statusT: 'waiting',
       consultation_price: 50,
       petconsultation: { idPet: this.selectedPetId },
-      userclient: { id_user: 2 },
-      uservet: { id_user: 1 }
+      userclient: { id_user: this.userId }, // Utilise l'ID du user connecté
+      uservet: { id_user: this.selectedVetId } // Utilise l'ID du vet sélectionné
     };
 
     this.consultationService.addConsultation(newConsultation).subscribe({
@@ -72,7 +122,11 @@ export class AppointmentUserComponent implements OnInit {
         alert('Appointment created successfully!');
         this.loadConsultations();
         this.resetForm();
-        window.location.replace('home/vet/appointment-user');
+        // Rechargez seulement la partie nécessaire au lieu de toute la page
+        const prendreRdvTab = document.getElementById('prendre-rdv-tab');
+        if (prendreRdvTab) {
+          prendreRdvTab.click();
+        }
       },
       error: (err) => {
         console.error('Error creating appointment:', err);
@@ -83,6 +137,7 @@ export class AppointmentUserComponent implements OnInit {
 
   private resetForm(): void {
     this.selectedPetId = null;
+    this.selectedVetId = null;
     this.selectedDate = '';
     this.selectedTime = '';
     this.endTime = '';

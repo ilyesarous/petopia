@@ -30,4 +30,6 @@ export interface Post {
   isEditing?: boolean;
   editedContent?: string;
   menuOpen?: boolean;
+  editedPostType?: PostType;
+
 }

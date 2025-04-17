@@ -149,3 +149,45 @@
     transform: translateY(-4px);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   }
+
+
+  
+  .card-certificate:hover {
+    transform: translateY(-2px);
+  }
+  .card-certificate {
+    background-color: #fff;
+    padding: 1.5rem;
+    border-radius: 16px;
+    margin-top: 2rem;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  }
+  
+  .card-certificate h3 {
+    font-size: 1.4rem;
+    color: #F83182;
+    margin-bottom: 0.5rem;
+  }
+  
+  
+  .card-certificate p {
+    font-size: 1rem;
+    margin-bottom: 12px;
+    color: #333;
+  }
+  
+  .card-certificate button {
+    background-color: #FF617C; /* Orange from your palette */
+    border: none;
+    padding: 10px 18px;
+    border-radius: 8px;
+    color: #fff;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .card-certificate button:hover {
+    background-color: #FE9A7A; /* Yellow-pink from your palette */
+  }
+  

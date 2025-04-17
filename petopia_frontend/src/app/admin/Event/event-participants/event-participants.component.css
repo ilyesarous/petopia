@@ -1,0 +1,227 @@
+.participants-container {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 30px;
+    background-color: #fff;
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    }
+    
+    h2 {
+    color: #F83182;
+    text-align: center;
+    margin-bottom: 30px;
+    font-size: 28px;
+    position: relative;
+    padding-bottom: 10px;
+    }
+    
+    h2::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100px;
+    height: 3px;
+    background: linear-gradient(to right, #F83182, #FF617C, #FE9A7A);
+    }
+    
+    .loading-message {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    color: #FF617C;
+    font-size: 18px;
+    }
+    
+    .spinner {
+    border: 4px solid rgba(255, 97, 124, 0.2);
+    border-radius: 50%;
+    border-top: 4px solid #FF617C;
+    width: 20px;
+    height: 20px;
+    animation: spin 1s linear infinite;
+    margin-right: 10px;
+    }
+    
+    @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+    }
+    
+    .error-message {
+    background-color: #FFEBEE;
+    color: #D32F2F;
+    padding: 15px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    margin: 20px 0;
+    }
+    
+    .error-icon {
+    background-color: #F83182;
+    color: white;
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 10px;
+    font-weight: bold;
+    }
+    
+    .no-participants {
+    text-align: center;
+    padding: 40px;
+    color: #666;
+    }
+    
+    .no-participants img {
+    margin-bottom: 20px;
+    }
+    
+    .no-participants p {
+    font-size: 18px;
+    margin-top: 10px;
+    }
+    
+    .table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 25px 0;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.05);
+    }
+    
+    .table thead tr {
+    background: linear-gradient(to right, #F83182, #FF617C);
+    color: white;
+    text-align: left;
+    }
+    
+    .table th,
+    .table td {
+    padding: 12px 15px;
+    }
+    
+    .table tbody tr {
+    border-bottom: 1px solid #f3f3f3;
+    transition: all 0.2s;
+    }
+    
+    .table tbody tr:nth-of-type(even) {
+    background-color: #fff9f9;
+    }
+    
+    .table tbody tr:last-of-type {
+    border-bottom: 2px solid #F83182;
+    }
+    
+    .table tbody tr:hover {
+    background-color: #fff0f0;
+    transform: scale(1.005);
+    }
+    
+    .status-badge {
+    background-color: #FE9A7A;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: bold;
+    }
+    
+    .btn-back {
+    background-color: #F83182;
+    color: white;
+    border: none;
+    padding: 12px 25px;
+    border-radius: 30px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: all 0.3s;
+    display: block;
+    margin: 30px auto 0;
+    box-shadow: 0 4px 8px rgba(248, 49, 130, 0.3);
+    }
+    
+    .btn-back:hover {
+    background-color: #FF617C;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(248, 49, 130, 0.4);
+    }
+    
+    .btn-back:active {
+    transform: translateY(0);
+    }
+    /* Ajoutez ces styles à votre fichier CSS */
+
+.status-badge {
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 0.8em;
+    font-weight: 500;
+  }
+  
+  .status-pending {
+    background-color: #fff3cd;
+    color: #856404;
+  }
+  
+  .status-confirmed {
+    background-color: #d4edda;
+    color: #155724;
+  }
+  
+  .status-cancelled {
+    background-color: #f8d7da;
+    color: #721c24;
+  }
+  
+  .status-select {
+    padding: 4px;
+    border-radius: 4px;
+    border: 1px solid #ddd;
+  }
+  
+  .actions-cell {
+    white-space: nowrap;
+  }
+  
+  .btn-edit, .btn-save, .btn-cancel {
+    padding: 4px 8px;
+    margin: 0 2px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.8em;
+  }
+  
+  .btn-edit {
+    background-color: #ffc107;
+    color: #000;
+  }
+  
+  .btn-save {
+    background-color: #28a745;
+    color: white;
+  }
+  
+  .btn-cancel {
+    background-color: #dc3545;
+    color: white;
+  }
+  
+  .edit-actions {
+    display: flex;
+    gap: 5px;
+  }
+  
+  /* Icônes */
+  .fas {
+    margin-right: 4px;
+  }

@@ -27,7 +27,7 @@ export class PetService {
   updatePetWithImage(id: number, formData: FormData): Observable<Pet> {
     return this.http.put<Pet>(`${this.apiUrl}/pet/updateWithImage/${id}`, formData);
   }
-  
+
 
 
   // Delete pet (for shelters)
@@ -58,5 +58,8 @@ export class PetService {
   getUnassignedPets(userId: number): Observable<Pet[]> {
     return this.http.get<Pet[]>(`${this.apiUrl}/pet/unassigned?userId=${userId}`);
   }
-  
+
+  getPetByRefVet(petRefVet: number): Observable<Pet> {
+    return this.http.get<Pet>(`${this.apiUrl}/auth/pet/ref/${petRefVet}`);
+  }
 }
