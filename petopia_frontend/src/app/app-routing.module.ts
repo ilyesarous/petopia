@@ -45,7 +45,8 @@ import { QrCodeVetScannerComponent } from './simple-user/vet/qr-code-vet-scanner
 import { UserRatingVetComponent } from './simple-user/vet/user-rating-vet/user-rating-vet.component';
 import { InfoRatingVetComponent } from './simple-user/vet/info-rating-vet/info-rating-vet.component';
 import { PaymentVetComponent } from './simple-user/vet/payment-vet/payment-vet.component';
-
+import { VetLocationsComponent } from './admin/vet/locations/vet-locations/vet-locations.component';
+import { VetRateComponent } from './admin/vet/rate/vet-rate/vet-rate.component';
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
   { path: 'home', component: ComponentWrapperComponent, canActivate: [AuthGuard]},
@@ -82,7 +83,9 @@ const routes: Routes = [
       { path: 'diagnosis', component: DiagnosisListComponent },
       { path: 'notifications', component: NotificationListComponent },
       { path: 'pet-growth', component: PetGrowthListComponent },
-      { path: 'dog-breed-recognition' , component: AppDogBreedRecognitionRedirectButtonComponent}
+      { path: 'dog-breed-recognition' , component: AppDogBreedRecognitionRedirectButtonComponent},
+      { path: 'locations', component: VetLocationsComponent },
+      { path: 'rates' , component: VetRateComponent}
     ]
   },
   {path: 'adoption', component: PetAdoptionListComponent},
