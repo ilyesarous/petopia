@@ -246,8 +246,6 @@ export class HomePartnerComponent implements OnInit {
   loadDashboardData(): void {
     this.dashboardService.getDashboardData(this.idUser).subscribe({
       next: (data) => {
-        console.log(data);
-        
         this.stats.averageRating = parseFloat(data.averageRating.toFixed(1));
         this.stats.totalSales = data.totalSales;
         this.stats.totalRevenue = data.totalRevenue;

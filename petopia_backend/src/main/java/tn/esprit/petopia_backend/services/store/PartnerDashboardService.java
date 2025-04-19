@@ -21,8 +21,6 @@ public class PartnerDashboardService {
         for (Product p : partnerDashboardStats.getTopSellingProducts()){
             partnerDashboardStats.getListTotalByProduct().add(cartProductService.getTotalSalesByProductId(p.getProduct_id()));
         }
-
-        System.err.println(partnerDashboardStats);
         return partnerDashboardStats;
     }
 }
