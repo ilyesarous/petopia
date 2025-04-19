@@ -32,6 +32,9 @@ def detect_breed():
                                 "Analyze the following image and return:\n"
                                 "- The species (Dog or Cat)\n"
                                 "- The breed (if identifiable)\n"
+                                "- The estimated age of the pet using a number(if possible)\n"
+                                "- The estimated size of the pet: SMALL, MEDIUM, or LARGE (in uppercase)\n"
+                                "- The estimated gender of the pet: MALE, FEMALE\n"
                                 "- Language: English only\n"
                                 "Be brief and specific."
                             )
