@@ -252,19 +252,59 @@ export class ShelterPetListComponent {
 
   onFileSelected(event: any) {
     const file = event.target.files[0];
-    if (file) {
-      this.selectedImage = file;
-
-      const reader = new FileReader();
-      reader.onload = (e: ProgressEvent<FileReader>) => {
-        const result = e.target?.result;
-        if (result !== undefined) {
-          this.imagePreviewUrl = result;
-        }
-      };
-      reader.readAsDataURL(file);
-    }
+    if (!file) return;
+  
+    this.selectedImage = file;
+    const reader = new FileReader();
+  
+    reader.onload = (e: ProgressEvent<FileReader>) => {
+      const result = e.target?.result;
+      if (result && typeof result === 'string') {
+        this.imagePreviewUrl = result;
+  
+        const base64 = result.split(',')[1];
+  
+        // this.imageGenerationService.detectBreedFromImage(base64).subscribe({
+        //   next: (res: any) => {
+        //     console.log("🧠 AI Raw Response:", res);
+        
+        //     const analysis = res.analysis;
+        
+        //     if (typeof analysis !== 'string') {
+        //       console.error("❌ Unexpected response format:", analysis);
+        //       return;
+        //     }
+        
+        //     // Extract species and breed from string using RegExp
+        //     const speciesMatch = analysis.match(/Species:\s*(Dog|Cat)/i);
+        //     const breedMatch = analysis.match(/Breed:\s*([A-Za-z\s\-]+)/i);
+        
+        //     const species = speciesMatch?.[1]?.toUpperCase() ?? '';
+        //     const breed = breedMatch?.[1]?.trim() ?? '';
+        
+        //     if (species || breed) {
+        //       this.addPetForm.patchValue({
+        //         species,
+        //         breed
+        //       });
+        
+        //       console.log("✅ Auto-filled form:", { species, breed });
+        //     } else {
+        //       console.warn("⚠️ Species or breed not found in AI response.");
+        //     }
+        //   },
+        //   error: (err) => {
+        //     console.error("❌ Error from detection service:", err);
+        //   }
+        // });
+        
+      }
+    };
+  
+    reader.readAsDataURL(file);
   }
+  
+  
 
   onAddSubmit(): void {
     if (this.addPetForm.invalid || !this.selectedImage) return;

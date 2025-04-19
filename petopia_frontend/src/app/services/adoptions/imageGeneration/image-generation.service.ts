@@ -25,7 +25,13 @@ export class ImageGenerationService {
       image_id: imageId
     });
   }
-
+  detectBreedFromImage(base64: string) {
+    return this.http.post<{ result: string }>(
+      `${this.apiUrl}/detect-breed`,
+      { image_base64: base64 }
+    );
+  }
+  
   
   
 }
