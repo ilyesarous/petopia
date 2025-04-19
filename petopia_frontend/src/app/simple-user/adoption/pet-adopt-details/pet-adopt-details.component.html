@@ -23,8 +23,10 @@
       <!-- Additional Info Section -->
       <div class="pet-info">
         <p>
-          <strong>Location:</strong> {{ pet.location }}<br>
           <strong>Shelter:</strong> {{ pet.shelter?.shelter_name }}<br>
+          
+          <strong>Location:</strong> {{ pet.shelter?.location }}<br>
+
           <strong>Health Status:</strong> {{ pet.healthStatus || 'Unknown' }}
         </p>
         <p class="adoption-paragraph">

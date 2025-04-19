@@ -63,7 +63,27 @@
           Please enter a valid URL.
         </div>
       </div>
+      <!-- Location field -->
+<div class="info-group">
+  <label>Location</label>
+  <input formControlName="location" [readonly]="!isEditing" placeholder="{{ shelterData!.location }}" />
+  <fa-icon *ngIf="isEditing" [icon]="faPen" class="me-2 icon-pen"></fa-icon>
 
+  <!-- Error if invalid -->
+  <div *ngIf="shelterForm.get('location')?.invalid && shelterForm.get('location')?.touched" class="error-message">
+    Location is required.
+  </div>
+</div>
+
+<!-- Map only when editing -->
+<div *ngIf="isEditing" class="map-wrapper">
+  <div id="shelter-map"></div>
+  <div class="selected-location" *ngIf="selectedAddress">
+    <strong>Selected Address:</strong> {{ selectedAddress }}
+  </div>
+</div>
+
+    
       <div class="actions">
         <button class="btn-edit" (click)="enableEdit()" *ngIf="!isEditing">Modify</button>
         <button class="btn-update" (click)="onSubmit()" *ngIf="isEditing">Update</button>

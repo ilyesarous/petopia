@@ -5,6 +5,7 @@ import { Pet } from 'src/app/models/pet/Pet';
 import { ShelterService } from 'src/app/services/adoptions/shelter/shelter.service';
 import { PetService } from 'src/app/services/pets/pet.service';
 import { faPaw } from '@fortawesome/free-solid-svg-icons';
+import { ImageGenerationService } from 'src/app/services/adoptions/imageGeneration/image-generation.service';
 
 @Component({
   selector: 'app-shelter-pet-list',
@@ -36,11 +37,18 @@ export class ShelterPetListComponent {
   editImageFile: File | null = null;
   editImagePreviewUrl: string | ArrayBuffer | null = null;
   imagePreviewUrl: string | ArrayBuffer | null = null;
+  healthStatusOptions = ['VACCINATED',
+    'NEUTERED',
+    'DISABLED',
+    'CHRONIC_CONDITION',
+    'BLIND',
+    'DEAF'];
 
   constructor(
     private petService: PetService,
     private shelterService: ShelterService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private imageGenerationService: ImageGenerationService
   ) {}
 
   ngOnInit(): void {
@@ -73,26 +81,29 @@ export class ShelterPetListComponent {
 
   applyFilters(): void {
     const query = this.searchQuery.toLowerCase();
-
+  
     this.filteredPets = this.pets.filter(pet => {
+      const healthStatusString = (pet.healthStatus || []).join(' ').toLowerCase();
+  
       const matchesSearch = [
         pet.petName,
         pet.breed,
         pet.species,
         pet.gender,
-        pet.healthStatus,
+        healthStatusString,  
         pet.size,
         pet.status
       ].some(field => field?.toLowerCase().includes(query));
-
+  
       const matchesStatus = this.statusFilter === 'ALL' || pet.status === this.statusFilter;
-
+  
       return matchesSearch && matchesStatus;
     });
-
+  
     this.currentPage = 1;
     this.updatePaginatedPets();
   }
+  
 
   updatePaginatedPets(): void {
     const start = (this.currentPage - 1) * this.itemsPerPage;
@@ -159,16 +170,15 @@ export class ShelterPetListComponent {
 
   initEditForm(): void {
     this.editPetForm = this.fb.group({
-      petName: [this.selectedPet.petName,[Validators.required, Validators.minLength(2)]],
-      breed: [this.selectedPet.breed, [Validators.required, Validators.minLength(2), Validators.max(20)]],
+      petName: [this.selectedPet.petName, [Validators.required, Validators.minLength(2)]],
+      breed: [this.selectedPet.breed, [Validators.required, Validators.minLength(2), Validators.maxLength(20)]],
       petAge: [this.selectedPet.petAge, [Validators.required, Validators.min(1)]],
       species: [this.selectedPet.species, Validators.required],
       gender: [this.selectedPet.gender, Validators.required],
       size: [this.selectedPet.size, Validators.required],
-      healthStatus: [this.selectedPet.healthStatus,[Validators.required, Validators.maxLength(50)]],
+      healthStatus: [this.selectedPet.healthStatus || [], Validators.required]  
     });
   }
-
   closeEditModal(): void {
     this.showEditModal = false;
     this.editImageFile = null;
@@ -228,49 +238,104 @@ export class ShelterPetListComponent {
     this.selectedImage = null;
     this.imagePreviewUrl = null;
   }
-
   initAddForm(): void {
     this.addPetForm = this.fb.group({
-      petName: ['',[Validators.required, Validators.minLength(2)]],
-      breed: ['', [Validators.required, Validators.minLength(2), Validators.max(20)]],
+      petName: ['', [Validators.required, Validators.minLength(2)]],
+      breed: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(20)]],
       petAge: [0, [Validators.required, Validators.min(1)]],
       species: ['', Validators.required],
       gender: ['', Validators.required],
       size: ['', Validators.required],
-      healthStatus: ['',[Validators.required, Validators.maxLength(50)]],
+      healthStatus: [[], Validators.required]  
     });
   }
 
   onFileSelected(event: any) {
     const file = event.target.files[0];
-    if (file) {
-      this.selectedImage = file;
-
-      const reader = new FileReader();
-      reader.onload = (e: ProgressEvent<FileReader>) => {
-        const result = e.target?.result;
-        if (result !== undefined) {
-          this.imagePreviewUrl = result;
-        }
-      };
-      reader.readAsDataURL(file);
-    }
+    if (!file) return;
+  
+    this.selectedImage = file;
+    const reader = new FileReader();
+  
+    reader.onload = (e: ProgressEvent<FileReader>) => {
+      const result = e.target?.result;
+      if (result && typeof result === 'string') {
+        this.imagePreviewUrl = result;
+  
+        const base64 = result.split(',')[1];
+  
+        // this.imageGenerationService.detectBreedFromImage(base64).subscribe({
+        //   next: (res: any) => {
+        //     console.log("🧠 AI Raw Response:", res);
+        
+        //     const analysis = res.analysis;
+        
+        //     if (typeof analysis !== 'string') {
+        //       console.error("❌ Unexpected response format:", analysis);
+        //       return;
+        //     }
+        
+        //     // Extract species and breed from string using RegExp
+        //     const speciesMatch = analysis.match(/Species:\s*(Dog|Cat)/i);
+        //     const breedMatch = analysis.match(/Breed:\s*([A-Za-z\s\-]+)/i);
+        
+        //     const species = speciesMatch?.[1]?.toUpperCase() ?? '';
+        //     const breed = breedMatch?.[1]?.trim() ?? '';
+        
+        //     if (species || breed) {
+        //       this.addPetForm.patchValue({
+        //         species,
+        //         breed
+        //       });
+        
+        //       console.log("✅ Auto-filled form:", { species, breed });
+        //     } else {
+        //       console.warn("⚠️ Species or breed not found in AI response.");
+        //     }
+        //   },
+        //   error: (err) => {
+        //     console.error("❌ Error from detection service:", err);
+        //   }
+        // });
+        
+      }
+    };
+  
+    reader.readAsDataURL(file);
   }
+  
+  
 
   onAddSubmit(): void {
     if (this.addPetForm.invalid || !this.selectedImage) return;
-
+  
     const formData = new FormData();
     const petData = { ...this.addPetForm.value };
-
+  
     formData.append('image', this.selectedImage);
     formData.append('petData', JSON.stringify(petData));
-
+  
     this.petService.addPetForShelter(formData).subscribe({
-      next: () => {
+      next: (newPet: any) => {
         this.closeAddModal();
         this.loadPetsByShelterId(this.shelter!.id_shelter!);
         this.showAlert('Pet added successfully!', 'success');
+  
+        console.log('Returned pet:', newPet); 
+        const petId = newPet.idPet.toString();
+
+        if (newPet.petImage && petId) {
+          this.imageGenerationService
+          .storeImageDescription(newPet.petImage, petId)
+          .subscribe({
+            next: (res) => console.log("✅ Description stored:", res),
+            error: (err) => console.error("❌ Failed to store description:", err)
+          });
+        
+        } else {
+          console.warn('Missing image_url or idPet. Skipping description generation.');
+        }
+        
       },
       error: (err) => {
         console.error('Add failed:', err);
@@ -278,4 +343,5 @@ export class ShelterPetListComponent {
       }
     });
   }
+  
 }

@@ -69,6 +69,12 @@ public class ShelterServiceImpl implements IShelterService {
         if (shelter.getShelter_name() != null) {
             existingShelter.setShelter_name(shelter.getShelter_name());
         }
+        if(shelter.getLatitude() != 0){
+            existingShelter.setLatitude(shelter.getLatitude());
+        }
+        if(shelter.getLongitude() != 0){
+            existingShelter.setLongitude(shelter.getLongitude());
+        }
         if (shelter.getLocation() != null) {
             existingShelter.setLocation(shelter.getLocation());
         }

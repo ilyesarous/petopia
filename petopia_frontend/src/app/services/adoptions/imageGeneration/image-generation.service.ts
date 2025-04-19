@@ -19,5 +19,19 @@ export class ImageGenerationService {
       { description: desc }
     );
   }
+  storeImageDescription(imageUrl: string, imageId: string): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/description`, {
+      image_url: imageUrl,
+      image_id: imageId
+    });
+  }
+  detectBreedFromImage(base64: string) {
+    return this.http.post<{ result: string }>(
+      `${this.apiUrl}/detect-breed`,
+      { image_base64: base64 }
+    );
+  }
+  
+  
   
 }

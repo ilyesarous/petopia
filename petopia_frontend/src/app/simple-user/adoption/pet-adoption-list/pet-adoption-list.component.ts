@@ -45,8 +45,14 @@ export class PetAdoptionListComponent implements OnInit {
       next: (data: Pet[]) => {
         this.pets = data;
         this.applyFilters(); 
-        this.distinctLocations = Array.from(new Set(data.map(p => p.location))).filter(loc => loc);
-      },
+        this.distinctLocations = Array.from(
+          new Set(
+            data
+              .map(p => this.getRegion(p.shelter?.location || ''))
+              .filter(loc => loc) // remove null/empty
+          )
+        ).sort();
+              },
       error: (err) => console.error('Error loading unassigned pets', err)
     });
   }
@@ -61,8 +67,9 @@ export class PetAdoptionListComponent implements OnInit {
       const matchesSpecies = !this.selectedSpecies
         || (pet.species && pet.species.toLowerCase() === this.selectedSpecies);
   
-      const matchesLocation = !this.selectedLocation
-        || (pet.location && pet.location.toLowerCase() === this.selectedLocation.toLowerCase());
+        const matchesLocation = !this.selectedLocation
+        || (this.getRegion(pet.location).toLowerCase() === this.selectedLocation.toLowerCase());
+      
   
       return matchesSearch && matchesSpecies && matchesLocation;
     });
@@ -93,4 +100,22 @@ export class PetAdoptionListComponent implements OnInit {
   goToDreamPetPage(): void {
     this.router.navigate(['/adoption/dream-pet']);
   }
+  getRegion(location: string): string {
+    if (!location) return '';
+    const parts = location.split(',').map(p => p.trim());
+  
+    for (let i = parts.length - 1; i >= 0; i--) {
+      if (
+        parts[i] &&
+        parts[i].toLowerCase() !== 'tunisia' &&
+        !/^\d{4,}$/.test(parts[i]) &&
+        !parts[i].includes('معتمدية') 
+      ) {
+        return parts[i];
+      }
+    }
+    return '';
+  }
+  
+  
 }
