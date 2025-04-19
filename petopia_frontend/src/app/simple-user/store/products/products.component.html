@@ -29,6 +29,9 @@
 
     <!-- Icons Container (right side) -->
     <div class="icons-container">
+      <button class="icon-btn" (click)="addNewProduct()" title="add">
+        <i class="bi bi-plus-lg"></i>
+      </button>
       <button class="icon-btn" (click)="viewFavorites()" title="Favorites">
         <i class="bi bi-heart"></i>
         <span class="icon-badge" *ngIf="favoriteCount > 0">
@@ -127,5 +130,21 @@
   >
     <h4>No products found for "{{ searchQuery }}"</h4>
     <button class="btn btn-link" (click)="clearSearch()">Clear search</button>
+  </div>
+
+  <!-- Add Product Modal -->
+  <div class="modal" *ngIf="showAddProductModal">
+    <div class="modal-content">
+      <span class="close" (click)="closeModal()">&times;</span>
+      <app-add-product
+        *ngIf="showAddProductModal"
+        [product]="currentProduct"
+        [isEditMode]="isEditMode"
+        (productAdded)="handleProductAdded($event)"
+        [role]="role"
+        (cancel)="closeModal()"
+      >
+      </app-add-product>
+    </div>
   </div>
 </div>
