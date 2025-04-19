@@ -16,6 +16,10 @@ export class StripePaymentService {
     amount: 50,
     description: 'Veterinary services payment'
   };
+  private defaultEventPaymentDetails = {
+    amount: 10,
+    description: 'Event participation payment'
+  };
 
   constructor(
     private http: HttpClient,
@@ -27,6 +31,18 @@ export class StripePaymentService {
 createCheckoutSessionWithVet(paymentRequest: any): Observable<any> {
   return this.http.post(
     `${this.apiUrl}/create-checkout-session`,
+    paymentRequest,
+    { 
+      headers: new HttpHeaders({'Content-Type': 'application/json'}),
+      withCredentials: false
+    }
+  );
+}
+
+ // Event payment methods
+ createCheckoutSessionForEvent(paymentRequest: any): Observable<any> {
+  return this.http.post(
+    `${this.apiUrl}/create-checkout-session-Event`,
     paymentRequest,
     { 
       headers: new HttpHeaders({'Content-Type': 'application/json'}),
@@ -55,27 +71,27 @@ async redirectToCheckout(sessionId: string) {
   }
 }
 
-  showPaymentStatus(status: 'success' | 'cancel', paymentDetails?: {amount: number, description: string}): void {
-    // Utilise les détails fournis ou les valeurs par défaut
-    const details = paymentDetails || this.defaultPaymentDetails;
-    
-    this.router.navigate(['vet/dash-principale-user'], {
-      queryParams: { payment_status: status }
-    }).then(() => {
-      setTimeout(() => {
-        this.dialog.open(PaymentStatusPopupComponent, {
-          width: '400px',
-          data: { 
-            status,
-            amount: details.amount,
-            description: details.description
-          },
-          disableClose: true,
-          panelClass: 'payment-status-dialog'
-        });
-      }, 100);
-    });
-  }
+showPaymentStatus(
+  status: 'success' | 'cancel', 
+  paymentDetails?: {amount: number, description: string}, 
+  isEventPayment: boolean = false
+): void {
+  const details = paymentDetails || 
+                 (isEventPayment ? this.defaultEventPaymentDetails : this.defaultPaymentDetails);
+  
+  const targetRoute = isEventPayment ? 'participations' : 'vet/dash-principale-user';
+  
+  this.dialog.open(PaymentStatusPopupComponent, {
+    width: '400px',
+    data: { 
+      status,
+      amount: details.amount,
+      description: details.description
+    },
+    disableClose: true,
+    panelClass: 'payment-status-dialog'
+  });
+}
 
   getVetRevenue(vetId: number): Observable<number> {
     return this.http.get<number>(`${this.apiUrl}/revenue/${vetId}`);
@@ -84,5 +100,38 @@ async redirectToCheckout(sessionId: string) {
   getVetPayments(vetId: number): Observable<any[]> {
     return this.http.get<any[]>(`${this.apiUrl}/vet-payments/${vetId}`);
   }
-  
+
+  handleEventPaymentSuccess(): void {
+    this.router.navigate(['/participations'], {
+      queryParams: { payment_status: 'success' }
+    }).then(() => {
+      this.showPaymentStatus('success', undefined, true);
+    });
+  }
+  handleEventPaymentCancel(): void {
+    this.router.navigate(['/participations'], {
+      queryParams: { payment_status: 'cancel' }
+    }).then(() => {
+      this.showPaymentStatus('cancel', undefined, true);
+    });
+  }
+
+  checkEventPaymentStatus(): void {
+    const urlTree = this.router.parseUrl(this.router.url);
+    const status = urlTree.queryParams['payment_status'];
+    
+    if (status) {
+      if (status === 'success') {
+        this.showPaymentStatus('success', undefined, true);
+      } else if (status === 'cancel') {
+        this.showPaymentStatus('cancel', undefined, true);
+      }
+      
+      // Clean up the URL by removing the query params
+      this.router.navigate([], {
+        queryParams: {},
+        replaceUrl: true
+      });
+    }
+  }
 }

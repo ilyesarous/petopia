@@ -70,6 +70,7 @@ import { ParticipationListComponent } from './simple-user/Event/participation-li
 import { EventParticipantsComponent } from './admin/Event/event-participants/event-participants.component';
 import { ServiceAnimalListComponent } from './simple-user/Event/service-animal-list/service-animal-list.component';
 import { AddServiceAnimalComponent } from './simple-user/Event/add-service-animal/add-service-animal.component';
+import { EventDetailsComponent } from './simple-user/Event/event-details/event-details.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -87,6 +88,7 @@ const routes: Routes = [
   { path: 'participations', component: ParticipationListComponent, canActivate: [AuthGuard]},
   { path: 'services', component: ServiceAnimalListComponent, canActivate: [AuthGuard] },
   { path: 'services/add', component: AddServiceAnimalComponent, canActivate: [AuthGuard] },
+  { path: 'event/:id', component: EventDetailsComponent },
 
   { path: 'vet', component: DashPrincipaleHomeVetComponent, canActivate: [AuthGuard] },
   { path: 'vet/pet-growth/:id', component: PetGrowthVetComponent, canActivate: [AuthGuard] },

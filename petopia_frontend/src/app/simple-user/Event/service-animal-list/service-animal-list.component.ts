@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ServiceAnimalService } from 'src/app/services/Event/service-animal.service';
 import { ServiceAnimal, ServiceType } from 'src/app/models/EventModule/serviceAnimal';
 import { Router } from '@angular/router';
+import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-service-animal-list',
@@ -17,8 +18,10 @@ export class ServiceAnimalListComponent implements OnInit {
 
 
   constructor(private serviceAnimalService: ServiceAnimalService,
-              private router: Router // Inject Router if you need it for navigation
-  ) {}
+              private router: Router, // Inject Router if you need it for navigation
+              private sanitizer: DomSanitizer
+
+            ) {}
 
   ngOnInit(): void {
     this.loadServices();
@@ -59,4 +62,13 @@ export class ServiceAnimalListComponent implements OnInit {
   getServiceTypeClass(type: ServiceType): string {
     return type.toString();
   }
+  // getImageUrl(imagePath: string | undefined): SafeUrl | null {
+  //   if (!imagePath) return null;
+  //   const url = this.serviceAnimalService.getImageUrl(imagePath);
+  //   return this.sanitizer.bypassSecurityTrustUrl(url);
+  // }
+  handleImageError(event: any) {
+    event.target.style.display = 'none';
+    // You could also set a default image here
+}
 }

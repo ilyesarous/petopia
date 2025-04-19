@@ -133,6 +133,10 @@ import { ServiceAnimalListComponent } from './simple-user/Event/service-animal-l
 import { AddServiceAnimalComponent } from './simple-user/Event/add-service-animal/add-service-animal.component';
 import { CountdownComponent } from './simple-user/Event/countdown/countdown.component';
 import { XpBarComponent } from './simple-user/Event/xp-bar/xp-bar.component';
+import { EventDetailsComponent } from './simple-user/Event/event-details/event-details.component';
+import { ServiceAnimalDetailsComponent } from './simple-user/Event/service-animal-details/service-animal-details.component';
+
+
 
 @NgModule({
   declarations: [
@@ -229,6 +233,8 @@ import { XpBarComponent } from './simple-user/Event/xp-bar/xp-bar.component';
     AddServiceAnimalComponent,
     CountdownComponent,
     XpBarComponent,
+    EventDetailsComponent,
+    ServiceAnimalDetailsComponent,
   ],
   imports: [
     BrowserModule,
@@ -252,6 +258,8 @@ import { XpBarComponent } from './simple-user/Event/xp-bar/xp-bar.component';
     MatRadioModule,
     MatCardModule,
     MatRippleModule,
+    
+
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }

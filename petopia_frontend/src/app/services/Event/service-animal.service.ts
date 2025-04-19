@@ -9,7 +9,7 @@ import { Router } from '@angular/router';
   providedIn: 'root' // Makes the service available application-wide
 })
 export class ServiceAnimalService {
-  private apiUrl = 'http://localhost:8082/petopia/user/ServiceAnimal';
+  private apiUrl = 'http://localhost:8082/petopia/ServiceAnimal';
 
     private serviceSubject = new BehaviorSubject<any[]>([]);  // État partagé des événements
   
@@ -53,15 +53,61 @@ export class ServiceAnimalService {
   }
 
   // Create a new service animal
-  createServiceAnimal(serviceAnimal: any): Observable<any> {
-    return this.http.post<ServiceAnimal>(
-      `${this.apiUrl}/addServiceAnimal`, serviceAnimal,  { headers: this.getAuthHeaders() }).pipe(
-      tap(() => this.loadServiceAnimals()), // Reload service animals after creation
+//   createServiceAnimal(serviceAnimal: any, imageFile?: File): Observable<any> {
+//     const formData = new FormData();
+
+//  // Format dates properly
+//  const formattedData = {
+//   ...serviceAnimal,
+//   startDate: this.formatDate(serviceAnimal.startDate),
+//   endDate: this.formatDate(serviceAnimal.endDate)
+  
+// };
+
+// // Append all service animal data as JSON
+// formData.append('serviceAnimal', JSON.stringify(serviceAnimal));
+// // Append image if provided
+// if (imageFile) {
+//   formData.append('image', imageFile);
+// }
+
+//     return this.http.post<ServiceAnimal>(
+//       `${this.apiUrl}/addServiceAnimal`, formData,  { headers: new HttpHeaders({'Authorization': `Bearer ${this.token}`}) }).pipe(
+//       tap(() => this.loadServiceAnimals()), // Reload service animals after creation
     
-    );
+//     );
+//   }
+
+createServiceAnimal(serviceAnimal: any, logoFile?: File): Observable<any> {
+  const formData = new FormData();
+
+  // Format dates properly
+  const formattedData = {
+      ...serviceAnimal,
+      startDate: this.formatDate(serviceAnimal.startDate),
+      endDate: this.formatDate(serviceAnimal.endDate)
+  };
+
+  // Append all service animal data as JSON
+  formData.append('serviceAnimal', JSON.stringify(formattedData));
+  
+  // Append logo file if provided (note the parameter name matches the backend)
+  if (logoFile) {
+      formData.append('logoFile', logoFile);
   }
 
-
+  return this.http.post<ServiceAnimal>(
+      `${this.apiUrl}/addServiceAnimal`, 
+      formData,  
+      { 
+          headers: new HttpHeaders({
+              'Authorization': `Bearer ${this.token}`
+          }) 
+      }
+  ).pipe(
+      tap(() => this.loadServiceAnimals()) // Reload service animals after creation
+  );
+}
   loadServiceAnimals() {
     this.getAllServiceAnimals().subscribe(serviceAnimals => {
 this.serviceSubject.next(serviceAnimals);});  // Update the service animals in the BehaviorSubject});
@@ -99,4 +145,27 @@ this.serviceSubject.next(serviceAnimals);});  // Update the service animals in t
     return throwError(() => new Error('Something went wrong; please try again later.'));
   }
 
+  private formatDate(date: string): string {
+    return new Date(date).toISOString().split('T')[0];
+  }
+  // getImageUrl(imagePath: string | undefined): string {
+  //   if (!imagePath) {
+  //     return ''; // Return empty string for no image
+  //   }
+  //   const cleanPath = imagePath.split('?')[0];
+
+  //   return `${this.apiUrl}/image/${encodeURIComponent(cleanPath)}`;
+  // }
+  
+  // getImage(imagePath: string): Observable<Blob> {
+  //   if (!imagePath) {
+  //     return throwError(() => new Error('No image path provided'));
+  //   }
+  //   return this.http.get(`${this.apiUrl}/image/${imagePath}`, {
+  //     headers: this.getAuthHeaders(),
+  //     responseType: 'blob'
+  //   });
+  // }
+  
+  
 }

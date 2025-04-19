@@ -76,6 +76,7 @@ export class EventFormComponent implements OnInit {
     }
     return null;
   }
+  
 
   loadEventForUpdate(eventId: number): void {
     // Charger les détails de l'événement existant
@@ -84,9 +85,10 @@ export class EventFormComponent implements OnInit {
       this.eventForm = this.fb.group({
         nameEvent: ['', Validators.required],
         descriptionEvent: ['', Validators.required],
-        dateEvent: ['', Validators.required],
+        dateEvent: ['', [Validators.required,this.futureDateValidator.bind(this)]],
+        timeEvent: ['', Validators.required],  // Add this line
         lieuEvent: ['', Validators.required],
-        lattitudeEvent: [0, [Validators.required, Validators.min(-90), Validators.max(90)]],
+        lattitudeEvent: [, [Validators.required, Validators.min(-90), Validators.max(90)]],
         longitudeEvent: [0, [Validators.required, Validators.min(-180), Validators.max(180)]],
         prixEvent: [0, [Validators.required, Validators.min(0)]],
         placesMaxEvent: [1, [Validators.required, Validators.min(1)]],
@@ -104,7 +106,13 @@ export class EventFormComponent implements OnInit {
     if (this.eventForm.valid) {
       const formData = this.eventForm.value;
       formData.organisateur = { id_user: this.userId };
-
+ // Combine date and time
+ if (formData.dateEvent && formData.timeEvent) {
+  const date = new Date(formData.dateEvent);
+  const timeParts = formData.timeEvent.split(':');
+  date.setHours(parseInt(timeParts[0]), parseInt(timeParts[1]));
+  formData.dateEvent = date.toISOString(); // Or format as needed by your backend
+}
       if (this.eventId) {
         this.eventService.updateEvent(this.eventId, formData).subscribe(
           () => {

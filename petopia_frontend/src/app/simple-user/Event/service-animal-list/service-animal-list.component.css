@@ -1,124 +1,391 @@
-.container {
-    font-family: 'Poppins', sans-serif;
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 20px;
+.services-container {
+  max-width: 1200px;
+  margin: 2rem auto;
+  padding: 0 1.5rem;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.services-header {
+  margin-bottom: 2rem;
+}
+
+.header-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.header-content h1 {
+  color: #F83182;
+  font-size: 2rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin: 0;
+}
+
+.header-decoration {
+  height: 4px;
+  width: 100px;
+  background: linear-gradient(135deg, #F83182, #FF617C, #FE9A7A);
+  border-radius: 2px;
+}
+
+.add-button {
+  background: linear-gradient(135deg, #F83182, #FF617C);
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 30px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  box-shadow: 0 4px 8px rgba(248, 49, 130, 0.2);
+}
+
+.add-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(248, 49, 130, 0.3);
+}
+
+.add-button i {
+  font-size: 1.1rem;
+}
+
+.filters-card {
+  background: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.search-container, .filter-select {
+  position: relative;
+  flex: 1;
+  min-width: 250px;
+}
+
+.search-container i, .filter-select i {
+  position: absolute;
+  left: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #FF617C;
+}
+
+.search-container input {
+  width: 100%;
+  padding: 0.75rem 1rem 0.75rem 2.5rem;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: all 0.3s;
+}
+
+.search-container input:focus {
+  outline: none;
+  border-color: #F83182;
+  box-shadow: 0 0 0 2px rgba(248, 49, 130, 0.1);
+}
+
+.filter-select select {
+  width: 100%;
+  padding: 0.75rem 1rem 0.75rem 2.5rem;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  appearance: none;
+  background-color: white;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.filter-select select:focus {
+  outline: none;
+  border-color: #F83182;
+  box-shadow: 0 0 0 2px rgba(248, 49, 130, 0.1);
+}
+
+.no-results {
+  text-align: center;
+  padding: 3rem;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  margin-bottom: 2rem;
+}
+
+.no-results i {
+  font-size: 2.5rem;
+  color: #FF617C;
+  margin-bottom: 1rem;
+}
+
+.no-results p {
+  color: #666;
+  font-size: 1.1rem;
+  margin-bottom: 1.5rem;
+}
+
+.empty-state-button {
+  background: linear-gradient(135deg, #F83182, #FF617C);
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 30px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  box-shadow: 0 4px 8px rgba(248, 49, 130, 0.2);
+}
+
+.empty-state-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(248, 49, 130, 0.3);
+}
+
+.services-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1.5rem;
+}
+
+.service-card {
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+}
+
+.service-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+}
+
+.service-header {
+  padding: 1.5rem;
+  color: white;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.service-header h3 {
+  margin: 0;
+  font-size: 1.25rem;
+}
+
+.service-icon {
+  background: rgba(255, 255, 255, 0.2);
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.25rem;
+}
+
+.service-body {
+  padding: 1.5rem;
+  flex-grow: 1;
+}
+
+.service-description {
+  color: #666;
+  margin: 0 0 1.5rem 0;
+  line-height: 1.5;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.service-details {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.price-tag {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-weight: 600;
+  color: #2E2E3A;
+}
+
+.price-tag i {
+  color: #FF617C;
+}
+
+.availability {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.9rem;
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  background: #f5f5f5;
+  color: #666;
+}
+
+.availability.available {
+  background: #e8f5e9;
+  color: #2e7d32;
+}
+
+.availability i.fa-check-circle {
+  color: #2e7d32;
+}
+
+.availability i.fa-times-circle {
+  color: #c62828;
+}
+
+.service-footer {
+  padding: 1rem 1.5rem;
+  border-top: 1px solid #f0f0f0;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.view-details {
+  color: #F83182;
+  font-weight: 600;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: all 0.3s;
+}
+
+.service-card:hover .view-details {
+  color: #FF617C;
+}
+
+/* Service type specific classes */
+.grooming {
+  background: linear-gradient(135deg, #8e44ad, #9b59b6);
+}
+
+.boarding {
+  background: linear-gradient(135deg, #3498db, #2980b9);
+}
+
+.training {
+  background: linear-gradient(135deg, #f39c12, #e67e22);
+}
+
+.veterinary {
+  background: linear-gradient(135deg, #e74c3c, #c0392b);
+}
+
+.walking {
+  background: linear-gradient(135deg, #1abc9c, #16a085);
+}
+
+.default-service {
+  background: linear-gradient(135deg, #F83182, #FF617C);
+}
+
+@media (max-width: 768px) {
+  .header-content {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
   }
   
-  .header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 30px;
-  }
-  
-  .header h1 {
-    color: #333;
-    font-weight: 600;
-  }
-  
-  .add-button {
-    background-color: #F83182;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
-    cursor: pointer;
-    font-weight: 500;
-    transition: all 0.3s ease;
-  }
-  
-  .add-button:hover {
-    background-color: #e02a72;
-    transform: translateY(-2px);
-  }
-  
-  .filters {
-    display: flex;
-    gap: 15px;
-    margin-bottom: 20px;
-  }
-  
-  .filters input, .filters select {
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    font-family: 'Poppins', sans-serif;
-    width: 250px;
+  .filters-card {
+    flex-direction: column;
+    gap: 1rem;
   }
   
   .services-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 20px;
+    grid-template-columns: 1fr;
   }
-  
-  .service-card {
-    background: white;
-    border-radius: 10px;
-    overflow: hidden;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    transition: all 0.3s ease;
-    cursor: pointer;
-  }
-  
-  .service-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-  }
-  
-  .service-header {
-    padding: 15px;
-    color: white;
-    font-weight: 500;
-  }
-  
-  .service-header.DOG_WALKING {
-    background: linear-gradient(135deg, #F83182 0%, #FF617C 100%);
-  }
-  
-  .service-header.PET_SITTING {
-    background: linear-gradient(135deg, #FF617C 0%, #FE9A7A 100%);
-  }
-  
-  .service-header.GROOMING {
-    background: linear-gradient(135deg, #FE9A7A 0%, #ffb38a 100%);
-  }
-  
-  .service-body {
-    padding: 15px;
-  }
-  
-  .service-body p {
-    color: #666;
-    margin-bottom: 15px;
-  }
-  
-  .service-details {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-  
-  .service-details .price {
-    font-weight: 600;
-    color: #333;
-    font-size: 1.2em;
-  }
-  
-  .service-details .availability {
-    padding: 5px 10px;
-    border-radius: 15px;
-    font-size: 0.8em;
-    font-weight: 500;
-  }
-  
-  .service-details .availability.available {
-    background-color: rgba(0, 200, 83, 0.1);
-    color: #00C853;
-  }
-  
-  .service-details .availability:not(.available) {
-    background-color: rgba(255, 0, 0, 0.1);
-    color: #FF0000;
-  }
+}
+/* Add these to your existing styles */
+
+.service-image-container {
+  width: 100%;
+  height: 180px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #f5f5f5;
+  position: relative;
+}
+
+.service-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.service-card:hover .service-image {
+  transform: scale(1.05);
+}
+
+.image-placeholder {
+  position: absolute;
+  font-size: 3rem;
+  color: #ddd;
+}
+
+.service-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 10px;
+  font-size: 0.85rem;
+}
+
+.service-meta span {
+  display: flex;
+  align-items: center;
+  background: #f5f5f5;
+  padding: 4px 8px;
+  border-radius: 12px;
+}
+
+.service-meta i {
+  margin-right: 4px;
+  color: #4a6fa5;
+}
+
+/* Update existing card styles for better spacing */
+.service-card {
+  display: flex;
+  flex-direction: column;
+}
+
+.service-header {
+  padding: 12px 15px;
+}
+
+.service-body {
+  padding: 15px;
+  flex-grow: 1;
+}
+
+.service-footer {
+  padding: 10px 15px;
+}

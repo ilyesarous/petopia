@@ -46,8 +46,10 @@ public class ParticipationController {
     public ResponseEntity<Participation> createParticipation(@RequestBody Participation participation) {
         System.out.println(participation);
         Participation createdParticipation = participationService.createParticipation(participation);
+       /* User user = userService.getUsersById(participation.getParticipant().getId_user()).getOurUsers();
+        participation.setParticipant(user);*/
          // Ajouter des XP et vérifier les niveaux
-        // userService.addXp(participation.getParticipant().getId_user(), 50); // 50 XP par participation
+         userService.addXp(participation.getParticipant().getId_user(), 50); // 50 XP par participation
         return ResponseEntity.ok(createdParticipation);
     }
 
