@@ -8,6 +8,7 @@ import tn.esprit.petopia_backend.entities.store.Product;
 import tn.esprit.petopia_backend.entities.user.User;
 import tn.esprit.petopia_backend.repositories.store.CartProductRepository;
 import tn.esprit.petopia_backend.repositories.store.CartRepository;
+import tn.esprit.petopia_backend.repositories.store.ProductRepository;
 import tn.esprit.petopia_backend.repositories.user.UserRepository;
 import tn.esprit.petopia_backend.services.store.interfaces.ICartProductService;
 
@@ -18,6 +19,7 @@ import java.util.stream.Collectors;
 @Service
 @AllArgsConstructor
 public class CartProductService implements ICartProductService {
+    private final ProductRepository productRepository;
     private UserRepository userRepository;
     private ProductService productService;
     private CartProductRepository cartProductRepository;
@@ -46,6 +48,9 @@ public class CartProductService implements ICartProductService {
             cart.getCartProducts().add(cartProduct);
         }
         cartProduct.setTotal(product.getProduct_price() * cartProduct.getQuantity());
+        product.setQuantity(cartProduct.getQuantity());
+        productRepository.save(product);
+        cartProductRepository.save(cartProduct);
         productService.decreaseAvailableQuantity(productId, quantity);
     }
 
@@ -55,24 +60,26 @@ public class CartProductService implements ICartProductService {
         CartProduct cartProduct = getCartProduct(cart, productId);
         if (cartProduct != null) {
             cartProduct.setQuantity(cartProduct.getQuantity() - 1);
+            product.setQuantity(cartProduct.getQuantity());
         } else {
             throw new RuntimeException("Product not found");
         }
         cartProduct.setTotal(cartProduct.getTotal() - product.getProduct_price());
+        productRepository.save(product);
         productService.increaseAvailableQuantity(productId, 1);
     }
 
-    public List<CartProduct> getTopProducts() {
-        return cartProductRepository.findAll()
+    public List<Product> getTopProducts() {
+        return productRepository.findAll()
                 .stream()
                 .sorted((c1, c2) -> c2.getQuantity() - c1.getQuantity())
                 .limit(4)
                 .collect(Collectors.toList());
     }
-    public List<CartProduct> getTopProductsByUserId(int idUser) {
-        return cartProductRepository.findAll()
+    public List<Product> getTopProductsByUserId(int idUser) {
+        User user = userRepository.findById(idUser).get();
+        return productRepository.findByUser(user)
                 .stream()
-                .filter(cartProduct -> cartProduct.getProduct().getUser().getId_user() == idUser)
                 .sorted((c1, c2) -> c2.getQuantity() - c1.getQuantity())
                 .limit(4)
                 .collect(Collectors.toList());
@@ -80,26 +87,26 @@ public class CartProductService implements ICartProductService {
 
     public Double getTotalSalesByUser(int idUser) {
         User user = userRepository.findById(idUser).get();
-        List<CartProduct> cartProducts = cartProductRepository.findByProductUser(user);
+        List<Product> products = productRepository.findByUser(user);
         double total = 0;
-        for (CartProduct cartProduct : cartProducts) {
-            total += cartProduct.getTotal();
+        for (Product product : products) {
+            total += product.getProduct_price()*product.getQuantity();
         }
         return total;
     }
 
     public int getTotalSales(int idUser) {
         User user = userRepository.findById(idUser).get();
-        List<CartProduct> cartProducts = cartProductRepository.findByProductUser(user);
+        List<Product> products = productRepository.findByUser(user);
         int total = 0;
-        for (CartProduct cartProduct : cartProducts) {
-            total += cartProduct.getQuantity();
+        for (Product product : products) {
+            total += product.getQuantity();
         }
         return total;
     }
 
     public Float getTotalSalesByProductId(int idProduct) {
         Product product = productService.findById(idProduct);
-        return cartProductRepository.findByProduct(product).getTotal();
+        return product.getProduct_price()*product.getQuantity();
     }
 }

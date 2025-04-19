@@ -76,6 +76,50 @@ async redirectToCheckout(sessionId: string) {
       }, 100);
     });
   }
+createCheckoutSessionWithShop(paymentRequest: any): Observable<any> {
+  console.log("paymentRequest: "+paymentRequest);
+  
+  return this.http.post(
+    `${this.apiUrl}/create-checkout-session-shop`,
+    paymentRequest,
+    { 
+      headers: new HttpHeaders({'Content-Type': 'application/json'}),
+      withCredentials: false
+    }
+  );
+}
+
+async redirectToCheckoutShop(sessionId: string) {
+  try {
+    const stripe = await loadStripe('pk_test_51OpFDfKiR2IT5FaSc8l7iJlaZ1MiLvSDyyfqBVO7DbzGr5whXochBfHg0l4ckTwNt5nZhMDi08y2OqKcCjD4J5nP00CUs4zvYR');
+
+    if (stripe) {
+      const { error } = await stripe.redirectToCheckout({
+        sessionId: sessionId
+      });
+
+      if (error) {
+        console.error('Error redirecting to checkout:', error);
+        this.showPaymentStatusShop('cancel');
+      }
+    }
+  } catch (error) {
+    console.error('Error redirecting to checkout:', error);
+    this.showPaymentStatusShop('cancel');
+  }
+}
+
+  showPaymentStatusShop(status: 'success' | 'cancel', paymentDetails?: {amount: number, description: string}): void {
+    // Utilise les détails fournis ou les valeurs par défaut
+    const details = paymentDetails;
+    
+    this.router.navigate(['cart'], {
+      queryParams: { payment_status: status }
+    }).then(() => {
+      console.log(details);
+      
+    });
+  }
 
   getVetRevenue(vetId: number): Observable<number> {
     return this.http.get<number>(`${this.apiUrl}/revenue/${vetId}`);

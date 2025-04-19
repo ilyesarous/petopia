@@ -10,4 +10,5 @@ import java.util.List;
 @Repository
 public interface FeedbackRepository extends JpaRepository<Feedback, Integer> {
     List<Feedback> findByProduct(Product product);
+
 }

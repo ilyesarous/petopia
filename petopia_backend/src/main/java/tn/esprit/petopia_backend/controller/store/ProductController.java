@@ -54,7 +54,7 @@ public class ProductController {
     }
 
     @PostMapping(path = "user/product/add", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public Product addProductSecondHand(@RequestParam("product_image") MultipartFile file,
+    public Product addProductSecondHand(@RequestParam(value = "product_image") MultipartFile file,
                                         @RequestParam("product_name") String productName,
                                         @RequestParam("product_description") String productDescription,
                                         @RequestParam("product_price") float productPrice,

@@ -9,6 +9,7 @@ import { Feedback } from 'src/app/models/product/feedback';
 export class FeedbackService {
   constructor(private http: HttpClient) {}
   private url = 'http://localhost:8082/petopia/user/feedback';
+  private url1 = 'http://localhost:8082/petopia/partner/feedback';
   token: string = localStorage.getItem('token') || '';
   userId = localStorage.getItem('userId')
     ? parseInt(localStorage.getItem('userId')!)
@@ -33,6 +34,15 @@ export class FeedbackService {
     return this.http.get<Feedback[]>(`${this.url}/getByProduct/${productId}`, {
       headers: this.getAuthHeaders(),
     });
+  }
+
+  getSentimentByProduct(idProduct: number): Observable<string>{
+    return this.http.get(`${this.url1}/sentiment/${idProduct}`,
+      {
+        headers: this.getAuthHeaders(),
+        responseType: 'text',
+      }
+    )
   }
 
   deleteFeedback(feedbackId: number): Observable<any> {

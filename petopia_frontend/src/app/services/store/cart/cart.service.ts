@@ -18,11 +18,11 @@ export class CartService {
     });
   }
 
-  getNbItemsInCart(id_user: number): Observable<any> {
-    return this.http.get<any>(this.url + 'cart/nbItems/' + id_user, {
-      headers: this.getAuthHeaders(),
-    });
-  }
+  // getNbItemsInCart(id_user: number): Observable<any> {
+  //   return this.http.get<any>(this.url + 'cart/nbItems/' + id_user, {
+  //     headers: this.getAuthHeaders(),
+  //   });
+  // }
   
   getCartByUserId(userId: number): Observable<any> {
     return this.http.get<any>(this.url + 'cart/' + userId, {
@@ -66,6 +66,12 @@ export class CartService {
     return this.http.delete<any>(this.url + 'cart/delete/' + id_user + '/' + idProduct, {
       headers: this.getAuthHeaders(),
     });
+  }
+
+  checkout(id_user: number): Observable<any>{
+    return this.http.delete<any>(this.url+ 'cart/checkout/'+ id_user, {
+      headers: this.getAuthHeaders(),
+    })
   }
 
 }

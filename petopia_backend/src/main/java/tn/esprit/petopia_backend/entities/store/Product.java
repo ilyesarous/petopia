@@ -32,6 +32,7 @@ public class Product {
     private ProductCategory category;
     private boolean isLiked;
     private int availableQuantity;
+    private int quantity;
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
