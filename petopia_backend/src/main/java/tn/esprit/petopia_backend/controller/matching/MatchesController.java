@@ -153,17 +153,20 @@ public class MatchesController {
         match.setStatus(MatchStatus.ACCEPTED);
         Matches updatedMatch = matchesService.updateMatches(match);
 
+        // In acceptMatch method
         ChatMessage welcomeMessage = ChatMessage.builder()
                 .matchId(idMatch)
                 .senderId(user.getId_user())
                 .receiverId(match.getPet_1().getUser().getId_user())
+                .sender(user.getUsername()) // or getEmail()
+                .recipient(match.getPet_1().getUser().getUsername())
                 .content("Salut ! Le match a été accepté, discutons !")
                 .type(MessageType.CHAT)
                 .build();
-
         messagingService.sendMessage(welcomeMessage);
         return ResponseEntity.ok(updatedMatch);
     }
+
 
     @GetMapping("/friends")
     @PreAuthorize("hasAuthority('ROLE_USER')")

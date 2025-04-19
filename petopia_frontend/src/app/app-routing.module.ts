@@ -57,6 +57,7 @@ import { ShelterSignCertificateComponent } from './simple-user/shelter/shelter-s
 import { ShelterCertificateDetailsComponent } from './simple-user/shelter/shelter-certificate-details/shelter-certificate-details.component';
 import { CommunityListComponent } from './admin/community/community-list/community-list.component';
 import { CommunityDetailsComponent } from './admin/community/community-details/community-details.component';
+import { MatchbackComponent } from './admin/matching/matchback/matchback.component';
 import { AddProductComponent } from './admin/store/add-product/add-product.component';
 import { UserSignCertificateComponent } from './simple-user/adoption/user-sign-certificate/user-sign-certificate.component';
 import { UserViewCertificateComponent } from './simple-user/adoption/user-view-certificate/user-view-certificate.component';
@@ -164,6 +165,8 @@ const routes: Routes = [
 
       { path: 'community', component: CommunityListComponent },
       { path: 'community/details/:type/:id', component: CommunityDetailsComponent },
+      { path: 'match-back', component: MatchbackComponent },
+
 
 
 

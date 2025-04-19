@@ -112,6 +112,8 @@ import { CommunityListComponent } from './admin/community/community-list/communi
 import { CommunityDetailsComponent } from './admin/community/community-details/community-details.component';
 import { MatchingComponent } from './simple-user/matching/matching/matching.component';
 import { PetDetailsComponent } from './simple-user/matching/pet-details/pet-details.component';
+import { MatchbackComponent } from './admin/matching/matchback/matchback.component';
+
 
 import { HomePartnerComponent } from './simple-user/store/partner/home-partner/home-partner.component';
 import { UserSignCertificateComponent } from './simple-user/adoption/user-sign-certificate/user-sign-certificate.component';
@@ -221,6 +223,7 @@ import { XpBarComponent } from './simple-user/Event/xp-bar/xp-bar.component';imp
     ShelterCertificateDetailsComponent,
     CommunityListComponent,
     CommunityDetailsComponent,
+    MatchbackComponent,
     HomePartnerComponent,
     UserSignCertificateComponent,
     UserViewCertificateComponent,
