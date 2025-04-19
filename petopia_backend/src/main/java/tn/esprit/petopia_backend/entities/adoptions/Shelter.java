@@ -20,6 +20,9 @@ public class Shelter {
 
     private String shelter_name;
     private String location;
+    private double latitude;
+    private double longitude;
+
     private String email;
     private String phone_number;
 

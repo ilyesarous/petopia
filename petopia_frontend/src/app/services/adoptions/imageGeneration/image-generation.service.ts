@@ -19,5 +19,13 @@ export class ImageGenerationService {
       { description: desc }
     );
   }
+  storeImageDescription(imageUrl: string, imageId: string): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}/description`, {
+      image_url: imageUrl,
+      image_id: imageId
+    });
+  }
+
+  
   
 }
