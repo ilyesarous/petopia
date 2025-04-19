@@ -7,14 +7,10 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import tn.esprit.petopia_backend.entities.event.Participation;
 import tn.esprit.petopia_backend.entities.event.ServiceAnimal;
 import tn.esprit.petopia_backend.entities.user.User;
-import tn.esprit.petopia_backend.services.event.ImageStorageService;
-import tn.esprit.petopia_backend.services.event.ParticipationServiceImplement;
 import tn.esprit.petopia_backend.services.event.ServiceAnimalImplement;
 
 import java.util.Base64;
@@ -27,8 +23,7 @@ public class ServiceAnimalController {
 
     @Autowired
     private ServiceAnimalImplement serviceAnimalImplement;
-    @Autowired
-    ImageStorageService imageStorageService;
+
 
     // Récupérer toutes les Services Animals
     // http://localhost:8082/petopia/user/ServiceAnimal/getAllServiceAnimals
@@ -110,28 +105,5 @@ public class ServiceAnimalController {
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping("/image/{filename:.+}")
-    @PreAuthorize("hasAuthority('ROLE_USER')")
 
-    public ResponseEntity<byte[]> getImage(@PathVariable String filename) {
-        try {
-            byte[] imageBytes = imageStorageService.loadImage(filename);
-            return ResponseEntity.ok()
-                    .contentType(MediaType.IMAGE_JPEG)
-                    .body(imageBytes);
-        } catch (Exception e) {
-            return ResponseEntity.notFound().build();
-        }
-    }
-    @GetMapping("/image-base64/{filename:.+}")
-    public ResponseEntity<String> getImageAsBase64(@PathVariable String filename) {
-        try {
-            byte[] imageBytes = imageStorageService.loadImage(filename);
-            String base64Image = Base64.getEncoder().encodeToString(imageBytes);
-            return ResponseEntity.ok()
-                    .body("data:image/jpeg;base64," + base64Image);
-        } catch (Exception e) {
-            return ResponseEntity.notFound().build();
-        }
-    }
 }
