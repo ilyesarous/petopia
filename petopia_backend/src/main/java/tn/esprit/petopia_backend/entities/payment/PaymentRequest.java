@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import tn.esprit.petopia_backend.entities.store.Cart;
 import tn.esprit.petopia_backend.entities.user.User;
 
 import java.util.Date;
@@ -33,6 +34,9 @@ public class PaymentRequest {
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "vet_id_user")
     private User userVet;
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    private Cart cart;
 
 
     @Transient // Ce champ ne sera pas persisté

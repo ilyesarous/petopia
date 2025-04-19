@@ -2,10 +2,7 @@ package tn.esprit.petopia_backend.entities.store;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
@@ -26,5 +23,16 @@ public class CartProduct {
     private int quantity;
     private float total;
     private LocalDateTime createdAt;
+
+    @Override
+    public String toString() {
+        return "CartProduct{" +
+                "id=" + id +
+                ", quantity=" + quantity +
+                ", total=" + total +
+                ", createdAt=" + createdAt +
+                ", product=" + product.getProduct_id() +
+                '}';
+    }
 }
 

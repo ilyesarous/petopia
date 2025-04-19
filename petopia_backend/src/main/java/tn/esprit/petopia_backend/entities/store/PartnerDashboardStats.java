@@ -10,6 +10,7 @@ import java.util.Map;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@ToString
 public class PartnerDashboardStats {
     private int totalSales;
     private double totalRevenue;

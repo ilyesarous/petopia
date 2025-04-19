@@ -6,6 +6,7 @@ import tn.esprit.petopia_backend.entities.store.Cart;
 import tn.esprit.petopia_backend.entities.store.CartProduct;
 import tn.esprit.petopia_backend.entities.store.Product;
 import tn.esprit.petopia_backend.entities.user.User;
+import tn.esprit.petopia_backend.repositories.store.CartProductRepository;
 import tn.esprit.petopia_backend.repositories.store.CartRepository;
 import tn.esprit.petopia_backend.repositories.store.ProductRepository;
 import tn.esprit.petopia_backend.services.store.interfaces.ICartService;
@@ -17,7 +18,7 @@ import java.util.List;
 @Service
 @AllArgsConstructor
 public class CartService implements ICartService {
-    private final ProductRepository productRepository;
+    private CartProductRepository cartProductRepository;
     private CartRepository repository;
     private CartProductService cartProductService;
     private ProductService productService;
@@ -40,6 +41,7 @@ public class CartService implements ICartService {
         if (cart == null) {
             cart = new Cart();
             cart.setUser(userService.getUsersById(idUser).getOurUsers());
+            repository.save(cart);
         }
         Product product = productService.findById(productId);
         cartProductService.increaseQuantity(cart, productId, quantity);
@@ -72,9 +74,11 @@ public class CartService implements ICartService {
         Cart cart = findCartByUser(idUser);
         for (CartProduct cp : cart.getCartProducts()) {
             cp.getProduct().setAvailableQuantity(cp.getProduct().getAvailableQuantity() + cp.getQuantity());
+            cp.getProduct().setQuantity(0);
         }
-        cart.setTotal_price(0);
+        cartProductRepository.deleteAll(cart.getCartProducts());
         cart.getCartProducts().clear();
+        cart.setTotal_price(0);
         repository.save(cart);
     }
 
@@ -84,8 +88,10 @@ public class CartService implements ICartService {
         for (CartProduct cp : cart.getCartProducts()) {
             if (cp.getProduct().getProduct_id() == idProduct) {
                 cp.getProduct().setAvailableQuantity(cp.getProduct().getAvailableQuantity() + cp.getQuantity());
+                cp.getProduct().setQuantity(cp.getProduct().getQuantity() - cp.getQuantity());
                 cart.setTotal_price(cart.getTotal_price() - (cp.getProduct().getProduct_price() * cp.getQuantity()));
                 cart.getCartProducts().remove(cp);
+                cartProductRepository.deleteById(cp.getId());
                 return repository.save(cart);
             }
         }
@@ -93,9 +99,13 @@ public class CartService implements ICartService {
     }
 
     @Override
-    public String checkout(int idUser) {
+    public void checkout(int idUser) {
         Cart cart = findCartByUser(idUser);
-        return "votre total est: " + cart.getTotal_price();
+        cartProductRepository.deleteAll(cart.getCartProducts());
+        cart.getCartProducts().clear();
+        cart.setTotal_price(0);
+
+        repository.save(cart);
     }
 
     @Override
@@ -108,29 +118,13 @@ public class CartService implements ICartService {
         return repository.findAll();
     }
 
-    /*public List<CartProduct>getTopProducts(int idUser){
-        Cart cart = findCartByUser(idUser);
-        return cartProductService.getTopProducts(cart);
-    }*/
 
     public List<Product> getBestSaledProducts() {
-        List<Product> bestSaledProducts = new ArrayList<>();
-        for (CartProduct cp : cartProductService.getTopProducts()) {
-            bestSaledProducts.add(cp.getProduct());
-        }
-        return bestSaledProducts;
+        return cartProductService.getTopProducts();
     }
 
     public List<Product> getBestSaledProductsByUser(int idUser) {
-        List<Product> bestSaledProducts = new ArrayList<>();
-        for (CartProduct cp : cartProductService.getTopProductsByUserId(idUser)) {
-            bestSaledProducts.add(cp.getProduct());
-        }
-        return bestSaledProducts;
-    }
-
-    public Double totalPrice(int idUser) {
-        return cartProductService.getTotalSalesByUser(idUser);
+        return cartProductService.getTopProductsByUserId(idUser);
     }
 
 }

@@ -57,9 +57,6 @@ public class ProductService implements IProductService {
 
             // Set user and brand (as you already have)
             User user = userService.getUsersById(product.getUser().getId_user()).getOurUsers();
-            //User user = userService.getUsersById(1).getOurUsers();
-
-            //Brand brand = brandRepository.findById(product.getBrand().getId()).get();
             Brand brand = brandRepository.findById(2).get();
             if (user == null) {
                 throw new RuntimeException("User not found");
@@ -85,7 +82,7 @@ public class ProductService implements IProductService {
         User user = userService.getUsersById(idUser).getOurUsers();
         if (repository.findByUser(user).isEmpty())
             throw new RuntimeException("Product not found");
-        return repository.findByUser(user);
+        return repository.findByUser(user).stream().sorted((p1, p2) -> p2.getQuantity() - p1.getQuantity()).collect(Collectors.toList());
     }
 
     @Override

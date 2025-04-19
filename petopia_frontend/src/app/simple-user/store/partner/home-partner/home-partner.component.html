@@ -87,7 +87,8 @@
               <th>Stock</th>
               <th>Rating</th>
               <th>Status</th>
-              <th>Top Selling</th>
+              <th>opinion</th>
+              <th *ngIf="stats.topSellingProducts.length != 0">Top Selling</th>
               <th>Actions</th>
             </tr>
           </thead>
@@ -141,7 +142,12 @@
                   }}
                 </span>
               </td>
-              <td class="top-selling">
+              <td>
+                <div class="sentiment-display">
+                  <img [src]="getSentimentIcon(product.sentiment)" alt="icon" width="35"/>
+                </div>
+              </td>
+              <td class="top-selling" *ngIf="stats.topSellingProducts.length != 0">
                 <div class="top-selling-container">
                   <span *ngIf="isTopSelling(product)" class="top-selling-tag">
                     <i class="bi bi-award"></i> Top Seller

@@ -32,9 +32,9 @@ public class CartController {
         return cartService.addProductToCart(addToCart.getId_user(), addToCart.getIdProduct(), addToCart.getQuantity());
     }
 
-    @GetMapping("/checkout")
-    public String checkout(@RequestBody int idUser) {
-        return cartService.checkout(idUser);
+    @DeleteMapping("/checkout/{idUser}")
+    public void checkout(@PathVariable int idUser) {
+        cartService.checkout(idUser);
     }
 
     @PutMapping("update")

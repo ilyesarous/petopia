@@ -17,6 +17,7 @@ import {
   ChartComponent,
 } from 'ng-apexcharts';
 import { Product } from 'src/app/models/product/Product';
+import { FeedbackService } from 'src/app/services/store/feedback/feedback.service';
 import { DashboardService } from 'src/app/services/store/partner/dashboard.service';
 import { ProductService } from 'src/app/services/store/products/product.service';
 
@@ -28,6 +29,7 @@ interface stats {
   topSellingProducts: Product[];
   topSellingProductIds: number[];
   listTotalByProduct: number[];
+  sentiment: string[];
 }
 export type ChartOptions = {
   series: ApexAxisChartSeries | ApexNonAxisChartSeries;
@@ -176,7 +178,8 @@ export class HomePartnerComponent implements OnInit {
   isEditMode: boolean = false;
   constructor(
     private productService: ProductService,
-    private dashboardService: DashboardService
+    private dashboardService: DashboardService,
+    private feedbackService: FeedbackService
   ) {
     Chart.register(...registerables);
   }
@@ -190,6 +193,7 @@ export class HomePartnerComponent implements OnInit {
     topSellingProducts: [],
     topSellingProductIds: [],
     listTotalByProduct: [],
+    sentiment: [],
   };
 
   ngOnInit(): void {
@@ -242,10 +246,12 @@ export class HomePartnerComponent implements OnInit {
   loadDashboardData(): void {
     this.dashboardService.getDashboardData(this.idUser).subscribe({
       next: (data) => {
+        console.log(data);
+        
         this.stats.averageRating = parseFloat(data.averageRating.toFixed(1));
         this.stats.totalSales = data.totalSales;
         this.stats.totalRevenue = data.totalRevenue;
-        this.stats.topSellingProducts = data.topSellingProducts;
+        this.stats.topSellingProducts = data.topSellingProducts.slice(0,3);
         this.stats.topSellingProductIds = data.topSellingProducts.map(
           (p: any) => p.product_id
         );
@@ -529,8 +535,17 @@ export class HomePartnerComponent implements OnInit {
     this.productService.getProductByPartnerId(idUser).subscribe((response) => {
       this.listProducts = response;
       this.filteredProducts = [...this.listProducts];
+      this.filteredProducts.map(product => this.getSentiment(product.product_id))
       this.stats.totalProducts = this.listProducts.length;
     });
+  }
+
+  getSentimentIcon(sentiment: string): string {
+    switch(sentiment) {
+      case 'positive': return '../../../../assets/images/store/product/positive.png';
+      case 'negative': return '../../../../assets/images/store/product/negative.png';
+      default: return '../../../../assets/images/store/product/neutral.png';
+    }
   }
 
   private handleError(error: any): void {
@@ -588,6 +603,15 @@ export class HomePartnerComponent implements OnInit {
         error: (err) => console.error('Failed to delete product', err),
       });
     }
+  }
+
+  getSentiment(id: number): void {
+    this.feedbackService.getSentimentByProduct(id).subscribe((res) => {
+      const product = this.listProducts.find((p) => p.product_id === id);
+      if (product) {
+        product.sentiment = res;
+      }
+    });
   }
 
   applyFilters(): void {
