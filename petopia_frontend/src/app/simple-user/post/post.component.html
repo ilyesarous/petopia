@@ -98,8 +98,15 @@
       <!-- Display Mode (non-edit) -->
       <ng-template #displayPostContent>
         <div class="d-flex justify-content-between align-items-center mb-2">
-          <p class="mb-0">{{ post.content }}</p>
-          <span class="badge" [ngClass]="getPostTypeBadgeClass(post.postType)">
+          <div class="post-content-wrapper">
+            <p class="mb-0">{{ displayContent }}</p>
+            <button *ngIf="post.content.length > MAX_LENGTH" 
+                    class="btn btn-link toggle-content-btn"
+                    (click)="toggleExpanded()">
+              {{ expanded ? 'View Less' : 'View More' }}
+            </button>
+          </div>
+                    <span class="badge" [ngClass]="getPostTypeBadgeClass(post.postType)">
             {{ post.postType }}
           </span>
         </div>
@@ -123,9 +130,15 @@
   </button>
 </div>
 
-<p class="fst-italic" *ngIf="translatedPost">
-  {{ translatedPost }}
-</p>
+<div class="translated-post-wrapper" *ngIf="translatedPost">
+  <p class="fst-italic mb-1">{{ displayTranslatedPost }}</p>
+  <button *ngIf="translatedPost.length > MAX_TRANSLATED_LENGTH"
+          class="btn btn-link toggle-content-btn"
+          (click)="toggleTranslatedExpanded()">
+    {{ translatedExpanded ? 'View Less' : 'View More' }}
+  </button>
+</div>
+
 
         
         
