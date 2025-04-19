@@ -531,4 +531,13 @@
   background-color: #F83182;
   color: white;
 }
+textarea.auto-expand {
+  overflow-y: auto;
+  resize: vertical;
+  min-height: 100px;
+  max-height: 350px; /* limit to prevent exploding layout */
+}
+
+
+
 

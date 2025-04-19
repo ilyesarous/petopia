@@ -6,6 +6,8 @@ import { Comment } from '../../models/community/comment';
 import { CommentService } from '../../services/community/comment.service';
 import { PostService } from '../../services/community/post.service';
 import { NgForm } from '@angular/forms';
+import { TranslationService } from 'src/app/services/community/translation.service';
+
 
 @Component({
   selector: 'app-post',
@@ -35,11 +37,25 @@ selectedPostImagePreviews: string[] = [];
 
   likeSound = new Audio('https://res.cloudinary.com/dkdx59xe9/video/upload/v1709508219/Facebook_Like_Sound_Effect_nbc6ju.mp3');
 
+  //translation
+  translatedPost: string | null = null;
+translatedComments: { [id: number]: string } = {};
+selectedLanguage: string = 'en';
+// view more
+expanded: boolean = false;
+readonly MAX_LENGTH = 450;
+MAX_TRANSLATED_LENGTH = 350;
+translatedExpanded: boolean = false;
+
+
+
 
   constructor(
     private reactionService: ReactionService,
     private commentService: CommentService,
-    private postService: PostService
+    private postService: PostService,
+    private translationService: TranslationService
+
   ) {}
 
   ngOnInit(): void {
@@ -307,6 +323,47 @@ selectedPostImagePreviews: string[] = [];
         return 'bg-light text-dark';
     }
   }
+  translatePost(): void {
+    const textToTranslate = this.post.content;
+    if (!textToTranslate) return;
+  
+    this.translationService.translate(textToTranslate, this.selectedLanguage).subscribe({
+      next: (translated: string) => {
+        this.translatedPost = translated;
+        console.log('✅ Translated:', translated);
+      },
+      error: (err) => {
+        console.error('❌ Translation failed:', err);
+      }
+    });
+  }
+
+  get displayContent(): string {
+    return this.expanded || this.post.content.length <= this.MAX_LENGTH
+      ? this.post.content
+      : this.post.content.slice(0, this.MAX_LENGTH) + '...';
+  }
+  
+  toggleExpanded(): void {
+    this.expanded = !this.expanded;
+  }
+  get displayTranslatedPost(): string {
+    if (!this.translatedPost) return '';
+    return this.translatedExpanded || this.translatedPost.length <= this.MAX_TRANSLATED_LENGTH
+      ? this.translatedPost
+      : this.translatedPost.slice(0, this.MAX_TRANSLATED_LENGTH) + '...';
+  }
+  
+  toggleTranslatedExpanded(): void {
+    this.translatedExpanded = !this.translatedExpanded;
+  }
+    
+    
+  
+  
+  
+
+  
   
 
 }

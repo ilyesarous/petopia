@@ -57,10 +57,22 @@
     </div>
   </div>
 
+  <!-- Best Sellers -->
+
+  <div class="row mt-4" *ngIf="bestSeller.length !=0">
+    <h2 class="mb-4">Best Sellers</h2>
+    <div
+      class="col-md-3 mt-3"
+      *ngFor="let product of bestSeller"
+    >
+      <app-product-card [product]="product"></app-product-card>
+    </div>
+  </div>
+
   <!-- Products -->
   <div *ngIf="searchQuery.length == 0">
     <div class="row" *ngFor="let category of categories">
-      <h2 class="mb-4">{{ category.titel }}</h2>
+      <h2 class="my-4" *ngIf="category.items.length != 0">{{ category.titel }}</h2>
       <div
         class="col-md-3 mt-3"
         *ngFor="let product of getPaginatedItems(category)"

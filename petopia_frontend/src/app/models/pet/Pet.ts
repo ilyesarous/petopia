@@ -13,7 +13,7 @@ export class Pet {
     status!: string;    // e.g., "AVAILABLE", "ADOPTED", etc.
     gender!: string;     // e.g., "MALE", "FEMALE"
     size!: string;       // e.g., "SMALL", "MEDIUM", "LARGE"
-    healthStatus!: string;
+    healthStatus!: string[]; 
     shelter?: Shelter;
     }
   

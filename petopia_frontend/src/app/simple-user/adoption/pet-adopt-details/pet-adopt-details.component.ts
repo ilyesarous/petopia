@@ -32,4 +32,20 @@ export class PetAdoptDetailsComponent implements OnInit {
       error: (err) => console.error('Error loading pet details', err)
     });
   }
+  getRegion(location: string): string {
+    if (!location) return '';
+    const parts = location.split(',').map(p => p.trim());
+    
+    // Start from the end, find the first meaningful word before 'Tunisia' and ZIP
+    for (let i = parts.length - 1; i >= 0; i--) {
+      if (
+        parts[i].toLowerCase() !== 'tunisia' &&
+        !/^\d{4,}$/.test(parts[i]) // skip numbers like 1008
+      ) {
+        return parts[i];
+      }
+    }
+    return parts[parts.length - 1];
+  }
+  
 }

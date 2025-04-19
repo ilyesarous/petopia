@@ -112,6 +112,8 @@ import { CommunityListComponent } from './admin/community/community-list/communi
 import { CommunityDetailsComponent } from './admin/community/community-details/community-details.component';
 import { MatchingComponent } from './simple-user/matching/matching/matching.component';
 import { PetDetailsComponent } from './simple-user/matching/pet-details/pet-details.component';
+import { MatchbackComponent } from './admin/matching/matchback/matchback.component';
+
 
 import { HomePartnerComponent } from './simple-user/store/partner/home-partner/home-partner.component';
 import { UserSignCertificateComponent } from './simple-user/adoption/user-sign-certificate/user-sign-certificate.component';
@@ -132,7 +134,10 @@ import { EventParticipantsComponent } from './admin/Event/event-participants/eve
 import { ServiceAnimalListComponent } from './simple-user/Event/service-animal-list/service-animal-list.component';
 import { AddServiceAnimalComponent } from './simple-user/Event/add-service-animal/add-service-animal.component';
 import { CountdownComponent } from './simple-user/Event/countdown/countdown.component';
+import { ReceiptModalComponent } from './simple-user/store/receipt-modal/receipt-modal.component';
 import { XpBarComponent } from './simple-user/Event/xp-bar/xp-bar.component';
+import { DreamPetComponent } from './simple-user/adoption/dream-pet/dream-pet.component';
+
 import { EventDetailsComponent } from './simple-user/Event/event-details/event-details.component';
 import { ServiceAnimalDetailsComponent } from './simple-user/Event/service-animal-details/service-animal-details.component';
 
@@ -224,15 +229,18 @@ import { ServiceAnimalDetailsComponent } from './simple-user/Event/service-anima
     ShelterCertificateDetailsComponent,
     CommunityListComponent,
     CommunityDetailsComponent,
+    MatchbackComponent,
     HomePartnerComponent,
     UserSignCertificateComponent,
     UserViewCertificateComponent,
+    DreamPetComponent,
     ParticipationListComponent,
     EventParticipantsComponent,
     ServiceAnimalListComponent,
     AddServiceAnimalComponent,
     CountdownComponent,
     XpBarComponent,
+    ReceiptModalComponent,
     EventDetailsComponent,
     ServiceAnimalDetailsComponent,
   ],

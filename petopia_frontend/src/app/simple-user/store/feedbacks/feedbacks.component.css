@@ -307,6 +307,21 @@
   color: #b2bec3;
   cursor: not-allowed;
 }
+.btn-edit, .btn-delete {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  padding: 5px;
+}
+
+.btn-edit {
+  color: #4a90e2;
+}
+
+.btn-delete {
+  color: #f83182;
+}
 
 /* Responsive Pagination */
 @media (max-width: 576px) {

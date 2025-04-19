@@ -167,17 +167,35 @@
 <!-- Create new post form -->
 <form #postForm="ngForm" (ngSubmit)="createPost(postForm)" novalidate class="create-post card mb-3">
   <div class="card-body">
+    <!-- ai -->
+    <div class="mb-3">
+      <label>Need inspiration? Describe your topic and let AI write the post for you!</label>
+      <input 
+      [(ngModel)]="topic" [ngModelOptions]="{ standalone: true }" 
+      class="form-control"
+      placeholder="Describe your idea and click 'Generate Post Suggestion'" />
+      <button type="button" class="btn btn-custom mt-2" (click)="generatePostFromAI()" [disabled]="loading">
+        <i class="bi bi-stars me-2"></i> 
+        {{ loading ? 'Generating...' : 'Generate Post Suggestion' }}
+      </button>
+      
+      
+      
+    </div>
+    
     <!-- Post Content -->
     <textarea 
-      #postContentCtrl="ngModel"
-      name="postContent"
-      [(ngModel)]="newPostContent"
-      class="form-control" 
-      placeholder="What's on your mind?"
-      rows="3"
-      required
-      minlength="5">
-    </textarea>
+  #postContentCtrl="ngModel"
+  name="postContent"
+  [(ngModel)]="newPostContent"
+  class="form-control auto-expand"
+  placeholder="What's on your mind?"
+  rows="3"
+  required
+  minlength="5"
+  (input)="autoGrowTextArea($event)">
+</textarea>
+
     <div *ngIf="(postForm.submitted || postContentCtrl.touched) && postForm.controls['postContent']?.invalid" class="text-danger mt-1">
       Post content is required (at least 5 characters).
     </div>
@@ -214,6 +232,10 @@
           {{ selectedFileNames }}
         </span>
       </div>
+      <div *ngIf="postErrorMessage" class="alert alert-danger mt-2">
+        {{ postErrorMessage }}
+      </div>
+      
       <button class="btn btn-custom" type="submit" [disabled]="postForm.invalid">
         Post
       </button>

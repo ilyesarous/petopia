@@ -226,3 +226,21 @@
     opacity: 0.5;
     cursor: not-allowed;
   }
+  .status-tag {
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: white;
+    display: inline-block;
+    text-align: center;
+  }
+  
+  .approved-tag {
+    background-color: #F83182; /* Pink */
+  }
+  
+  .rejected-tag {
+    background-color: #FE9A7A; /* Orange */
+  }
+  

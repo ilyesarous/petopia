@@ -18,5 +18,5 @@ public class PetPreferencesResponse {
     private String petName;
     private boolean hasPreferences;
     private Preferences preferences;
-    private List<Pet> matchingPets; // On le laisse pour les étapes futures
+    private List<Pet> matchingPets;
 }

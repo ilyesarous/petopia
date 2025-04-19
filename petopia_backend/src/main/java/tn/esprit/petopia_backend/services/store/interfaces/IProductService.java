@@ -10,7 +10,7 @@ public interface IProductService {
     List<Product> findProductsById(int idUser);
     Product findById(int id);
     void deleteById(int id);
-    Product updateProduct(Product product);
+    Product updateProduct(MultipartFile file, Product product);
     Product updateLikedStatus(int idProduct);
     //Page<Product> findAll(int page, int size);
     List<Product> findAll();

@@ -98,17 +98,54 @@
       <!-- Display Mode (non-edit) -->
       <ng-template #displayPostContent>
         <div class="d-flex justify-content-between align-items-center mb-2">
-          <p class="mb-0">{{ post.content }}</p>
-          <span class="badge" [ngClass]="getPostTypeBadgeClass(post.postType)">
+          <div class="post-content-wrapper">
+            <p class="mb-0">{{ displayContent }}</p>
+            <button *ngIf="post.content.length > MAX_LENGTH" 
+                    class="btn btn-link toggle-content-btn"
+                    (click)="toggleExpanded()">
+              {{ expanded ? 'View Less' : 'View More' }}
+            </button>
+          </div>
+                    <span class="badge" [ngClass]="getPostTypeBadgeClass(post.postType)">
             {{ post.postType }}
           </span>
         </div>
+        
+<div class="d-flex align-items-center gap-2 mt-2 translate-bar">
+  <select class="form-select form-select-sm custom-lang-select"
+          [(ngModel)]="selectedLanguage"
+          name="targetLanguage">
+    <option value="en">🇺🇸 English</option>
+    <option value="fr">🇫🇷 French</option>
+    <option value="de">🇩🇪 German</option>
+    <option value="es">🇪🇸 Spanish</option>
+    <option value="ar">🇸🇦 Arabic</option>
+    <option value="it">🇮🇹 Italian</option>
+  </select>
+
+
+  
+  <button class="btn btn-sm btn-outline-secondary" (click)="translatePost()">
+    🌐 Translate
+  </button>
+</div>
+
+<div class="translated-post-wrapper" *ngIf="translatedPost">
+  <p class="fst-italic mb-1">{{ displayTranslatedPost }}</p>
+  <button *ngIf="translatedPost.length > MAX_TRANSLATED_LENGTH"
+          class="btn btn-link toggle-content-btn"
+          (click)="toggleTranslatedExpanded()">
+    {{ translatedExpanded ? 'View Less' : 'View More' }}
+  </button>
+</div>
+
+
+        
         
        
         
       </ng-template>
     
-      <!-- Display images in non-edit mode -->
       <div *ngIf="post.image && !post['isEditing']" class="post-images">
         <img *ngFor="let imgUrl of post.image.split(',')" 
              [src]="imgUrl.trim()" 
@@ -119,10 +156,8 @@
     
   
   
-    <!-- Action buttons: Reactions and Comment toggle -->
     <div class="post-actions d-flex align-items-center px-3 pb-2">
       <div class="d-flex mb-2 px-3">
-        <!-- Reaction Buttons with conditional styling -->
         <button class="btn btn-sm me-2"
                 [ngClass]="{'btn-primary': userReaction === 'LIKE', 'btn-outline-primary': userReaction !== 'LIKE'}"
                 (click)="addReaction('LIKE')">
@@ -154,14 +189,12 @@
       </button>
     </div>
   
-    <!-- Reaction Summary and Likes Popup Trigger -->
     <div class="d-flex align-items-center px-3 pb-2">
       <small class="ms-2 text-muted pointer" (click)="openLikesPopup()">
         {{ getReactionSummary() }}
       </small>
     </div>
   
-    <!-- Likes Popup Modal -->
     <div class="modal fade custom-modal" [class.show]="showLikesPopup" [style.display]="showLikesPopup ? 'block' : 'none'" tabindex="-1" role="dialog">
       <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -183,8 +216,7 @@
       </div>
     </div>
   
-    <!-- Comments Section -->
-   <!-- Comments Section -->
+   <!-- Comments -->
   <div class="post-comments px-3" *ngIf="showComments">
     <ng-container *ngFor="let comment of getDisplayedComments()">
       <div class="comment-item mb-3 p-3 rounded shadow-sm">
@@ -200,7 +232,6 @@
                   {{ comment.date | date:'short' }}
                 </span>
               </div>
-              <!-- Three-dots menu for comment owner -->
               <div *ngIf="isCommentOwner(comment)" class="comment-menu position-relative">
                 <i class="bi bi-three-dots pointer" (click)="toggleCommentMenu(comment)"></i>
                 <div *ngIf="comment['menuOpen']" class="dropdown-menu show position-absolute end-0 mt-1 comment-dropdown">
@@ -238,14 +269,12 @@
       </div>
     </ng-container>
   
-    <!-- See more comments button -->
     <button *ngIf="!showAllComments && post.comments && post.comments.length > 3"
             class="btn btn-link see-more-comments p-0"
             (click)="showAllComments = true">
       See more comments
     </button>
   
-    <!-- Add Comment -->
     <form #commentForm="ngForm" (ngSubmit)="addComment(commentForm)" novalidate class="add-comment d-flex align-items-center mt-4">
      
       <input 

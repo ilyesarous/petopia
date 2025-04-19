@@ -12,7 +12,8 @@ public interface ICartService {
     Cart increaseProductQuantityById(int idUser, int idProduct);
     Cart updateCart(Cart cart);
     List<Cart> findAll();
-    String checkout(int idCart);
+    void checkout(int idUser);
     void clearCart(int idUser);
     Cart removeItem(int idUser, int idProduct);
+    List<Product> getBestSaledProducts();
 }

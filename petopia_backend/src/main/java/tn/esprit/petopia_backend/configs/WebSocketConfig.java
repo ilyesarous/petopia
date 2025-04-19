@@ -20,7 +20,10 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
         registry.addEndpoint("/ws").setAllowedOriginPatterns("*").withSockJS();
-        registry.addEndpoint("/chat/websocket").setAllowedOrigins("*") ;
+        registry.addEndpoint("/ws")
+                .setAllowedOrigins("http://localhost:4200");
+        System.out.println("WebSocket endpoint /ws registered with SockJS");
+
     }
 
     @Override
@@ -28,27 +31,6 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
         registry.setApplicationDestinationPrefixes("/app");
         registry.enableSimpleBroker("/topic", "/queue"); // Allows both public and private messages
         registry.setUserDestinationPrefix("/user"); // Enables private messaging
-
+        System.out.println("Message broker configured: /app, /topic, /queue, /user");
     }
-    /*
-     @Override
-    public void configureMessageBroker(MessageBrokerRegistry config) {
-        config.enableSimpleBroker("/topic"); // Destination pour les messages broadcastés
-        config.setApplicationDestinationPrefixes("/app"); // Préfixe pour les messages envoyés par le client
-    }
-     */
-
-   /* @Override
-    public void registerStompEndpoints(StompEndpointRegistry registry) {
-        registry.addEndpoint("/chat").setAllowedOrigins("http://localhost:4200").withSockJS(); // Endpoint WebSocket
-    }
-   @Override
-   public void registerStompEndpoints(StompEndpointRegistry registry) {
-       registry.addEndpoint("/chat/websocket")
-               .setAllowedOrigins("*") ;  // Autoriser toutes les origines
-               //.withSockJS();
-   }
-*/
-
-
 }

@@ -12,12 +12,13 @@ import tn.esprit.petopia_backend.repositories.store.ProductRepository;
 import tn.esprit.petopia_backend.services.store.interfaces.ICartService;
 import tn.esprit.petopia_backend.services.user.UserService;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
 @AllArgsConstructor
 public class CartService implements ICartService {
-    private final ProductRepository productRepository;
+    private CartProductRepository cartProductRepository;
     private CartRepository repository;
     private CartProductService cartProductService;
     private ProductService productService;
@@ -40,6 +41,7 @@ public class CartService implements ICartService {
         if (cart == null) {
             cart = new Cart();
             cart.setUser(userService.getUsersById(idUser).getOurUsers());
+            repository.save(cart);
         }
         Product product = productService.findById(productId);
         cartProductService.increaseQuantity(cart, productId, quantity);
@@ -55,6 +57,7 @@ public class CartService implements ICartService {
         cart.setTotal_price(cart.getTotal_price() - product.getProduct_price());
         return repository.save(cart);
     }
+
     @Override
     public Cart increaseProductQuantityById(int idUser, int idProduct) {
         Cart cart = findCartByUser(idUser);
@@ -67,32 +70,42 @@ public class CartService implements ICartService {
     }
 
     @Override
-    public void clearCart(int idUser){
+    public void clearCart(int idUser) {
         Cart cart = findCartByUser(idUser);
-        for (CartProduct cp : cart.getCartProducts()){
+        for (CartProduct cp : cart.getCartProducts()) {
             cp.getProduct().setAvailableQuantity(cp.getProduct().getAvailableQuantity() + cp.getQuantity());
+            cp.getProduct().setQuantity(0);
         }
-        cart.setTotal_price(0);
+        cartProductRepository.deleteAll(cart.getCartProducts());
         cart.getCartProducts().clear();
+        cart.setTotal_price(0);
         repository.save(cart);
     }
+
     @Override
-    public Cart removeItem(int idUser, int idProduct){
+    public Cart removeItem(int idUser, int idProduct) {
         Cart cart = findCartByUser(idUser);
-        for (CartProduct cp : cart.getCartProducts()){
-            if (cp.getProduct().getProduct_id() == idProduct){
+        for (CartProduct cp : cart.getCartProducts()) {
+            if (cp.getProduct().getProduct_id() == idProduct) {
                 cp.getProduct().setAvailableQuantity(cp.getProduct().getAvailableQuantity() + cp.getQuantity());
-                cart.setTotal_price(cart.getTotal_price() - (cp.getProduct().getProduct_price()*cp.getQuantity()));
+                cp.getProduct().setQuantity(cp.getProduct().getQuantity() - cp.getQuantity());
+                cart.setTotal_price(cart.getTotal_price() - (cp.getProduct().getProduct_price() * cp.getQuantity()));
                 cart.getCartProducts().remove(cp);
+                cartProductRepository.deleteById(cp.getId());
                 return repository.save(cart);
             }
         }
         return cart;
     }
+
     @Override
-    public String checkout(int idUser) {
+    public void checkout(int idUser) {
         Cart cart = findCartByUser(idUser);
-        return "votre total est: " + cart.getTotal_price();
+        cartProductRepository.deleteAll(cart.getCartProducts());
+        cart.getCartProducts().clear();
+        cart.setTotal_price(0);
+
+        repository.save(cart);
     }
 
     @Override
@@ -104,4 +117,14 @@ public class CartService implements ICartService {
     public List<Cart> findAll() {
         return repository.findAll();
     }
+
+
+    public List<Product> getBestSaledProducts() {
+        return cartProductService.getTopProducts();
+    }
+
+    public List<Product> getBestSaledProductsByUser(int idUser) {
+        return cartProductService.getTopProductsByUserId(idUser);
+    }
+
 }

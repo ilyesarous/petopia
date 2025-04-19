@@ -8,5 +8,7 @@ export class Shelter {
     phone_number?: string;
     website?: string;
     logoUrl?:string;
+    latitude?:number;
+    longitude?:number;
     
 }

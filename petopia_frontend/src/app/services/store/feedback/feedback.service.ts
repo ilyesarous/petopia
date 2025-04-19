@@ -9,7 +9,11 @@ import { Feedback } from 'src/app/models/product/feedback';
 export class FeedbackService {
   constructor(private http: HttpClient) {}
   private url = 'http://localhost:8082/petopia/user/feedback';
+  private url1 = 'http://localhost:8082/petopia/partner/feedback';
   token: string = localStorage.getItem('token') || '';
+  userId = localStorage.getItem('userId')
+    ? parseInt(localStorage.getItem('userId')!)
+    : 0;
 
   private getAuthHeaders(): HttpHeaders {
     return new HttpHeaders({
@@ -18,7 +22,7 @@ export class FeedbackService {
   }
   create(feedback: Feedback) {
     return this.http.post(
-      `${this.url}/add/${+feedback.user_id}/${+feedback.productId}`,
+      `${this.url}/add/${this.userId}/${+feedback.productId}`,
       feedback,
       {
         headers: this.getAuthHeaders(),
@@ -31,4 +35,20 @@ export class FeedbackService {
       headers: this.getAuthHeaders(),
     });
   }
+
+  getSentimentByProduct(idProduct: number): Observable<string>{
+    return this.http.get(`${this.url1}/sentiment/${idProduct}`,
+      {
+        headers: this.getAuthHeaders(),
+        responseType: 'text',
+      }
+    )
+  }
+
+  deleteFeedback(feedbackId: number): Observable<any> {
+    return this.http.delete(`${this.url}/delete/${feedbackId}`, {
+      headers: this.getAuthHeaders(),
+    });
+  }
+
 }
