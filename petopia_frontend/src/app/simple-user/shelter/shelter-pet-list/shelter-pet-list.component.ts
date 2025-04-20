@@ -264,39 +264,47 @@ export class ShelterPetListComponent {
   
         const base64 = result.split(',')[1];
   
-        // this.imageGenerationService.detectBreedFromImage(base64).subscribe({
-        //   next: (res: any) => {
-        //     console.log("🧠 AI Raw Response:", res);
+        this.imageGenerationService.detectBreedFromImage(base64).subscribe({
+          next: (res: any) => {
+            console.log("🧠 AI Raw Response:", res);
         
-        //     const analysis = res.analysis;
+            const analysis = res.analysis;
         
-        //     if (typeof analysis !== 'string') {
-        //       console.error("❌ Unexpected response format:", analysis);
-        //       return;
-        //     }
+            if (typeof analysis !== 'string') {
+              console.error("❌ Unexpected response format:", analysis);
+              return;
+            }
         
-        //     // Extract species and breed from string using RegExp
-        //     const speciesMatch = analysis.match(/Species:\s*(Dog|Cat)/i);
-        //     const breedMatch = analysis.match(/Breed:\s*([A-Za-z\s\-]+)/i);
-        
-        //     const species = speciesMatch?.[1]?.toUpperCase() ?? '';
-        //     const breed = breedMatch?.[1]?.trim() ?? '';
-        
-        //     if (species || breed) {
-        //       this.addPetForm.patchValue({
-        //         species,
-        //         breed
-        //       });
-        
-        //       console.log("✅ Auto-filled form:", { species, breed });
-        //     } else {
-        //       console.warn("⚠️ Species or breed not found in AI response.");
-        //     }
-        //   },
-        //   error: (err) => {
-        //     console.error("❌ Error from detection service:", err);
-        //   }
-        // });
+            const speciesMatch = analysis.match(/Species:\s*(Dog|Cat)/i);
+            const breedMatch = analysis.match(/Breed:\s*([^\n]+)/i);
+            const breedRaw = breedMatch?.[1]?.trim() ?? '';
+            const ageMatch = analysis.match(/Age:\s*(\d+)/i);
+            const sizeMatch = analysis.match(/Size:\s*(SMALL|MEDIUM|LARGE)/i);
+            const genderMatch = analysis.match(/Gender:\s*(MALE|FEMALE)/i);
+            
+            const species = speciesMatch?.[1]?.toUpperCase() ?? '';
+            const breed = breedRaw.replace(/\s*-\s*.*$/, '').trim();
+            const petAge = ageMatch?.[1] ? parseInt(ageMatch[1].trim(), 10) : null;
+            const size = sizeMatch?.[1]?.toUpperCase() ?? '';
+            const gender = genderMatch?.[1]?.toUpperCase() ?? '';
+            
+            if (species || breed || petAge || size || gender) {
+              this.addPetForm.patchValue({
+                species,
+                breed,
+                petAge,
+                size,
+                gender
+              });
+              console.log("✅ Auto-filled form:", { species, breed });
+            } else {
+              console.warn("⚠️ Species or breed not found in AI response.");
+            }
+          },
+          error: (err) => {
+            console.error("❌ Error from detection service:", err);
+          }
+        });
         
       }
     };
