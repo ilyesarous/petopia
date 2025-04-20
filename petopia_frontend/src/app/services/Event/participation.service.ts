@@ -85,6 +85,10 @@ getTimeRemaining(participationId: number): Observable<number> {
       { headers: this.getAuthHeaders() }
   );
 }
+// In your ParticipationService
+confirmParticipation(participationId: number): Observable<any> {
+  return this.http.put(`${this.baseUrl}/confirm/${participationId}`, {headers: this.getAuthHeaders()});
+}
 
 
   // // Modifiez la méthode addParticipation pour retourner la participation avec le temps restant

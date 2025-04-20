@@ -9,6 +9,7 @@ import lombok.Setter;
 import tn.esprit.petopia_backend.entities.event.Enum.EventStatus;
 import tn.esprit.petopia_backend.entities.event.Enum.EventType;
 import tn.esprit.petopia_backend.entities.event.Enum.VisibilityEvent;
+import tn.esprit.petopia_backend.entities.payment.PaymentRequest;
 import tn.esprit.petopia_backend.entities.user.User;
 
 import java.util.Date;
@@ -53,6 +54,10 @@ public class Event {
 
     @Enumerated(EnumType.STRING)
     private EventStatus statusEvent;
+
+    @OneToMany(mappedBy = "event", cascade = CascadeType.ALL)
+    @JsonIgnore
+    private List<PaymentRequest> paymentsEvents;
 
     @Override
     public String toString() {

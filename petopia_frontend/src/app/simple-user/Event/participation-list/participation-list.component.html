@@ -1,92 +1,177 @@
 
-<!-- participation-list.component.html -->
-<!-- <div class="user-progress">
-  <app-xp-bar [currentXp]="userXp" [level]="userLevel"></app-xp-bar>
-  
+
+<!-- Add this at the top of your template -->
+<div *ngIf="showPaymentSuccess" class="payment-success-modal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h3>Payment Confirmed!</h3>
+      <button (click)="closePaymentSuccess()" class="close-btn">×</button>
+    </div>
+    <div class="modal-body">
+      <p>{{ paymentSuccessMessage }}</p>
+      <div class="success-icon">✓</div>
+    </div>
+    <div class="modal-footer">
+      <button (click)="closePaymentSuccess()" class="btn-confirm">OK</button>
+    </div>
+  </div>
+</div>
+
+<div class="participation-dashboard">
+  <!-- Header Section -->
+  <div class="dashboard-header">
+    <div class="header-content">
+      <h1 class="welcome-title">
+        <span class="participation-icon">🎯</span> 
+        My Event Participations
+      </h1>
+      <div class="header-actions">
+        <button [routerLink]="['/events']" class="btn-discover">
+          <i class="discover-icon">🔍</i> Discover Events
+        </button>
+      </div>
+    </div>
+    
+    <!-- XP Progress Bar -->
+    <div class="user-progress" *ngIf="userXp !== undefined">
+      <app-xp-bar [currentXp]="userXp" [level]="userLevel"></app-xp-bar>
+    </div>
+  </div>
+
+  <!-- Coupons Section -->
   <div *ngIf="userCoupons.length > 0" class="coupons-section">
-    <h4>Vos coupons de réduction</h4>
+    <div class="section-header">
+      <h3>My Discount Coupons</h3>
+      <span class="badge">{{ userCoupons.length }}</span>
+    </div>
     <div class="coupons-grid">
       <div *ngFor="let coupon of userCoupons" class="coupon-card" [class.used]="coupon.isUsed">
-        <div class="coupon-value">{{ coupon.discountPercentage }}%</div>
+        <div class="coupon-value">{{ coupon.discountPercentage }}% OFF</div>
         <div class="coupon-code">{{ coupon.code }}</div>
-        <div class="coupon-expiry">Expire le {{ coupon.expirationDate | date:'shortDate' }}</div>
-        <button *ngIf="!coupon.isUsed" class="use-btn">Utiliser</button>
-        <div *ngIf="coupon.isUsed" class="used-label">Utilisé</div>
+        <div class="coupon-expiry">
+          <i class="expiry-icon">⏳</i> Expires {{ coupon.expirationDate | date:'MMM d' }}
+        </div>
+        <div class="coupon-actions">
+          <button *ngIf="!coupon.isUsed" class="use-btn">Use Coupon</button>
+          <div *ngIf="coupon.isUsed" class="used-tag">Used</div>
+        </div>
       </div>
     </div>
   </div>
-</div> -->
 
-<!-- Ajoutez ceci avant la liste des participations -->
-
-
-<div class="participation-container">
-  <h3 class="title">My Participations</h3>
-
+  <!-- Loading State -->
   <div *ngIf="isLoading" class="loading-state">
-    <p>loading...</p>
+    <div class="spinner"></div>
+    <p>Loading your participations...</p>
   </div>
 
-  <div *ngIf="!isLoading && participations.length > 0; else noParticipation" class="participation-list">
-    <div *ngFor="let p of participations" class="participation-card" [ngClass]="{
-      'pending': p.statusParticipation === 'PENDING',
-      'confirmed': p.statusParticipation === 'CONFIRMED',
-      'cancelled': p.statusParticipation === 'CANCELLED'
-    }">
-      <div class="event-icon">🎉</div>
-      <div class="event-details">
-        <h4 class="event-name">{{ p.event.nameEvent }}</h4>
-        <div class="event-meta">
-          <span class="date">📅 Inscrit in {{ p.dateInscription | date:'mediumDate' }}</span>
-          <span class="status-badge">{{ p.statusParticipation | lowercase }}</span>
+  <!-- Empty State -->
+  <div *ngIf="!isLoading && participations.length === 0" class="empty-state">
+    <div class="empty-illustration">
+      <img src="https://cdn-icons-png.flaticon.com/512/4076/4076478.png" alt="No participations">
+    </div>
+    <h3>No Participations Yet</h3>
+    <p>You haven't registered for any events yet.</p>
+    <button [routerLink]="['/events']" class="btn-primary">
+      Browse Upcoming Events
+    </button>
+  </div>
+  
+    <!-- Participations List -->
+    <div *ngIf="!isLoading && participations.length > 0" class="participations-list">
+      <div class="section-header">
+        <h3>My Event Registrations</h3>
+        <span class="badge">{{ participations.length }}</span>
+      </div>
+      
+      <div class="participations-grid">
+        <div *ngFor="let p of participations" class="participation-card" 
+             [ngClass]="'status-' + p.statusParticipation.toLowerCase()">
+          <div class="card-header">
+            <div class="event-icon">
+              <span [ngSwitch]="p.event.eventType">
+                <span *ngSwitchCase="'PROMENADE'">🚶‍♂️</span>
+                <span *ngSwitchCase="'RANDONNEE'">🥾</span>
+                <span *ngSwitchCase="'PHOTO_SEANCE'">📸</span>
+                <span *ngSwitchDefault>🎉</span>
+              </span>
+            </div>
+            <div class="event-info">
+              <h4 class="event-name" (click)="viewEventDetails(p.event.idEvent)">
+                {{ p.event.nameEvent }}
+                <span class="view-details-link">(view details)</span>
+              </h4>
+              <div class="event-meta">
+                <span class="event-date">
+                  <i class="icon">📅</i> 
+                  {{ p.event.dateEvent | date:'mediumDate' }}
+                </span>
+                <span class="event-price">
+                  <i class="icon">💰</i> 
+                  {{ p.event.prixEvent }} TND
+                </span>
+              </div>
+            </div>
+            <div class="status-badge">
+              {{ p.statusParticipation | lowercase }}
+            </div>
+          </div>
+  
+          <div class="card-body">
+            <div class="registration-info">
+              <span class="label">Registered on:</span>
+              <span class="value">{{ p.dateInscription | date:'mediumDate' }}</span>
+            </div>
+            
+            <!-- Countdown Timer -->
+            <!-- <div *ngIf="p.timeRemaining !== undefined" class="countdown-section">
+              <div *ngIf="p.timeRemaining > 0" class="countdown-timer">
+                <span class="label">Starts in:</span>
+                <span class="timer">{{ formatTime(p.timeRemaining) }}</span>
+              </div>
+              <div *ngIf="p.timeRemaining <= 0" class="event-ended">
+                <i class="icon">✅</i> Event completed
+              </div>
+            </div>
+          </div> -->
+          <!-- Countdown Timer -->
+        <div class="countdown-section">
+          <app-countdown 
+            *ngIf="p.timeRemaining !== undefined"
+            [timeRemaining]="p.timeRemaining">
+          </app-countdown>
         </div>
 
- <!-- Compte à rebours dynamique
- <div *ngIf="p.timeRemaining !== undefined" class="countdown-section">
-  <div *ngIf="p.timeRemaining > 0" class="countdown-display">
-    {{ formatTime(p.timeRemaining) }}
-  </div>
-  <div *ngIf="p.timeRemaining <= 0" class="event-passed">
-    Événement terminé
-  </div>
-</div> -->
-
-
-<div *ngIf="p.timeRemaining !== undefined">
-  <div *ngIf="p.timeRemaining > 0" class="countdown">
-    <span class="countdown-label">Temps restant :</span>
-    <span class="countdown-value">{{ formatTime(p.timeRemaining) }}</span>
-  </div>
-  <div *ngIf="p.timeRemaining <= 0" class="event-ended">
-    Événement terminé
+  
+          <div class="card-footer">
+            <!-- Payment Button - Only show if participation is confirmed and not paid -->
+          <!-- Update your payment button section to show different states -->
+<div *ngIf="p.statusParticipation === 'CONFIRMED' && !showPaymentSuccess"  class="payment-section">
+  <button *ngIf="!p.paid" class="pay-btn" (click)="payForParticipation(p)">
+    <i class="icon">💳</i> Pay {{ p.event.prixEvent }} TND
+  </button>
+  <div *ngIf="showPaymentSuccess" class="payment-confirmed">
+    <i class="icon">✓</i> Paid
   </div>
 </div>
 
-
-      </div>
-
-
-      <div class="event-actions">
-        <button class="action-btn" *ngIf="p.statusParticipation === 'PENDING' ||  p.statusParticipation === 'CONFIRMED'">
-          <i class="fas fa-check"></i>
-        </button>
-        <button 
-          class="action-btn" 
-          (click)="deleteParticipation(p.idParticipation)"
-          *ngIf="p.statusParticipation !== 'CANCELLED'"
-          title="Annuler la participation">
-          <i class="fas fa-times"></i>
-        </button>
+            <!-- Action Buttons -->
+            <div class="action-buttons">
+              <button *ngIf="p.statusParticipation === 'PENDING'"
+                      class="btn-action confirm-btn"
+                      (click)="confirmParticipation(p.idParticipation)"
+                      title="Confirm participation">
+                <i class="icon">✓</i> Confirm
+              </button>
+              <button *ngIf="p.statusParticipation !== 'CANCELLED'"
+                      class="btn-action cancel-btn"
+                      (click)="deleteParticipation(p.idParticipation)"
+                      title="Cancel participation">
+                <i class="icon">×</i> Cancel
+              </button>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
-
-  <ng-template #noParticipation>
-    <div class="empty-state">
-      <div class="empty-icon">📋</div>
-      <p class="empty-text">No participation found.</p>
-      <button [routerLink]="['/events']" class="discover-btn">Discover new events</button>
-    </div>
-  </ng-template>
-</div>
-

@@ -17,6 +17,7 @@ import tn.esprit.petopia_backend.entities.community.Comment;
 import tn.esprit.petopia_backend.entities.community.Post;
 import tn.esprit.petopia_backend.entities.community.Reaction;
 import tn.esprit.petopia_backend.entities.community.Story;
+import tn.esprit.petopia_backend.entities.event.ServiceAnimal;
 import tn.esprit.petopia_backend.entities.payment.PaymentRequest;
 import tn.esprit.petopia_backend.entities.event.Participation;
 import tn.esprit.petopia_backend.entities.pet.Pet;
@@ -54,6 +55,7 @@ public class User implements UserDetails {
     private int level = 1;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @JsonIgnore
     private List<Coupon> coupons = new ArrayList<>();
 
 
@@ -116,6 +118,11 @@ public class User implements UserDetails {
     @OneToMany(mappedBy = "organisateur")
     @JsonIgnore
     private List<Event> eventList;
+
+    @OneToMany(mappedBy = "organisateurServiceAnimal", cascade = CascadeType.ALL)
+    @JsonIgnore
+    private List<ServiceAnimal> serviceAnimalList;
+
 
     // Une liste des participations de cet utilisateur
     @OneToMany(mappedBy = "participant", cascade = CascadeType.ALL)

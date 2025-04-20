@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import tn.esprit.petopia_backend.entities.store.Cart;
+import tn.esprit.petopia_backend.entities.event.Event;
 import tn.esprit.petopia_backend.entities.user.User;
 
 import java.util.Date;
@@ -44,6 +45,17 @@ public class PaymentRequest {
 
     @Transient
     private Integer vetId;
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    private Event event;
+
+    public Event getEvent() {
+        return event;
+    }
+
+    public void setEvent(Event event) {
+        this.event = event;
+    }
 
     public Integer getUserId() {
         return userId;

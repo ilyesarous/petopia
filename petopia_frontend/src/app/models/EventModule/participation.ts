@@ -16,6 +16,9 @@ export interface Participation {
     participant: any; // Objet simplifié aussi
     statusParticipation: ParticipationStatus;
     timeRemaining?: number; // ajoutez cette propriété
+    paid?: boolean; // Add this
+    
+
 
   }
   

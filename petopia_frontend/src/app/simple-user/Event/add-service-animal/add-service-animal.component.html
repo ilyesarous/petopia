@@ -1,53 +1,101 @@
-<div class="form-container">
-  <h2>{{ isEditMode ? 'Edit' : 'Add New' }} Animal Service</h2>
+<div class="service-form-container">
+  <div class="form-header">
+    <h1>{{ isEditMode ? 'Edit' : 'Add New' }} Animal Service</h1>
+    <div class="header-decoration"></div>
+  </div>
+
   <form [formGroup]="serviceForm" (ngSubmit)="onSubmit()" class="service-form">
-    <div class="form-group">
-      <label for="type">Service Type*</label>
-      <select id="type" formControlName="typeService" required>
-        <option *ngFor="let type of serviceTypes" [value]="type">{{type | titlecase}}</option>
-      </select>
-      <div *ngIf="serviceForm.get('typeService')?.invalid && 
-                 (serviceForm.get('typeService')?.dirty || serviceForm.get('typeService')?.touched)"
-           class="error-message">
-        Service type is required
-      </div>
-    </div>
-
-    <div class="form-group">
-      <label for="price">Price*</label>
-      <input type="number" id="price" formControlName="prixServiceAnimal" 
-             required min="0">
-      <div *ngIf="serviceForm.get('prixServiceAnimal')?.invalid && 
-                 (serviceForm.get('prixServiceAnimal')?.dirty || serviceForm.get('prixServiceAnimal')?.touched)"
-           class="error-message">
-        <div *ngIf="serviceForm.get('prixServiceAnimal')?.errors?.['required']">
-          Price is required
+    <div class="form-card">
+      <div class="form-group">
+        <label for="type">Service Type*</label>
+        <div class="select-wrapper">
+          <select id="type" formControlName="typeService" required>
+            <option value="" disabled selected>Select a service type</option>
+            <option *ngFor="let type of serviceTypes" [value]="type">{{type | titlecase}}</option>
+          </select>
+          <i class="fas fa-chevron-down"></i>
         </div>
-        <div *ngIf="serviceForm.get('prixServiceAnimal')?.errors?.['min']">
-          Price must be 0 or greater
+        <div *ngIf="serviceForm.get('typeService')?.invalid && 
+                   (serviceForm.get('typeService')?.dirty || serviceForm.get('typeService')?.touched)"
+             class="error-message">
+          <i class="fas fa-exclamation-circle"></i> Service type is required
         </div>
       </div>
-    </div>
 
-    <div class="form-group">
-      <label for="description">Description*</label>
-      <textarea id="description" formControlName="descriptionServiceAnimal" 
-                required></textarea>
-      <div *ngIf="serviceForm.get('descriptionServiceAnimal')?.invalid && 
-                 (serviceForm.get('descriptionServiceAnimal')?.dirty || serviceForm.get('descriptionServiceAnimal')?.touched)"
-           class="error-message">
-        Description is required
+      
+      <div class="form-group">
+        <label for="description">Description*</label>
+        <textarea id="description" formControlName="descriptionServiceAnimal" 
+                  required placeholder="Enter service description..."></textarea>
+        <div *ngIf="serviceForm.get('descriptionServiceAnimal')?.invalid && 
+                   (serviceForm.get('descriptionServiceAnimal')?.dirty || serviceForm.get('descriptionServiceAnimal')?.touched)"
+             class="error-message">
+          <i class="fas fa-exclamation-circle"></i> Description is required
+        </div>
       </div>
-    </div>
 
-    <div class="form-group checkbox-group">
-      <input type="checkbox" id="availability" formControlName="disponibilite">
-      <label for="availability">Available</label>
+<!-- New fields -->
+<div class="form-group">
+  <label for="location">Location*</label>
+  <input id="location" type="text" formControlName="location" required>
+</div>
+
+<div class="form-group">
+  <label for="animalType">Animal Type*</label>
+  <input id="animalType" type="text" formControlName="animalType" required>
+</div>
+
+<div class="form-group">
+  <label for="specialRequirements">Special Requirements</label>
+  <textarea id="specialRequirements" formControlName="specialRequirements"></textarea>
+</div>
+
+<div class="form-row">
+  <div class="form-group">
+    <label for="startDate">Start Date*</label>
+    <input id="startDate" type="date" formControlName="startDate" required>
+  </div>
+  
+  <div class="form-group">
+    <label for="endDate">End Date*</label>
+    <input id="endDate" type="date" formControlName="endDate" required>
+  </div>
+</div>
+
+
+
+<div class="form-group">
+  <label for="price">Price (optional)</label>
+  <input id="price" type="number" formControlName="prixServiceAnimal" min="0">
+</div>
+
+
+
+<div class="form-group">
+  <label for="logo">Service Logo (optional)</label>
+  <input id="logo" type="file" (change)="onFileSelected($event)" accept="image/*">
+  
+  <!-- Logo preview -->
+  <div *ngIf="previewLogo" class="logo-preview">
+    <img [src]="previewLogo" alt="Logo Preview" class="preview-image">
+  </div>
+</div>
+
+
+
+
+
+
+
+     
     </div>
 
     <div class="form-actions">
-      <button type="button" (click)="goBack()" class="cancel-button">Cancel</button>
+      <button type="button" (click)="goBack()" class="cancel-button">
+        <i class="fas fa-times"></i> Cancel
+      </button>
       <button type="submit" class="submit-button" [disabled]="serviceForm.invalid">
+        <i class="fas" [class.fa-save]="isEditMode" [class.fa-plus]="!isEditMode"></i>
         {{ isEditMode ? 'Update' : 'Add' }} Service
       </button>
     </div>

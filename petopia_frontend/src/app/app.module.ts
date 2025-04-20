@@ -138,6 +138,10 @@ import { ReceiptModalComponent } from './simple-user/store/receipt-modal/receipt
 import { XpBarComponent } from './simple-user/Event/xp-bar/xp-bar.component';
 import { DreamPetComponent } from './simple-user/adoption/dream-pet/dream-pet.component';
 
+import { EventDetailsComponent } from './simple-user/Event/event-details/event-details.component';
+import { ServiceAnimalDetailsComponent } from './simple-user/Event/service-animal-details/service-animal-details.component';
+
+
 
 @NgModule({
   declarations: [
@@ -237,6 +241,8 @@ import { DreamPetComponent } from './simple-user/adoption/dream-pet/dream-pet.co
     CountdownComponent,
     XpBarComponent,
     ReceiptModalComponent,
+    EventDetailsComponent,
+    ServiceAnimalDetailsComponent,
   ],
   imports: [
     BrowserModule,
@@ -260,6 +266,8 @@ import { DreamPetComponent } from './simple-user/adoption/dream-pet/dream-pet.co
     MatRadioModule,
     MatCardModule,
     MatRippleModule,
+    
+
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }
