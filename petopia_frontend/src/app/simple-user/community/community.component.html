@@ -184,7 +184,7 @@
     </div>
     
     <!-- Post Content -->
-    <textarea 
+    <textarea
   #postContentCtrl="ngModel"
   name="postContent"
   [(ngModel)]="newPostContent"
@@ -193,8 +193,9 @@
   rows="3"
   required
   minlength="5"
-  (input)="autoGrowTextArea($event)">
+  (input)="autoGrowTextArea($event); clearErrorIfValid()">
 </textarea>
+
 
     <div *ngIf="(postForm.submitted || postContentCtrl.touched) && postForm.controls['postContent']?.invalid" class="text-danger mt-1">
       Post content is required (at least 5 characters).

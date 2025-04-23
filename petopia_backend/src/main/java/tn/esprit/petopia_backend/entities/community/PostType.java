@@ -5,5 +5,6 @@ public enum PostType {
     ADOPTION,
     GENERAL,
     ADVICE,
-    FOR_SALE
+    FOR_SALE,
+    NEWS
 }

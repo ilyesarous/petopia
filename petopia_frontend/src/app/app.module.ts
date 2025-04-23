@@ -142,6 +142,7 @@ import { EventDetailsComponent } from './simple-user/Event/event-details/event-d
 import { ServiceAnimalDetailsComponent } from './simple-user/Event/service-animal-details/service-animal-details.component';
 
 
+import { NewsComponent } from './simple-user/news/news.component';
 
 @NgModule({
   declarations: [
@@ -243,6 +244,7 @@ import { ServiceAnimalDetailsComponent } from './simple-user/Event/service-anima
     ReceiptModalComponent,
     EventDetailsComponent,
     ServiceAnimalDetailsComponent,
+    NewsComponent,
   ],
   imports: [
     BrowserModule,

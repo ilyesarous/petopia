@@ -407,3 +407,12 @@
   text-decoration: underline;
   color: #d02a6b;
 }
+.text-primary {
+  color: #007bff;
+  text-decoration: none;
+  font-weight: 500;
+}
+.text-primary:hover {
+  text-decoration: underline;
+  color: #0056b3;
+}

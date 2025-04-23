@@ -15,6 +15,8 @@ export class NavbarComponent implements OnInit {
   isMobileMenuOpen = false;
   selectedItem: string = 'Home';
   showMatchingDropdown: boolean = false;
+  showCommunityDropdown = false;
+
   list:any[] = [
     {id: 1, icon: 'bi bi-envelope'},
     {id: 2, icon: 'bi bi-bell'},
@@ -40,7 +42,7 @@ export class NavbarComponent implements OnInit {
   pages = [
     { id: 1, name: 'Home', link: '/home' },
     { id: 2, name: 'Store', link: '/products' },
-    { id: 3, name: 'Community Hub', link: 'community' },
+    { id: 3, name: 'Community', link: '/community' },
     { id: 4, name: 'Events', link: '/events' },
     { id: 5, name: 'Vet', link: '/vet/dash-principale-user' },
     {id: 6, name: 'Adoption', link: 'adoption'},

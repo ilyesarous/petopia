@@ -74,6 +74,7 @@ import { ServiceAnimalListComponent } from './simple-user/Event/service-animal-l
 import { AddServiceAnimalComponent } from './simple-user/Event/add-service-animal/add-service-animal.component';
 import { DreamPetComponent } from './simple-user/adoption/dream-pet/dream-pet.component';
 import { EventDetailsComponent } from './simple-user/Event/event-details/event-details.component';
+import { NewsComponent } from './simple-user/news/news.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -117,7 +118,7 @@ const routes: Routes = [
 
 
   { path: 'community', component: CommunityComponent},
-  { path: 'post/:id', component: PostComponent, canActivate: [AuthGuard] },
+  { path: 'news', component: NewsComponent },
   { path: 'adoption', component: PetAdoptionListComponent },
   { path: 'adoption/pets/:id', component: PetAdoptDetailsComponent },
   { path: 'adoption/form/:idPet', component: AdoptPetComponent },

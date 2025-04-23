@@ -84,6 +84,10 @@
               <i class="bi bi-x-circle-fill"></i>
             </button>
           </div>
+          <div *ngIf="updateErrorMessage" class="alert alert-danger mt-2">
+            {{ updateErrorMessage }}
+          </div>
+          
         </div>
   
         
@@ -99,7 +103,19 @@
       <ng-template #displayPostContent>
         <div class="d-flex justify-content-between align-items-center mb-2">
           <div class="post-content-wrapper">
-            <p class="mb-0">{{ displayContent }}</p>
+<!-- If NEWS type, split content and show only link separately -->
+<ng-container *ngIf="post.postType === PostType.NEWS; else normalPost">
+  <p class="mb-1">
+    {{ displayContent.split('Read more:')[0] }}
+  </p>
+  <a [href]="getNewsUrlFromContent()" class="text-primary" target="_blank">
+    {{ getNewsUrlFromContent() }}
+  </a>
+</ng-container>
+
+<ng-template #normalPost>
+  <p class="mb-0">{{ displayContent }}</p>
+</ng-template>
             <button *ngIf="post.content.length > MAX_LENGTH" 
                     class="btn btn-link toggle-content-btn"
                     (click)="toggleExpanded()">
@@ -292,6 +308,10 @@
     <div *ngIf="(commentForm.submitted || commentForm.controls['commentContent']?.touched) && commentForm.controls['commentContent']?.invalid" class="text-danger mt-1 ms-5">
       Comment must be at least 2 characters.
     </div>
+    <div *ngIf="commentErrorMessage" class="alert alert-danger mt-2 ms-3">
+      {{ commentErrorMessage }}
+    </div>
+    
   </div>
   
   </div>
