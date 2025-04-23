@@ -158,27 +158,19 @@ const routes: Routes = [
       { path: 'pet-growth', component: PetGrowthListComponent },
       { path: 'dog-breed-recognition' , component: AppDogBreedRecognitionRedirectButtonComponent},
       { path: 'locations', component: VetLocationsComponent },
-      { path: 'rates' , component: VetRateComponent}
-    ]
-
+      { path: 'rates' , component: VetRateComponent},
       { path: 'events', component: EventListComponent },
       { path: 'add-event', component: EventFormComponent },
       {path: 'event-participants/:id',component: EventParticipantsComponent,},
-
       {
         path: 'dog-breed-recognition',
         component: AppDogBreedRecognitionRedirectButtonComponent,
       },
       {path:'shelters',component: ShelterListComponent, canActivate: [AuthGuard]},
       {path:'shelters/:id',component: ShelterDetailsComponent, canActivate: [AuthGuard]},
-
       { path: 'community', component: CommunityListComponent },
       { path: 'community/details/:type/:id', component: CommunityDetailsComponent },
       { path: 'match-back', component: MatchbackComponent },
-
-
-
-
     ],
   },
 
