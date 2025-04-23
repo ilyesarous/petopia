@@ -1,9 +1,8 @@
 package tn.esprit.petopia_backend.controller.community;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.*;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -14,7 +13,7 @@ import tn.esprit.petopia_backend.entities.community.PostType;
 import tn.esprit.petopia_backend.entities.user.User;
 import tn.esprit.petopia_backend.services.community.CloudinaryService;
 import tn.esprit.petopia_backend.services.community.IPostService;
-import tn.esprit.petopia_backend.services.community.TranslationService;
+import tn.esprit.petopia_backend.services.community.PostModerationService;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
@@ -29,12 +28,13 @@ public class PostController {
 
     private final IPostService postService;
     private final CloudinaryService cloudinaryService;
-
+    private final PostModerationService postModerationService;
 
     @PostMapping("/add")
     @PreAuthorize("hasAnyAuthority('ROLE_USER', 'ROLE_VET', 'ROLE_PARTNER', 'ROLE_SHELTER')")
     public ResponseEntity<?> createPost(
             @RequestParam(value = "files", required = false) MultipartFile[] files,
+            @RequestParam(value = "image", required = false) String imageUrl,
             @RequestParam("content") String content,
             @RequestParam("postType") String postTypeStr) {
 
@@ -42,18 +42,24 @@ public class PostController {
         User user = (User) authentication.getPrincipal();
         Integer userId = user.getId_user();
 
+        if (postModerationService.containsInappropriateContent(content)) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("❌ Your post contains inappropriate content.");
+        }
+
         try {
             String normalizedType = postTypeStr.trim().toUpperCase().replace(" ", "_");
             PostType postType = PostType.valueOf(normalizedType);
-
             StringBuilder imageUrls = new StringBuilder();
+
+            if (imageUrl != null && !imageUrl.isBlank()) {
+                imageUrls.append(imageUrl);
+            }
+
             if (files != null && files.length > 0) {
                 for (MultipartFile file : files) {
                     String uploadedUrl = cloudinaryService.uploadImage(file);
-                    imageUrls.append(uploadedUrl).append(",");
-                }
-                if (imageUrls.length() > 0) {
-                    imageUrls.setLength(imageUrls.length() - 1);
+                    if (imageUrls.length() > 0) imageUrls.append(",");
+                    imageUrls.append(uploadedUrl);
                 }
             }
 
@@ -75,7 +81,6 @@ public class PostController {
         }
     }
 
-
     @GetMapping("/{id}")
     public ResponseEntity<Post> getPostById(@PathVariable Long id) {
         return ResponseEntity.ok(postService.getPostById(id));
@@ -91,13 +96,17 @@ public class PostController {
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<Post> updatePost(
+    public ResponseEntity<?> updatePost(
             @PathVariable Long id,
             @RequestParam("content") String content,
             @RequestParam("postType") String postTypeStr,
             @RequestParam(value = "files", required = false) MultipartFile[] files,
             @RequestParam(value = "image", required = false) String image
     ) throws IOException {
+        if (postModerationService.containsInappropriateContent(content)) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body("❌ Your updated post contains inappropriate content.");
+        }
         Post existingPost = postService.getPostById(id);
         existingPost.setContent(content);
         existingPost.setPostType(PostType.valueOf(postTypeStr));
@@ -105,12 +114,10 @@ public class PostController {
 
         List<String> finalImages = new ArrayList<>();
 
-        // 1. Include existing images (except deleted ones)
         if (image != null && !image.trim().isEmpty()) {
             finalImages.addAll(Arrays.asList(image.split(",")));
         }
 
-        // 2. Append all uploaded files
         if (files != null && files.length > 0) {
             for (MultipartFile file : files) {
                 if (!file.isEmpty()) {
@@ -120,13 +127,11 @@ public class PostController {
             }
         }
 
-        // 3. Set final image list
         existingPost.setImage(String.join(",", finalImages));
 
         Post updated = postService.updatePost(id, existingPost);
         return ResponseEntity.ok(updated);
     }
-
 
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<String> deletePost(@PathVariable Long id) {

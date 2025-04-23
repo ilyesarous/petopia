@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Reaction } from '../../models/community/reaction';
 import { ReactionService } from '../../services/community/reaction.service';
-import { Post } from '../../models/community/post';
+import { Post, PostType } from '../../models/community/post';
 import { Comment } from '../../models/community/comment';
 import { CommentService } from '../../services/community/comment.service';
 import { PostService } from '../../services/community/post.service';
@@ -36,6 +36,8 @@ selectedPostImagePreviews: string[] = [];
   deletedImageIndexes: number[] = [];
 
   likeSound = new Audio('https://res.cloudinary.com/dkdx59xe9/video/upload/v1709508219/Facebook_Like_Sound_Effect_nbc6ju.mp3');
+  updateErrorMessage: string = '';
+  commentErrorMessage: string = '';
 
   //translation
   translatedPost: string | null = null;
@@ -46,6 +48,8 @@ expanded: boolean = false;
 readonly MAX_LENGTH = 450;
 MAX_TRANSLATED_LENGTH = 350;
 translatedExpanded: boolean = false;
+PostType = PostType;
+
 
 
 
@@ -204,12 +208,21 @@ translatedExpanded: boolean = false;
 
   updateComment(comment: Comment): void {
     if (!comment['editedContent'] || !comment.id) return;
+  
     this.commentService.updateComment(comment.id, comment['editedContent']).subscribe({
       next: updated => {
         comment.content = updated.content;
         comment['isEditing'] = false;
+        this.commentErrorMessage = ''; // ✅ clear error
       },
-      error: console.error
+      error: (err) => {
+        console.error('❌ Update comment failed:', err);
+        if (err.status === 400 && err.error) {
+          this.commentErrorMessage = err.error; // ✅ custom backend message
+        } else {
+          this.commentErrorMessage = 'An error occurred while updating the comment.';
+        }
+      }
     });
   }
 
@@ -218,15 +231,23 @@ translatedExpanded: boolean = false;
     const userIdStr = localStorage.getItem('userId');
     if (!userIdStr) return;
     const currentUserId = parseInt(userIdStr, 10);
-
+  
     this.commentService.addComment(currentUserId, this.post.id, this.newComment).subscribe({
       next: comment => {
         this.post.comments = this.post.comments || [];
         this.post.comments.push(comment);
         this.newComment = '';
+        this.commentErrorMessage = ''; // ✅ clear error
         commentForm.resetForm();
       },
-      error: console.error
+      error: (err) => {
+        console.error('❌ Add comment failed:', err);
+        if (err.status === 400 && err.error) {
+          this.commentErrorMessage = err.error; // ✅ custom backend message
+        } else {
+          this.commentErrorMessage = 'An error occurred while adding the comment.';
+        }
+      }
     });
   }
 
@@ -291,12 +312,19 @@ translatedExpanded: boolean = false;
         this.selectedPostImageFiles = [];
         this.selectedPostImagePreviews = [];
         this.deletedImageIndexes = [];
+        this.updateErrorMessage = ''; // ✅ clear error message on success
       },
       error: (err: any) => {
         console.error('Error updating post:', err);
+        if (err.status === 400 && err.error) {
+          this.updateErrorMessage = err.error; // ✅ set custom backend message
+        } else {
+          this.updateErrorMessage = 'An error occurred while updating the post.';
+        }
       }
     });
   }
+  
   
     setActiveAction(action: string, id: any): void {
     this.activeCommentAction = action;
@@ -358,7 +386,11 @@ translatedExpanded: boolean = false;
     this.translatedExpanded = !this.translatedExpanded;
   }
     
-    
+  getNewsUrlFromContent(): string {
+    const urlMatch = this.post.content.match(/https?:\/\/[^\s]+/);
+    return urlMatch ? urlMatch[0] : '';
+  }
+  
   
   
   

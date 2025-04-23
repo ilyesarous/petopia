@@ -1,9 +1,11 @@
 package tn.esprit.petopia_backend.controller.community;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import tn.esprit.petopia_backend.entities.community.Comment;
 import tn.esprit.petopia_backend.services.community.ICommentService;
+import tn.esprit.petopia_backend.services.community.PostModerationService;
 
 
 import java.util.List;
@@ -14,16 +16,21 @@ import java.util.Map;
 public class CommentController {
 
     private final ICommentService commentService;
+    private final PostModerationService postModerationService;
 
-    public CommentController(ICommentService commentService) {
+    public CommentController(ICommentService commentService, PostModerationService postModerationService) {
         this.commentService = commentService;
+        this.postModerationService = postModerationService;
     }
 
     @PostMapping(value = "/add", consumes = {"multipart/form-data"})
-    public ResponseEntity<Comment> addComment(
+    public ResponseEntity<?> addComment(
             @RequestParam int userId,
             @RequestParam Long postId,
             @RequestParam String content) {
+        if (postModerationService.containsInappropriateContent(content)) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("❌ Your comment contains inappropriate content.");
+        }
 
         Comment newComment = commentService.addComment(userId, postId, content);
         return ResponseEntity.ok(newComment);
@@ -31,8 +38,11 @@ public class CommentController {
 
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<Comment> updateComment(@PathVariable Long id, @RequestBody Map<String, String> requestBody) {
+    public ResponseEntity<?> updateComment(@PathVariable Long id, @RequestBody Map<String, String> requestBody) {
         String content = requestBody.get("content");
+        if (postModerationService.containsInappropriateContent(content)) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("❌ Your comment contains inappropriate content.");
+        }
         Comment updatedComment = commentService.updateComment(id, content);
         return ResponseEntity.ok(updatedComment);
     }

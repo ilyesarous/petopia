@@ -70,6 +70,7 @@ import { ParticipationListComponent } from './simple-user/Event/participation-li
 import { EventParticipantsComponent } from './admin/Event/event-participants/event-participants.component';
 import { ServiceAnimalListComponent } from './simple-user/Event/service-animal-list/service-animal-list.component';
 import { AddServiceAnimalComponent } from './simple-user/Event/add-service-animal/add-service-animal.component';
+import { NewsComponent } from './simple-user/news/news.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -110,7 +111,7 @@ const routes: Routes = [
 
 
   { path: 'community', component: CommunityComponent},
-  { path: 'post/:id', component: PostComponent, canActivate: [AuthGuard] },
+  { path: 'news', component: NewsComponent },
   { path: 'adoption', component: PetAdoptionListComponent },
   { path: 'adoption/pets/:id', component: PetAdoptDetailsComponent },
   { path: 'adoption/form/:idPet', component: AdoptPetComponent },

@@ -229,6 +229,7 @@ export class CommunityComponent implements OnInit {
         this.selectedFiles = [];
         this.newPostType = PostType.GENERAL;
         postForm.resetForm();
+        this.postErrorMessage = ''; 
       },
       error: (err) => {
         if (err.status === 400 && err.error) {
@@ -470,6 +471,11 @@ autoGrowTextArea(event: Event): void {
   textarea.style.height = textarea.scrollHeight + 'px';
 }
 
+clearErrorIfValid(): void {
+  if (this.postErrorMessage && this.newPostContent.length > 5) {
+    this.postErrorMessage = '';
+  }
+}
 
 
 

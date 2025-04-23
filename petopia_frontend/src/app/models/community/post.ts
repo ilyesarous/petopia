@@ -7,7 +7,8 @@ export enum PostType {
     ADOPTION = 'Adoption',
     GENERAL = 'General',
     ADVICE = 'Advice',
-    FOR_SALE = 'For Sale'
+    FOR_SALE = 'For Sale',
+    NEWS = 'NEWS'
 }
 
 export class User {

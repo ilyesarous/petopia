@@ -133,6 +133,7 @@ import { ServiceAnimalListComponent } from './simple-user/Event/service-animal-l
 import { AddServiceAnimalComponent } from './simple-user/Event/add-service-animal/add-service-animal.component';
 import { CountdownComponent } from './simple-user/Event/countdown/countdown.component';
 import { XpBarComponent } from './simple-user/Event/xp-bar/xp-bar.component';
+import { NewsComponent } from './simple-user/news/news.component';
 
 @NgModule({
   declarations: [
@@ -229,6 +230,7 @@ import { XpBarComponent } from './simple-user/Event/xp-bar/xp-bar.component';
     AddServiceAnimalComponent,
     CountdownComponent,
     XpBarComponent,
+    NewsComponent,
   ],
   imports: [
     BrowserModule,
