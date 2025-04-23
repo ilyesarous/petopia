@@ -266,6 +266,75 @@
     color: #636e72;
     margin-bottom: 20px;
   }
+  /* Pagination Styles */
+.pagination-controls {
+  margin-top: 30px;
+  text-align: center;
+}
+
+.ngx-pagination {
+  padding-left: 0;
+  display: inline-block;
+}
+
+.ngx-pagination li {
+  display: inline;
+  margin: 0 3px;
+}
+
+.ngx-pagination a, 
+.ngx-pagination button {
+  color: #2d3436;
+  padding: 6px 12px;
+  text-decoration: none;
+  border: 1px solid #dfe6e9;
+  border-radius: 4px;
+  transition: all 0.3s ease;
+}
+
+.ngx-pagination a:hover, 
+.ngx-pagination button:hover {
+  background: #f5f5f5;
+}
+
+.ngx-pagination .current {
+  background: #f83182;
+  color: white;
+  border-color: #f83182;
+}
+
+.ngx-pagination .disabled {
+  color: #b2bec3;
+  cursor: not-allowed;
+}
+.btn-edit, .btn-delete {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  padding: 5px;
+}
+
+.btn-edit {
+  color: #4a90e2;
+}
+
+.btn-delete {
+  color: #f83182;
+}
+
+/* Responsive Pagination */
+@media (max-width: 576px) {
+  .ngx-pagination li {
+    margin: 0 1px;
+  }
+  
+  .ngx-pagination a, 
+  .ngx-pagination button {
+    padding: 4px 8px;
+    font-size: 14px;
+  }
+}
   
   /* Animation */
   @keyframes fadeIn {

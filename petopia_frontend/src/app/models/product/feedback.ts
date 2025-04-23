@@ -5,8 +5,8 @@ export class Feedback {
   description!: string;
   stars_number!: number;
   sentiment!: string;
-  user_id!: number;
+  user!: {id_user: number};
   productId!: number;
-  created_at!: Date;
+  createdAt!: Date;
   updated_at!: Date;
 }

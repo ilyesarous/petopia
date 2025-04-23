@@ -14,4 +14,5 @@ public interface IAdoptionService {
     List<Adoption> getAdoptionsByShelterId(Integer shelterId);
     List<Adoption> getAdoptionsByPetId(Integer petId);
     List<Adoption> getAdoptionsByStatus(AdoptionStatus status);
+
 }

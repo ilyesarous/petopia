@@ -14,6 +14,15 @@ export class NavbarComponent implements OnInit {
   isDropdownOpen = false;
   isMobileMenuOpen = false;
   selectedItem: string = 'Home';
+  showMatchingDropdown: boolean = false;
+  showCommunityDropdown = false;
+
+  list:any[] = [
+    {id: 1, icon: 'bi bi-envelope'},
+    {id: 2, icon: 'bi bi-bell'},
+  ]
+  showEventsDropdown = false; // Add this line
+
 
   ngOnInit() {
     this.authService.isAuthenticated.subscribe((status) => {
@@ -33,16 +42,22 @@ export class NavbarComponent implements OnInit {
   pages = [
     { id: 1, name: 'Home', link: '/home' },
     { id: 2, name: 'Store', link: '/products' },
-    { id: 3, name: 'Community Hub', link: '#' },
-    { id: 4, name: 'Events', link: '#' },
+    { id: 3, name: 'Community', link: '/community' },
+    { id: 4, name: 'Events', link: '/events' },
     { id: 5, name: 'Vet', link: '/vet/dash-principale-user' },
     {id: 6, name: 'Adoption', link: 'adoption'},
+    {id: 7, name: 'Matching', link: 'matchy'},
   ];
 
   shelterPages = [
+    {id: 0, name: 'Home', link: 'shelter/home'},
      {id:1 , name: 'MyPets', link: 'shelter/pets'},
      {id:2 , name: 'Adoption Requests', link: 'shelter/adoption-requests'}
   ];
+
+  partnerPages = [
+    {id: 0, name: 'Home', link: 'partner/home'}
+  ]
 
   VETpages = [
     { id: 1, name: 'Vet Dashboard', link: '/vet' },

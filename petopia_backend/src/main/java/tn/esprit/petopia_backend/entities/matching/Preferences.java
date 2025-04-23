@@ -23,8 +23,14 @@ public class Preferences {
     private int max_age ;
     private String preferred_gender;
     private String preferred_location;
+    private Double preferred_lat;     // New field for latitude
+    private Double preferred_lon;
 
+
+//    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     @OneToOne
     private Pet pet;
+
+
 
 }

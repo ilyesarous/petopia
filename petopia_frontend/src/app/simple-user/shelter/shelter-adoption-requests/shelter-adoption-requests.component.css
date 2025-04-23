@@ -1,0 +1,246 @@
+.adoption-requests-container {
+    padding: 2rem;
+    max-width: 1000px;
+    margin: auto;
+  }
+  
+  .title {
+    text-align: center;
+    color: #F83182;
+    font-size: 2rem;
+    font-weight: 600;
+    margin-bottom: 2rem;
+  }
+  /* Filter Styles */
+  .filter-container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 0 1rem;
+  }
+  
+  .filter-bar {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+  }
+  
+  /* Filter dropdown (left) */
+  .filter-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  
+  .filter-group label {
+    font-weight: 500;
+    color: #444;
+    white-space: nowrap;
+  }
+  
+  .filter-group select {
+    padding: 8px 14px;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+    font-size: 0.95rem;
+  }
+  
+  /* Search bar (right) */
+  .search-group {
+    flex: 1;
+    display: flex;
+    width:35rem;
+    
+  }
+  
+  .search-group input {
+    width: 100%;
+    padding: 10px 16px;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+    font-size: 1rem;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+  }
+  
+  .search-group input::placeholder {
+    color: #bbb;
+  }
+  
+  .active-filter-tag {
+    background-color: #F83182;
+    color: #fff;
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    justify-content: center;
+    width: fit-content;
+    margin: auto;
+    margin-bottom: 1rem;
+  }
+  
+  .remove-tag {
+    cursor: pointer;
+    font-size: 1.1rem;
+    color: #fff;
+  }
+  
+
+  
+  .request-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #f7f9fc;
+    border-radius: 20px;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.08);
+    padding: 1rem 1.5rem;
+    margin-bottom: 20px;
+    transition: transform 0.2s ease;
+  }
+  
+  .request-card:hover {
+    transform: translateY(-3px);
+  }
+  
+  /* Pet Image */
+  .pet-image img {
+    width: 80px;
+    height: 80px;
+    border-radius: 10%;
+    object-fit: cover;
+    margin-right: 1.2rem;
+  }
+  
+  /* Middle Info Section */
+  .request-info-section {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+  }
+  .pet-name {
+    font-size: 0.95rem;
+    color: #444;
+    margin: 2px 0 6px;
+  }
+  
+  .user-info h3 {
+    margin: 0;
+    font-size: 1.2rem;
+    color: #333;
+  }.user-name {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #333;
+    margin: 0;
+  }
+  
+  
+  .motivation-text {
+    margin: 6px 0;
+    font-size: 0.95rem;
+    color: #666;
+    font-style: italic;
+  }
+  
+  .details-link {
+    font-size: 0.85rem;
+    color: #F83182;
+    text-decoration: underline;
+    cursor: pointer;
+    margin-top: 0.3rem;
+    font-weight: bold; 
+  }
+  
+  
+  /* Action Buttons */
+  .action-buttons {
+    display: flex;
+    gap: 10px;
+    margin-left: 1.2rem;
+  }
+  
+  
+  .btn {
+    border: none;
+    border-radius: 20px;
+    padding: 8px 16px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    cursor: pointer;
+    color: #fff;
+    transition: all 0.3s ease;
+  }
+  
+  .approve-btn {
+    background-color: #F83182;
+  }
+  
+  .approve-btn:hover {
+    background-color: #d72666;
+    transform: scale(1.05);
+  }
+  
+  .reject-btn {
+    background-color: #FE9A7A;
+  }
+  
+  .reject-btn:hover {
+    background-color: #e87a68;
+    transform: scale(1.05);
+  }
+  .pagination-controls {
+    display: flex;
+    justify-content: center;
+    margin-top: 2rem;
+    gap: 8px;
+  }
+  
+  .pagination-controls .btn {
+    background-color: #fefefe;
+    color: #F83182;
+    border: 2px solid #F83182;
+    padding: 8px 16px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.3s ease;
+  }
+  
+  .pagination-controls .btn:hover {
+    background-color: #F83182;
+    color: #fff;
+  }
+  
+  .pagination-controls .btn.active {
+    background-color: #F83182;
+    color: white;
+    font-weight: bold;
+    box-shadow: 0 0 8px rgba(248, 49, 130, 0.3);
+  }
+  .pagination-controls .btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+  .status-tag {
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: white;
+    display: inline-block;
+    text-align: center;
+  }
+  
+  .approved-tag {
+    background-color: #F83182; /* Pink */
+  }
+  
+  .rejected-tag {
+    background-color: #FE9A7A; /* Orange */
+  }
+  

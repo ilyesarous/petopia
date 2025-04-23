@@ -71,6 +71,7 @@ public class PetService {
         }
 
 
+
         return petRepository.save(existingPet);
     }
     public Pet getPetById(Integer id) {
@@ -97,8 +98,8 @@ public class PetService {
         return petRepository.findByStatus(status);
     }
 
-    public List<Pet> getUnassignedPets() {
-        return petRepository.findAllUnassignedPets();
+    public List<Pet> getUnassignedPets(Integer userId) {
+        return petRepository.findAllUnassignedPets(userId);
     }
 
 

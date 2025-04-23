@@ -18,14 +18,17 @@ export class PetService {
   }
 
   // Add a pet from the shelter perspective
-  addPetForShelter(pet: Pet): Observable<Pet> {
-    return this.http.post<Pet>(`${this.apiUrl}/shelter/pet/add`, pet);
+
+  addPetForShelter(formData: FormData): Observable<any> {
+    return this.http.post(`${this.apiUrl}/shelter/pet/add`, formData);
+  }
+  // Update pet (for shelters)
+
+  updatePetWithImage(id: number, formData: FormData): Observable<Pet> {
+    return this.http.put<Pet>(`${this.apiUrl}/pet/updateWithImage/${id}`, formData);
   }
 
-  // Update pet (for shelters)
-  updatePet(id: number, pet: Pet): Observable<Pet> {
-    return this.http.put<Pet>(`${this.apiUrl}/pet/update/${id}`, pet);
-  }
+
 
   // Delete pet (for shelters)
   deletePet(id: number): Observable<any> {
@@ -52,10 +55,10 @@ export class PetService {
     return this.http.get<Pet[]>(`${this.apiUrl}/pet/status/${status}`);
   }
 
-  getUnassignedPets(): Observable<Pet[]> {
-    return this.http.get<Pet[]>(`${this.apiUrl}/pet/unassigned`);
+  getUnassignedPets(userId: number): Observable<Pet[]> {
+    return this.http.get<Pet[]>(`${this.apiUrl}/pet/unassigned?userId=${userId}`);
   }
-  
+
   getPetByRefVet(petRefVet: number): Observable<Pet> {
     return this.http.get<Pet>(`${this.apiUrl}/auth/pet/ref/${petRefVet}`);
   }

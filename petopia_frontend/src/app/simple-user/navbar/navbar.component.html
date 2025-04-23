@@ -1,5 +1,5 @@
 <nav class="navbar navbar-expand-lg" *ngIf="role !== 'ROLE_ADMIN'">
-<div class="container">
+  <div class="container">
     <!-- Brand Logo -->
     <a class="navbar-brand" routerLink="/" (click)="reloadPage($event)">
       <img src="/assets/images/logo.png" alt="Petopia Logo" class="navbar-logo">
@@ -12,10 +12,60 @@
 
     <div class="navbar-collapse" [ngClass]="{'show': isMobileMenuOpen}">
       <ul class="navbar-nav">
+
         <!-- Dynamic Pages for Authenticated Users -->
         <ng-container *ngIf="isAuthenticated && role === 'ROLE_USER'">
           <li class="nav-item" *ngFor="let page of pages">
-            <a class="nav-link"
+            
+            <div *ngIf="page.name === 'Events'" class="nav-item dropdown"
+                 (mouseenter)="showEventsDropdown = true" (mouseleave)="showEventsDropdown = false">
+              <a class="nav-link dropdown-toggle"
+                 [routerLink]="page.link"
+                 routerLinkActive="active"
+                 (click)="selectedItem = page.name; $event.preventDefault()"
+                 [ngClass]="{'is-selected': selectedItem === page.name}">
+                {{ page.name }}
+              </a>
+              <div class="dropdown-menu" [ngClass]="{'show': showEventsDropdown}">
+                <a class="dropdown-item"
+                   routerLink="/events"
+                   (click)="selectedItem = 'Events'">
+                  All Events
+                </a>
+                <a class="dropdown-item"
+                   routerLink="/services"
+                   (click)="selectedItem = 'Services'">
+                  Animal Services
+                </a>
+              </div>
+            </div>
+
+            <!-- Community dropdown -->
+            <div *ngIf="page.name === 'Community'" class="nav-item dropdown"
+                 (mouseenter)="showCommunityDropdown = true" (mouseleave)="showCommunityDropdown = false">
+              <a class="nav-link dropdown-toggle"
+                 href="#"
+                 (click)="selectedItem = page.name; $event.preventDefault()"
+                 [ngClass]="{'is-selected': selectedItem === page.name}">
+                {{ page.name }}
+              </a>
+              <div class="dropdown-menu" [ngClass]="{'show': showCommunityDropdown}">
+                <a class="dropdown-item"
+                   routerLink="/community"
+                   (click)="selectedItem = 'Hub'">
+                  Hub
+                </a>
+                <a class="dropdown-item"
+                   routerLink="/news"
+                   (click)="selectedItem = 'News'">
+                  News
+                </a>
+              </div>
+            </div>
+
+            <!-- Regular nav items -->
+            <a *ngIf="page.name !== 'Events' && page.name !== 'Community'"
+               class="nav-link"
                [routerLink]="page.link"
                routerLinkActive="active"
                (click)="selectedItem = page.name"
@@ -38,7 +88,20 @@
           </li>
         </ng-container>
 
-        <!-- Dynamic Pages for Authenticated Users -->
+        <!-- Dynamic Pages for Partner Users -->
+        <ng-container *ngIf="isAuthenticated && role === 'ROLE_PARTNER'">
+          <li class="nav-item" *ngFor="let page of partnerPages">
+            <a class="nav-link"
+               [routerLink]="page.link"
+               routerLinkActive="active"
+               (click)="selectedItem = page.name"
+               [ngClass]="{'is-selected': selectedItem === page.name}">
+              {{ page.name }}
+            </a>
+          </li>
+        </ng-container>
+
+        <!-- Dynamic Pages for Vet Users -->
         <ng-container *ngIf="isAuthenticated && role === 'ROLE_VET'">
           <li class="nav-item" *ngFor="let page of VETpages">
             <a class="nav-link"
@@ -71,7 +134,6 @@
             <span class="username">{{ username }}</span>
           </a>
           <div class="dropdown-menu" [ngClass]="{'show': isDropdownOpen}">
-            <!-- User-specific links -->
             <a class="dropdown-item" routerLink="/profileUser" (click)="selectedItem = 'Profile'">
               <i class="fas fa-user" style="color: #F83182;"></i> Profile
             </a>

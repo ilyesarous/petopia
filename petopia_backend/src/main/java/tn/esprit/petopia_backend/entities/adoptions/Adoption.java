@@ -19,15 +19,6 @@ public class Adoption {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id_request;
 
-    @ManyToOne
-    private Pet pet;
-
-    @ManyToOne
-    private User requester;
-
-    @ManyToOne
-    @JsonIgnore
-    private Shelter shelter;
 
     private LocalDateTime request_date;
 
@@ -39,7 +30,17 @@ public class Adoption {
 
     private String cinimage;
 
-    @OneToOne(mappedBy = "adoption", cascade = CascadeType.ALL)
+    @ManyToOne
+    private Pet pet;
+
+    @ManyToOne
+    private User requester;
+
+    @ManyToOne
+    @JsonIgnore
+    private Shelter shelter;
+
+    @OneToOne(mappedBy = "adoption", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
     private AdoptionCertificate adoptionCertificate;
 

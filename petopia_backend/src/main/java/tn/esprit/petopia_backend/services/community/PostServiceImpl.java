@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tn.esprit.petopia_backend.entities.community.Post;
+import tn.esprit.petopia_backend.entities.community.PostType;
 import tn.esprit.petopia_backend.entities.user.User;
 import tn.esprit.petopia_backend.repositories.community.PostRepository;
 import tn.esprit.petopia_backend.repositories.user.UserRepository;
@@ -48,16 +49,24 @@ public class PostServiceImpl implements IPostService {
         if (optionalPost.isPresent()) {
             Post post = optionalPost.get();
             post.setContent(postDetails.getContent());
-            post.setImage(postDetails.getImage());
             post.setDate(LocalDateTime.now());
             post.setPostType(postDetails.getPostType());
+            post.setImage(postDetails.getImage());
+
             return postRepository.save(post);
         }
         return null;
     }
 
+
+
     @Override
     public void deletePost(Long id) {
         postRepository.deleteById(id);
+    }
+
+    @Override
+    public List<Post> getPostsByType(PostType postType) {
+        return postRepository.findByPostType(postType); // Fetches posts by the given PostType
     }
 }

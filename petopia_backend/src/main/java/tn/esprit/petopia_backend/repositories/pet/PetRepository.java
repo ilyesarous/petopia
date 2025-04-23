@@ -26,8 +26,17 @@ public interface PetRepository extends JpaRepository<Pet,Integer>
         @Query("SELECT p FROM Pet p WHERE p.idPet = :idPet")
         Optional<Pet> findSimplePetById(@Param("idPet") int idPet);
 
-    @Query("SELECT p FROM Pet p WHERE p.user.id_user IS NULL")
-    List<Pet> findAllUnassignedPets();
+    @Query("""
+  SELECT p FROM Pet p 
+  WHERE p.status = 'AVAILABLE' 
+    AND p.user IS NULL 
+    AND p.idPet NOT IN (
+      SELECT a.pet.idPet 
+      FROM Adoption a 
+      WHERE a.requester.id_user = :userId
+    )
+""")
+    List<Pet> findAllUnassignedPets(@Param("userId") Integer userId);
 
     Optional<Pet> findByPetRefVet(int petRefVet);
 

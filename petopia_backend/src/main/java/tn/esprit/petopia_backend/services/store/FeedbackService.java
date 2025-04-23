@@ -15,10 +15,7 @@ import edu.stanford.nlp.ling.CoreAnnotations;
 import edu.stanford.nlp.sentiment.SentimentCoreAnnotations;
 import tn.esprit.petopia_backend.services.user.UserService;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Properties;
+import java.util.*;
 
 @Service
 @AllArgsConstructor
@@ -29,7 +26,7 @@ public class FeedbackService implements IFeedbackService {
     private UserService userService;
 
     @Override
-    public String addFeedback(int idProduct, Feedback feedback) {
+    public String addFeedback(int idUser, int idProduct, Feedback feedback) {
         feedback.setCreatedAt(new Date());
 // Load CoreNLP pipeline with sentiment analysis
         Properties props = new Properties();
@@ -45,7 +42,7 @@ public class FeedbackService implements IFeedbackService {
             String sentiment = sentence.get(SentimentCoreAnnotations.SentimentClass.class);
             System.out.println("Sentence: " + sentence);
             feedback.setSentiment(sentiment);
-            User user = userService.getUsersById(1).getOurUsers();
+            User user = userService.getUsersById(idUser).getOurUsers();
             Product product = productService.findById(idProduct);
             feedback.setUser(user);
             feedback.setProduct(product);
@@ -92,5 +89,20 @@ public class FeedbackService implements IFeedbackService {
     public List<Feedback> findAllByProduct(int idProduct) {
         Product product = productService.findById(idProduct);
         return repository.findByProduct(product);
+    }
+
+    public String getSentiment(int idProduct) {
+        List<Feedback> feedbacks = findAllByProduct(idProduct);
+        String sentiment;
+        long somPositive = feedbacks.stream().filter((filter) -> Objects.equals(filter.getSentiment(), "Positive")).toList().size();
+        long somNegative = feedbacks.stream().filter((filter) -> Objects.equals(filter.getSentiment(), "Negative")).toList().size();
+        if (somNegative > somPositive) {
+            sentiment = "negative";
+        } else if (somNegative < somPositive) {
+            sentiment = "positive";
+        } else{
+            sentiment = "neutral";
+        }
+        return sentiment;
     }
 }

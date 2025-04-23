@@ -19,7 +19,7 @@ public class Matches {
     private int id_match;
 
     @ManyToOne
-    private Pet pet_1;
+    private Pet pet_1 ;
 
     @ManyToOne
     private Pet pet_2;

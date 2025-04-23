@@ -22,8 +22,11 @@ public class Post {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
+    @Lob
+    @Column(columnDefinition = "TEXT")
     private String content;
+    @Lob
+    @Column(columnDefinition = "TEXT")
     private String image;
 
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")

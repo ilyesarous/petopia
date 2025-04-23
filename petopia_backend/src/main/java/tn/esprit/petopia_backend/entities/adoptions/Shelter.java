@@ -20,6 +20,9 @@ public class Shelter {
 
     private String shelter_name;
     private String location;
+    private double latitude;
+    private double longitude;
+
     private String email;
     private String phone_number;
 
@@ -27,7 +30,7 @@ public class Shelter {
     private String description;
 
     private String website;
-
+    private String logoUrl;
 
     @OneToOne(mappedBy = "shelter", cascade = CascadeType.ALL)
     @JsonIgnore
@@ -36,4 +39,12 @@ public class Shelter {
     @OneToMany(mappedBy = "shelter", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
     private List<Pet> pets;
+
+    @OneToMany(mappedBy = "shelter", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
+    private List<Adoption> adoptions;
+
+    @OneToMany(mappedBy = "shelter", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
+    private List<AdoptionCertificate> certificates;
 }

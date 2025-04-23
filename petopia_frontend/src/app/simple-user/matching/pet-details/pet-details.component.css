@@ -1,0 +1,142 @@
+/* Apply Gradient Background to the Entire Page */
+body {
+  background: linear-gradient(135deg, #F83182 0%, #FF617C 50%, #FE9A7A 100%);
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+}
+
+/* General Card Styling */
+.pet-card {
+  border-radius: 25px; /* Softer corners */
+  background: white;
+  max-width: 800px; /* Slightly wider for better balance */
+  margin: 2rem auto; /* More margin for breathing room */
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1); /* Softer shadow */
+}
+
+/* Card Header */
+.card-header {
+  background: transparent; /* Remove gradient from header to blend with body */
+  color: #FF617C; /* Match the pink tone */
+  border-top-left-radius: 25px;
+  border-top-right-radius: 25px;
+  padding: 1.5rem 2rem; /* More padding */
+}
+
+/* White Close Button */
+.btn-close-white {
+  filter: brightness(0) invert(1);
+}
+
+/* Card Body */
+.card-body {
+  padding: 2rem 3rem; /* More padding for breathing room */
+}
+
+/* Pet Image Styling */
+.pet-image {
+  width: 220px; /* Slightly larger for balance */
+  height: 220px;
+  object-fit: cover;
+  border: 5px solid #FF617C;
+  transition: transform 0.3s ease;
+}
+
+.pet-image:hover {
+  transform: scale(1.05);
+}
+
+/* Section Titles */
+.section-title {
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: #FF617C;
+  margin-bottom: 1.5rem; /* More space below */
+}
+
+/* Info Grid for Clean Layout */
+.info-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem; /* More spacing between items */
+}
+
+.info-grid p {
+  margin-bottom: 0.75rem;
+  font-size: 1rem;
+  flex: 1 1 45%; /* Allow items to wrap naturally */
+}
+
+.info-grid p strong {
+  color: #333;
+}
+
+/* Card Footer */
+.card-footer {
+  background: transparent; /* Blend with the body */
+  border-bottom-left-radius: 25px;
+  border-bottom-right-radius: 25px;
+  padding: 1.5rem 2rem; /* More padding */
+}
+
+/* Tinder-Inspired Buttons */
+.btn-tinder-primary {
+  background: linear-gradient(135deg, #F83182 0%, #FF617C 100%);
+  color: white;
+  border: none;
+  padding: 0.75rem 2rem; /* Larger buttons */
+  border-radius: 25px;
+  font-weight: 500;
+  transition: transform 0.2s ease;
+}
+
+.btn-tinder-primary:hover {
+  transform: scale(1.05);
+  background: linear-gradient(135deg, #FF617C 0%, #F83182 100%);
+}
+
+.btn-tinder-secondary {
+  background: #f0f0f0;
+  color: #333;
+  border: none;
+  padding: 0.75rem 2rem; /* Larger buttons */
+  border-radius: 25px;
+  font-weight: 500;
+  transition: transform 0.2s ease;
+}
+
+.btn-tinder-secondary:hover {
+  transform: scale(1.05);
+  background: #e0e0e0;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .pet-card {
+    margin: 1rem;
+  }
+
+  .card-body {
+    padding: 1.5rem;
+  }
+
+  .info-grid {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .pet-image {
+    width: 180px;
+    height: 180px;
+  }
+
+  .card-footer {
+    padding: 1rem;
+  }
+
+  .btn-tinder-primary,
+  .btn-tinder-secondary {
+    padding: 0.5rem 1.5rem;
+  }
+}

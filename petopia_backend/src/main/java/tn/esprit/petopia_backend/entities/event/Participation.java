@@ -32,4 +32,22 @@ public class Participation {
 
     @Enumerated(EnumType.STRING)
     private ParticipationStatus statusParticipation;
+
+    @Transient
+    private Long timeRemaining; // temps restant en millisecondes
+
+
+
+
+
+    @Override
+    public String toString() {
+        return "Participation{" +
+                "idParticipation=" + idParticipation +
+                ", dateInscription=" + dateInscription +
+                ", event=" + event +
+                ", participant=" + participant +
+                ", statusParticipation=" + statusParticipation +
+                '}';
+    }
 }

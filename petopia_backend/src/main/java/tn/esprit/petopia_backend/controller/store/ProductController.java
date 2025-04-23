@@ -11,7 +11,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import tn.esprit.petopia_backend.entities.store.Product;
 import tn.esprit.petopia_backend.entities.store.ProductCategory;
+import tn.esprit.petopia_backend.entities.user.User;
 import tn.esprit.petopia_backend.services.store.ProductService;
+import tn.esprit.petopia_backend.services.user.UserService;
 
 import java.util.List;
 
@@ -19,18 +21,19 @@ import java.util.List;
 @AllArgsConstructor
 public class ProductController {
     private ProductService productService;
+    private UserService userService;
 
-    @GetMapping("partner/product/get/{id}")
+    @GetMapping("partner/product/{id}")
     public List<Product> findAllById(@PathVariable int id) {
         return productService.findProductsById(id);
     }
 
-    @GetMapping("auth/product")
+    @GetMapping("user/product")
     public List<Product> findAll() {
         return productService.findAll();
     }
 
-    @GetMapping("auth/product/{id}")
+    @GetMapping("user/product/{id}")
     public Product findById(@PathVariable int id) {
         return productService.findById(id);
     }
@@ -43,24 +46,35 @@ public class ProductController {
                               @RequestParam("old_price") float oldPrice,
                               @RequestParam("cuppon_price") float cupponPrice,
                               @RequestParam("category") String category,
-                              @RequestParam("availableQuantity") int availableQuantity) {
-        return getProduct(file, productName, productDescription, productPrice, oldPrice, cupponPrice, category, availableQuantity);
+                              @RequestParam("availableQuantity") int availableQuantity,
+                              @RequestParam("id_user") int idUser) {
+        int idProduct = 0;
+        Product product = getProduct(idProduct, productName, productDescription, productPrice, oldPrice, cupponPrice, category, availableQuantity, idUser);
+        return productService.addProduct(file, product);
     }
 
-    @PostMapping(path = "auth/product/add", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public Product addProductSecondHand(@RequestParam("product_image") MultipartFile file,
+    @PostMapping(path = "user/product/add", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public Product addProductSecondHand(@RequestParam(value = "product_image") MultipartFile file,
                                         @RequestParam("product_name") String productName,
                                         @RequestParam("product_description") String productDescription,
                                         @RequestParam("product_price") float productPrice,
                                         @RequestParam("old_price") float oldPrice,
                                         @RequestParam("cuppon_price") float cupponPrice,
                                         @RequestParam("category") String category,
-                                        @RequestParam("availableQuantity") int availableQuantity) {
-        return getProduct(file, productName, productDescription, productPrice, oldPrice, cupponPrice, category, availableQuantity);
+                                        @RequestParam("availableQuantity") int availableQuantity,
+                                        @RequestParam("id_user") int idUser) {
+        int idProduct = 0;
+        Product product = getProduct(idProduct, productName, productDescription, productPrice, oldPrice, cupponPrice, category, availableQuantity, idUser);
+        return productService.addProduct(file, product);
     }
 
-    private Product getProduct(@RequestParam("product_image") MultipartFile file, @RequestParam("product_name") String productName, @RequestParam("product_description") String productDescription, @RequestParam("product_price") float productPrice, @RequestParam("old_price") float oldPrice, @RequestParam("cuppon_price") float cupponPrice, @RequestParam("category") String category, @RequestParam("availableQuantity") int availableQuantity) {
+    private Product getProduct(int idProduct, String productName,String productDescription, float productPrice, float oldPrice, float cupponPrice, String category, int availableQuantity, int idUser) {
         Product product = new Product();
+        User user = userService.getUsersById(idUser).getOurUsers();
+        if (idProduct != 0) {
+            product.setProduct_id(idProduct);
+            product.setProduct_image(productService.findById(idProduct).getProduct_image());
+        }
         product.setProduct_name(productName);
         product.setProduct_description(productDescription);
         product.setProduct_price(productPrice);
@@ -71,15 +85,26 @@ public class ProductController {
         product.setRating(0); // default values
         product.setReview_count(0);
         product.setLiked(false);
-        return productService.addProduct(file, product);
+        product.setUser(user);
+        return product;
     }
 
     @PutMapping("partner/product/update")
-    public Product updateProduct(@RequestBody Product product) {
-        return productService.updateProduct(product);
+    public Product updateProduct(@RequestParam("product_image") MultipartFile file,
+                                 @RequestParam("product_id") int productId,
+                                 @RequestParam("product_name") String productName,
+                                 @RequestParam("product_description") String productDescription,
+                                 @RequestParam("product_price") float productPrice,
+                                 @RequestParam("old_price") float oldPrice,
+                                 @RequestParam("cuppon_price") float cupponPrice,
+                                 @RequestParam("category") String category,
+                                 @RequestParam("availableQuantity") int availableQuantity,
+                                 @RequestParam("id_user") int idUser) {
+        Product product = getProduct(productId, productName, productDescription, productPrice, oldPrice, cupponPrice, category, availableQuantity, idUser);
+        return productService.updateProduct(file, product);
     }
 
-    @PutMapping("auth/product/update/{id}")
+    @PutMapping("user/product/update/{id}")
     public Product updateLikedProduct(@PathVariable int id) {
         return productService.updateLikedStatus(id);
     }

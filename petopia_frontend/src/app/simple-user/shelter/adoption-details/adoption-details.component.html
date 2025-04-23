@@ -1,0 +1,53 @@
+<div class="details-container" *ngIf="adoption">
+    <h2 class="title">Adoption Request Details</h2>
+  
+    <div class="request-section">
+      <div class="card requester-card">
+        <h3>Requester Information</h3>
+        <div class="info">
+          <div class="avatar-name">
+            <div class="avatar-circle">{{ adoption.requester.name.charAt(0) | uppercase }}</div>
+            <span class="name">{{ adoption.requester.name | titlecase }}</span>
+          </div>
+          <p><i class="fas fa-envelope"></i> {{ adoption.requester.email }}</p>
+          <p><i class="fas fa-phone"></i> {{ adoption.requester.phoneNumber }}</p>
+          <p class="motivation"><i class="fas fa-comment-dots"></i> "{{ adoption.motivation_letter }}"</p>
+        </div>
+      </div>
+  
+      <div class="card cin-card">
+        <h3>CIN Image</h3>
+        <img [src]="adoption.cinimage" alt="CIN" class="cin-image" />
+      </div>
+    </div>
+  
+    <div class="card pet-section">
+      <h3>Pet Information</h3>
+      <div class="pet-card">
+        <img [src]="adoption.pet.petImage" alt="Pet" />
+        <div class="pet-info">
+          <p class="pet-name">{{ adoption.pet.petName }}</p>
+          <p>Species: {{ adoption.pet.species }}</p>
+          <p>Age: {{ adoption.pet.petAge }} years</p>
+          <p>Gender: {{ adoption.pet.gender }}</p>
+        </div>
+      </div>
+    </div>
+    <div class="button-section" *ngIf="adoption?.status === 'PENDING'">
+        <button class="approve-btn" (click)="approveRequest()">Approve</button>
+        <button class="reject-btn"  (click)="rejectRequest()">Reject</button>
+      </div>
+      <div class="card-certificate" *ngIf="adoption?.status === 'APPROVED' && certificate">
+        <h3>Adoption Certificate</h3>
+        <p>Issued Date : {{ certificate.issued_date }}</p>
+        
+          <iframe
+          *ngIf="certificatePdfUrl"
+          [src]="certificatePdfUrl"
+          width="100%"
+          height="600px"
+          style="border: 1px solid #ccc; border-radius: 10px; margin-top: 1rem;">
+        </iframe>
+      </div>
+      
+  </div>

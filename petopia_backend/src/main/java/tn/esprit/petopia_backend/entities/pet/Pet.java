@@ -13,10 +13,7 @@ import tn.esprit.petopia_backend.entities.vet.Consultations;
 import tn.esprit.petopia_backend.entities.vet.Diagnosis;
 import tn.esprit.petopia_backend.entities.vet.Pet_Growth;
 
-import java.util.Base64;
-import java.util.Date;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 @Getter
@@ -38,15 +35,8 @@ public class Pet {
     private String location;
     private float attitudeX;
     private float attitudeY;
-    @Transient
     private String petImage;
-    public void setPetImage(String imageData) {
-        if (imageData != null && imageData.startsWith("data:image")) {
-            this.petImageBytes = Base64.getDecoder().decode(imageData.substring(imageData.indexOf(",") + 1));
-        } else {
-            this.petImageBytes = Base64.getDecoder().decode(imageData);
-        }
-    }
+
 
 
 
@@ -85,7 +75,12 @@ public class Pet {
     @Enumerated(EnumType.STRING)
     private Size size;
 
-    private String healthStatus =null;
+    @ElementCollection(targetClass = HealthCondition.class, fetch = FetchType.EAGER)
+    @Enumerated(EnumType.STRING)
+    @CollectionTable(name = "pet_health_conditions", joinColumns = @JoinColumn(name = "pet_id"))
+    @Column(name = "health_condition")
+    private List<HealthCondition> healthStatus = new ArrayList<>();
+
 
     @ManyToOne
     private Shelter shelter;

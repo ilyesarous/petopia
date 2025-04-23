@@ -1,11 +1,13 @@
 package tn.esprit.petopia_backend.controller.adoptions;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import tn.esprit.petopia_backend.entities.adoptions.Shelter;
 import tn.esprit.petopia_backend.entities.user.User;
 import tn.esprit.petopia_backend.services.adoptions.IShelterService;
@@ -25,7 +27,8 @@ public class ShelterController {
 
     @PostMapping("/addShelter")
     @PreAuthorize("hasAuthority('ROLE_SHELTER')")
-    public ResponseEntity<?> createShelter(@RequestBody Shelter shelter) {
+    public ResponseEntity<?> createShelter(@RequestParam("shelter") String shelterJson,
+                                           @RequestParam(value = "logoFile", required = false) MultipartFile logoFile) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Object principal = authentication.getPrincipal();
 
@@ -37,7 +40,8 @@ public class ShelterController {
         Integer userId = user.getId_user();
 
         try {
-            Shelter createdShelter = shelterService.createShelter(shelter, userId);
+            Shelter shelter = new ObjectMapper().readValue(shelterJson, Shelter.class);
+            Shelter createdShelter = shelterService.createShelter(shelter, userId, logoFile);
             return ResponseEntity.status(HttpStatus.CREATED).body(createdShelter);
         } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
@@ -47,11 +51,11 @@ public class ShelterController {
         }
     }
 
-
-
     @PutMapping("/updateShelter/{id}")
     @PreAuthorize("hasAuthority('ROLE_SHELTER')")
-    public ResponseEntity<?> updateShelter(@PathVariable Integer id, @RequestBody Shelter shelter) {
+    public ResponseEntity<?> updateShelter(@PathVariable Integer id,
+                                           @RequestParam("shelter") String shelterJson,
+                                           @RequestParam(value = "logoFile", required = false) MultipartFile logoFile) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Object principal = authentication.getPrincipal();
 
@@ -62,16 +66,9 @@ public class ShelterController {
         User user = (User) principal;
 
         try {
-            // Verify the shelter exists and belongs to the authenticated user
-            Shelter existingShelter = shelterService.getShelterById(id);
-            if (!existingShelter.getUser().getId_user().equals(user.getId_user())) {
-                return ResponseEntity.status(HttpStatus.FORBIDDEN)
-                        .body("You can only update your own shelter.");
-            }
-
+            Shelter shelter = new ObjectMapper().readValue(shelterJson, Shelter.class);
             shelter.setId_shelter(id);
-            // Pass the user ID from token to service layer for additional validation
-            Shelter updatedShelter = shelterService.updateShelter(shelter, user.getId_user());
+            Shelter updatedShelter = shelterService.updateShelter(shelter, user.getId_user(), logoFile);
             return ResponseEntity.ok(updatedShelter);
         } catch (RuntimeException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());

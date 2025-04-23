@@ -1,7 +1,6 @@
 /* Pet list container */
 .pet-list-container {
     padding: 40px 20px;
-    background: #fffaf6;
     border-radius: 16px;
     box-shadow: 0 5px 15px rgba(250, 128, 114, 0.15);
 }
@@ -10,10 +9,11 @@
 .shelter-pet-card {
     display: flex;
     flex-direction: column;
-    background: #ffffff;
+    background: #f7f9fc;
     border-radius: 20px;
     overflow: hidden;
-    box-shadow: 0 4px 10px rgba(255, 105, 180, 0.1);
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.08);
+
     transition: transform 0.3s ease;
     margin-bottom: 25px;
     height: 100%; /* Ensures consistent height */
@@ -43,6 +43,7 @@
     border-radius: 10px;
     padding: 5px 12px;
     font-size: 0.75rem;
+    font-weight: bold;
     text-transform: uppercase;
 }
 
@@ -51,7 +52,7 @@
   }
   
   .tag-adopted {
-    background-color: #dc5e6b; /* red */
+    background-color: #F83182; /* red */
   }
 
 
@@ -66,7 +67,7 @@
 
 .pet-name {
     font-size: 1.4rem;
-    color: #ff7b9c;
+    color: #F83182;
     margin-bottom: 8px;
 }
 
@@ -104,21 +105,21 @@
 }
 
 .edit-btn {
-    background-color: #ff7eb2;
+    background-color: #F83182;
 }
 
 .edit-btn:hover {
-    background-color: #F83182;
-    transform: scale(1.05);
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(248, 49, 130, 0.3);
 }
 
 .delete-btn {
-    background-color: #ffab73;
+    background-color: #ff7547;
 }
 
 .delete-btn:hover {
-    background-color: #fd8f4b;
-    transform: scale(1.05);
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(248, 49, 130, 0.3);
 }
 /* Modal Overlay (full screen background) */
 .modal-overlay {
@@ -252,5 +253,152 @@
     .modal-card {
       width: 90%;
     }
+  }
+  .pagination-controls {
+    display: flex;
+    justify-content: center;
+    margin-top: 2rem;
+    gap: 8px;
+  }
+  
+  .page-btn {
+    background-color: #fefefe;
+    color: #F83182;
+    border: 2px solid #F83182;
+    padding: 8px 16px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.3s ease;
+  }
+  
+  .page-btn:hover {
+    background-color: #F83182;
+    color: white;
+  }
+  
+  .page-btn.active {
+    background-color: #F83182;
+    color: white;
+    font-weight: bold;
+    box-shadow: 0 0 8px rgba(248, 49, 130, 0.3);
+  }
+  
+  .page-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+  .add-btn {
+    background: linear-gradient(135deg, #5eb772 0%, #56e39f 100%);
+    color: white;
+    font-weight: bold;
+    padding: 10px 20px;
+    border-radius: 30px;
+    box-shadow: 0 5px 15px rgba(94, 183, 114, 0.4);
+  }
+  .add-btn:hover {
+    transform: scale(1.05);
+  }
+  .image-preview-container {
+    text-align: center;
+    margin-top: 1rem;
+  }
+  
+  .image-preview-wrapper {
+    display: inline-block;
+    border: 3px dashed #ffb3c6;
+    padding: 10px;
+    border-radius: 15px;
+    background-color: #fff0f5;
+    box-shadow: 0 4px 10px rgba(248, 49, 130, 0.1);
+    transition: transform 0.3s ease;
+  }
+  
+  .image-preview-wrapper:hover {
+    transform: scale(1.02);
+  }
+  
+  .image-preview-wrapper img {
+    max-width: 180px;
+    max-height: 180px;
+    border-radius: 12px;
+    object-fit: cover;
+  }
+  .search-filter-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+  }
+  
+  .search-box {
+    flex-grow: 1;
+    max-width: 700px;
+  }
+  
+  .search-input {
+    width: 100%;
+    padding: 10px 20px;
+    border: 2px solid #f83182;
+    border-radius: 30px;
+    font-size: 1rem;
+    transition: 0.3s ease;
+    outline: none;
+  }
+  
+  .search-input:focus {
+    border-color: #f70666;
+    box-shadow: 0 0 5px rgba(248, 49, 130, 0.3);
+  }
+  
+  .filter-buttons {
+    display: flex;
+    gap: 10px;
+  }
+  
+  .filter-btn {
+    padding: 8px 18px;
+    border: 2px solid #f83182;
+    border-radius: 20px;
+    background-color: #fff;
+    color: #f83182;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  
+  .filter-btn:hover {
+    background-color: #f83182;
+    color: white;
+  }
+  
+  .filter-btn.active {
+    background-color: #f83182;
+    color: white;
+    box-shadow: 0 0 8px rgba(248, 49, 130, 0.3);
+  }
+  
+  @media (max-width: 768px) {
+    .search-filter-wrapper {
+      flex-direction: column;
+      align-items: stretch;
+    }
+  
+    .filter-buttons {
+      justify-content: center;
+    }
+  
+    .search-box {
+      max-width: 100%;
+    }
+  
+ 
+  }
+  .validation-error {
+    color: #dc3545;
+    font-size: 0.85rem;
+    margin-top: 4px;
   }
   

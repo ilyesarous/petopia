@@ -1,5 +1,6 @@
 package tn.esprit.petopia_backend.entities.event;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -8,6 +9,7 @@ import lombok.Setter;
 import tn.esprit.petopia_backend.entities.event.Enum.EventStatus;
 import tn.esprit.petopia_backend.entities.event.Enum.EventType;
 import tn.esprit.petopia_backend.entities.event.Enum.VisibilityEvent;
+import tn.esprit.petopia_backend.entities.payment.PaymentRequest;
 import tn.esprit.petopia_backend.entities.user.User;
 
 import java.util.Date;
@@ -32,6 +34,9 @@ public class Event {
     private Float longitudeEvent;
     private double prixEvent;
     private int placesMaxEvent;
+    private Integer availablePlaces;
+    private Integer countdownDuration; // en minutes (optionnel)
+
 
     @Enumerated(EnumType.STRING)
     private EventType eventType;
@@ -40,14 +45,19 @@ public class Event {
     private User organisateur;
 
     // Une liste de participations pour cet événement
-    //@OneToMany(mappedBy = "event", cascade = CascadeType.ALL)
-    //private List<Participation> participations;
+    @OneToMany(mappedBy = "event", cascade = CascadeType.ALL)
+    @JsonIgnore
+    private List<Participation> participations;
 
     @Enumerated(EnumType.STRING)
     private VisibilityEvent visibiliteEvent;
 
     @Enumerated(EnumType.STRING)
     private EventStatus statusEvent;
+
+    @OneToMany(mappedBy = "event", cascade = CascadeType.ALL)
+    @JsonIgnore
+    private List<PaymentRequest> paymentsEvents;
 
     @Override
     public String toString() {

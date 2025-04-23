@@ -1,22 +1,54 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Feedback } from 'src/app/models/product/feedback';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class FeedbackService {
+  constructor(private http: HttpClient) {}
+  private url = 'http://localhost:8082/petopia/user/feedback';
+  private url1 = 'http://localhost:8082/petopia/partner/feedback';
+  token: string = localStorage.getItem('token') || '';
+  userId = localStorage.getItem('userId')
+    ? parseInt(localStorage.getItem('userId')!)
+    : 0;
 
-  constructor(private http: HttpClient) { }
-  private url = 'http://localhost:8082/petopia/auth/feedback';
-
-  create(feedback: Feedback) {
-    return this.http.post(`${this.url}/add/${+feedback.productId}`, feedback, {
-      responseType: 'text'  // This tells Angular to expect text, not JSON
+  private getAuthHeaders(): HttpHeaders {
+    return new HttpHeaders({
+      Authorization: `Bearer ${this.token}`,
     });
   }
-  getByProductId(productId: number) : Observable<Feedback[]> {
-    return this.http.get<Feedback[]>(`${this.url}/getByProduct/${productId}`);
+  create(feedback: Feedback) {
+    return this.http.post(
+      `${this.url}/add/${this.userId}/${+feedback.productId}`,
+      feedback,
+      {
+        headers: this.getAuthHeaders(),
+        responseType: 'text',
+      }
+    );
   }
+  getByProductId(productId: number): Observable<Feedback[]> {
+    return this.http.get<Feedback[]>(`${this.url}/getByProduct/${productId}`, {
+      headers: this.getAuthHeaders(),
+    });
+  }
+
+  getSentimentByProduct(idProduct: number): Observable<string>{
+    return this.http.get(`${this.url1}/sentiment/${idProduct}`,
+      {
+        headers: this.getAuthHeaders(),
+        responseType: 'text',
+      }
+    )
+  }
+
+  deleteFeedback(feedbackId: number): Observable<any> {
+    return this.http.delete(`${this.url}/delete/${feedbackId}`, {
+      headers: this.getAuthHeaders(),
+    });
+  }
+
 }
