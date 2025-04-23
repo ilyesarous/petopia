@@ -1,0 +1,189 @@
+<div class="form-container">
+  <div class="form-header">
+    <h2>{{ eventId ? 'Edit' : 'Create New' }} Event</h2>
+    <p class="form-subtitle">{{ eventId ? 'Update event details' : 'Fill in the form to create a new event' }}</p>
+  </div>
+
+  <form [formGroup]="eventForm" (ngSubmit)="onSubmit()" class="event-form">
+    <div class="form-grid">
+      <!-- Row 1 -->
+      <div class="form-group">
+        <label for="nameEvent">Event Name *</label>
+        <input type="text" id="nameEvent" formControlName="nameEvent" 
+               placeholder="Enter event name" class="form-input" />
+        <div *ngIf="eventForm.get('nameEvent')?.invalid && (eventForm.get('nameEvent')?.dirty || eventForm.get('nameEvent')?.touched)"
+             class="error-message">
+          <div *ngIf="eventForm.get('nameEvent')?.errors?.['required']">
+            <i class="error-icon">⚠️</i> Event name is required
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="eventType">Event Type *</label>
+        <select id="eventType" formControlName="eventType" class="form-input">
+          <option value="" disabled selected>Select event type</option>
+          <option value="PROMENADE">Promenade</option>
+          <option value="RANDONNEE">Randonnée</option>
+          <option value="PHOTO_SEANCE">Photo Session</option>
+        </select>
+        <div *ngIf="eventForm.get('eventType')?.invalid && (eventForm.get('eventType')?.dirty || eventForm.get('eventType')?.touched)"
+             class="error-message">
+          <div *ngIf="eventForm.get('eventType')?.errors?.['required']">
+            <i class="error-icon">⚠️</i> Event type is required
+          </div>
+        </div>
+      </div>
+
+      <!-- Row 2 -->
+      <div class="form-group">
+        <label for="dateEvent">Date *</label>
+        <input type="date" id="dateEvent" formControlName="dateEvent" [min]="minDate"
+               class="form-input" />
+        <div *ngIf="eventForm.get('dateEvent')?.invalid && eventForm.get('dateEvent')?.touched" class="error-message">
+          <div *ngIf="eventForm.get('dateEvent')?.errors?.['required']">
+            <i class="error-icon">⚠️</i> Date is required
+          </div>
+          <div *ngIf="eventForm.get('dateEvent')?.errors?.['pastDate']">
+            <i class="error-icon">⚠️</i> Date must be in the future
+          </div>
+        </div>
+      </div>
+
+      <!-- Add this after the dateEvent form group -->
+<div class="form-group">
+  <label for="timeEvent">Time *</label>
+  <input type="time" id="timeEvent" formControlName="timeEvent" 
+         class="form-input" />
+  <div *ngIf="eventForm.get('timeEvent')?.invalid && (eventForm.get('timeEvent')?.dirty || eventForm.get('timeEvent')?.touched)"
+       class="error-message">
+    <div *ngIf="eventForm.get('timeEvent')?.errors?.['required']">
+      <i class="error-icon">⚠️</i> Time is required
+    </div>
+  </div>
+</div>
+
+      <div class="form-group">
+        <label for="lieuEvent">Location *</label>
+        <input type="text" id="lieuEvent" formControlName="lieuEvent" 
+               placeholder="Enter event location" class="form-input" />
+        <div *ngIf="eventForm.get('lieuEvent')?.invalid && (eventForm.get('lieuEvent')?.dirty || eventForm.get('lieuEvent')?.touched)"
+             class="error-message">
+          <div *ngIf="eventForm.get('lieuEvent')?.errors?.['required']">
+            <i class="error-icon">⚠️</i> Location is required
+          </div>
+        </div>
+      </div>
+
+      <!-- Row 3 -->
+      <div class="form-group">
+        <label for="lattitudeEvent">Latitude *</label>
+        <input type="number" id="lattitudeEvent" formControlName="lattitudeEvent" 
+               placeholder="Enter latitude" class="form-input" step="0.000001" />
+        <div *ngIf="eventForm.get('lattitudeEvent')?.invalid && (eventForm.get('lattitudeEvent')?.dirty || eventForm.get('lattitudeEvent')?.touched)"
+             class="error-message">
+          <div *ngIf="eventForm.get('lattitudeEvent')?.errors?.['required']">
+            <i class="error-icon">⚠️</i> Latitude is required
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="longitudeEvent">Longitude *</label>
+        <input type="number" id="longitudeEvent" formControlName="longitudeEvent" 
+               placeholder="Enter longitude" class="form-input" step="0.000001" />
+        <div *ngIf="eventForm.get('longitudeEvent')?.invalid && (eventForm.get('longitudeEvent')?.dirty || eventForm.get('longitudeEvent')?.touched)"
+             class="error-message">
+          <div *ngIf="eventForm.get('longitudeEvent')?.errors?.['required']">
+            <i class="error-icon">⚠️</i> Longitude is required
+          </div>
+        </div>
+      </div>
+
+      <!-- Row 4 -->
+      <div class="form-group">
+        <label for="prixEvent">Price (TND) *</label>
+        <input type="number" id="prixEvent" formControlName="prixEvent" 
+               placeholder="Enter price" class="form-input" min="0" />
+        <div *ngIf="eventForm.get('prixEvent')?.invalid && (eventForm.get('prixEvent')?.dirty || eventForm.get('prixEvent')?.touched)"
+             class="error-message">
+          <div *ngIf="eventForm.get('prixEvent')?.errors?.['required']">
+            <i class="error-icon">⚠️</i> Price is required
+          </div>
+          <div *ngIf="eventForm.get('prixEvent')?.errors?.['min']">
+            <i class="error-icon">⚠️</i> Price cannot be negative
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="placesMaxEvent">Max Places *</label>
+        <input type="number" id="placesMaxEvent" formControlName="placesMaxEvent" 
+               placeholder="Enter max participants" class="form-input" min="1" />
+        <div *ngIf="eventForm.get('placesMaxEvent')?.invalid && (eventForm.get('placesMaxEvent')?.dirty || eventForm.get('placesMaxEvent')?.touched)"
+             class="error-message">
+          <div *ngIf="eventForm.get('placesMaxEvent')?.errors?.['required']">
+            <i class="error-icon">⚠️</i> Max places is required
+          </div>
+          <div *ngIf="eventForm.get('placesMaxEvent')?.errors?.['min']">
+            <i class="error-icon">⚠️</i> Minimum 1 place required
+          </div>
+        </div>
+      </div>
+
+      <!-- Row 5 -->
+      <div class="form-group">
+        <label for="visibiliteEvent">Visibility *</label>
+        <select id="visibiliteEvent" formControlName="visibiliteEvent" class="form-input">
+          <option value="" disabled selected>Select visibility</option>
+          <option value="PUBLIC">Public</option>
+          <option value="PRIVATE">Private</option>
+        </select>
+        <div *ngIf="eventForm.get('visibiliteEvent')?.invalid && (eventForm.get('visibiliteEvent')?.dirty || eventForm.get('visibiliteEvent')?.touched)"
+             class="error-message">
+          <div *ngIf="eventForm.get('visibiliteEvent')?.errors?.['required']">
+            <i class="error-icon">⚠️</i> Visibility is required
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="statusEvent">Status *</label>
+        <select id="statusEvent" formControlName="statusEvent" class="form-input">
+          <option value="" disabled selected>Select status</option>
+          <option value="ACTIF">Active</option>
+          <option value="ANNULE">Canceled</option>
+          <option value="TERMINE">Finished</option>
+        </select>
+        <div *ngIf="eventForm.get('statusEvent')?.invalid && (eventForm.get('statusEvent')?.dirty || eventForm.get('statusEvent')?.touched)"
+             class="error-message">
+          <div *ngIf="eventForm.get('statusEvent')?.errors?.['required']">
+            <i class="error-icon">⚠️</i> Status is required
+          </div>
+        </div>
+      </div>
+
+      <!-- Description (full width) -->
+      <div class="form-group full-width">
+        <label for="descriptionEvent">Description *</label>
+        <textarea id="descriptionEvent" formControlName="descriptionEvent" 
+                  placeholder="Enter event description" class="form-input" rows="4"></textarea>
+        <div *ngIf="eventForm.get('descriptionEvent')?.invalid && (eventForm.get('descriptionEvent')?.dirty || eventForm.get('descriptionEvent')?.touched)"
+             class="error-message">
+          <div *ngIf="eventForm.get('descriptionEvent')?.errors?.['required']">
+            <i class="error-icon">⚠️</i> Description is required
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-actions">
+      <button type="button" (click)="goBack()" class="btn-cancel">
+        <i class="back-icon">←</i> Back to List
+      </button>
+      <button type="submit" [disabled]="!eventForm.valid" class="btn-submit">
+        {{ eventId ? 'Update Event' : 'Create Event' }}
+      </button>
+    </div>
+  </form>
+</div>

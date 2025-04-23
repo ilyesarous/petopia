@@ -1,114 +1,265 @@
-button {
-    background-color: #F83182;
-    color: rgb(0, 0, 0);
-    border: none;
-    padding: 12px 24px;
-    font-size: 16px;
-    font-weight: bold;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: all 0.3s ease-in-out;
-    box-shadow: 0px 4px 6px rgba(252, 98, 157, 0.699);
-  }
-  
-  button:hover {
-    background-color: #fa0068;
-    transform: scale(1.05);
-  }
-  
-  button:active {
-    background-color: #B71E5B;
-    transform: scale(0.98);
-  }
-  
-  .button-container {
-    display: flex; /* Active Flexbox */
-    gap: 10px; /* Ajoute un espace de 10px entre les boutons */
-  }
-  
-  app-notification-stats {
-    flex: 1 1 300px; /* Le graphique prendra une largeur flexible */
-    max-width: 400px;
-  }
+/* Style général */
+:host {
+  display: block;
+  padding: 2rem;
+  background: linear-gradient(135deg, #f8f4ff 0%, #f0e9ff 100%);
+  min-height: 100vh;
+}
 
-  .dashboard-container {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 20px;
-    padding: 20px;
+.notification-header {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  margin-bottom: 3rem;
+  background: rgb(255, 255, 255);
+  border-radius: 18px;
+  padding: 2rem;
+  box-shadow: 0 10px 30px rgba(120, 81, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  position: relative;
+  overflow: hidden;
+}
+
+.notification-header::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 5px;
+  height: 100%;
+  background: linear-gradient(to bottom, #F83182, #FF617C);
+}
+
+.welcome-message {
+  flex: 1;
+  padding-left: 2rem;
+  border-left: 1px dashed rgba(248, 49, 130, 0.3);
+}
+
+.welcome-text {
+  font-size: 1.5rem;
+  margin: 0 0 0.5rem 0;
+  color: #333;
+  font-weight: 500;
+}
+
+.welcome-text .username {
+  color: #F83182;
+  font-weight: 600;
+}
+
+.welcome-subtext {
+  font-size: 1rem;
+  margin: 0;
+  color: #666;
+}
+
+.welcome-subtext .highlight {
+  color: #F83182;
+  font-weight: 600;
+  background: rgba(248, 49, 130, 0.1);
+  padding: 0.2rem 0.5rem;
+  border-radius: 8px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .notification-header {
+    flex-direction: column;
+    gap: 1.5rem;
   }
   
-  .dashboard-card {
-    flex: 1 1 200px; /* Flex-grow, flex-shrink, flex-basis */
-    background-color: white;
-    border: 1px solid #ddd;
-    border-radius: 10px;
-    padding: 20px;
+  .welcome-message {
+    padding-left: 0;
+    padding-top: 1.5rem;
+    border-left: none;
+    border-top: 1px dashed rgba(248, 49, 130, 0.3);
     text-align: center;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
   }
-  
-  .dashboard-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-  }
-  
-  .dashboard-card h3 {
-    color: #F83182; /* Rose */
-    margin-bottom: 10px;
-  }
-  
-  .dashboard-card p {
-    font-size: 24px;
-    font-weight: bold;
-    color: #333;
-  }
+}
 
-  .dashboard-layout {
-    display: grid;
-    grid-template-columns: 1fr 1fr; /* Deux colonnes de largeur égale */
-    gap: 20px; /* Espace entre les éléments */
-    padding: 20px;
+.welcome-text::before {
+  content: '👋';
+  margin-right: 10px;
+  animation: wave 2s infinite;
+  display: inline-block;
+  transform-origin: 70% 70%;
+}
+
+@keyframes wave {
+  0% { transform: rotate(0deg); }
+  10% { transform: rotate(-10deg); }
+  20% { transform: rotate(12deg); }
+  30% { transform: rotate(-10deg); }
+  40% { transform: rotate(9deg); }
+  50% { transform: rotate(0deg); }
+  100% { transform: rotate(0deg); }
+}
+
+/* Conteneur des cartes */
+.stats-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+/* Cartes individuelles */
+.dashboard-card {
+  background: white;
+  border-radius: 16px;
+  padding: 2rem;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.1);
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 8px 25px rgba(120, 81, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+}
+
+/* Effet de lumière au survol */
+.dashboard-card::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(circle at 75% 30%, rgba(255,255,255,0.8) 0%, rgba(255,255,255,0) 60%);
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+.dashboard-card:hover {
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 0 15px 35px rgba(248, 49, 130, 0.2);
+}
+
+.dashboard-card:hover::after {
+  opacity: 1;
+}
+
+/* Contenu des cartes */
+.dashboard-card p:first-child {
+  font-size: 2.8rem;
+  margin: 0 0 1.2rem 0;
+  transition: transform 0.3s ease;
+  line-height: 1;
+}
+
+.dashboard-card:hover p:first-child {
+  transform: scale(1.15);
+}
+
+.dashboard-card h3 {
+  color: #5a3d8a;
+  margin: 0 0 1rem 0;
+  font-size: 1.3rem;
+  font-weight: 600;
+  transition: color 0.3s ease;
+}
+
+.dashboard-card:hover h3 {
+  color: #F83182;
+}
+
+.dashboard-card p:last-child {
+  font-size: 2.2rem;
+  font-weight: 700;
+  margin: 1rem 0 0 0;
+  color: #6a4dff;
+  position: relative;
+  display: inline-block;
+  transition: color 0.3s ease;
+}
+
+.dashboard-card:hover p:last-child {
+  color: #F83182;
+}
+
+/* Effet de soulignement animé */
+.dashboard-card p:last-child::after {
+  content: '';
+  position: absolute;
+  bottom: -8px;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background: linear-gradient(90deg, #F83182, #FF617C);
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.1);
+}
+
+.dashboard-card:hover p:last-child::after {
+  transform: scaleX(1);
+  transform-origin: left;
+}
+
+/* Couleurs d'accent pour chaque carte */
+.dashboard-card:nth-child(1) { border-top: 4px solid #F83182; }
+.dashboard-card:nth-child(2) { border-top: 4px solid #61ffae; }
+.dashboard-card:nth-child(3) { border-top: 4px solid #ffd661; }
+.dashboard-card:nth-child(4) { border-top: 4px solid #61d2ff; }
+.dashboard-card:nth-child(5) { border-top: 4px solid #b261ff; }
+.dashboard-card:nth-child(6) { border-top: 4px solid #ff61a6; }
+
+/* Animation d'entrée */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
   }
-  
-  .graph-container {
-    background-color: white;
-    border: 1px solid #ddd;
-    border-radius: 10px;
-    padding: 20px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.dashboard-card {
+  animation: fadeInUp 0.6s ease-out both;
+}
+
+.dashboard-card:nth-child(1) { animation-delay: 0.1s; }
+.dashboard-card:nth-child(2) { animation-delay: 0.2s; }
+.dashboard-card:nth-child(3) { animation-delay: 0.3s; }
+.dashboard-card:nth-child(4) { animation-delay: 0.4s; }
+.dashboard-card:nth-child(5) { animation-delay: 0.5s; }
+.dashboard-card:nth-child(6) { animation-delay: 0.6s; }
+
+/* Responsive */
+@media (max-width: 1200px) {
+  .stats-container {
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  }
+}
+
+@media (max-width: 768px) {
+  :host {
+    padding: 1.5rem;
   }
   
   .stats-container {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr); /* Deux colonnes */
-    grid-template-rows: repeat(2, 1fr); /* Deux lignes */
-    gap: 20px; /* Espace entre les carrés */
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 1.5rem;
   }
   
   .dashboard-card {
-    background-color: white;
-    border: 1px solid #ddd;
-    border-radius: 10px;
-    padding: 20px;
-    text-align: center;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    padding: 1.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .stats-container {
+    grid-template-columns: 1fr;
   }
   
-  .dashboard-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  .dashboard-card p:first-child {
+    font-size: 2.5rem;
   }
   
-  .dashboard-card h3 {
-    color: #F83182; /* Rose */
-    margin-bottom: 10px;
+  .dashboard-card p:last-child {
+    font-size: 2rem;
   }
-  
-  .dashboard-card p {
-    font-size: 24px;
-    font-weight: bold;
-    color: #333;
-  }
+}

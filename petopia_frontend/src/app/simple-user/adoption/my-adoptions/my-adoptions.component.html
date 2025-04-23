@@ -1,0 +1,99 @@
+<div class="adoption-requests-container container">
+    <h2 class="title">My Adoption Requests</h2>
+  
+    <!-- Filter Section -->
+    <div class="filter-container">
+      <div class="filter-bar">
+        <div class="search-group">
+          <input
+            type="text"
+            placeholder="Search by pet name, certificate"
+            [(ngModel)]="searchText"
+            (input)="applyFilter()"
+          />
+        </div>
+        <div class="filter-group">
+          <label for="statusFilter">Filter by Status:</label>
+          <select id="statusFilter" [(ngModel)]="selectedStatus" (change)="applyFilter()">
+            <option value="">All</option>
+            <option value="PENDING">Pending</option>
+            <option value="APPROVED">Approved</option>
+            <option value="REJECTED">Rejected</option>
+          </select>
+        </div>
+      </div>
+    </div>
+  
+    <!-- Status Filter Tag -->
+    <div class="active-filter-tag" *ngIf="selectedStatus">
+      {{ selectedStatus }}
+      <span class="remove-tag" (click)="clearStatus()">✕</span>
+    </div>
+  
+    <!-- Adoption Request Cards -->
+    <div *ngIf="filteredRequests.length > 0; else noRequests">
+      <div class="request-card" *ngFor="let req of filteredRequests">
+        <!-- Left: Pet Image -->
+        <div class="pet-image">
+          <img [src]="req.pet?.petImage || '/assets/images/placeholder.png'" [alt]="req.pet?.petName" />
+        </div>
+  
+        <!-- Center: Info -->
+        <div class="request-info-section">
+          <div class="user-info">
+            <p class="user-name">{{ req.pet?.petName | titlecase }}</p>
+            <p class="pet-name">Breed: <strong>{{ req.pet?.breed }}</strong></p>
+            <p class="motivation-text">"{{ req.motivation_letter | slice: 0:120 }}..."</p>
+          </div>
+        </div>
+  
+        <!-- Right: Status Badge -->
+        <div class="status-and-actions">
+          <span class="status-pill" [ngClass]="{
+            'pending': req.status === 'PENDING',
+            'approved': req.status === 'APPROVED',
+            'rejected': req.status === 'REJECTED'
+          }">{{ req.status }}</span>
+        
+          <ng-container *ngIf="req.status === 'APPROVED' && certificatesMap[req.id_request] as cert">
+            <button
+              *ngIf="!cert.user_signature"
+              class="cert-btn sign"
+              (click)="goToSignCertificate(cert.id_certificate)">
+              Sign Certificate
+            </button>
+            <button
+              *ngIf="cert.user_signature"
+              class="cert-btn view"
+              (click)="goToViewCertificate(cert.id_certificate)">
+               View Certificate
+            </button>
+          </ng-container>
+        </div>
+        
+        
+        
+      </div>
+    </div>
+  
+    <!-- No Requests Message -->
+    <ng-template #noRequests>
+      <p class="text-center text-muted mt-4">You have no adoption requests yet.</p>
+    </ng-template>
+  
+    <!-- Pagination -->
+    <div class="pagination-controls text-center mt-4" *ngIf="totalPages > 1">
+      <button class="btn btn-sm mx-1" [disabled]="currentPage === 1" (click)="changePage(currentPage - 1)">Prev</button>
+  
+      <button
+        *ngFor="let page of pageNumbers"
+        class="btn btn-sm mx-1"
+        [class.active]="currentPage === page"
+        (click)="changePage(page)">
+        {{ page }}
+      </button>
+  
+      <button class="btn btn-sm mx-1" [disabled]="currentPage === totalPages" (click)="changePage(currentPage + 1)">Next</button>
+    </div>
+  </div>
+  

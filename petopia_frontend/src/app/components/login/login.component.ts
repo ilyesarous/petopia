@@ -64,6 +64,7 @@ export class LoginComponent implements OnInit {
           console.log('Decoded Token:', decodedToken);
 
           localStorage.setItem('userId', decodedToken.userId); //userid yeta7at fel localstorage
+          localStorage.setItem('shelterID', response.shelter_id);
           localStorage.setItem('username', decodedToken.username);
           this.authService.updateUsername(decodedToken.username);
           this.authService.updateUsername(decodedToken.username);
@@ -98,10 +99,21 @@ export class LoginComponent implements OnInit {
       }
 
       const role = decodedToken.roles[0];
+      const userId = decodedToken.userId;
+      const shelterId = localStorage.getItem('shelterID');
       setTimeout(() => {
         if (role === 'ROLE_ADMIN') this.router.navigate(['/dashboard']);
         else if (role === 'ROLE_USER') this.router.navigate(['/home']);
+        else if (role === 'ROLE_SHELTER') {
+          if (!shelterId || shelterId === '-1') {
+            this.router.navigate(['/add-shelter']);
+          } else {
+            this.router.navigate(['/shelter/home']);
+          }
+        }
       //  else if (role === 'ROLE_VET') this.router.navigate(['/vet-dashboard']);
+       else if (role === 'ROLE_PARTNER') this.router.navigate(['/partner/home']);
+        else if (role === 'ROLE_VET') this.router.navigate(['/vet']);
        // else if (role === 'ROLE_PARTNER') this.router.navigate(['/partner-dashboard']);
         else this.router.navigate(['/']);
       }, 500);

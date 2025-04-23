@@ -1,0 +1,119 @@
+<div class="participants-dashboard">
+  <div class="dashboard-header">
+    <div class="header-content">
+      <h1 class="welcome-title">
+        <span class="participants-icon">👥</span>
+        Participants for: <span class="event-name">{{eventName}}</span>
+      </h1>
+      <button (click)="goBack()" class="btn-back">
+        <i class="back-icon">←</i> Back to Events
+      </button>
+    </div>
+  </div>
+
+  <div class="dashboard-content">
+    <!-- Loading State -->
+    <div *ngIf="isLoading" class="loading-state">
+      <div class="spinner"></div>
+      <p>Loading participants...</p>
+    </div>
+
+    <!-- Error State -->
+    <div *ngIf="error" class="error-state">
+      <span class="error-icon">⚠️</span>
+      <div class="error-details">
+        <h3>Error Loading Participants</h3>
+        <p>{{error}}</p>
+      </div>
+    </div>
+
+    <!-- Empty State -->
+    <div *ngIf="!isLoading && !error && participants.length === 0" class="empty-state">
+      <div class="empty-illustration">
+        <img src="https://cdn-icons-png.flaticon.com/512/4076/4076478.png" alt="No participants">
+      </div>
+      <h3>No Participants Yet</h3>
+      <p>This event doesn't have any participants yet.</p>
+    </div>
+
+    <!-- Participants List -->
+    <div *ngIf="!isLoading && !error && participants.length > 0" class="participants-list">
+      <div class="table-container">
+        <table class="participants-table">
+          <thead>
+            <tr>
+              <th>Participant</th>
+              <th>Email</th>
+              <th>Registration Date</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let participant of participants">
+              <td class="participant-info">
+                <div class="participant-avatar">
+                  {{participant.participant?.name?.charAt(0) || '?'}}
+                </div>
+                <div class="participant-name">
+                  {{participant.participant?.name || 'N/A'}}
+                </div>
+              </td>
+              <td class="participant-email">
+                <a *ngIf="participant.participant?.email" 
+                   href="mailto:{{participant.participant?.email}}"
+                   class="email-link">
+                  {{participant.participant?.email}}
+                </a>
+                <span *ngIf="!participant.participant?.email">N/A</span>
+              </td>
+              <td class="registration-date">
+                {{participant.dateInscription | date:'mediumDate'}}
+              </td>
+              <td class="participation-status">
+                <span *ngIf="!editingParticipations[participant.idParticipation!]" 
+                      class="status-badge status-{{participant.statusParticipation?.toLowerCase()}}">
+                  {{participant.statusParticipation}}
+                </span>
+                <select *ngIf="editingParticipations[participant.idParticipation!]" 
+                        [(ngModel)]="participant.statusParticipation"
+                        class="status-select">
+                  <option *ngFor="let status of statusOptions" [value]="status">
+                    {{status}}
+                  </option>
+                </select>
+              </td>
+              <td class="actions-cell">
+                <div *ngIf="!editingParticipations[participant.idParticipation!]" 
+                     class="action-buttons">
+                  <button (click)="editParticipation(participant.idParticipation!)"
+                          class="btn-edit">
+                    <i class="edit-icon">✏️</i> Edit
+                  </button>
+                </div>
+                <div *ngIf="editingParticipations[participant.idParticipation!]" 
+                     class="edit-actions">
+                  <button (click)="saveParticipationStatus(participant)"
+                          class="btn-save">
+                    <i class="save-icon">✓</i> Save
+                  </button>
+                  <button (click)="cancelEdit(participant.idParticipation!)"
+                          class="btn-cancel">
+                    <i class="cancel-icon">×</i> Cancel
+                  </button>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      
+      <div class="participants-summary">
+        <div class="summary-item">
+          <span class="summary-count">{{participants.length}}</span>
+          <span class="summary-label">Total Participants</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

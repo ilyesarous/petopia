@@ -1,18 +1,14 @@
 <div class="sidebar">
-  <!-- Logo & Brand Name -->
-  <div class="d-flex flex-row align-items-center gap-2 sidebar-header">
-    <img src="../../../assets/images/logo.png" alt="Petopia Logo" width="50" />
-    <h3 class="m-0">Petopia</h3>
+  <div class="d-flex flex-row align-items-center gap-2">
+    <img src="../../../assets/images/logo.png" alt="logo" width="50" />
+    <h3>Petopia</h3>
   </div>
-
-  <hr class="sidebar-divider" />
-
-  <!-- Navigation Items -->
-  <ul class="sidebar-nav">
+  <hr />
+  <ul *ngFor="let item of items">
     <li
-            *ngFor="let item of items"
-            [ngClass]="{ 'selected': item.name === selectedItem }"
-            (click)="selectedItem = item.name"
+      class="selected"
+      [ngClass]="{ isSelected: item.name === selectedItem }"
+      (click)="selectedItem = item.name"
     >
       <a
               class="d-flex flex-row gap-2 align-items-center sidebar-link"

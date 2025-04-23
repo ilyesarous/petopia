@@ -1,0 +1,10 @@
+<div class="reaction-container d-flex">
+  <button
+    *ngFor="let type of reactionTypes"
+    type="button"
+    class="btn btn-sm btn-outline-info me-2 reaction-btn"
+    (click)="addReaction(type)"
+  >
+    {{ reactionEmojiMap[type] }}
+  </button>
+</div>

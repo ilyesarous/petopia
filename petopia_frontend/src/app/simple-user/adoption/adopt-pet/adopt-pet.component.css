@@ -1,0 +1,334 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+
+/* Root Container */
+.adopt-form-page {
+  font-family: 'Poppins', sans-serif;
+  background: linear-gradient(135deg, #ffe7ec, #fffafc);
+  min-height: 100vh;
+  position: relative;
+  padding-bottom: 50px;
+}
+
+/* Top Banner */
+.adopt-banner {
+  width: 100%;
+  height: 300px;
+  position: relative;
+  background-color: #ffd1dc; /* fallback if image doesn't load */
+  overflow: hidden;
+}
+
+.adopt-banner .banner-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.banner-overlay {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(255, 255, 255, 0.3);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.banner-title {
+  font-size: 2.8rem;
+  color: #333;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+}
+
+.banner-subtitle {
+  color: #ffffff;
+  font-size: 1.4rem;
+}
+
+/* Paw Print Columns */
+.left-paw-column,
+.right-paw-column {
+  position: absolute;
+  top: 300px; /* below the banner */
+  bottom: 0;
+  width: 80px;
+  opacity: 0.1;
+  z-index: 1;
+}
+
+.left-paw-column {
+  left: 0;
+}
+
+.right-paw-column {
+  right: 0;
+}
+
+/* Form Container */
+.adopt-form-container {
+  position: relative;
+  z-index: 2; /* above the paw columns */
+  max-width: 700px;
+  background-color: #fff;
+  margin: -70px auto 30px auto; /* overlaps banner a bit */
+  border-radius: 15px;
+  padding: 2rem;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.adopt-form-container .form-title {
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+  color: #333;
+  font-weight: 600;
+}
+
+.adopt-form-container .form-subtitle {
+  color: #666;
+  margin-bottom: 1.5rem;
+}
+
+/* Icon Paw near Title */
+.icon-paw {
+  color: #F83182;
+  font-size: 1.3rem;
+  vertical-align: middle;
+}
+
+/* The Form */
+.adoption-form {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+
+/* Form Groups */
+.form-group {
+  margin-bottom: 1.5rem;
+  text-align: left;
+}
+
+.form-label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: #333;
+}
+
+textarea,
+input[type="file"] {
+  width: 100%;
+  padding: 0.75rem;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  outline: none;
+  font-family: 'Poppins', sans-serif;
+}
+
+textarea {
+  resize: vertical;
+}
+
+/* Error Messages */
+.error-messages {
+  margin-top: 0.5rem;
+  color: #d9534f;
+  font-size: 1rem;
+}
+
+/* Submit Button */
+.submit-btn {
+  background-color: #F83182;
+  color: #fff;
+  border: none;
+  border-radius: 50px;
+  padding: 0.75rem 2rem;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+  margin-top: 1rem;
+}
+
+.submit-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(248, 49, 130, 0.3);
+}
+
+.submit-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .adopt-banner {
+    height: 200px;
+  }
+  .banner-title {
+    font-size: 2rem;
+  }
+  .left-paw-column,
+  .right-paw-column {
+    width: 50px;
+  }
+  .adopt-form-container {
+    margin: -40px auto 20px auto;
+    padding: 1.5rem;
+  }
+}
+.file-upload-group {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+    position: relative;
+  }
+  
+  /* Hide the actual file input */
+  .file-upload-group input[type="file"] {
+    width: 0.1px;
+    height: 0.1px;
+    opacity: 0;
+    overflow: hidden;
+    position: absolute;
+    z-index: -1;
+  }
+  
+  /* Styled label that looks like a button */
+  .file-upload-label {
+    display: inline-block;
+    padding: 0.75rem 1.5rem;
+    background-color: #F83182;
+    color: #fff;
+    font-weight: 600;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    border: none;
+    font-size: 1rem;
+    text-align: center;
+  }
+  
+  .file-upload-label:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(248, 49, 130, 0.3);
+  }
+  
+  /* The text that shows the chosen file name */
+  .file-chosen {
+    font-size: 0.95rem;
+    color: #666;
+    font-style: italic;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 200px; /* Adjust as needed */
+    display: inline-block;
+  }
+  /* Popup Modal Overlay */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+  }
+  
+  /* Modal Content Styling */
+  .modal-content {
+    background: linear-gradient(135deg, #fff0be 0%, #ffbbc5 100%);
+    padding: 2rem;
+    border-radius: 15px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+    text-align: center;
+    max-width: 500px;
+    width: 90%;
+    animation: slideDown 0.5s ease-out;
+  }
+  
+  .modal-content h2 {
+    margin-bottom: 1rem;
+    color: #333;
+  }
+  
+  .modal-content p {
+    margin-bottom: 2rem;
+    color: #555;
+  }
+  
+  .modal-content button {
+    background: #F83182;
+    border: none;
+    color: #fff;
+    padding: 0.5rem 1.5rem;
+    font-size: 1rem;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+  }
+  
+  .modal-content button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(248, 49, 130, 0.3);
+  }
+  
+  /* Slide down animation for the modal */
+  @keyframes slideDown {
+    from {
+      transform: translateY(-20px);
+      opacity: 0;
+    }
+    to {
+      transform: translateY(0);
+      opacity: 1;
+    }
+  }
+.file-upload-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.file-upload-group {
+  flex: 1;
+}
+
+.file-chosen {
+  display: block;
+  margin-top: 0.5rem;
+  font-weight: 500;
+  color: #555;
+}
+
+.cin-preview.right img {
+  max-width: 150px;
+  max-height: 150px;
+  border-radius: 10px;
+  border: 2px solid #F83182;
+  box-shadow: 0 6px 20px rgba(248, 49, 130, 0.2);
+  transition: transform 0.3s ease;
+}
+
+.cin-preview.right img:hover {
+  transform: scale(1.05);
+}
+.text-danger {
+  font-size: 1rem;       /* Increase font size */
+  font-weight: 600;      /* Make it bold */
+  color: #dc3545;        /* Bootstrap red, can be customized */
+  margin-top: 0.5rem;
+}

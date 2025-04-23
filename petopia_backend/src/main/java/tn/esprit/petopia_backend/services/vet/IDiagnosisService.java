@@ -10,4 +10,5 @@ public interface IDiagnosisService {
     void deleteDiagnosis(int idDiagnosis);
     List<Diagnosis> retrieveAllDiagnosis();
     Diagnosis retrieveDiagnosis(int idDiagnosis);
+    List<Diagnosis> retrieveDiagnosisByPetId(int petId);
 }

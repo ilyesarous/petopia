@@ -4,11 +4,13 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tn.esprit.petopia_backend.entities.community.Post;
+import tn.esprit.petopia_backend.entities.community.PostType;
 import tn.esprit.petopia_backend.entities.user.User;
 import tn.esprit.petopia_backend.repositories.community.PostRepository;
 import tn.esprit.petopia_backend.repositories.user.UserRepository;
 
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -22,12 +24,10 @@ public class PostServiceImpl implements IPostService {
 
     @Override
     public Post createPost(Post post, Integer userId) {
-        // Fetch the user from the database
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("Utilisateur non trouvé"));
-
-        // Assign the user to the post
         post.setUser(user);
+        post.setDate(LocalDateTime.now());
 
         return postRepository.save(post);
     }
@@ -49,16 +49,24 @@ public class PostServiceImpl implements IPostService {
         if (optionalPost.isPresent()) {
             Post post = optionalPost.get();
             post.setContent(postDetails.getContent());
-            post.setImage(postDetails.getImage());
-            post.setDate(postDetails.getDate());
+            post.setDate(LocalDateTime.now());
             post.setPostType(postDetails.getPostType());
+            post.setImage(postDetails.getImage());
+
             return postRepository.save(post);
         }
         return null;
     }
 
+
+
     @Override
     public void deletePost(Long id) {
         postRepository.deleteById(id);
+    }
+
+    @Override
+    public List<Post> getPostsByType(PostType postType) {
+        return postRepository.findByPostType(postType); // Fetches posts by the given PostType
     }
 }

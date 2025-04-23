@@ -5,9 +5,11 @@ import org.springframework.stereotype.Service;
 import tn.esprit.petopia_backend.entities.pet.Pet;
 import tn.esprit.petopia_backend.entities.user.User;
 import tn.esprit.petopia_backend.entities.vet.Consultations;
+import tn.esprit.petopia_backend.entities.vet.Notification;
 import tn.esprit.petopia_backend.repositories.pet.PetRepository;
 import tn.esprit.petopia_backend.repositories.user.UserRepository;
 import tn.esprit.petopia_backend.repositories.vet.ConsultationsRepository;
+import tn.esprit.petopia_backend.repositories.vet.NotificationRepository;
 
 import java.util.List;
 
@@ -17,47 +19,61 @@ public class ConsultationsServiceImplement implements IConsultationsService{
     @Autowired
     private ConsultationsRepository consultationsRepository;
     @Autowired
-    private UserRepository userRepository;  // Ajout du repository des utilisateurs
+    private UserRepository userRepository;
 
     @Autowired
-    private PetRepository petRepository;  // Ajout du repository des animaux
+    private PetRepository petRepository;
 
-    /*
-        @Override
-        public Consultations addConsultations(Consultations consultations) {
-            return consultationsRepository.save(consultations);
-        }
+    @Autowired
+    private NotificationRepository notificationRepository;
 
-     */
     @Override
     public Consultations addConsultations(Consultations consultation) {
-        System.out.println("***********service***********");
-        //if (consultation.getUserclient() != null && consultation.getUservet() != null && consultation.getPetconsultation() != null) {
-            int clientId = consultation.getUserclient().getId_user();
-            int vetId = consultation.getUservet().getId_user();
-            int petId = consultation.getPetconsultation().getIdPet();
+        int clientId = consultation.getUserclient().getId_user();
+        int vetId = consultation.getUservet().getId_user();
+        int petId = consultation.getPetconsultation().getIdPet();
 
-            User userClient = userRepository.findById(clientId).orElse(null);
-            User userVet = userRepository.findById(vetId).orElse(null);
-            Pet pet = petRepository.findById(petId).orElse(null);
+        User userClient = userRepository.findById(clientId).orElse(null);
+        User userVet = userRepository.findById(vetId).orElse(null);
+        Pet pet = petRepository.findById(petId).orElse(null);
 
-          //  if (userClient != null && userVet != null && pet != null) {
-                consultation.setUserclient(userClient);
-                consultation.setUservet(userVet);
-                consultation.setPetconsultation(pet);
-                System.out.println(consultation.toString());
-                return consultationsRepository.save(consultation);
-          //  }
-       // }
-       // return null; // Retourne null si un des objets est introuvable
+        consultation.setUserclient(userClient);
+        consultation.setUservet(userVet);
+        consultation.setPetconsultation(pet);
+
+        Consultations savedConsultation = consultationsRepository.save(consultation);
+
+        // Création de notification pour le client
+        createNotification(userClient, "New consultation created for your pet " + pet.getPetName());
+
+        // Création de notification pour le vétérinaire
+        createNotification(userVet, "A new " + consultation.getConsultationT() + " consultation has been scheduled with "
+                + userClient.getUsername() + " on " + consultation.getConsultation_date() + ".");
+
+        return savedConsultation;
     }
 
-
-
-
     @Override
-    public Consultations updateConsultations(Consultations consultations) {
-        return consultationsRepository.save(consultations);
+    public Consultations updateConsultations(Consultations consultation) {
+        Consultations existingConsultation = consultationsRepository.findById(consultation.getIdConsultation()).orElse(null);
+        if (existingConsultation != null) {
+            // Vérifiez si le statut a changé
+            if (!existingConsultation.getStatusT().equals(consultation.getStatusT())) {
+                String statusMessage = "Status of your consultation updated: " + consultation.getStatusT();
+                createNotification(consultation.getUserclient(), statusMessage);
+                createNotification(consultation.getUservet(), statusMessage);
+            }
+
+            return consultationsRepository.save(consultation);
+        }
+        return null;
+    }
+
+    private void createNotification(User user, String message) {
+        Notification notification = new Notification();
+        notification.setMessage(message);
+        notification.setUser(user);
+        notificationRepository.save(notification);
     }
 
     @Override
@@ -73,5 +89,14 @@ public class ConsultationsServiceImplement implements IConsultationsService{
     @Override
     public Consultations retriveConsultations(int idConsultation) {
         return consultationsRepository.findById(idConsultation).orElse(null);
+    }
+
+    @Override
+    public List<Pet> getUniquePetsForVet(Long vetId) {
+        return consultationsRepository.findDistinctPetsByVetId(vetId);
+    }
+
+    public List<Consultations> getConsultationsByUserId(Integer userId) {
+        return consultationsRepository.findByUserId(userId);
     }
 }

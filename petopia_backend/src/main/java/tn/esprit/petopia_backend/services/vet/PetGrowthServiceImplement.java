@@ -54,4 +54,15 @@ public class PetGrowthServiceImplement implements IPetGrowthService {
     public Pet_Growth retrievePetGrowth(int idPet_Growth) {
         return petGrowthRepository.findById(idPet_Growth).orElse(null);
     }
+
+    @Override
+    public List<Pet_Growth> retrievePetGrowthsByPetId(int petId) {
+        // Vérifiez d'abord si le pet existe
+        if (!petRepository.existsById(petId)) {
+            throw new RuntimeException("Pet with ID " + petId + " not found");
+        }
+
+        // Récupérez tous les Pet_Growth associés à ce pet
+        return petGrowthRepository.findByPetgrowth_IdPet(petId);
+    }
 }

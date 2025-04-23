@@ -1,0 +1,47 @@
+<div class="pet-showcase-container" *ngIf="pet">
+    <div class="pet-showcase-card">
+      <!-- Decorative paw prints at the top -->
+      <div class="paw-prints">
+        <fa-icon [icon]="faPaw" style="color: #F83182;" *ngFor="let i of [1,2,3,4,5,6,7,8,9,10,11,12,13,14]"></fa-icon>
+      </div>
+  
+      <!-- Pet name, stylized -->
+      <div class="pet-header">
+        <h1 class="pet-name">{{ pet.petName }}</h1>
+        <h3 class="pet-subtitle">{{ pet.petAge }} YEAR OLD {{ pet.breed | uppercase }}</h3>
+      </div>
+  
+      <!-- Circular pet image -->
+      <div class="pet-image-wrapper">
+        <img 
+          [src]="pet.petImage" 
+          class="pet-image" 
+          [alt]="pet.petName"
+        >
+      </div>
+  
+      <!-- Additional Info Section -->
+      <div class="pet-info">
+        <p>
+          <strong>Shelter:</strong> {{ pet.shelter?.shelter_name }}<br>
+          
+          <strong>Location:</strong> {{ pet.shelter?.location }}<br>
+
+          <strong>Health Status:</strong> {{ pet.healthStatus || 'Unknown' }}
+        </p>
+        <p class="adoption-paragraph">
+          Looking to give <strong>{{ pet.petName }}</strong> a loving home?
+          We believe every animal deserves a chance at a happy life. By adopting
+          this sweet {{ pet.breed }}, you’re not only changing their world but
+          also making space for another pet in need.
+          <fa-icon [icon]="faHeart" class="heart-icon"></fa-icon>
+        </p>
+      </div>
+  
+      <!-- Call-to-Action -->
+      <div class="cta-row">
+        <button class="btn adopt-btn" [routerLink]="['/adoption/form', pet.idPet]" >Adopt Me</button>
+      </div>
+    </div>
+  </div>
+  

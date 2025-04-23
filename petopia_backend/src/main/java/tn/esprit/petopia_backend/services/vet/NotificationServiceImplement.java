@@ -16,13 +16,7 @@ public class NotificationServiceImplement implements INotificationService{
     private NotificationRepository notificationRepository;
     @Autowired
     private UserRepository userRepository;
-    /*
-    @Override
-    public Notification addNotification(Notification notification) {
-        return notificationRepository.save(notification);
-    }
 
-     */
     @Override
     public Notification addNotification(Notification notification) {
         if (notification.getUser() != null) {
@@ -55,4 +49,10 @@ public class NotificationServiceImplement implements INotificationService{
     public Notification retriveNotification(int idNotification) {
         return notificationRepository.findById(idNotification).orElse(null);
     }
+
+    public List<Notification> getNotificationsByUserId(Integer userId) {
+        return notificationRepository.findByUserId(userId);
+    }
+
+
 }

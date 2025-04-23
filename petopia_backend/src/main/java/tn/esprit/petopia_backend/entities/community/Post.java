@@ -22,8 +22,11 @@ public class Post {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
+    @Lob
+    @Column(columnDefinition = "TEXT")
     private String content;
+    @Lob
+    @Column(columnDefinition = "TEXT")
     private String image;
 
     @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
@@ -37,11 +40,11 @@ public class Post {
     private User user;
 
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonIgnoreProperties("post") // Avoid infinite recursion
+    @JsonIgnoreProperties("post")
     private List<Comment> comments;
 
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
-    @JsonIgnoreProperties("post") // Avoid infinite recursion
+    @JsonIgnoreProperties("post")
     private List<Reaction> reactions;
 }
 

@@ -1,0 +1,144 @@
+<div class="container my-5">
+  <!-- Carousel Section -->
+  <h2 class="text-center mb-4">Our Partner Shelters in Tunisia</h2>
+  <div id="shelterCarousel" class="carousel slide" data-bs-ride="carousel">
+    <div class="carousel-indicators">
+      <button type="button" data-bs-target="#shelterCarousel" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+      <button type="button" data-bs-target="#shelterCarousel" data-bs-slide-to="1" aria-label="Slide 2"></button>
+      <button type="button" data-bs-target="#shelterCarousel" data-bs-slide-to="2" aria-label="Slide 3"></button>
+    </div>
+    <div class="carousel-inner">
+      <div class="carousel-item active">
+        <img src="/assets/images/shelter/kalbounet.jpg" class="d-block w-100" alt="SOS Animaux Tunisia">
+        <div class="carousel-caption d-none d-md-block">
+          <h5>SOS Animaux Tunisia</h5>
+          <p>Providing care, shelter, and love to abandoned pets in Tunisia since 2010.</p>
+        </div>
+      </div>
+      <div class="carousel-item">
+        <img src="/assets/images/shelter/dog+cat.jpg" class="d-block w-100" alt="Refuge for Animals Tunisia">
+        <div class="carousel-caption d-none d-md-block">
+          <h5>Refuge for Animals</h5>
+          <p>A dedicated team rescuing and rehabilitating pets in need across the country.</p>
+        </div>
+      </div>
+      <div class="carousel-item">
+        <img src="/assets/images/shelter/cats.jpg" class="d-block w-100" alt="Les Pattes du Coeur">
+        <div class="carousel-caption d-none d-md-block">
+          <h5>Les Pattes du Coeur</h5>
+          <p>Committed to finding forever homes for homeless animals in Tunisia.</p>
+        </div>
+      </div>
+    </div>
+    <button class="carousel-control-prev" type="button" data-bs-target="#shelterCarousel" data-bs-slide="prev">
+      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#shelterCarousel" data-bs-slide="next">
+      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+    </button>
+  </div>
+</div>
+
+
+<div class="dream-pet-search-section container my-5">
+  <div class="dream-pet-card">
+    <div class="content">
+      <h2 class="dream-pet-title">Imagine Your Dream Pet</h2>
+      <p class="dream-pet-description">
+        Describe your dream pet in a few words, and our advanced visual model will generate a picture just for you. Then, explore the best match from our collection!
+      </p>
+      <button class="btn dream-pet-btn" (click)="goToDreamPetPage()">
+        <fa-icon [icon]="faLightbulb" class="me-2"></fa-icon> Create Your Dream Pet
+      </button>
+    </div>
+    <div class="illustration">
+      <img src="/assets/images/shelter/corgi.png" alt="Dream Pet Illustration">
+    </div>
+  </div>
+</div>
+
+<!-- Search & Filter Section -->
+<div class="search-filter-container container my-4 p-4">
+  <h3 class="text-center mb-3">Find Your Perfect Pet</h3>
+  <div class="row justify-content-center g-3">
+    <!-- Search by Name/Breed -->
+    <div class="col-sm-6 col-md-4">
+      <div class="input-group">
+        <span class="input-group-text"><i class="fas fa-search"></i></span>
+        <input
+          type="text"
+          class="form-control"
+          placeholder="Search by name or breed..."
+          [(ngModel)]="searchTerm"
+          (input)="applyFilters()"
+        />
+      </div>
+    </div>
+
+    <!-- Species Filter -->
+    <div class="col-sm-6 col-md-3">
+      <select class="form-select" [(ngModel)]="selectedSpecies" (change)="applyFilters()">
+        <option value="">All Species</option>
+        <option value="cat">Cat</option>
+        <option value="dog">Dog</option>
+      </select>
+    </div>
+
+    <!-- Location Filter -->
+    <div class="col-sm-6 col-md-3">
+      <select class="form-select" [(ngModel)]="selectedLocation" (change)="applyFilters()">
+        <option value="">All Locations</option>
+        <option *ngFor="let loc of distinctLocations" [value]="loc">{{ loc }}</option>
+      </select>
+    </div>
+  </div>
+</div>
+
+<!-- Pet List Section -->
+<div class="container py-5">
+  <div class="pet-title-bar d-flex flex-column flex-md-row justify-content-between align-items-center mb-4">
+    <h2 class="mb-3 mb-md-0">Our Lovely Pets</h2>
+    <button class="btn btn-outline-primary adoption-requests-btn" [routerLink]="['/adoption/requests']">
+      <i class="bi bi-list-check me-2"></i> My Adoption Requests
+    </button>
+  </div>
+  
+  <div class="row">
+    <!-- Loop over filteredPets instead of pets -->
+    <div *ngFor="let pet of filteredPets" class="col-md-4 mb-4">
+      <div class="card pet-card shadow-sm" style="cursor:pointer;" (click)="goToDetails(pet.idPet)">
+        <img [src]="pet.petImage" class="card-img-top" [alt]="pet.petName">
+        <div class="card-body text-center">
+          <h5 class="card-title">{{ pet.petName }}</h5>
+          <p class="card-text">
+            <strong>Breed:</strong> {{ pet.breed }} <br>
+            <strong>Age:</strong> {{ pet.petAge }} years <br>
+            <strong>Shelter:</strong> {{ pet.shelter?.shelter_name }} <br>
+            <strong>Governorate:</strong> {{ getRegion(pet.shelter?.location || '') }}
+
+          </p>
+          <button class="btn adopt-btn"  [routerLink]="['/adoption/form', pet.idPet]" >Adopt Now</button>
+        </div>
+      </div>
+    </div>
+        <!-- Pagination Controls -->
+      <div class="pagination-controls text-center mt-4" *ngIf="totalPages > 1">
+        <button class="btn btn-sm mx-1" [disabled]="currentPage === 1" (click)="changePage(currentPage - 1)">
+          Prev
+        </button>
+
+        <button
+          *ngFor="let page of pageNumbers"
+          class="btn btn-sm mx-1"
+          [class.active]="currentPage === page"
+          (click)="changePage(page)">
+          {{ page }}
+        </button>
+
+        <button class="btn btn-sm mx-1" [disabled]="currentPage === totalPages" (click)="changePage(currentPage + 1)">
+          Next
+        </button>
+      </div>
+
+  </div>
+</div>

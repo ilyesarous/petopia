@@ -1,0 +1,273 @@
+.adoption-requests-container {
+    padding: 2rem;
+    max-width: 1000px;
+    margin: auto;
+  }
+  
+  .title {
+    text-align: center;
+    color: #F83182;
+    font-size: 2rem;
+    font-weight: 600;
+    margin-bottom: 2rem;
+  }
+  
+  /* Filter Bar */
+  .filter-container {
+    margin-bottom: 1.5rem;
+  }
+  
+  .filter-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+  
+  /* Search input */
+  .search-group {
+    flex: 1;
+    display: flex;
+    max-width: 400px;
+  }
+  
+  .search-group input {
+    width: 100%;
+    padding: 10px 16px;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+    font-size: 1rem;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+  }
+  
+  .search-group input::placeholder {
+    color: #bbb;
+  }
+  
+  /* Filter dropdown */
+  .filter-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  
+  .filter-group label {
+    font-weight: 500;
+    color: #444;
+    white-space: nowrap;
+  }
+  
+  .filter-group select {
+    padding: 8px 14px;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+    font-size: 0.95rem;
+  }
+  
+  /* Active Status Tag */
+  .active-filter-tag {
+    background-color: #F83182;
+    color: #fff;
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    justify-content: center;
+    width: fit-content;
+    margin: auto;
+    margin-bottom: 1rem;
+  }
+  
+  .remove-tag {
+    cursor: pointer;
+    font-size: 1.1rem;
+    color: #fff;
+  }
+  
+  /* Request Card */
+  .request-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #f7f9fc;
+    border-radius: 20px;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.08);
+    padding: 1rem 1.5rem;
+    margin-bottom: 20px;
+    transition: transform 0.2s ease;
+  }
+  
+  .request-card:hover {
+    transform: translateY(-3px);
+  }
+  
+  /* Pet Image */
+  .pet-image img {
+    width: 80px;
+    height: 80px;
+    border-radius: 10%;
+    object-fit: cover;
+    margin-right: 1.2rem;
+  }
+  
+  /* Info Section */
+  .request-info-section {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .user-name {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #333;
+    margin: 0;
+  }
+  
+  .pet-name {
+    font-size: 0.95rem;
+    color: #444;
+    margin: 2px 0 6px;
+  }
+  
+  .motivation-text {
+    margin: 6px 0;
+    font-size: 0.95rem;
+    color: #666;
+    font-style: italic;
+  }
+  
+  .details-link {
+    font-size: 0.85rem;
+    color: #F83182;
+    text-decoration: underline;
+    cursor: pointer;
+    margin-top: 0.3rem;
+    font-weight: bold;
+  }
+  
+  /* Status Badge */
+  .adoption-status {
+    margin-left: 1.2rem;
+    display: flex;
+    align-items: center;
+  }
+  
+  .adoption-status .badge {
+    font-size: 0.85rem;
+    padding: 6px 12px;
+    border-radius: 50px;
+    font-weight: 600;
+  }
+  
+  /* Pagination */
+  .pagination-controls {
+    display: flex;
+    justify-content: center;
+    margin-top: 2rem;
+    gap: 8px;
+  }
+  
+  .pagination-controls .btn {
+    background-color: #fefefe;
+    color: #F83182;
+    border: 2px solid #F83182;
+    padding: 8px 16px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.3s ease;
+  }
+  
+  .pagination-controls .btn:hover {
+    background-color: #F83182;
+    color: #fff;
+  }
+  
+  .pagination-controls .btn.active {
+    background-color: #F83182;
+    color: white;
+    font-weight: bold;
+    box-shadow: 0 0 8px rgba(248, 49, 130, 0.3);
+  }
+  
+  .pagination-controls .btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+  
+  /* Certificate Actions */
+  .certificate-actions {
+    margin-top: 0.5rem;
+  }
+  
+  .certificate-actions button {
+    margin-right: 0.5rem;
+  }
+  .status-and-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-left: auto;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+  }
+  
+  .status-pill {
+    padding: 6px 16px;
+    border-radius: 50px;
+    font-weight: 600;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    color: white;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+  }
+  
+  .status-pill.pending {
+    background-color: #FE9A7A;
+  }
+  
+  .status-pill.approved {
+    background-color: #2DAF7D;
+  }
+  
+  .status-pill.rejected {
+    background-color: #FF617C;
+  }
+  
+  .cert-btn {
+    border: none;
+    padding: 8px 14px;
+    border-radius: 50px;
+    font-weight: 600;
+    font-size: 0.85rem;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  
+  .cert-btn.sign {
+    background-color: #F83182;
+    color: white;
+  }
+  
+  .cert-btn.sign:hover {
+    background-color: #e0216f;
+  }
+  
+  .cert-btn.view {
+    background-color: #f1f1f1;
+    color: #444;
+    border: 2px solid #ccc;
+  }
+  
+  .cert-btn.view:hover {
+    background-color: #e6e6e6;
+  }
+  

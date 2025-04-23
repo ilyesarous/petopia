@@ -24,16 +24,24 @@ public class Product {
     private String product_name;
     private String product_description;
     private float product_price;
+    private float old_price;
+    private float rating;
+    private int review_count;
+    private float cuppon_price = 0;
     @Enumerated(EnumType.STRING)
     private ProductCategory category;
     private boolean isLiked;
     private int availableQuantity;
+    private int quantity;
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
     private List<Feedback> feedbacks;
     @ManyToOne
     private User user;
+
+    @ManyToOne
+    private Brand brand;
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore

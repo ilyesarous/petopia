@@ -1,0 +1,327 @@
+<div class="container mt-4 main-container">
+  <!-- Notification Icon -->
+  <div class="position-fixed top-0 end-0 p-3" style="z-index: 1000;">
+    <button
+      class="btn btn-light position-relative"
+      (click)="togglePendingMatches()"
+    >
+      <i class="bi bi-bell"></i>
+      <span
+        class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
+        *ngIf="notificationCount > 0"
+      >
+        {{ notificationCount }}
+      </span>
+    </button>
+    <div
+      class="notifications-dropdown"
+      [ngClass]="{'show': showNotifications}"
+      *ngIf="showNotifications"
+    >
+      <div class="notifications-header">
+        <h6 class="mb-0"><i class="bi bi-bell me-2"></i> Notifications ({{ notificationCount }})</h6>
+        <button
+          class="btn-close btn-close-sm"
+          (click)="togglePendingMatches()"
+        ></button>
+      </div>
+      <div class="notifications-body" *ngIf="notifications.length > 0">
+        <div class="notification-item" *ngFor="let notification of notifications">
+          <div class="notification-content">
+            <p class="mb-1">
+              <span *ngIf="notification.type === 'pending' && notification.match">
+                <a href="javascript:void(0)" (click)="viewPendingPetDetails(notification.match, 'pet_1')" class="text-primary">
+                  <strong>{{ notification.match.pet_1.petName }}</strong>
+                </a>
+                wants to match with
+                <a
+                  href="javascript:void(0)"
+                  (click)="viewPendingPetDetails(notification.match, 'pet_2')"
+                  class="text-primary"
+                >
+                  <strong>{{ notification.match.pet_2.petName }}</strong>
+                </a>
+              </span>
+              <span *ngIf="notification.type === 'accepted'">
+                {{ notification.message }}
+              </span>
+            </p>
+          </div>
+          <div
+            class="notification-actions d-flex align-items-center gap-2"
+            *ngIf="notification.type === 'pending' && notification.match"
+          >
+            <button
+              class="btn btn-sm btn-success"
+              (click)="acceptMatch(notification.match.id_match)"
+              title="Accept"
+            >
+              <i class="bi bi-check"></i>
+            </button>
+            <button
+              class="btn btn-sm btn-danger"
+              (click)="deleteMatch(notification.match.id_match)"
+              title="Delete"
+            >
+              <i class="bi bi-trash"></i>
+            </button>
+          </div>
+          <div>
+            <button
+              class="btn btn-sm btn-primary"
+              (click)="viewPetDetails(notification.match.pet_2)"
+              title="View"
+            >
+              <i class="bi bi-eye"></i>
+            </button>
+            <button
+              class="btn btn-sm btn-danger"
+              (click)="dismissNotification(notification.id)"
+              title="Dismiss"
+            >
+              <i class="bi bi-x"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+      <div
+        class="notifications-body text-center py-3"
+        *ngIf="notifications.length === 0"
+      >
+        <p class="text-muted mb-0">No notifications.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toggle Button for Friends List -->
+  <div class="friends-toggle" (click)="toggleFriendsList()">
+    <i class="bi" [ngClass]="{'bi-chat-dots': !showFriendsList, 'bi-x': showFriendsList}"></i>
+  </div>
+
+  <!-- "It's a Match!" Overlay -->
+  <div class="match-overlay" *ngIf="showMatchConfirmation" [@fadeInOut]>
+    <div class="match-container card shadow-lg border-0">
+      <div class="card-body text-center p-4">
+        <h2 class="match-title" style="font-family: 'Dancing Script', cursive; color: #fff; font-size: 2.5rem; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);">
+          It's a Match!
+        </h2>
+        <p class="text-white mb-4">
+          {{ matchedPet1?.petName }} and {{ matchedPet2?.petName }} have matched!
+        </p>
+        <div class="d-flex justify-content-center align-items-center mb-4">
+          <div class="match-image-container me-3">
+            <img [src]="matchedPet1?.petImage || '../../../../assets/images/pet/11416.jpg'" alt="{{ matchedPet1?.petName }}" class="rounded-circle" style="width: 100px; height: 100px; object-fit: cover; border: 3px solid #fff;" />
+          </div>
+          <div class="match-image-container">
+            <img [src]="matchedPet2?.petImage || '../../../../assets/images/pet/11416.jpg'" alt="{{ matchedPet2?.petName }}" class="rounded-circle" style="width: 100px; height: 100px; object-fit: cover; border: 3px solid #fff;" />
+          </div>
+        </div>
+        <div class="d-flex justify-content-center gap-3">
+          <button class="btn btn-pink w-100" (click)="sendMessage()">Send a Message</button>
+          <button class="btn btn-outline-pink w-100" (click)="closeMatchConfirmation()">Keep Swiping</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Loader -->
+  <div *ngIf="isLoading" class="text-center py-4">
+    <p>Loading pets...</p>
+  </div>
+
+  <!-- Main Content (Pets Dropdown and Matching Cards) -->
+  <div class="content-area" *ngIf="!isLoading">
+    <!-- Pets Dropdown with Settings Icon -->
+    <div class="card mb-4 border-0 shadow-sm">
+      <div class="card-header" style="background: linear-gradient(135deg, #F83182 0%, #FF617C 50%, #FE9A7A 100%);">
+        <div class="d-flex justify-content-between align-items-center">
+          <h5 class="mb-0 text-white">
+            <i class="fas fa-paw me-2"></i>Your Pets List
+          </h5>
+          <div class="d-flex align-items-center">
+            <div class="dropdown me-2">
+              <button class="btn btn-white text-dark dropdown-toggle" type="button" (click)="togglePetDropdown()">
+                {{ selectedPet?.petName || 'Choose a Pet' }}
+              </button>
+              <div class="dropdown-menu" [ngClass]="{'show': showPetDropdown}" style="max-height: 200px; overflow-y: auto;">
+                <a class="dropdown-item" *ngFor="let pet of petList" (click)="selectPet(pet)">{{ pet.petName }}</a>
+              </div>
+            </div>
+            <button class="btn btn-sm btn-outline-light" (click)="togglePreferencesForm()" title="Manage Preferences" *ngIf="selectedPet">
+              <i class="bi bi-gear"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Preferences Section -->
+    <div class="preferences-overlay" *ngIf="showPreferencesForm && selectedPet && !isLoading" [@fadeInOut]>
+      <div class="preferences-container card shadow-lg border-0">
+        <div class="card-header text-white d-flex justify-content-between align-items-center" style="background: linear-gradient(135deg, #FF617C 0%, #FE9A7A 100%);">
+          <h5 class="mb-0"><i class="fas fa-cog me-2"></i>Manage Preferences for {{ selectedPet.petName }}</h5>
+          <button class="btn-close btn-close-white" (click)="togglePreferencesForm()"></button>
+        </div>
+        <div class="card-body bg-light p-4">
+          <form (ngSubmit)="savePreferences()">
+            <div class="row">
+              <!-- Form Fields Column -->
+              <div class="col-md-6">
+                <div class="mb-3">
+                  <label for="breed" class="form-label fw-bold text-muted">Preferred Breed</label>
+                  <input type="text" class="form-control" id="breed" [(ngModel)]="newPreferences.preferred_breed" name="breed" placeholder="e.g., Labrador">
+                </div>
+                <div class="mb-3">
+                  <label for="minAge" class="form-label fw-bold text-muted">Minimum Age</label>
+                  <input type="number" class="form-control" id="minAge" [(ngModel)]="newPreferences.min_age" name="minAge" min="0" placeholder="e.g., 1">
+                </div>
+                <div class="mb-3">
+                  <label for="maxAge" class="form-label fw-bold text-muted">Maximum Age</label>
+                  <input type="number" class="form-control" id="maxAge" [(ngModel)]="newPreferences.max_age" name="maxAge" min="0" placeholder="e.g., 10">
+                </div>
+                <div class="mb-3">
+                  <label for="gender" class="form-label fw-bold text-muted">Preferred Gender</label>
+                  <input type="text" class="form-control" id="gender" [(ngModel)]="newPreferences.preferred_gender" name="gender" placeholder="e.g., Male">
+                </div>
+                <div class="mb-3">
+                  <label for="location" class="form-label fw-bold text-muted">Preferred Location</label>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="location"
+                    [(ngModel)]="newPreferences.preferred_location"
+                    name="location"
+                    placeholder="Enter an address or click on the map"
+                  >
+                </div>
+              </div>
+              <!-- Map Column -->
+              <div class="col-md-6">
+                <div class="map-section">
+                  <div class="section-header">
+                    <i class="fas fa-map-marker-alt me-2"></i>
+                    <h3 class="m-0">Select Location</h3>
+                  </div>
+                  <div id="map"></div>
+                </div>
+              </div>
+            </div>
+            <div class="d-flex gap-2 mt-3">
+              <button type="submit" class="btn btn-pink w-100">Save Preferences</button>
+              <button type="button" class="btn btn-outline-pink w-100" (click)="togglePreferencesForm()">Cancel</button>
+            </div>
+          </form>
+          <div class="mt-4 d-flex gap-2 justify-content-center">
+            <button class="btn btn-sm btn-outline-pink" (click)="showPreferences()">
+              <i class="bi bi-eye me-1"></i> Show
+            </button>
+            <button class="btn btn-sm btn-pink" (click)="editPreferences()" [disabled]="!currentPreferences">
+              <i class="bi bi-pencil me-1"></i> Edit
+            </button>
+            <button class="btn btn-sm btn-danger-pink" (click)="deletePreferences()" [disabled]="!currentPreferences">
+              <i class="bi bi-trash me-1"></i> Delete
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Matching Pets List (Tinder-Style Cards in Grid) -->
+    <div class="row">
+      <div class="col-md-6 col-lg-4 mb-4" *ngFor="let match of matchingPets">
+        <div class="tinder-card">
+          <div class="tinder-card-image">
+            <img [src]="match.petImage || '../../../../assets/images/pet/11416.jpg'" alt="{{ match.petName }}" class="img-fluid" />
+          </div>
+          <div class="tinder-card-info">
+            <h3 class="pet-name">{{ match.petName }}, {{ match.petAge }}</h3>
+            <p class="pet-details text-white">{{ match.breed || 'net specified' }}</p>
+          </div>
+          <div class="tinder-actions">
+            <button class="btn tinder-btn tinder-btn-view" (click)="viewPetDetails(match)">
+              <i class="bi bi-info-circle"></i>
+            </button>
+            <button class="btn tinder-btn tinder-btn-match" (click)="matchPet(match)">
+              <i class="bi bi-heart-fill"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="col-12 text-center py-5" *ngIf="matchingPets.length === 0 && !showPreferencesForm">
+        <p class="text-muted fs-5"><i class="bi bi-emoji-frown me-2"></i> No compatible pets found</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Friends List Sidebar (Right Side, Collapsible) -->
+  <div class="friends-sidebar" [ngClass]="{'open': showFriendsList}" *ngIf="!isLoading">
+    <div class="friends-header" style="background: linear-gradient(135deg, #F83182 0%, #FF617C 50%, #FE9A7A 100%);">
+      <h6 class="mb-0 text-white p-2">
+        <i class="bi bi-people me-2"></i>Matched Pets
+      </h6>
+    </div>
+    <div class="friends-body">
+      <div class="friend-item" *ngFor="let friend of matchedFriends">
+        <div class="friend-content p-2">
+          <div *ngFor="let pet of friend.matchedPets" class="d-flex flex-wrap gap-2">
+            <div (click)="openChat(friend, pet)" class="d-flex align-items-center">
+              <img [src]="pet.petImage" alt="{{ pet.petName }}" class="rounded-circle me-2" style="width: 40px; height: 40px; object-fit: cover; border: 2px solid #F83182;" />
+              <div>
+                <p class="mb-0 text-dark">{{ pet.petName }}</p>
+                <small class="text-muted">{{ pet.breed }}</small>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="text-center py-3" *ngIf="matchedFriends.length === 0">
+        <p class="text-muted mb-0">No matched pets yet.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Chat Panel (Right Side, Next to Friends List) -->
+  <div class="chat-panel card shadow-lg border-0" *ngIf="showChat" [@fadeInOut] [ngStyle]="{'right': showFriendsList ? '300px' : '0'}">
+    <div class="chat-header card-header text-white d-flex justify-content-between align-items-center" style="background: linear-gradient(135deg, #F83182 0%, #FF617C 50%, #FE9A7A 100%);">
+      <h6 class="mb-0">
+        <i class="bi bi-chat-dots me-2"></i>{{ selectedFriend?.petName }}
+      </h6>
+      <button class="btn-close btn-close-white btn-close-sm" (click)="closeChat()"></button>
+    </div>
+    <div class="chat-body card-body d-flex flex-column p-0" style="height: 400px;">
+      <div *ngIf="chatMessages.length === 0" class="text-center py-3">
+        <p class="text-muted">No messages yet.</p>
+      </div>
+      <div #chatContainer class="chat-messages flex-grow-1 p-3" style="overflow-y: auto; display: flex; flex-direction: column;">
+        <div *ngFor="let message of chatMessages" class="mb-2 d-flex" [ngClass]="{'justify-content-end': message.senderId === ownerId, 'justify-content-start': message.senderId !== ownerId}">
+          <div class="message-bubble p-2 rounded shadow-sm position-relative" 
+               [ngStyle]="{'background-color': message.senderId === ownerId ? '#F83182' : '#e9ecef', 'color': message.senderId === ownerId ? '#fff' : '#333', 'max-width': '70%'}"
+               (mouseenter)="showReactionPicker(message)" (mouseleave)="hideReactionPicker(message)">
+            <p class="mb-0">{{ message.content }}</p>
+            <small class="text-muted d-block" [ngStyle]="{'color': message.senderId === ownerId ? '#ddd' : '#666'}">{{ message.timestamp | date:'shortTime' }}</small>
+            <!-- Affichage des réactions -->
+            <div class="reactions mt-1" *ngIf="message.reactions && message.reactions.length > 0">
+              <span *ngFor="let reaction of message.reactions" class="reaction me-1" [@reactionAnimation]>{{ reaction.reaction }}</span>
+            </div>
+            <!-- Sélecteur de réactions -->
+            <div class="reaction-picker" *ngIf="message.showReactionPicker" [@pickerAnimation]>
+              <button class="reaction-btn" (click)="sendReaction(message, '❤️')" title="Heart" aria-label="Réagir avec un cœur">❤️</button>
+              <button class="reaction-btn" (click)="sendReaction(message, '👍')" title="Thumbs Up" aria-label="Réagir avec un pouce">👍</button>
+              <button class="reaction-btn" (click)="sendReaction(message, '😊')" title="Smile" aria-label="Réagir avec un sourire">😊</button>
+              <button class="reaction-btn" (click)="sendReaction(message, '😢')" title="Sad" aria-label="Réagir avec triste">😢</button>
+              <button class="reaction-btn" (click)="sendReaction(message, '😮')" title="Wow" aria-label="Réagir avec surprise">😮</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="chat-footer card-footer p-2 bg-light">
+      <form (ngSubmit)="sendChatMessage(); messageInput.focus()" class="d-flex gap-2">
+        <input #messageInput type="text" class="form-control" [(ngModel)]="newMessage" name="newMessage" placeholder="Type a message..." required />
+        <button type="submit" class="btn btn-pink">
+          <i class="bi bi-send"></i>
+        </button>
+      </form>
+    </div>
+  </div>
+</div>

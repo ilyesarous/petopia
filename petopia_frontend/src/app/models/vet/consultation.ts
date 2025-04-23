@@ -22,4 +22,5 @@ export class Consultation {
     idPet!: number;
     petName!: string;
     breed! : string;
+    imageUrl?: string;
   }

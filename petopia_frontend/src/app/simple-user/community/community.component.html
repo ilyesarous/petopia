@@ -1,0 +1,295 @@
+<div class="community-feed container py-4">
+  <div class="position-relative">
+    <button class="scroll-btn scroll-left btn" (click)="scrollStories('left')">
+      <i class="bi bi-chevron-left"></i>
+    </button>
+  
+    <div class="stories-slide p-3">
+      <div class="story-card create-story" (click)="toggleCreateStory()">
+        <div class="story-box">
+          <i class="bi bi-plus-circle" style="font-size: 1.5rem;"></i>
+        </div>
+        <p class="story-owner">Create Story</p>
+      </div>
+    
+      <div class="story-card" *ngFor="let story of stories; index as i" (click)="openStoryPopup(i)">
+        <button class="delete-icon" 
+                *ngIf="isOwner(story)" 
+                (click)="openDeleteConfirmation(story.id); $event.stopPropagation()" 
+                title="Delete Story">
+          <i class="bi bi-trash"></i>
+        </button>
+        <div class="story-box">
+          <ng-container *ngIf="story.image">
+            <img *ngIf="story.image.endsWith('.jpg') || story.image.endsWith('.jpeg') || story.image.endsWith('.png')" 
+                 [src]="story.image" alt="Story image" />
+            <video *ngIf="story.image.endsWith('.mp4') || story.image.endsWith('.webm') || story.image.endsWith('.mov')" 
+                   [src]="story.image" controls></video>
+          </ng-container>
+                  </div>
+        <p class="story-owner">
+          {{ story.user?.name || 'Unknown User' }}
+        </p>
+      </div>
+    </div>
+  
+    <button class="scroll-btn scroll-right btn" (click)="scrollStories('right')">
+      <i class="bi bi-chevron-right"></i>
+    </button>
+  </div>
+  
+    <div class="story-popup" *ngIf="activeStoryIndex > -1" (click)="closeStoryPopup()">
+      <div class="story-popup-content" (click)="$event.stopPropagation()">
+        <div class="popup-header">
+          <button class="close-popup" (click)="closeStoryPopup()">&times;</button>
+        </div>
+      
+        <div class="story-layout">
+          <button class="popup-arrow left-arrow" (click)="prevStory($event)">
+            <i class="bi bi-chevron-left"></i>
+          </button>
+      
+          <div class="story-image-wrapper">
+            <ng-container *ngIf="getActiveStory()?.image as media">
+              <img *ngIf="media.endsWith('.jpg') || media.endsWith('.jpeg') || media.endsWith('.png')" 
+                   [src]="media" alt="Story image" />
+              <video *ngIf="media.endsWith('.mp4') || media.endsWith('.webm') || media.endsWith('.mov')" 
+                     [src]="media" controls autoplay muted></video>
+            </ng-container>
+                      </div>
+      
+          <button class="popup-arrow right-arrow" (click)="nextStory($event)">
+            <i class="bi bi-chevron-right"></i>
+          </button>
+        </div>
+      
+        <div class="story-username-static">
+          {{ getActiveStory()?.user?.name || 'Unknown User' }}
+        </div>
+      
+        <div class="progress-bar">
+          <div class="progress" [style.width.%]="progress"></div>
+        </div>
+      </div>
+      
+      
+      
+    </div>
+
+<div 
+  class="story-create-modal" 
+  [class.show]="showCreateStory" 
+  [style.display]="showCreateStory ? 'flex' : 'none'" 
+  (click)="toggleCreateStory()"
+>
+  <div class="story-create-modal-content" (click)="$event.stopPropagation()">
+    <div class="modal-header d-flex justify-content-between align-items-center mb-2">
+      <h5 class="modal-title">Create a Story</h5>
+      <button class="close-popup" (click)="toggleCreateStory()">&times;</button>
+    </div>
+
+    <input
+    type="file"
+    id="storyFileInput"
+    (change)="onStoryFileSelected($event)"
+    accept="image/*,video/*"
+    class="form-control"
+    hidden
+  />
+  
+    <div class="d-flex align-items-center gap-3 mb-3">
+      <label for="storyFileInput" class="upload-label">
+        <i class="bi bi-cloud-arrow-up-fill me-2"></i> Add Image or video
+      </label>
+    
+      <ng-container *ngIf="selectedStoryFilePreview">
+        <img *ngIf="isImageFile()" [src]="selectedStoryFilePreview" class="img-preview-fixed" />
+        <video *ngIf="isVideoFile()" [src]="selectedStoryFilePreview" class="video-preview-fixed" controls></video>
+      </ng-container>
+      
+    </div>
+    
+    
+
+
+    <!-- <textarea
+      class="form-control mb-3"
+      placeholder="Add a caption (optional)"
+      [(ngModel)]="newStoryText"
+    ></textarea> -->
+
+    <div class="d-flex justify-content-end">
+      <button class="btn btn-custom me-2" (click)="createStory()">Post Story</button>
+      <button class="btn btn-secondary" (click)="toggleCreateStory()">Cancel</button>
+    </div>
+  </div>
+</div>
+
+  <div class="mb-3">
+    <div class="input-group">
+      <input
+        type="text"
+        [(ngModel)]="searchQuery"
+        (input)="updatePosts()"
+        placeholder="Search by post content or by user"
+        class="form-control"
+      />
+      <button
+        class="btn btn-outline-secondary dropdown-toggle"
+        type="button"
+        data-bs-toggle="dropdown"
+        aria-expanded="false"
+      >
+        Sort by post type
+      </button>
+      <ul class="dropdown-menu dropdown-menu-end">
+        <li *ngFor="let type of postTypes">
+          <a
+            class="dropdown-item"
+            href="#"
+            (click)="filterByType(type); $event.preventDefault()"
+            >{{ type }}</a
+          >
+        </li>
+        <li><hr class="dropdown-divider" /></li>
+        <li>
+          <a
+            class="dropdown-item"
+            href="#"
+            (click)="clearTypeFilter(); $event.preventDefault()"
+            >Tous les types</a
+          >
+        </li>
+      </ul>
+    </div>
+  </div>
+
+<!-- Create new post form -->
+<form #postForm="ngForm" (ngSubmit)="createPost(postForm)" novalidate class="create-post card mb-3">
+  <div class="card-body">
+    <!-- ai -->
+    <div class="mb-3">
+      <label>Need inspiration? Describe your topic and let AI write the post for you!</label>
+      <input 
+      [(ngModel)]="topic" [ngModelOptions]="{ standalone: true }" 
+      class="form-control"
+      placeholder="Describe your idea and click 'Generate Post Suggestion'" />
+      <button type="button" class="btn btn-custom mt-2" (click)="generatePostFromAI()" [disabled]="loading">
+        <i class="bi bi-stars me-2"></i> 
+        {{ loading ? 'Generating...' : 'Generate Post Suggestion' }}
+      </button>
+      
+      
+      
+    </div>
+    
+    <!-- Post Content -->
+    <textarea
+  #postContentCtrl="ngModel"
+  name="postContent"
+  [(ngModel)]="newPostContent"
+  class="form-control auto-expand"
+  placeholder="What's on your mind?"
+  rows="3"
+  required
+  minlength="5"
+  (input)="autoGrowTextArea($event); clearErrorIfValid()">
+</textarea>
+
+
+    <div *ngIf="(postForm.submitted || postContentCtrl.touched) && postForm.controls['postContent']?.invalid" class="text-danger mt-1">
+      Post content is required (at least 5 characters).
+    </div>
+
+    <select 
+    name="postType"
+    class="form-select mt-2"
+    [(ngModel)]="newPostType"
+    required>
+    <option value="" disabled [selected]="!newPostType">Select post type</option>
+    <option [ngValue]="PostType.LOST_PET">Lost Pet</option>
+    <option [ngValue]="PostType.ADOPTION">Adoption</option>
+    <option [ngValue]="PostType.GENERAL">General</option>
+    <option [ngValue]="PostType.ADVICE">Advice</option>
+    <option [ngValue]="PostType.FOR_SALE">For Sale</option>
+  </select>
+  <div *ngIf="(postForm.submitted || postForm.controls['postType']?.touched) && postForm.controls['postType']?.invalid" class="text-danger mt-1">
+    Please choose a post type.
+  </div>
+  
+    <div class="d-flex justify-content-between align-items-center mt-2">
+      <div class="file-input-container">
+        <input 
+          type="file" 
+          id="fileInput" 
+          (change)="onFileSelected($event)" 
+          accept="image/*" 
+          multiple 
+          hidden />
+          <label for="fileInput" class="upload-label">
+            <i class="bi bi-cloud-arrow-up-fill me-2"></i> Add Image(s)
+          </label>
+        <span class="file-name ms-2" *ngIf="selectedFiles && selectedFiles.length">
+          {{ selectedFileNames }}
+        </span>
+      </div>
+      <div *ngIf="postErrorMessage" class="alert alert-danger mt-2">
+        {{ postErrorMessage }}
+      </div>
+      
+      <button class="btn btn-custom" type="submit" [disabled]="postForm.invalid">
+        Post
+      </button>
+    </div>
+  </div>
+</form>
+
+
+
+
+
+
+  <!-- posts -->
+  <div class="row">
+    <div class="col-12 mb-3" *ngFor="let post of paginatedPosts">
+      <app-post [post]="post"></app-post>
+    </div>
+  </div>
+  
+  <div class="pagination-controls text-center mt-4" *ngIf="totalPages > 1">
+    <button class="btn btn-sm mx-1" [disabled]="currentPage === 1" (click)="changePage(currentPage - 1)">
+      Prev
+    </button>
+    <button
+      *ngFor="let page of [].constructor(totalPages); let i = index"
+      class="btn btn-sm mx-1"
+      [class.active]="currentPage === (i + 1)"
+      (click)="changePage(i + 1)">
+      {{ i + 1 }}
+    </button>
+    <button class="btn btn-sm mx-1" [disabled]="currentPage === totalPages" (click)="changePage(currentPage + 1)">
+      Next
+    </button>
+  </div>
+  
+  <div class="modal fade custom-modal" 
+       [class.show]="showDeleteConfirmation" 
+       [style.display]="showDeleteConfirmation ? 'block' : 'none'" 
+       tabindex="-1" 
+       role="dialog">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Confirm Story Deletion</h5>
+        </div>
+        <div class="modal-body">
+          <p>Are you sure you want to delete this story?</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" (click)="cancelDelete()">Cancel</button>
+          <button type="button" class="btn btn-danger" (click)="confirmDelete()">Delete</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

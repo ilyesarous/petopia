@@ -122,4 +122,15 @@ public class DiagnosisServiceImplement implements IDiagnosisService {
                 .orElse(null); // Les Medicament_Prescriptions seront récupérés automatiquement grâce à la relation OneToMany
     }
 
+    @Override
+    public List<Diagnosis> retrieveDiagnosisByPetId(int petId) {
+        // Vérifiez d'abord si le pet existe
+        if (!petRepository.existsById(petId)) {
+            throw new RuntimeException("Pet with ID " + petId + " not found");
+        }
+
+        // Récupérez tous les Pet_Growth associés à ce pet
+        return diagnosisRepository.findByPetdiagnosis_IdPet(petId);
+    }
+
 }

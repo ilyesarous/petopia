@@ -1,7 +1,6 @@
 package tn.esprit.petopia_backend.entities.pet;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import tn.esprit.petopia_backend.entities.adoptions.Shelter;
 import tn.esprit.petopia_backend.entities.matching.Preferences;
 import tn.esprit.petopia_backend.entities.user.User;
@@ -14,10 +13,7 @@ import tn.esprit.petopia_backend.entities.vet.Consultations;
 import tn.esprit.petopia_backend.entities.vet.Diagnosis;
 import tn.esprit.petopia_backend.entities.vet.Pet_Growth;
 
-import java.util.Base64;
-import java.util.Date;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 @Getter
@@ -31,6 +27,7 @@ public class Pet {
     private int idPet;
     private String petName;
     private int petAge;
+    private int petRefVet;
     @Lob
     @Column(columnDefinition = "LONGBLOB")
     private byte[] petImageBytes;
@@ -38,19 +35,14 @@ public class Pet {
     private String location;
     private float attitudeX;
     private float attitudeY;
-    @Transient
     private String petImage;
-    public void setPetImage(String imageData) {
-        if (imageData != null && imageData.startsWith("data:image")) {
-            this.petImageBytes = Base64.getDecoder().decode(imageData.substring(imageData.indexOf(",") + 1));
-        } else {
-            this.petImageBytes = Base64.getDecoder().decode(imageData);
-        }
-    }
 
 
+
+
+    //lezmhaa tkoun null khater shelter ynajmch yaddi pet khaliwha true!!
     @ManyToOne
-    @JoinColumn(name = "id_user", nullable = false)
+    @JoinColumn(name = "id_user", nullable = true)
     private User user;
 
     //1 pet inajem yekou barchaa diagnosis
@@ -83,14 +75,22 @@ public class Pet {
     @Enumerated(EnumType.STRING)
     private Size size;
 
-    private String healthStatus =null;
+    @ElementCollection(targetClass = HealthCondition.class, fetch = FetchType.EAGER)
+    @Enumerated(EnumType.STRING)
+    @CollectionTable(name = "pet_health_conditions", joinColumns = @JoinColumn(name = "pet_id"))
+    @Column(name = "health_condition")
+    private List<HealthCondition> healthStatus = new ArrayList<>();
+
 
     @ManyToOne
-    @JsonIgnore
     private Shelter shelter;
 
 
-    @OneToOne
+
+//    @OneToOne
+//    @JsonIgnore
+//    private Preferences preferences;
+    @OneToOne(mappedBy = "pet", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
     private Preferences preferences;
 

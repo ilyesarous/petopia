@@ -1,0 +1,71 @@
+<div class="services-container">
+  <div class="services-header">
+    <div class="header-content">
+      <h1><i class="fas fa-paw"></i> Animal Services</h1>
+      <button routerLink="/services/add" class="add-button">
+        <i class="fas fa-plus-circle"></i> Add New Service
+      </button>
+    </div>
+    <div class="header-decoration"></div>
+  </div>
+
+  <div class="filters-card">
+    <div class="search-container">
+      <i class="fas fa-search"></i>
+      <input type="text" [(ngModel)]="searchTerm" (input)="filterServices()" 
+             placeholder="Search services by name or description...">
+    </div>
+    
+    <div class="filter-select">
+      <i class="fas fa-filter"></i>
+      <select [(ngModel)]="selectedType" (change)="filterServices()">
+        <option value="ALL">All Service Types</option>
+        <option *ngFor="let type of serviceTypes" [value]="type">{{type | titlecase}}</option>
+      </select>
+    </div>
+  </div>
+
+  <div *ngIf="filteredServices.length === 0" class="no-results">
+    <i class="far fa-frown"></i>
+    <p>No services found matching your criteria</p>
+    <button routerLink="/services/add" class="empty-state-button">
+      <i class="fas fa-plus"></i> Create New Service
+    </button>
+  </div>
+
+  <div class="services-grid">
+    <div *ngFor="let service of filteredServices" class="service-card" [routerLink]="['/services', service.idServiceAnimal]">
+      <!-- Image Display -->
+      <div class="service-image-container">
+        <!-- Show image if path exists and is valid -->
+        <img *ngIf="service?.imagePath" 
+             [src]="service.imagePath" 
+             alt="Service image" 
+             class="service-image"
+             >
+        
+        <!-- Show placeholder if no image or if error occurred -->
+        <div *ngIf="!service?.imagePath " class="image-placeholder">
+          <i class="fas fa-paw"></i>
+        </div>
+      </div>
+
+      <div class="service-header" [ngClass]="getServiceTypeClass(service.typeService)">
+       
+        <h3>{{ service.typeService | titlecase }}</h3>
+      </div>
+      <div class="service-body">
+        <p class="service-description">{{ service.descriptionServiceAnimal }}</p>
+        <p class="service-description">{{ service.typeService  }}</p>
+        
+        <div class="service-details">
+          
+          
+        </div>
+      </div>
+      <div class="service-footer">
+        <span class="view-details">View details <i class="fas fa-arrow-right"></i></span>
+      </div>
+    </div>
+  </div>
+</div>

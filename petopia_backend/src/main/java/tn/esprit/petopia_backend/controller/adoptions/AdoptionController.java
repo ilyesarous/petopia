@@ -1,39 +1,76 @@
 package tn.esprit.petopia_backend.controller.adoptions;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import tn.esprit.petopia_backend.entities.adoptions.Adoption;
 import tn.esprit.petopia_backend.entities.adoptions.AdoptionStatus;
+import tn.esprit.petopia_backend.entities.user.User;
 import tn.esprit.petopia_backend.services.adoptions.IAdoptionService;
+import tn.esprit.petopia_backend.services.community.CloudinaryService;
+
+import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/adoptions")
 public class AdoptionController {
 
     private final IAdoptionService adoptionService;
+    @Autowired
+    private final CloudinaryService cloudinaryService;
 
-    public AdoptionController(IAdoptionService adoptionService) {
+    public AdoptionController(IAdoptionService adoptionService,CloudinaryService cloudinaryService) {
         this.adoptionService = adoptionService;
+        this.cloudinaryService = cloudinaryService;
     }
 
-    // Only a user can add an adoption request
     @PostMapping("/addAdoption")
     @PreAuthorize("hasAuthority('ROLE_USER')")
-    public ResponseEntity<Adoption> createAdoption(@RequestBody Adoption adoption) {
-        return ResponseEntity.ok(adoptionService.createAdoption(adoption));
+    public ResponseEntity<?> createAdoption(
+            @RequestParam("cinImage") MultipartFile cinImage,
+            @RequestParam("adoptionData") String adoptionData) {
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        User user = (User) authentication.getPrincipal();
+        Integer userId = user.getId_user();
+
+        try {
+            String imageUrl = cloudinaryService.uploadImage(cinImage);
+
+            ObjectMapper objectMapper = new ObjectMapper();
+            Adoption adoption = objectMapper.readValue(adoptionData, Adoption.class);
+
+            adoption.setCinimage(imageUrl);
+
+            Adoption createdAdoption = adoptionService.createAdoption(adoption, userId);
+            return ResponseEntity.ok(createdAdoption);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            Map<String, String> error = new HashMap<>();
+            error.put("message", "Failed to upload image or parse adoption data");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(error);
+        }
     }
 
-    // Only a shelter can update the adoption status
+
+
     @PutMapping("/updateAdoption/{id}")
     @PreAuthorize("hasAuthority('ROLE_SHELTER')")
     public ResponseEntity<Adoption> updateAdoption(@PathVariable Integer id, @RequestBody Adoption adoption) {
-        adoption.setId_request(id);
-        return ResponseEntity.ok(adoptionService.updateAdoption(adoption));
+        Adoption updatedAdoption = adoptionService.updateAdoption(id, adoption);
+        return ResponseEntity.ok(updatedAdoption);
     }
 
-    // Only a shelter can delete an adoption
     @DeleteMapping("/deleteAdoption/{id}")
     @PreAuthorize("hasAuthority('ROLE_SHELTER')")
     public ResponseEntity<Void> deleteAdoption(@PathVariable Integer id) {

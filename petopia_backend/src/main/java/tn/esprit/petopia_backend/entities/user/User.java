@@ -9,11 +9,17 @@ import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import tn.esprit.petopia_backend.entities.event.Coupon;
+import tn.esprit.petopia_backend.entities.event.Event;
+
 import tn.esprit.petopia_backend.entities.adoptions.Shelter;
 import tn.esprit.petopia_backend.entities.community.Comment;
 import tn.esprit.petopia_backend.entities.community.Post;
 import tn.esprit.petopia_backend.entities.community.Reaction;
 import tn.esprit.petopia_backend.entities.community.Story;
+import tn.esprit.petopia_backend.entities.event.ServiceAnimal;
+import tn.esprit.petopia_backend.entities.payment.PaymentRequest;
+import tn.esprit.petopia_backend.entities.event.Participation;
 import tn.esprit.petopia_backend.entities.pet.Pet;
 import tn.esprit.petopia_backend.entities.vet.Consultations;
 import tn.esprit.petopia_backend.entities.vet.Notification;
@@ -21,7 +27,10 @@ import tn.esprit.petopia_backend.entities.reclamation.Reclamation;
 import tn.esprit.petopia_backend.entities.store.Cart;
 import tn.esprit.petopia_backend.entities.store.Feedback;
 import tn.esprit.petopia_backend.entities.store.Product;
+import tn.esprit.petopia_backend.entities.vet.Rating_Vet;
 
+
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Set;
@@ -42,10 +51,16 @@ public class User implements UserDetails {
     private String email;
     private String password;
     private Boolean locked = false;
+    private Integer nb_points = 0;
+    private int level = 1;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @JsonIgnore
+    private List<Coupon> coupons = new ArrayList<>();
+
 
     @Enumerated(EnumType.STRING)
     private UserRole role;
-    private Integer nb_points = 0;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
@@ -54,17 +69,24 @@ public class User implements UserDetails {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Reclamation> listReclamation;
 
-    //1 user client inajem yekou barchaa consultationett
+
+    //Vet
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "userclient")
     @JsonIgnore
     private Set<Consultations> consultationList;
 
-    //1 user vet andou barchaa consultationett
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "uservet")
     @JsonIgnore
     private Set<Consultations> consultationsvetList;
 
-    //1 user  andou barchaa notif
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "userclientR")
+    @JsonIgnore
+    private Set<Rating_Vet> RatingUserToVetList;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "uservetR")
+    @JsonIgnore
+    private Set<Rating_Vet> RatingVetList;
+
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
     @JsonIgnore
     private Set<Notification> notificationsList;
@@ -88,8 +110,28 @@ public class User implements UserDetails {
     @JsonIgnore
     private Shelter shelter;
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
+    private List<PaymentRequest> paymentRequests;
+
+
+    @OneToMany(mappedBy = "organisateur")
+    @JsonIgnore
+    private List<Event> eventList;
+
+    @OneToMany(mappedBy = "organisateurServiceAnimal", cascade = CascadeType.ALL)
+    @JsonIgnore
+    private List<ServiceAnimal> serviceAnimalList;
+
+
+    // Une liste des participations de cet utilisateur
+    @OneToMany(mappedBy = "participant", cascade = CascadeType.ALL)
+    @JsonIgnore
+    private List<Participation> participations;
+
 
     @Override
+    @JsonIgnore
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority("ROLE_" + role.name()));
     }
@@ -138,4 +180,15 @@ public class User implements UserDetails {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
     private Set<Story> stories;
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id_user=" + id_user +
+                ", name='" + name + '\'' +
+                ", phoneNumber='" + phoneNumber + '\'' +
+                ", email='" + email + '\'' +
+                ", role=" + role +
+                '}';
+    }
 }

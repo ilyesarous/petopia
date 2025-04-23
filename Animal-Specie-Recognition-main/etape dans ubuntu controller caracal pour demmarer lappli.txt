@@ -1,0 +1,24 @@
+rania@rania-virtual-machine:~/Downloads/Animal-Specie-Recognition-main$ pip install virtualenv
+
+
+rania@rania-virtual-machine:~/Downloads/Animal-Specie-Recognition-main$ sudo apt install python3-virtualenv
+
+
+rania@rania-virtual-machine:~/Downloads/Animal-Specie-Recognition-main$ virtualenv env
+
+
+rania@rania-virtual-machine:~/Downloads/Animal-Specie-Recognition-main$ source env/bin/activate
+(env) rania@rania-virtual-machine:~/Downloads/Animal-Specie-Recognition-main$ 
+(env) rania@rania-virtual-machine:~/Downloads/Animal-Specie-Recognition-main$ pip install -r requirements.txt
+
+
+(env) rania@rania-virtual-machine:~/Downloads/Animal-Specie-Recognition-main$ pip install streamlit
+(env) rania@rania-virtual-machine:~/Downloads/Animal-Specie-Recognition-main$ streamlit –version
+
+
+(env) rania@rania-virtual-machine:~/Downloads/Animal-Specie-Recognition-main$ pip install tensorflow
+
+
+(env) rania@rania-virtual-machine:~/Downloads/Animal-Specie-Recognition-main$ streamlit run app.py
+
+

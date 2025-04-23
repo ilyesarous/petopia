@@ -1,0 +1,31 @@
+<div class="container mt-5 animate__animated animate__fadeIn" style="max-width: 800px;">
+    <h2 class="text-center mb-4 title-text">
+        <i class="fas fa-paw me-2"></i>Pet Growth Tracking
+    </h2>
+    
+    <div class="card border-0 shadow-lg grow-card" 
+         [@cardAnimation]="'in'"
+         (mouseenter)="hoverState = 'hover'"
+         (mouseleave)="hoverState = 'normal'">
+        <div class="card-header">
+            <h5 class="mb-0"><i class="fas fa-search me-2"></i>Find Pet Records</h5>
+        </div>
+        
+        <div class="card-body">
+            <div class="form-group mb-4 input-container" [@floatLabel]="petRefVet ? 'filled' : 'empty'">
+                <input type="number" 
+                       class="form-control" 
+                       id="petRefVet" 
+                       [(ngModel)]="petRefVet" 
+                       placeholder="Enter Pet Reference (e.g. 131, 919)">
+            </div>
+            
+            <button class="btn submit-btn" 
+                    (click)="navigateToPetGrowth()"
+                    [@pulseAnimation]="hoverState">
+                <i class="fas fa-chart-line me-2"></i>View Growth History
+                <i class="fas fa-arrow-right ms-2"></i>
+            </button>
+        </div>
+    </div>
+</div>

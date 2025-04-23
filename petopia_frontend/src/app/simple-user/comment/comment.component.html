@@ -1,0 +1,36 @@
+<div class="comment-section mt-2">
+  <div class="single-comment mb-2" *ngFor="let comment of comments">
+    <div class="d-flex align-items-start">
+      <img
+        class="rounded-circle comment-avatar"
+        src="https://via.placeholder.com/32"
+        alt="Commenter avatar"
+      />
+      <div class="ms-2">
+        <div class="comment-author fw-bold">
+          {{ comment.user?.name || 'Commenter Name' }}
+          <span class="comment-time text-muted ms-2">{{ comment.date | date:'short' }}</span>
+        </div>
+        <div class="comment-text">
+          {{ comment.content }}
+        </div>
+        
+      </div>
+    </div>
+  </div>
+
+  <div class="add-comment d-flex align-items-center mt-3">
+    <img
+      class="rounded-circle comment-avatar"
+      src="https://via.placeholder.com/32"
+      alt="Your avatar"
+    />
+    <input
+      [(ngModel)]="newComment"
+      type="text"
+      class="form-control ms-2"
+      placeholder="Write a comment..."
+    />
+    <button class="btn btn-primary ms-2" (click)="addComment()">Post</button>
+  </div>
+</div>

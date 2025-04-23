@@ -11,4 +11,5 @@ public interface IMatchesService {
     Matches getMatches(int id);
     List<Matches> getAllMatches();
     void deleteMatches(int id);
+    List<Matches> getMatchesByPet2IdAndPending(int pet2Id);
 }

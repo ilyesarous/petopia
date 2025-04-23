@@ -18,8 +18,8 @@
     role = this.roleSubject.asObservable();
 
 
-    private baseUrl = 'http://localhost:888/auth';
-    private baseUrlAdmin = 'http://localhost:888/admin';
+    private baseUrl = 'http://localhost:8082/petopia/auth';
+    private baseUrlAdmin = 'http://localhost:8082/petopia/admin';
 
     constructor(private http: HttpClient) {}
 
@@ -67,7 +67,21 @@
 
           return this.http.get(`${this.baseUrlAdmin}/get-user/${userId}`, { headers });
       }
-
+      getCurrentUserById(userId: number): Observable<any> {
+        const token = localStorage.getItem('token');
+        if (!token) {
+          console.error('No token found in localStorage');
+          return new Observable();
+        }
+      
+        const headers = new HttpHeaders({
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        });
+      
+        return this.http.get(`http://localhost:8082/petopia/user/get-user/${userId}`, { headers });
+      }
+      
     logout(): void {
       const token = localStorage.getItem('token');
 
@@ -122,6 +136,26 @@
             return throwError(() => error.error);
           })
       );
+    }
+
+    getAllVets(): Observable<any> {
+      const token = localStorage.getItem('token');
+      const headers = new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      });
+    
+      return this.http.get(`${this.baseUrl}/vets`, { headers });
+    }
+
+    RetriveAllUsers(): Observable<any> {
+      const token = localStorage.getItem('token');
+      const headers = new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      });
+    
+      return this.http.get(`${this.baseUrl}/retrive-All-users`, { headers });
     }
 
   }

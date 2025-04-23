@@ -1,9 +1,12 @@
 package  tn.esprit.petopia_backend.services.user;
 
 
+import tn.esprit.petopia_backend.entities.pet.Pet;
+import tn.esprit.petopia_backend.entities.event.Coupon;
 import tn.esprit.petopia_backend.entities.user.RevokedToken;
 import tn.esprit.petopia_backend.entities.user.User;
 import tn.esprit.petopia_backend.entities.user.UserRole;
+import tn.esprit.petopia_backend.repositories.event.CouponRepository;
 import tn.esprit.petopia_backend.repositories.user.RevokedTokenRepository;
 import tn.esprit.petopia_backend.repositories.user.UserRepository;
 import tn.esprit.petopia_backend.dto.ReqRes;
@@ -19,6 +22,7 @@ import org.springframework.stereotype.Service;
 
 import java.security.SecureRandom;
 import java.time.Instant;
+import java.time.LocalDate;
 import java.util.*;
 
 @Service
@@ -34,6 +38,8 @@ public class UserService {
     private PasswordEncoder passwordEncoder;
     @Autowired
     private TaskScheduler taskScheduler;
+    @Autowired
+    private CouponRepository couponRepository;
 
     @Autowired
     private RevokedTokenRepository revokedTokenRepository;
@@ -106,7 +112,11 @@ public class UserService {
             response.setExpirationTime("24Hrs");
             response.setMessage("Successfully Logged In");
             response.setUserId(String.valueOf(user.getId_user()));
-
+            if (user.getShelter() != null) {
+                response.setShelter_id(user.getShelter().getId_shelter());
+            } else {
+                response.setShelter_id(-1); // null
+            }
         } catch (UsernameNotFoundException e) {
             response.setStatusCode(404);
             response.setError("User not found.");
@@ -370,6 +380,46 @@ public class UserService {
         RevokedToken revokedToken = new RevokedToken(refreshToken, Instant.now());
         revokedTokenRepository.save(revokedToken);
         new ReqRes(HttpStatus.OK, "Token revoked successfully");
+    }
+
+    public List<User> getAllVets() {
+        return usersRepo.findByRole(UserRole.VET);
+    }
+
+    public void addXp(Integer userId, int xpToAdd) {
+        User user = usersRepo.findById(userId).get();
+        System.out.println(user);
+        user.setNb_points(user.getNb_points() + xpToAdd);
+
+        // Vérifier si l'utilisateur monte de niveau
+        checkLevelUp(user);
+
+        usersRepo.save(user);
+    }
+
+    private void checkLevelUp(User user) {
+        int xpNeededForNextLevel = user.getLevel() * 100;
+
+        if (user.getNb_points() >= xpNeededForNextLevel) {
+            user.setLevel(user.getLevel() + 1);
+            user.setNb_points(user.getNb_points() - xpNeededForNextLevel);
+
+            // Générer un coupon pour chaque niveau gagné
+            generateCoupon(user);
+        }
+    }
+
+
+
+    private void generateCoupon(User user) {
+        Coupon coupon = new Coupon();
+        coupon.setCode("COUPON-" + UUID.randomUUID().toString().substring(0, 8));
+        coupon.setDiscountPercentage(5 + (user.getLevel() * 2)); // 5% + 2% par niveau
+        coupon.setExpirationDate(LocalDate.now().plusMonths(3));
+        coupon.setUser(user);
+
+        couponRepository.save(coupon);
+        user.getCoupons().add(coupon);
     }
 
 

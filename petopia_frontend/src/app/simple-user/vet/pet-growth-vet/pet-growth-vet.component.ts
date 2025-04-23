@@ -1,8 +1,10 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { ActivatedRoute , Router } from '@angular/router';
 import { PetGrowthsService } from 'src/app/services/vet/pet-growth/pet-growths.service';
 import { PetGrowth } from 'src/app/models/vet/pet-growth';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { WebsocketService } from 'src/app/services/vet/WebsocketArduino/websocket.service';
+import { Subscription } from 'rxjs';
 
 export type ChartOptions = {
   series: any[];
@@ -31,7 +33,7 @@ export type BubbleChartOptions = {
   templateUrl: './pet-growth-vet.component.html',
   styleUrls: ['./pet-growth-vet.component.css']
 })
-export class PetGrowthVetComponent implements OnInit {
+export class PetGrowthVetComponent implements OnInit , OnDestroy {
   petId!: number;
   petGrowths: PetGrowth[] = [];
   petDetails: any = {};
@@ -39,6 +41,8 @@ export class PetGrowthVetComponent implements OnInit {
   showAddForm: boolean = false;
   isEditing: boolean = false;
   currentGrowthId: number | null = null;
+  private wsSubscription!: Subscription;
+
   
   growthForm: FormGroup;
 
@@ -58,6 +62,8 @@ export class PetGrowthVetComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private petGrowthService: PetGrowthsService,
+    private router: Router,
+    private websocketService: WebsocketService,
     private fb: FormBuilder
   ) {
     this.growthForm = this.fb.group({
@@ -70,6 +76,18 @@ export class PetGrowthVetComponent implements OnInit {
   ngOnInit(): void {
     this.petId = +this.route.snapshot.params['id'];
     this.loadPetData();
+    this.wsSubscription = this.websocketService.onPetCodeEntered()
+      .subscribe(petId => {
+        if (petId.toString() !== this.route.snapshot.paramMap.get('id')) {
+          this.router.navigate([`/vet/pet-growth/${petId}`]);
+        }
+      });
+  }
+
+  ngOnDestroy() {
+    if (this.wsSubscription) {
+      this.wsSubscription.unsubscribe();
+    }
   }
 
   loadPetData() {

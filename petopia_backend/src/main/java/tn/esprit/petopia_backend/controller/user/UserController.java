@@ -16,9 +16,11 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Date;
 import java.util.Map;
 import java.util.Optional;
+import java.util.UUID;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:4200")
@@ -56,7 +58,7 @@ public class UserController {
                     reg.getEmail(),
                     new Date()
             );
-            notificationService.notifyNewSignup(notification);  
+            notificationService.notifyNewSignup(notification);
         }
 
         return ResponseEntity.ok(response);
@@ -131,5 +133,16 @@ public class UserController {
         boolean exists = usersManagementService.checkEmailExists(email);
         return ResponseEntity.ok(exists);
     }
+
+    @GetMapping("/auth/vets")
+    public List<User> getAllVeterinarians() {
+        return usersManagementService.getAllVets();
+    }
+
+    @GetMapping("/auth/retrive-All-users")
+    public ResponseEntity<ReqRes> retriveAllUsers(){
+        return ResponseEntity.ok(usersManagementService.getAllUsers());
+    }
+
 
 }

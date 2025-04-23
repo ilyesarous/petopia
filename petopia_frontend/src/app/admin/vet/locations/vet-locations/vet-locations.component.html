@@ -1,0 +1,16 @@
+     
+<!-- Map Section -->
+<div class="map-section">
+    <div class="map-controls">
+        <div *ngIf="selectedLocation" class="selected-location">
+            Selected location: {{ selectedLocation }}
+        </div>
+        <button class="location-button" (click)="locateMe()">
+            <i class="fas fa-location-arrow"></i> 
+        </button>
+    </div>
+    <div id="map"></div>
+    <div *ngIf="addingMode" class="adding-mode-info">
+        Click on the map to add your veterinary location
+    </div>
+</div>  
