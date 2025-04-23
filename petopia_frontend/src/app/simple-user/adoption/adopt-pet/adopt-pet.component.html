@@ -67,13 +67,7 @@
             <!-- Display chosen file name -->
             <span class="file-chosen">{{ selectedFileName || 'No file chosen' }}</span>
 
-            <!-- Error message if file is missing -->
-            <small *ngIf="fileError" class="text-danger d-block mt-2">
-              {{ fileError }}
-            </small>
-            <small *ngIf="cinError" class="text-danger d-block mt-2">
-              {{ cinError }}
-            </small>
+           
             
           </div>
 
@@ -84,7 +78,15 @@
           
         </div>
       </div>
-
+ <!-- Error message if file is missing -->
+      <div class="file-error-wrapper">
+        <small *ngIf="fileError" class="text-danger d-block mt-2">
+          {{ fileError }}
+        </small>
+        <small *ngIf="cinError" class="text-danger d-block mt-2">
+          {{ cinError }}
+        </small>
+      </div>
 
       <!-- Submit Button -->
       <button type="submit" class="submit-btn" [disabled]="adoptionForm.invalid">

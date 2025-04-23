@@ -69,8 +69,15 @@ export class MyAdoptionsComponent {
     }
   
     if (this.selectedStatus) {
-      result = result.filter(r => r.status === this.selectedStatus);
+      if (this.selectedStatus === 'CERTIFICATES') {
+        result = result.filter(r =>
+          r.status === 'APPROVED' && !!this.certificatesMap[r.id_request]
+        );
+      } else {
+        result = result.filter(r => r.status === this.selectedStatus);
+      }
     }
+    
   
     this.totalPages = Math.ceil(result.length / this.requestsPerPage);
     this.pageNumbers = Array.from({ length: this.totalPages }, (_, i) => i + 1);

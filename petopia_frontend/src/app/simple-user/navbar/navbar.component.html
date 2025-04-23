@@ -146,7 +146,7 @@
             <a class="dropdown-item" routerLink="/ListPets" (click)="selectedItem = 'My Pets'" *ngIf="role === 'ROLE_USER'">
               <i class="fas fa-list" style="color: #F83182;"></i> My Pets
             </a>
-            <a class="dropdown-item" routerLink="/ListReclamationFront" (click)="selectedItem = 'My Requests'">
+            <a class="dropdown-item" routerLink="/ListReclamationFront" (click)="selectedItem = 'My Requests'"  *ngIf="role === 'ROLE_USER'">
               <i class="fas fa-comment-alt" style="color: #F83182;"></i> My Requests
             </a>
           </div>

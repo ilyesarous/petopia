@@ -67,21 +67,25 @@ export class PetAdoptionListComponent implements OnInit {
       const matchesSpecies = !this.selectedSpecies
         || (pet.species && pet.species.toLowerCase() === this.selectedSpecies);
   
-        const matchesLocation = !this.selectedLocation
-        || (this.getRegion(pet.location).toLowerCase() === this.selectedLocation.toLowerCase());
-      
+      const matchesLocation = !this.selectedLocation
+        || (this.getRegion(pet.shelter?.location || '').toLowerCase() === this.selectedLocation.toLowerCase());
   
       return matchesSearch && matchesSpecies && matchesLocation;
     });
   
-    this.totalPages = Math.ceil(filtered.length / this.petsPerPage);
+    this.totalPages = Math.max(1, Math.ceil(filtered.length / this.petsPerPage));
     this.pageNumbers = Array.from({ length: this.totalPages }, (_, i) => i + 1);
-    this.currentPage = Math.min(this.currentPage, this.totalPages); 
+  
+    // If current page is now invalid, reset to 1
+    if (this.currentPage > this.totalPages) {
+      this.currentPage = 1;
+    }
   
     const start = (this.currentPage - 1) * this.petsPerPage;
     const end = start + this.petsPerPage;
     this.filteredPets = filtered.slice(start, end);
   }
+  
   changePage(page: number): void {
     if (page >= 1 && page <= this.totalPages) {
       this.currentPage = page;

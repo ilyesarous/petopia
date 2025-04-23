@@ -162,6 +162,7 @@
     display: flex;
     gap: 10px;
     margin-left: 1.2rem;
+    width: 220px;
   }
   
   
@@ -243,4 +244,23 @@
   .rejected-tag {
     background-color: #FE9A7A; /* Orange */
   }
+  .pets-list-message {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 200px;
+    padding: 20px;
+    background-color: #fff5f9;
+    border: 1px dashed #f83182;
+    border-radius: 12px;
+    margin-top: 20px;
+    text-align: center;
+  }
   
+  .no-pets {
+    font-size: 1.2rem;
+    color: #ff4f8b;
+    font-weight: 500;
+    font-style: italic;
+  }
+    
