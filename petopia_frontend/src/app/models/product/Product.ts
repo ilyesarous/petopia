@@ -11,4 +11,5 @@ export class Product {
   rating!: number;
   review_count?: number;
   availableQuantity!: number;
+  sentiment!: string;
 }

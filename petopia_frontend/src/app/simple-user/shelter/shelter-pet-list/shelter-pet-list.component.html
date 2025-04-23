@@ -58,7 +58,9 @@
                 {{ pet.petAge }} years old and {{ pet.gender }}.
                 
                 <br>
-                Health: {{ pet.healthStatus }}
+                Health: <span *ngFor="let status of pet.healthStatus; let i = index">
+                  {{ status }}<span *ngIf="i < pet.healthStatus.length - 1">, </span>
+                </span>
               </p>
               <div class="pet-actions">
                 <button class="btn edit-btn" (click)="openEditModal(pet)">Edit</button>
@@ -175,15 +177,17 @@
           </div>
         </div>
 
-        <!-- Health -->
-        <div class="form-group">
-          <label for="healthStatus">Health Status</label>
-          <input type="text" id="healthStatus" formControlName="healthStatus" class="form-control" />
-          <div class="validation-error" *ngIf="editPetForm.get('healthStatus')?.touched && editPetForm.get('healthStatus')?.invalid">
-            <div *ngIf="editPetForm.get('healthStatus')?.errors?.['required']">Health status is required.</div>
-            <div *ngIf="editPetForm.get('healthStatus')?.errors?.['maxlength']">Maximum 50 characters.</div>
-          </div>
+       <!-- Health Status -->
+      <div class="form-group">
+        <label for="healthStatus">Health Status</label>
+        <select id="healthStatus" class="form-control" formControlName="healthStatus" multiple>
+          <option *ngFor="let status of healthStatusOptions" [value]="status">{{ status }}</option>
+        </select>
+        <div class="validation-error" *ngIf="addPetForm.get('healthStatus')?.touched && addPetForm.get('healthStatus')?.invalid">
+          Health status is required.
         </div>
+      </div>
+
 
         <!-- Image -->
         <div class="form-group">
@@ -208,7 +212,6 @@
   </div>
 </div>
 
- <!-- Add Pet Modal -->
   <!-- Add Pet Modal -->
 <div class="modal-overlay" *ngIf="showAddModal">
   <div class="modal-card">
@@ -289,15 +292,17 @@
           </div>
         </div>
 
-        <!-- Health Status -->
+       <!-- Health Status -->
         <div class="form-group">
           <label for="healthStatus">Health Status</label>
-          <input type="text" id="healthStatus" formControlName="healthStatus" class="form-control" />
+          <select id="healthStatus" class="form-control" formControlName="healthStatus" multiple>
+            <option *ngFor="let status of healthStatusOptions" [value]="status">{{ status }}</option>
+          </select>
           <div class="validation-error" *ngIf="addPetForm.get('healthStatus')?.touched && addPetForm.get('healthStatus')?.invalid">
-            <div *ngIf="addPetForm.get('healthStatus')?.errors?.['required']">Health status is required.</div>
-            <div *ngIf="addPetForm.get('healthStatus')?.errors?.['maxlength']">Maximum 50 characters allowed.</div>
+            Health status is required.
           </div>
         </div>
+
 
         <!-- Pet Image -->
         <div class="form-group">

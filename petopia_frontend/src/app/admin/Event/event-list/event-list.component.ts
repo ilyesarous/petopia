@@ -9,6 +9,10 @@ import { Event } from 'src/app/models/EventModule/appevent'; // Assurez-vous que
 import { ViewChild, ElementRef } from '@angular/core';
 import { EventNotification, EventNotificationService } from 'src/app/services/Event/EventNotification';
 import { Subscription } from 'rxjs';
+import { CalendarOptions, EventApi } from '@fullcalendar/core';
+import dayGridPlugin from '@fullcalendar/daygrid';
+import interactionPlugin from '@fullcalendar/interaction';
+import { FullCalendarModule } from '@fullcalendar/angular';
 
 
 
@@ -31,6 +35,21 @@ export class EventListComponent implements OnInit {
   notifications: EventNotification[] = [];
 
   filters: any = {};
+
+
+  showCalendar: boolean = false;
+calendarOptions: CalendarOptions = {
+  initialView: 'dayGridMonth',
+  plugins: [dayGridPlugin, interactionPlugin],
+  headerToolbar: {
+    left: 'prev,next today',
+    center: 'title',
+    right: 'dayGridMonth,dayGridWeek,dayGridDay'
+  },
+  events: [],
+  eventClick: this.handleEventClick.bind(this),
+  eventDisplay: 'block'
+};
 
 
   private notificationSubscription!: Subscription;
@@ -130,6 +149,7 @@ getAvailablePlaces(event: Event): number {
   if (!event.participations || event.participations.length === 0) {
     return event.placesMaxEvent;
   }
+  
   return event.placesMaxEvent - event.participations.length;
 }
 clearNotifications() {
@@ -300,6 +320,63 @@ toggleFilterExpansion() {
   this.filtersExpanded = !this.filtersExpanded;
 }
 
+
+
+toggleCalendarView(): void {
+  this.showCalendar = true;
+  
+  // Convert events to FullCalendar format
+  this.calendarOptions.events = this.events.map(event => ({
+    id: event.idEvent.toString(),
+    title: event.nameEvent,
+    start: event.dateEvent,
+    extendedProps: {
+      location: event.lieuEvent,
+      description: event.descriptionEvent,
+      status: event.statusEvent
+    },
+    backgroundColor: this.getEventColor(event.statusEvent),
+    borderColor: this.getEventColor(event.statusEvent)
+  }));
+  
+  // Show the modal
+  setTimeout(() => {
+    const modal = new bootstrap.Modal(document.getElementById('calendarModal'));
+    modal.show();
+  }, 0);
+}
+
+private getEventColor(status: string): string {
+  switch(status) {
+    case 'ACTIF': return '#28a745'; // Green
+    case 'ANNULE': return '#dc3545'; // Red
+    case 'TERMINE': return '#6c757d'; // Gray
+    default: return '#17a2b8'; // Blue
+  }
+}
+
+handleEventClick(clickInfo: { event: EventApi }): void {
+  const eventId = clickInfo.event.id;
+  const event = this.events.find(e => e.idEvent.toString() === eventId);
+  
+  if (event) {
+    // Close calendar modal
+    const modal = bootstrap.Modal.getInstance(document.getElementById('calendarModal'));
+    modal?.hide();
+    
+    // Scroll to the event in the list
+    const element = document.getElementById(`event-${eventId}`);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+      
+      // Highlight the event temporarily
+      element.classList.add('highlight-event');
+      setTimeout(() => {
+        element.classList.remove('highlight-event');
+      }, 3000);
+    }
+  }
+}
 
 }
 

@@ -54,10 +54,23 @@
       
   
       <!-- Right: Buttons -->
-      <div class="action-buttons"  *ngIf="req.status === 'PENDING'">
-        <button class="btn approve-btn" (click)="approveRequest(req)">Approve</button>
-        <button class="btn reject-btn" (click)="rejectRequest(req)">Reject</button>
-      </div>
+      <!-- Right: Status Tag or Action Buttons -->
+        <div class="action-buttons">
+          <ng-container [ngSwitch]="req.status">
+            <!-- Pending Buttons -->
+            <div *ngSwitchCase="'PENDING'">
+              <button class="btn approve-btn" (click)="approveRequest(req)">Approve</button>
+              <button class="btn reject-btn" (click)="rejectRequest(req)">Reject</button>
+            </div>
+
+            <!-- Approved Tag -->
+            <span *ngSwitchCase="'APPROVED'" class="status-tag approved-tag">Approved</span>
+
+            <!-- Rejected Tag -->
+            <span *ngSwitchCase="'REJECTED'" class="status-tag rejected-tag">Rejected</span>
+          </ng-container>
+        </div>
+
     </div>
 
 

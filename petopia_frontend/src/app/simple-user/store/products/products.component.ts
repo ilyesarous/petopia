@@ -13,6 +13,8 @@ import { ProductService } from 'src/app/services/store/products/product.service'
 export class ProductsComponent implements OnInit {
   listProducts: Product[] = [];
   foodList: Product[] = [];
+  toysList: Product[] = [];
+  clothesList: Product[] = [];
   userId: number = 0;
   AccessoriesList: Product[] = [];
   searchQuery: string = '';
@@ -22,14 +24,21 @@ export class ProductsComponent implements OnInit {
   cartItemCount: number = 0; // You'll want to update this dynamically
   p: number = 1; // Page actuelle
   itemsPerPage: number = 4; // Nombre d'éléments par page
-
+  bestSeller: Product[] = [];
   categories: any[] = [];
 
   constructor(private service: ProductService, private cartService: CartService, private router: Router) {}
 
   ngOnInit() {
+    this.getBestSellers();
     this.getAllProducts();
     this.loadRecentSearches(); 
+  }
+
+  getBestSellers() {
+    this.service.getBestSellers().subscribe((data) => {
+      this.bestSeller = data;
+    });
   }
 
   onSearch() {
@@ -94,9 +103,13 @@ export class ProductsComponent implements OnInit {
         (product) => product.category === 'ACCESSORY'
       );
       this.foodList = data.filter((product) => product.category === 'FOOD');
+      this.toysList = data.filter((product) => product.category === 'TOYS');
+      this.clothesList = data.filter((product) => product.category === 'CLOTHES');
       this.categories = [
         { titel: 'Food', items: this.foodList, currentPage: 1 },
         { titel: 'Accessories', items: this.AccessoriesList, currentPage: 1 },
+        { titel: 'Toys', items: this.toysList, currentPage: 1 },
+        { titel: 'Clothes', items: this.clothesList, currentPage: 1 },
         { titel: 'Products', items: this.listProducts, currentPage: 1 },
       ];
 
@@ -105,11 +118,6 @@ export class ProductsComponent implements OnInit {
       ).length;
       
       this.filteredProducts = [...this.listProducts];
-    });
-    this.cartService.getNbItemsInCart(this.userId).subscribe((response) => {
-      this.cartItemCount = response;
-      console.log(response);
-      
     });
   }
 

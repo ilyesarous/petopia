@@ -15,10 +15,7 @@ import edu.stanford.nlp.ling.CoreAnnotations;
 import edu.stanford.nlp.sentiment.SentimentCoreAnnotations;
 import tn.esprit.petopia_backend.services.user.UserService;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Properties;
+import java.util.*;
 
 @Service
 @AllArgsConstructor
@@ -92,5 +89,20 @@ public class FeedbackService implements IFeedbackService {
     public List<Feedback> findAllByProduct(int idProduct) {
         Product product = productService.findById(idProduct);
         return repository.findByProduct(product);
+    }
+
+    public String getSentiment(int idProduct) {
+        List<Feedback> feedbacks = findAllByProduct(idProduct);
+        String sentiment;
+        long somPositive = feedbacks.stream().filter((filter) -> Objects.equals(filter.getSentiment(), "Positive")).toList().size();
+        long somNegative = feedbacks.stream().filter((filter) -> Objects.equals(filter.getSentiment(), "Negative")).toList().size();
+        if (somNegative > somPositive) {
+            sentiment = "negative";
+        } else if (somNegative < somPositive) {
+            sentiment = "positive";
+        } else{
+            sentiment = "neutral";
+        }
+        return sentiment;
     }
 }

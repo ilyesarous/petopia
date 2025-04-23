@@ -1,6 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { Product } from 'src/app/models/product/Product';
 
 @Injectable({
   providedIn: 'root',
@@ -17,11 +18,11 @@ export class CartService {
     });
   }
 
-  getNbItemsInCart(id_user: number): Observable<any> {
-    return this.http.get<any>(this.url + 'cart/nbItems/' + id_user, {
-      headers: this.getAuthHeaders(),
-    });
-  }
+  // getNbItemsInCart(id_user: number): Observable<any> {
+  //   return this.http.get<any>(this.url + 'cart/nbItems/' + id_user, {
+  //     headers: this.getAuthHeaders(),
+  //   });
+  // }
   
   getCartByUserId(userId: number): Observable<any> {
     return this.http.get<any>(this.url + 'cart/' + userId, {
@@ -66,4 +67,11 @@ export class CartService {
       headers: this.getAuthHeaders(),
     });
   }
+
+  checkout(id_user: number): Observable<any>{
+    return this.http.delete<any>(this.url+ 'cart/checkout/'+ id_user, {
+      headers: this.getAuthHeaders(),
+    })
+  }
+
 }

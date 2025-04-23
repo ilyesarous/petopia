@@ -12,11 +12,14 @@ import { Location } from '@angular/common';
 })
 export class AddServiceAnimalComponent implements OnInit {
   serviceForm!: FormGroup;
+  userId!: number;
+
   serviceTypes = Object.values(ServiceType);
   serviceId: number | null = null;
   isEditMode = false;
 
-  
+  previewLogo: string | ArrayBuffer | null = null;
+
 
   constructor(
     private fb: FormBuilder,
@@ -28,12 +31,17 @@ export class AddServiceAnimalComponent implements OnInit {
 
   ngOnInit(): void {
     this.initializeForm();
+    this.userId = localStorage.getItem('userId')
+      ? parseInt(localStorage.getItem('userId')!)
+      : 0;
+      console.log('User ID:', this.userId);
     
     // Check if we're editing an existing service
     this.route.paramMap.subscribe(params => {
       const id = params.get('id');
-      if (id) {
-        this.serviceId = +id;
+      const ids=parseInt(id!);
+      if (ids) {
+        this.serviceId = +ids;
         this.isEditMode = true;
         this.loadServiceForUpdate(this.serviceId);
       }
@@ -42,25 +50,31 @@ export class AddServiceAnimalComponent implements OnInit {
 
   initializeForm(): void {
     this.serviceForm = this.fb.group({
-      prixServiceAnimal: [0, [
-        Validators.required, 
-        Validators.min(0)
-      ]],
       descriptionServiceAnimal: ['', Validators.required],
-      disponibilite: [true, Validators.required],
-      typeService: [ServiceType.DOG_WALKING, Validators.required]
-    });
-  }
+      typeService: [ServiceType, Validators.required],
+      prixServiceAnimal: [0, [Validators.required, Validators.min(0)]],
+      location: ['', Validators.required],
+      animalType: ['', Validators.required],
+      specialRequirements: [''],
+      startDate: ['', Validators.required],
+      endDate: ['', Validators.required],
+      logoFile: [null] 
+  });
+}
 
   loadServiceForUpdate(serviceId: number): void {
     this.serviceAnimalService.getServiceAnimalById(serviceId).subscribe(
       (serviceData) => {
         this.serviceForm.patchValue({
-          prixServiceAnimal: serviceData.prixServiceAnimal,
           descriptionServiceAnimal: serviceData.descriptionServiceAnimal,
-          disponibilite: serviceData.disponibilite,
-          typeService: serviceData.typeService
+          typeService: serviceData.typeService,
+          organisateurServiceAnimal: serviceData.organisateurServiceAnimal ? 
+          { id_user: serviceData.organisateurServiceAnimal.id_user } 
+          : null
         });
+        if (serviceData.imagePath) {
+          this.previewLogo = serviceData.imagePath;
+        }
       },
       (error) => {
         console.error('Error loading service:', error);
@@ -72,34 +86,51 @@ export class AddServiceAnimalComponent implements OnInit {
   onSubmit(): void {
     if (this.serviceForm.valid) {
       const formData = this.serviceForm.value;
-
-      if (this.isEditMode && this.serviceId) {
-        // Update existing service
-        this.serviceAnimalService.updateServiceAnimal(this.serviceId, formData).subscribe(
-          () => {
-            alert('Service updated successfully!');
-            this.router.navigate(['/services']);
-          },
-          (error) => {
-            console.error('Error updating service:', error);
-            alert('Error updating service.');
-          }
-        );
-      } else {
-        // Create new service
-        this.serviceAnimalService.createServiceAnimal(formData).subscribe(
-          () => {
-            alert('Service created successfully!');
-            this.router.navigate(['/services']);
-          },
-          (error) => {
-            console.error('Error creating service:', error);
-            alert('Error creating service.');
-          }
-        );
+    const { logoFile, ...serviceData } = formData;
+    
+    console.log('Submitting:', serviceData);
+    
+    this.serviceAnimalService.createServiceAnimal(serviceData, logoFile).subscribe({
+      next: () => {
+        alert('Service created successfully!');
+        this.router.navigate(['/services']);
+      },
+      error: (err) => {
+        console.error('Full error:', err);
+        if (err.error) {
+          alert(`Error: ${err.error.message || err.error}`);
+        } else {
+          alert('Error creating service. See console for details.');
+        }
       }
-    } else {
-      this.markFormGroupTouched(this.serviceForm);
+    });
+  } else {
+    this.markFormGroupTouched(this.serviceForm);
+  }
+  }
+
+  
+
+  onFileSelected(event: any): void {
+    const file: File = event.target.files[0];
+    if (file) {
+      if (!file.type.match(/image\/(jpeg|png|gif|jpg)/)) {
+        alert('Only JPEG, PNG, or GIF images are allowed');
+        return;
+      }
+      
+
+
+      this.serviceForm.patchValue({
+        logoFile: file 
+      });
+
+      // Create preview
+      const reader = new FileReader();
+      reader.onload = () => {
+        this.previewLogo = reader.result;
+      };
+      reader.readAsDataURL(file);
     }
   }
 

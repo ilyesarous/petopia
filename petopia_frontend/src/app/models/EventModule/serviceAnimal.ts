@@ -3,7 +3,7 @@
 export enum ServiceType {
     DOG_SITTING = 'DOG_SITTING',
     PROMONADE='PROMONADE',
-    DOG_WALKING='DOG_WALKING',
+    DOG_WALKING='DOG_WALKING'
   // Add any other types you have in your Enum
 }
 
@@ -21,8 +21,18 @@ export interface ServiceAnimal {
   descriptionServiceAnimal: string;
   disponibilite: boolean;
   typeService: ServiceType;
+  imagePath?: string;        // For backend file path
+  location: string;
+  animalType: string;
+  specialRequirements?: string;
+  startDate: string;         // Or Date if you prefer
+  endDate: string;           // Or Date if you prefer
+ 
+  isActive?: boolean;        // Optional with default on backend
   reservations?: ReservationService[]; // Optional if you're not always returning it
-  organisateurServiceAnimal?: any; // Add this line
+  organisateurServiceAnimal?: {
+    id_user: number;
+  }; // Add this line
 
 }
 export function getServiceTypeClass(type: ServiceType): string {

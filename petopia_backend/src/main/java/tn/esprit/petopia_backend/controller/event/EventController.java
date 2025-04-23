@@ -58,7 +58,7 @@ public class EventController {
     @PostMapping("/addEvent")
     @PreAuthorize("hasAnyAuthority('ROLE_ADMIN')")
     public Event createEvent(@RequestBody Event event) {
-
+        event.setAvailablePlaces(event.getPlacesMaxEvent());
         System.out.println(event);
 
             System.out.println(event.getNameEvent());
@@ -97,8 +97,8 @@ public class EventController {
 
         if (optionalEvent.isPresent()) {
             Event event = optionalEvent.get();
-            if (event.getPlacesMaxEvent() > 0) {
-                event.setPlacesMaxEvent(event.getPlacesMaxEvent() - 1);
+            if (event.getAvailablePlaces() > 0) {
+                event.setAvailablePlaces(event.getAvailablePlaces() - 1);
 
                 Event updatedEvent = eventService.updateEvent(idEvent, event);
                 return ResponseEntity.ok(updatedEvent);

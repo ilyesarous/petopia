@@ -387,7 +387,8 @@ public class UserService {
     }
 
     public void addXp(Integer userId, int xpToAdd) {
-        User user = usersRepo.findById(userId).orElseThrow();
+        User user = usersRepo.findById(userId).get();
+        System.out.println(user);
         user.setNb_points(user.getNb_points() + xpToAdd);
 
         // Vérifier si l'utilisateur monte de niveau

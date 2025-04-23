@@ -67,7 +67,7 @@ public class PetController {
 
     @PostMapping("/shelter/pet/add")
     @PreAuthorize("hasAuthority('ROLE_SHELTER')")
-    public ResponseEntity<Map<String, String>> addPetForShelter(
+    public ResponseEntity<?> addPetForShelter(
             @RequestParam("image") MultipartFile image,
             @RequestParam("petData") String petData) {
 
@@ -94,7 +94,7 @@ public class PetController {
 
             Map<String, String> response = new HashMap<>();
             response.put("message", "Pet added for shelter successfully");
-            return ResponseEntity.ok(response);
+            return ResponseEntity.ok(pet);
 
         } catch (IOException e) {
             e.printStackTrace();

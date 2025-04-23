@@ -74,4 +74,5 @@ export class WebSocketService {
   isConnected() {
     return this.connected;
   }
+  
 }

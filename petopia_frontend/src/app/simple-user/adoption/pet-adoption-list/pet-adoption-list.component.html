@@ -113,8 +113,9 @@
           <p class="card-text">
             <strong>Breed:</strong> {{ pet.breed }} <br>
             <strong>Age:</strong> {{ pet.petAge }} years <br>
-            <strong>Location:</strong> {{ pet.location }} <br>
-            <strong>Shelter:</strong> {{ pet.shelter?.shelter_name }}
+            <strong>Shelter:</strong> {{ pet.shelter?.shelter_name }} <br>
+            <strong>Governorate:</strong> {{ getRegion(pet.shelter?.location || '') }}
+
           </p>
           <button class="btn adopt-btn"  [routerLink]="['/adoption/form', pet.idPet]" >Adopt Now</button>
         </div>

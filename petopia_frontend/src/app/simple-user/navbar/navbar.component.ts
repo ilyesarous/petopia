@@ -56,8 +56,7 @@ export class NavbarComponent implements OnInit {
   ];
 
   partnerPages = [
-    {id: 0, name: 'Home', link: 'partner/home'},
-    {id: 1, name: 'add new product', link: 'partner/product/add'},
+    {id: 0, name: 'Home', link: 'partner/home'}
   ]
 
   VETpages = [

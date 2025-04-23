@@ -10,6 +10,7 @@ export interface Event {
     longitudeEvent: number;
     prixEvent: number;
     placesMaxEvent: number;
+    availablePlaces: number;
     eventType: string; // ou enum si tu veux
     visibiliteEvent: string;
     statusEvent: string;

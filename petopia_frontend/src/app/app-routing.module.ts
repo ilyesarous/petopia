@@ -57,6 +57,8 @@ import { ShelterSignCertificateComponent } from './simple-user/shelter/shelter-s
 import { ShelterCertificateDetailsComponent } from './simple-user/shelter/shelter-certificate-details/shelter-certificate-details.component';
 import { CommunityListComponent } from './admin/community/community-list/community-list.component';
 import { CommunityDetailsComponent } from './admin/community/community-details/community-details.component';
+import { MatchbackComponent } from './admin/matching/matchback/matchback.component';
+import { AddProductComponent } from './admin/store/add-product/add-product.component';
 import { UserSignCertificateComponent } from './simple-user/adoption/user-sign-certificate/user-sign-certificate.component';
 import { UserViewCertificateComponent } from './simple-user/adoption/user-view-certificate/user-view-certificate.component';
 //import { VetSelectionPopupComponent } from './simple-user/vet/vet-selection-popup/vet-selection-popup.component';
@@ -70,6 +72,8 @@ import { ParticipationListComponent } from './simple-user/Event/participation-li
 import { EventParticipantsComponent } from './admin/Event/event-participants/event-participants.component';
 import { ServiceAnimalListComponent } from './simple-user/Event/service-animal-list/service-animal-list.component';
 import { AddServiceAnimalComponent } from './simple-user/Event/add-service-animal/add-service-animal.component';
+import { DreamPetComponent } from './simple-user/adoption/dream-pet/dream-pet.component';
+import { EventDetailsComponent } from './simple-user/Event/event-details/event-details.component';
 import { NewsComponent } from './simple-user/news/news.component';
 
 const routes: Routes = [
@@ -80,6 +84,8 @@ const routes: Routes = [
   { path: 'favorites', component: FavoriteComponent, canActivate: [AuthGuard]},
   { path: 'cart', component: CartComponent, canActivate: [AuthGuard]},
   { path: 'partner/home', component: HomePartnerComponent, canActivate: [AuthGuard]},
+  { path: 'partner/edit/:idProduct', component: AddProductComponent, canActivate: [AuthGuard]},
+
   { path: 'matchy', component: MatchingComponent ,canActivate: [AuthGuard]  },
   { path: 'pet-details/:id', component:PetDetailsComponent ,canActivate: [AuthGuard] },
   { path: 'events', component: EventListComponent, canActivate: [AuthGuard] },
@@ -88,6 +94,7 @@ const routes: Routes = [
   { path: 'participations', component: ParticipationListComponent, canActivate: [AuthGuard]},
   { path: 'services', component: ServiceAnimalListComponent, canActivate: [AuthGuard] },
   { path: 'services/add', component: AddServiceAnimalComponent, canActivate: [AuthGuard] },
+  { path: 'event/:id', component: EventDetailsComponent },
 
   { path: 'vet', component: DashPrincipaleHomeVetComponent, canActivate: [AuthGuard] },
   { path: 'vet/pet-growth/:id', component: PetGrowthVetComponent, canActivate: [AuthGuard] },
@@ -118,6 +125,7 @@ const routes: Routes = [
   { path:'adoption/requests', component: MyAdoptionsComponent},
   { path:'adoption/signCertificate/:id', component: UserSignCertificateComponent},
   { path:'adoption/certificate/:id', component: UserViewCertificateComponent},
+  {path:'adoption/dream-pet', component: DreamPetComponent},
   { path: 'shelter/info', component: ShelterInfoComponent },
   { path: 'shelter/pets', component: ShelterPetListComponent },
   { path: 'shelter/pets/add', component: ShelterAddPetComponent },
@@ -160,6 +168,8 @@ const routes: Routes = [
 
       { path: 'community', component: CommunityListComponent },
       { path: 'community/details/:type/:id', component: CommunityDetailsComponent },
+      { path: 'match-back', component: MatchbackComponent },
+
 
 
 
