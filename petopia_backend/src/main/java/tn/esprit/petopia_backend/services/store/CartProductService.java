@@ -48,8 +48,6 @@ public class CartProductService implements ICartProductService {
             cart.getCartProducts().add(cartProduct);
         }
         cartProduct.setTotal(product.getProduct_price() * cartProduct.getQuantity());
-        product.setQuantity(cartProduct.getQuantity());
-        productRepository.save(product);
         cartProductRepository.save(cartProduct);
         productService.decreaseAvailableQuantity(productId, quantity);
     }
@@ -60,12 +58,10 @@ public class CartProductService implements ICartProductService {
         CartProduct cartProduct = getCartProduct(cart, productId);
         if (cartProduct != null) {
             cartProduct.setQuantity(cartProduct.getQuantity() - 1);
-            product.setQuantity(cartProduct.getQuantity());
         } else {
             throw new RuntimeException("Product not found");
         }
         cartProduct.setTotal(cartProduct.getTotal() - product.getProduct_price());
-        productRepository.save(product);
         productService.increaseAvailableQuantity(productId, 1);
     }
 

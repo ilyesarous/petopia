@@ -18,15 +18,15 @@ export class AddProductComponent {
   categories: string[] = ['FOOD', 'ACCESSORY', 'TOYS', 'CLOTHES'];
   currentProductId: number | null = null;
   userId: number = 0;
+  toast: any[]= [];
   @Input() product: any = null;
   @Input() isEditMode: boolean = false;
+  @Input() role: string = "";
   @Output() productAdded = new EventEmitter<any>();
   @Output() cancel = new EventEmitter<void>();
   constructor(
     private fb: FormBuilder,
     private productService: ProductService,
-    private router: Router,
-    private route: ActivatedRoute,
     private sanitizer: DomSanitizer
   ) {
     this.productForm = this.fb.group({
@@ -126,7 +126,7 @@ export class AddProductComponent {
     formData.append('product_price', priviousProce.toString());
     formData.append('id_user', this.userId.toString());
     
-    this.productService.addProduct(formData).subscribe({
+    this.productService.addProduct(formData, this.role).subscribe({
       next: (newProduct) => {
         this.productAdded.emit(newProduct);
       },

@@ -4,6 +4,7 @@ import { Product } from 'src/app/models/product/Product';
 import { CartService } from 'src/app/services/store/cart/cart.service';
 import { FeedbackService } from 'src/app/services/store/feedback/feedback.service';
 import { ProductService } from 'src/app/services/store/products/product.service';
+import { AuthService } from 'src/app/services/user/auth.service';
 
 @Component({
   selector: 'app-products',
@@ -26,13 +27,20 @@ export class ProductsComponent implements OnInit {
   itemsPerPage: number = 4; // Nombre d'éléments par page
   bestSeller: Product[] = [];
   categories: any[] = [];
+  currentProduct: Product | null = null;
+  showAddProductModal = false;
+  isEditMode: boolean = false;
+  role: string = "";
 
-  constructor(private service: ProductService, private cartService: CartService, private router: Router) {}
+  constructor(private service: ProductService, private authService: AuthService, private router: Router) {}
 
   ngOnInit() {
     this.getBestSellers();
     this.getAllProducts();
     this.loadRecentSearches(); 
+    this.authService.role.subscribe((role) => {
+      this.role = role || ''; // Ensure role is never undefined
+    });
   }
 
   getBestSellers() {
@@ -130,6 +138,40 @@ export class ProductsComponent implements OnInit {
   viewCart() {
     // Navigate to cart page or show cart modal
     this.router.navigate(['cart']);
+  }
+
+  addNewProduct(){
+      this.currentProduct = null;
+      this.isEditMode = false;
+      this.showAddProductModal = true;
+      this.role
+  }
+  closeModal(): void {
+    this.showAddProductModal = false;
+  }
+  // Update your openAddProductModal method
+  editProduct(product: Product): void {
+    this.currentProduct = product;
+    this.isEditMode = true;
+    this.showAddProductModal = true;
+  }
+
+  handleProductAdded(updatedProduct: Product): void {
+    if (this.isEditMode) {
+      // Update existing product in the list
+      const index = this.listProducts.findIndex(
+        (p) => p.product_id === updatedProduct.product_id
+      );
+      if (index !== -1) {
+        this.listProducts[index] = updatedProduct;
+        this.filteredProducts = [...this.listProducts];
+      }
+    } else {
+      // Add new product
+      this.listProducts.unshift(updatedProduct);
+      this.filteredProducts.unshift(updatedProduct);
+    }
+    this.closeModal();
   }
 
   getPaginatedItems(category: any): any[] {

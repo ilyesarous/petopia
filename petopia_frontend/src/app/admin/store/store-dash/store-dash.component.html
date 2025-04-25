@@ -1,3 +1,139 @@
-<div class="container">
-    <app-add-product/>
-</div>
+<div class="container admin-dashboard">
+    <h1 class="dashboard-title">Admin Dashboard</h1>
+    
+    <!-- Stats Cards Row -->
+    <div class="stats-row">
+      <div class="stat-card">
+        <h3>Total Ads</h3>
+        <p class="stat-value">{{ adsCount }}</p>
+      </div>
+      <div class="stat-card">
+        <h3>Total Brands</h3>
+        <p class="stat-value">{{ brandsCount }}</p>
+      </div>
+      <div class="stat-card">
+        <h3>Total Partners</h3>
+        <p class="stat-value">{{ partnersCount }}</p>
+      </div>
+    </div>
+  
+    <!-- Action Buttons -->
+    <div class="action-buttons">
+      <button class="btn btn-add" (click)="openAddAdModal()">
+        <i class="fas fa-plus"></i> Add New Ad
+      </button>
+      <button class="btn btn-add" (click)="openAddBrandModal()">
+        <i class="fas fa-plus"></i> Add New Brand
+      </button>
+    </div>
+  
+    <!-- Tabs Navigation -->
+    <div class="tabs">
+      <button class="tab-btn active" (click)="setActiveTab('ads')">Ads</button>
+      <button class="tab-btn" (click)="setActiveTab('brands')">Brands</button>
+      <button class="tab-btn" (click)="setActiveTab('partners')">Partners</button>
+    </div>
+  
+    <!-- Ads Section -->
+    <div class="content-section" *ngIf="activeTab === 'ads'">
+      <h2>All Ads</h2>
+      <div class="search-filter">
+        <input type="text" placeholder="Search ads..." [(ngModel)]="adsSearchQuery">
+        <select [(ngModel)]="adsFilter">
+          <option value="all">All</option>
+          <option value="active">Active</option>
+          <option value="inactive">Inactive</option>
+        </select>
+      </div>
+      
+      <div class="grid-container">
+        <div class="card" *ngFor="let ad of filteredAds">
+          <img [src]="ad.imageUrl" alt="Ad image">
+          <div class="card-body">
+            <h3>{{ ad.title }}</h3>
+            <p>{{ ad.description }}</p>
+            <div class="card-meta">
+              <span class="status" [class.active]="ad.isActive">{{ ad.isActive ? 'Active' : 'Inactive' }}</span>
+              <span class="date">{{ ad.startDate | date }} - {{ ad.endDate | date }}</span>
+            </div>
+            <div class="card-actions">
+              <button class="btn-edit" (click)="editAd(ad.id)">Edit</button>
+              <button class="btn-delete" (click)="deleteAd(ad.id)">Delete</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  
+    <!-- Brands Section -->
+    <div class="content-section" *ngIf="activeTab === 'brands'">
+      <h2>All Brands</h2>
+      <div class="search-filter">
+        <input type="text" placeholder="Search brands..." [(ngModel)]="brandsSearchQuery">
+      </div>
+      
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>Logo</th>
+              <th>Name</th>
+              <th>Products</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let brand of filteredBrands">
+              <td><img [src]="brand.logoUrl" class="brand-logo"></td>
+              <td>{{ brand.name }}</td>
+              <td>{{ brand.productCount }}</td>
+              <td>
+                <span class="status-badge" [class.active]="brand.isActive">
+                  {{ brand.isActive ? 'Active' : 'Inactive' }}
+                </span>
+              </td>
+              <td class="actions">
+                <button class="btn-edit" (click)="editBrand(brand.id)">Edit</button>
+                <button class="btn-delete" (click)="deleteBrand(brand.id)">Delete</button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  
+    <!-- Partners Section -->
+    <div class="content-section" *ngIf="activeTab === 'partners'">
+      <h2>All Partners</h2>
+      <div class="search-filter">
+        <input type="text" placeholder="Search partners..." [(ngModel)]="partnersSearchQuery">
+        <select [(ngModel)]="partnersFilter">
+          <option value="all">All</option>
+          <option value="premium">Premium</option>
+          <option value="standard">Standard</option>
+        </select>
+      </div>
+      
+      <div class="partners-grid">
+        <div class="partner-card" *ngFor="let partner of filteredPartners">
+          <div class="partner-header">
+            <img [src]="partner.logoUrl" class="partner-logo">
+            <div class="partner-tier" [class.premium]="partner.tier === 'premium'">
+              {{ partner.tier | titlecase }}
+            </div>
+          </div>
+          <div class="partner-body">
+            <h3>{{ partner.name }}</h3>
+            <p><i class="fas fa-envelope"></i> {{ partner.contactEmail }}</p>
+            <p><i class="fas fa-phone"></i> {{ partner.contactPhone }}</p>
+            <p class="partner-since">Partner since {{ partner.joinDate | date }}</p>
+          </div>
+          <div class="partner-actions">
+            <button class="btn-edit" (click)="editPartner(partner.id)">Edit</button>
+            <button class="btn-delete" (click)="deletePartner(partner.id)">Delete</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
