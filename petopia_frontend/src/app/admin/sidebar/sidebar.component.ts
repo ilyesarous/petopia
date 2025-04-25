@@ -39,7 +39,9 @@ export class SidebarComponent {
     { name: 'Shelters', route: 'shelters', icon: 'bi bi-house-heart' },
     { name: 'Event', route: 'events', icon: 'bi bi-calendar3'},
     { name: 'Community Hub', route: 'community', icon: 'bi bi-people'},
-    { name: 'Matching', route: 'match-back', icon: 'bi bi-heart'},
+    { name: 'Users', route: 'ListUsers', icon: 'bi bi-people' },
+    { name: 'Requests', route: 'listReclamation', icon: 'bi bi-inbox' },
+    { name: 'Pets', route: 'ListPets', icon: 'bi bi-house-heart' },
     //{ name: 'Settings', route: '#', icon: 'bi bi-gear'},
   ];
 

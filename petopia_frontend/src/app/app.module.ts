@@ -95,6 +95,7 @@ import { ReactionComponent } from './simple-user/reaction/reaction.component';
 import { CommentComponent } from './simple-user/comment/comment.component';
 import { StoryComponent } from './simple-user/story/story.component';
 import { RelativeTimePipe } from './pipes/relative-time.pipe';
+import {BaseChartDirective} from "ng2-charts";
 
 import { CartComponent } from './simple-user/store/cart/cart.component';
 import { ShelterListComponent } from './admin/shelter/shelter-list/shelter-list.component';
@@ -121,7 +122,7 @@ import { UserViewCertificateComponent } from './simple-user/adoption/user-view-c
 import { VetSelectionPopupComponent } from './simple-user/vet/vet-selection-popup/vet-selection-popup.component';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatCardModule } from '@angular/material/card';
-import { MatRippleModule } from '@angular/material/core';
+import {MatOptionModule, MatRippleModule} from '@angular/material/core';
 import { LocationVetComponent } from './simple-user/vet/location-vet/location-vet.component';
 import { InfoSpecificVetComponent } from './simple-user/vet/info-specific-vet/info-specific-vet.component';
 import { QrCodeVetScannerComponent } from './simple-user/vet/qr-code-vet-scanner/qr-code-vet-scanner.component';
@@ -145,6 +146,21 @@ import { ServiceAnimalDetailsComponent } from './simple-user/Event/service-anima
 
 
 import { NewsComponent } from './simple-user/news/news.component';
+import { UserProfileComponent } from './components/user-profile/user-profile.component';
+import { EditProfilePanelComponent } from './components/edit-profile-panel/edit-profile-panel.component';
+import { ForgetpasswordComponent } from './components/forgetpassword/forgetpassword.component';
+import { PetComponent } from './components/pet/pet.component';
+import { ListReclamationComponent } from './components/list-reclamation/list-reclamation.component';
+import { ResponseDialogComponent } from './components/response-dialog/response-dialog.component';
+import {MatSelectModule} from "@angular/material/select";
+import {MatFormFieldModule} from "@angular/material/form-field";
+import {MatInputModule} from "@angular/material/input";
+import { ListUsersComponent } from './components/list-users/list-users.component';
+import { UserDetailsDialogComponent } from './components/user-details-dialog/user-details-dialog.component';
+import { ReclamationComponent } from './components/reclamation/reclamation.component';
+import { ReclamationListComponent } from './components/reclamation-list/reclamation-list.component';
+import { PetListComponent } from './components/pet-list/pet-list.component';
+
 
 @NgModule({
   declarations: [
@@ -250,6 +266,17 @@ import { NewsComponent } from './simple-user/news/news.component';
     EventDetailsComponent,
     ServiceAnimalDetailsComponent,
     NewsComponent,
+    UserProfileComponent,
+    EditProfilePanelComponent,
+    ForgetpasswordComponent,
+    PetComponent,
+    ListReclamationComponent,
+    ResponseDialogComponent,
+    ListUsersComponent,
+    UserDetailsDialogComponent,
+    ReclamationComponent,
+    ReclamationListComponent,
+    PetListComponent
   ],
   imports: [
     BrowserModule,
@@ -273,8 +300,11 @@ import { NewsComponent } from './simple-user/news/news.component';
     MatRadioModule,
     MatCardModule,
     MatRippleModule,
-
-
+    BaseChartDirective,
+    MatFormFieldModule,
+    MatOptionModule,
+    MatSelectModule,
+    MatInputModule
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }

@@ -1,0 +1,87 @@
+<div class="dashboard-container">
+  <div class="welcome-section">
+    <h2>Reclamations List</h2>
+    <p class="welcome-message" *ngIf="!loading && reclamations.length > 0">Manage your submitted requests</p>
+  </div>
+
+  <div *ngIf="loading" class="dashboard-card">
+    <div class="card-body">
+      <p>Loading reclamations...</p>
+    </div>
+  </div>
+  <div class="info-banner">
+    <i class="fas fa-info-circle"></i>
+    <span>Petopia Support is available via the chat at the bottom right. You may receive important messages about your reclamations here.</span>
+  </div>
+  <br>
+
+  <div *ngIf="reclamations.length > 0; else noData" class="dashboard-cards">
+    <div *ngFor="let reclamation of reclamations" class="dashboard-card reclamation-card" (click)="selectReclamation(reclamation)">
+      <div class="card-header">
+        <i class="fas fa-exclamation-circle"></i>
+        <h3>{{ reclamation.type }}</h3>
+      </div>
+      <div class="card-body">
+        <div class="reclamation-details">
+          <p><strong>Description:</strong> {{ reclamation.description }}</p>
+          <div class="pet-stats">
+            <div class="stat-item">
+              <span class="stat-value" [ngClass]="{
+                'active': reclamation.statusReclamation === 'RESOLVED',
+                'locked': reclamation.statusReclamation === 'PENDING'
+              }">{{ reclamation.statusReclamation }}</span>
+              <span class="stat-label">Status</span>
+            </div>
+
+          </div>
+          <div class="stat-item">
+            <span class="stat-label">Date</span>
+            <span class="stat-value">{{ reclamation.dateReclamation | date }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <ng-template #noData>
+    <div *ngIf="!loading" class="dashboard-card empty-state">
+      <div class="card-body">
+        <i class="fas fa-inbox"></i>
+        <p>No reclamations found.</p>
+      </div>
+    </div>
+  </ng-template>
+
+  <div *ngIf="selectedReclamation" class="dashboard-card update-description-form">
+    <div class="card-header">
+      <i class="fas fa-edit"></i>
+      <h3>Update Description</h3>
+    </div>
+    <div class="card-body">
+      <textarea [(ngModel)]="newDescription" placeholder="Enter new description" class="action-button" style="width: 100%; min-height: 100px;"></textarea>
+      <div class="action-buttons">
+        <button (click)="updateDescription()" class="card-button">
+          <i class="fas fa-save"></i> Update
+        </button>
+        <button (click)="selectedReclamation = null" class="action-button">
+          <i class="fas fa-times"></i> Cancel
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="successMessage" class="dashboard-card success-message">
+    <div class="card-body">
+      <i class="fas fa-check-circle"></i>
+      <p>{{ successMessage }}</p>
+    </div>
+  </div>
+
+  <div *ngIf="errorMessage" class="dashboard-card error-message">
+    <div class="card-body">
+      <i class="fas fa-exclamation-triangle"></i>
+      <p>{{ errorMessage }}</p>
+    </div>
+  </div>
+</div>
+

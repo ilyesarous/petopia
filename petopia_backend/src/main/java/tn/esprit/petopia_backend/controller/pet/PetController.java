@@ -2,7 +2,6 @@ package tn.esprit.petopia_backend.controller.pet;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,18 +10,17 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import tn.esprit.petopia_backend.controller.matching.MatchRequest;
 import tn.esprit.petopia_backend.entities.adoptions.Shelter;
-import tn.esprit.petopia_backend.entities.matching.MatchStatus;
-import tn.esprit.petopia_backend.entities.matching.Matches;
 import tn.esprit.petopia_backend.entities.matching.Preferences;
 import tn.esprit.petopia_backend.entities.pet.Pet;
 import tn.esprit.petopia_backend.entities.pet.PetStatus;
+import tn.esprit.petopia_backend.entities.pet.Species;
 import tn.esprit.petopia_backend.entities.user.User;
 import tn.esprit.petopia_backend.services.adoptions.IShelterService;
 import tn.esprit.petopia_backend.services.community.CloudinaryService;
 import tn.esprit.petopia_backend.services.matching.MatchesService;
 import tn.esprit.petopia_backend.services.pet.PetService;
+import tn.esprit.petopia_backend.services.user.FlaskService;
 
 import java.io.IOException;
 import java.util.*;
@@ -41,21 +39,46 @@ public class PetController {
     @Autowired
     private final CloudinaryService cloudinaryService;
 
-    public PetController(PetService petService,IShelterService shelterService,CloudinaryService cloudinaryService) {
+    @Autowired
+    private final FlaskService flaskService;
+
+    public PetController(PetService petService, IShelterService shelterService, CloudinaryService cloudinaryService, FlaskService flaskService) {
         this.petService = petService;
         this.shelterService= shelterService;
         this.cloudinaryService = cloudinaryService;
+        this.flaskService = flaskService;
     }
 
     @PostMapping("/user/pet/add")
-    public ResponseEntity<Map<String, String>> addPet(@RequestBody Pet pet) {
-        petService.addPet(pet);
-        Map<String, String> response = new HashMap<>();
-        response.put("message", "Pet added successfully");
-        return ResponseEntity.ok(response);
+    @PreAuthorize("hasAuthority('ROLE_USER')")
+    public ResponseEntity<Map<String, Object>> addPet(
+            @RequestParam("petImage") MultipartFile image,
+            @RequestPart("petData") Pet petData) {  // Changed to @RequestPart
+        try {
+            String imageUrl = cloudinaryService.uploadImage(image);
+            petData.setPetImage(imageUrl);
+
+            Map<String, String> prediction = flaskService.detectPetSpeciesAndBreed(image);
+            petData.setSpecies(Species.valueOf(prediction.get("prediction")));
+            petData.setBreed(prediction.get("breed"));
+
+            Pet savedPet = petService.addPet(petData);
+
+            Map<String, Object> response = new HashMap<>();
+            response.put("message", "Pet added successfully");
+            response.put("pet", savedPet);
+            return ResponseEntity.ok(response);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            Map<String, Object> error = new HashMap<>();
+            error.put("message", "Failed to upload image or parse pet data");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(error);
+        }
     }
 
-    @GetMapping("/user/pet/all")
+    @GetMapping("/pet/all")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<List<Pet>> getAllPets() {
         List<Pet> pets = petService.getallPets();
         if (pets.isEmpty()) {

@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { AuthService } from '../../services/user/auth.service';
 import { jwtDecode } from 'jwt-decode';
+import {AuthService} from "../../services/user/auth.service";
 
 @Component({
   selector: 'app-login',
@@ -55,17 +55,15 @@ export class LoginComponent implements OnInit {
           this.successMessage = '';
           return;
         }
-
         console.log('Token received:', response.token);
         localStorage.setItem('token', response.token);
         this.authService.updateAuthStatus(true);
         try {
           const decodedToken: any = jwtDecode(response.token);
           console.log('Decoded Token:', decodedToken);
-
+          localStorage.setItem('shetlerID',response.shelter_id);
           localStorage.setItem('userId', decodedToken.userId); //userid yeta7at fel localstorage
-          localStorage.setItem('shelterID', response.shelter_id);
-          localStorage.setItem('username', decodedToken.username);
+          localStorage.setItem('username',decodedToken.username);
           this.authService.updateUsername(decodedToken.username);
           this.authService.updateUsername(decodedToken.username);
           localStorage.setItem('role', decodedToken.roles[0]); // Store role
@@ -99,22 +97,11 @@ export class LoginComponent implements OnInit {
       }
 
       const role = decodedToken.roles[0];
-      const userId = decodedToken.userId;
-      const shelterId = localStorage.getItem('shelterID');
       setTimeout(() => {
-        if (role === 'ROLE_ADMIN') this.router.navigate(['/dashboard']);
-        else if (role === 'ROLE_USER') this.router.navigate(['/home']);
-        else if (role === 'ROLE_SHELTER') {
-          if (!shelterId || shelterId === '-1') {
-            this.router.navigate(['/add-shelter']);
-          } else {
-            this.router.navigate(['/shelter/home']);
-          }
-        }
-      //  else if (role === 'ROLE_VET') this.router.navigate(['/vet-dashboard']);
-       else if (role === 'ROLE_PARTNER') this.router.navigate(['/partner/home']);
-        else if (role === 'ROLE_VET') this.router.navigate(['/vet']);
-       // else if (role === 'ROLE_PARTNER') this.router.navigate(['/partner-dashboard']);
+        if (role === 'ROLE_ADMIN') this.router.navigate(['/admin-dashboard']);
+        else if (role === 'ROLE_USER') this.router.navigate(['/user-dashboard']);
+        else if (role === 'ROLE_VET') this.router.navigate(['/vet-dashboard']);
+        else if (role === 'ROLE_PARTNER') this.router.navigate(['/partner-dashboard']);
         else this.router.navigate(['/']);
       }, 500);
     } catch (error) {

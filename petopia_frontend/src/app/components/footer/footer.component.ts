@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { AuthService } from '../../services/user/auth.service';
-import { ReclamationService } from '../../services/user/reclamation.service';
+import {AuthService} from "../../services/user/auth.service";
+import {ReclamationService} from "../../services/user/reclamation.service";
 
 @Component({
   selector: 'app-footer',
@@ -13,8 +13,19 @@ export class FooterComponent implements OnInit {
   reclamationText: string = '';
   selectedType: string = 'Bug'; // Default type
   showNotification: boolean = false;
+  showBadWordWarning: boolean = false;
   role: string = '';
 
+  private badWords: string[] = [
+    'fuck', 'f-ck', 'f*ck', 'f**k', 'f***',
+    'shit', 'sh*t', 's***',
+    'asshole', 'a**hole',
+    'bitch', 'b*tch', 'b****',
+    'cunt', 'c*nt',
+    'damn', 'd*mn',
+    'hell', 'h*ll',
+    'isreal', 'nigga'
+  ];
 
   constructor(
     private authService: AuthService,
@@ -36,17 +47,36 @@ export class FooterComponent implements OnInit {
     this.router.navigate(['/login']);
   }
 
+  containsBadWords(text: string): boolean {
+    if (!text) return false;
+
+    const lowerText = text.toLowerCase();
+    return this.badWords.some(word => {
+      // Check for the word and common variations with symbols
+      const regex = new RegExp(word.replace(/\*/g, '\\*').replace(/-/g, '\\-'), 'i');
+      return regex.test(lowerText);
+    });
+  }
+
   submitReclamation() {
+    this.showBadWordWarning = false;
+
+    // Check for bad words
+    if (this.containsBadWords(this.reclamationText)) {
+      this.showBadWordWarning = true;
+      return;
+    }
+
     const userId = localStorage.getItem('userId');
     if (this.reclamationText.trim()) {
       const reclamation = {
         type: this.selectedType,
         description: this.reclamationText,
-        statusReclamation: 'non traité',
+        statusReclamation: 'PENDING',
         dateReclamation: new Date(),
         user: { id_user: userId }
       };
-      console.log(reclamation);
+
       this.reclamationService.addReclamation(reclamation).subscribe(
         (response) => {
           this.showNotification = true;
@@ -66,5 +96,4 @@ export class FooterComponent implements OnInit {
       alert('Please enter your reclamation.');
     }
   }
-
 }
