@@ -258,6 +258,14 @@
     box-shadow: 0 5px 15px rgba(248, 49, 130, 0.3);
   }
   
+  .text-Total{
+    display: flex;
+    flex-direction: column;
+    align-items: end;
+  }
+  .text-Total p{
+    font-size: smaller;
+  }
   /* Animations */
   @keyframes fadeIn {
     from { opacity: 0; transform: translateY(10px); }

@@ -77,6 +77,22 @@
   box-shadow: 0 2px 8px rgba(0,0,0,0.1);
   white-space: nowrap;
 }
+.pre-order-badgee {
+  position: absolute;
+  top: 60%; /* Half outside container */
+  left: 50%;
+  transform: translateX(-50%);
+  background: #dc3545;
+  color: white;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 4px 16px;
+  border-radius: 4px;
+  text-transform: uppercase;
+  z-index: 2;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  white-space: nowrap;
+}
 
 /* Product Image */
 .product-image-container {

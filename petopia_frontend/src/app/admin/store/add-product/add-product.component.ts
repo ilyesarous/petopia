@@ -18,6 +18,7 @@ export class AddProductComponent {
   categories: string[] = ['FOOD', 'ACCESSORY', 'TOYS', 'CLOTHES'];
   currentProductId: number | null = null;
   userId: number = 0;
+  toast: any[]= [];
   @Input() product: any = null;
   @Input() isEditMode: boolean = false;
   @Input() role: string = "";
@@ -26,8 +27,6 @@ export class AddProductComponent {
   constructor(
     private fb: FormBuilder,
     private productService: ProductService,
-    private router: Router,
-    private route: ActivatedRoute,
     private sanitizer: DomSanitizer
   ) {
     this.productForm = this.fb.group({

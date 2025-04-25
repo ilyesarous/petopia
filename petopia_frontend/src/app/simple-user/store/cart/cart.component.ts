@@ -1,4 +1,5 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Product } from 'src/app/models/product/Product';
 import { CartService } from 'src/app/services/store/cart/cart.service';
 import { PdfService } from 'src/app/services/store/cart/pdf.service';
 import { StripePaymentService } from 'src/app/services/vet/payment/stripe-payment.service';
@@ -37,22 +38,28 @@ export class CartComponent implements OnInit {
     });
   }
 
-  increaseQuantity(productId: number): void {
-    this.cartService
-      .increaseQuantity(this.userId, productId)
+  increaseQuantity(product: Product): void {
+    if (product.availableQuantity > 1) {
+      this.cartService
+      .increaseQuantity(this.userId, product.product_id)
       .subscribe((response) => {
         this.cartItems = response.cartProducts;
         this.cart = response;
       });
+    }
+    else alert("quantity unavailable!")
   }
 
-  decreaseQuantity(productId: number): void {
-    this.cartService
+  decreaseQuantity(productId: number, item: any): void {
+    if (item.quantity > 1) {
+      this.cartService
       .decreaseQuantity(this.userId, productId)
       .subscribe((response) => {
         this.cartItems = response.cartProducts;
         this.cart = response;
-      });
+      }); 
+    }
+    else alert("you can't decrease the quantity")
   }
 
   removeItem(productId: number): void {

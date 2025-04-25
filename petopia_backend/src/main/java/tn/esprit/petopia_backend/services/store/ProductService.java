@@ -137,6 +137,7 @@ public class ProductService implements IProductService {
         if (product.getAvailableQuantity() - quantity <= 0)
             throw new RuntimeException("not enough quantity available");
         product.setAvailableQuantity(product.getAvailableQuantity() - quantity);
+        product.setQuantity(product.getQuantity() + quantity);
         repository.save(product);
     }
 
@@ -144,6 +145,7 @@ public class ProductService implements IProductService {
         if (repository.findById(idProduct).isEmpty())
             throw new RuntimeException("Product not found");
         Product product = repository.findById(idProduct).get();
+        product.setQuantity(product.getQuantity() - quantity);
         product.setAvailableQuantity(product.getAvailableQuantity() + quantity);
         repository.save(product);
     }

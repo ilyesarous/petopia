@@ -236,7 +236,7 @@ import { DreamPetComponent } from './simple-user/adoption/dream-pet/dream-pet.co
     AddServiceAnimalComponent,
     CountdownComponent,
     XpBarComponent,
-    ReceiptModalComponent,
+    ReceiptModalComponent
   ],
   imports: [
     BrowserModule,
