@@ -64,7 +64,7 @@
     </div>
   
     <!-- Statistics Section -->
-    <div class="section" *ngIf="mostAdoptedSpecies">
+    <div class="section" *ngIf="mostAdoptedSpecies && totalPets>0">
       <h2>Adoption Statistics</h2>
       <div class="stats-grid">
         <div class="stat-card species">
@@ -74,7 +74,7 @@
       </div>
     </div>
   
-    <div class="section">
+    <div class="section" *ngIf="totalPets>0">
       <h2>Adoption Analytics</h2>
   
       <div class="chart-container">
