@@ -24,7 +24,7 @@ public class VerificationCodeService {
 
     private final Map<String, CodeData> codeStore = new HashMap<>();
 
-    public void storeCode(String phoneNumber, String code) {
+    public void storeCode(String phoneNumber, String code, int i) {
         codeStore.put(phoneNumber, new CodeData(code));
         System.out.println(code);
     }

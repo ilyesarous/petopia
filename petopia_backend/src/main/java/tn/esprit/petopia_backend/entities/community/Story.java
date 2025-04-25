@@ -8,7 +8,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import tn.esprit.petopia_backend.entities.user.User;
-
 import java.time.LocalDateTime;
 
 @Entity

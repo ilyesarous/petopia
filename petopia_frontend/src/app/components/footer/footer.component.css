@@ -4,7 +4,6 @@
   color: white;
   padding: 40px 0 0;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  margin-top: 50px;
 }
 
 .footer-content {
@@ -238,4 +237,18 @@
   .subscribe-btn {
     width: 100%;
   }
+}
+.bad-word-warning {
+  color: #ff0000;
+  background-color: #ffeeee;
+  padding: 8px;
+  border-radius: 4px;
+  margin-top: 5px;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+}
+
+.bad-word-warning i {
+  margin-right: 8px;
 }

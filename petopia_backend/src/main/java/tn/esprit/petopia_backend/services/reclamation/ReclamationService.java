@@ -1,13 +1,16 @@
 package tn.esprit.petopia_backend.services.reclamation;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 import tn.esprit.petopia_backend.dto.ReclamationDTO;
 import tn.esprit.petopia_backend.entities.reclamation.Reclamation;
 import tn.esprit.petopia_backend.repositories.reclamation.ReclamationRepository;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -55,8 +58,25 @@ public class ReclamationService {
         return reclamationRepository.updateDescriptionByReclamationIdAndUserId(reclamationId, userId, description);
     }
 
+    public Map<String, Integer> getStatsFromPython() {
+        RestTemplate restTemplate = new RestTemplate();
+        String pythonUrl = "http://localhost:5000/reclamations/stats";
+        ResponseEntity<Map> response = restTemplate.getForEntity(pythonUrl, Map.class);
+        return response.getBody();
+    }
 
+    public ReclamationDTO getReclamationById(int reclamationId) {
+        Reclamation reclamation = reclamationRepository.findById(reclamationId)
+                .orElseThrow(() -> new RuntimeException("Reclamation not found with id: " + reclamationId));
 
+        return convertToDTO(reclamation);
+    }
+    public void updateReclamationStatus(int reclamationId, String newStatus) {
+        Reclamation reclamation = reclamationRepository.findById(reclamationId)
+                .orElseThrow(() -> new RuntimeException("Reclamation not found with id: " + reclamationId));
 
+        reclamation.setStatusReclamation(newStatus);
+        reclamationRepository.save(reclamation);
+    }
 
 }

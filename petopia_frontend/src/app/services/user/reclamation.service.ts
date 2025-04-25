@@ -8,7 +8,7 @@ import {catchError} from "rxjs/operators";
 })
 export class ReclamationService {
 
-  private apiUrl = 'http://localhost:888/reclamation';
+  private apiUrl = 'http://localhost:8082/petopia/reclamation';
 
   constructor(private http: HttpClient) { }
 
@@ -93,4 +93,44 @@ export class ReclamationService {
     );
   }
 
+  getStats(): Observable<any> {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      console.error('No token found in localStorage');
+      return new Observable();
+    }
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
+    });
+
+    return this.http.get<any>(`${this.apiUrl}/stats`, { headers });
+  }
+
+  respondToReclamation(reclamationId: number, response: string, newStatus?: string): Observable<any> {
+    const body: { adminResponse: string, newStatus?: string } = {
+      adminResponse: response,
+    };
+    const token = localStorage.getItem('token');
+    if (!token) {
+      console.error('No token found in localStorage');
+      return new Observable();
+    }
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${token}`
+    });
+
+    // Only include newStatus in the body if it has a value
+    if (newStatus) {
+      body.newStatus = newStatus;
+    }
+
+    return this.http.post(`${this.apiUrl}/respond/${reclamationId}`, body,{ headers }).pipe(
+      catchError(error => {
+        console.error('Error responding to reclamation:', error);
+        return throwError(error);
+      })
+    );
+  }
 }
