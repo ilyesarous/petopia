@@ -21,7 +21,7 @@
   display: flex;
   align-items: center;
   padding: 15px 20px;
-  background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
+  background: linear-gradient(135deg, #da157c 0%, #ec0dce 100%);
   color: white;
 }
 
@@ -200,7 +200,7 @@ select {
 }
 
 .file-upload .upload-area .file-name {
-  color: #25D366;
+  color: #F83182;
   font-weight: 500;
   margin-top: 5px;
 }
@@ -209,7 +209,7 @@ select {
 .submit-btn {
   width: 100%;
   padding: 14px;
-  background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
+  background: linear-gradient(135deg, #F83182 0%, #F83182 100%);
   color: white;
   border: none;
   border-radius: 8px;
@@ -257,7 +257,7 @@ select {
   left: 50%;
   transform: translateX(-50%);
   background-color: #d0ffd0;
-  color: #2e7d32;
+  color: #F83182;
   padding: 10px 18px;
   border-radius: 8px;
   font-weight: 500;

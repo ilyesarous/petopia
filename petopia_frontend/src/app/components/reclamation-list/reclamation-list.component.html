@@ -24,23 +24,34 @@
       <div class="card-body">
         <div class="reclamation-details">
           <p><strong>Description:</strong> {{ reclamation.description }}</p>
-          <div class="pet-stats">
-            <div class="stat-item">
-              <span class="stat-value" [ngClass]="{
-                'active': reclamation.statusReclamation === 'RESOLVED',
-                'locked': reclamation.statusReclamation === 'PENDING'
-              }">{{ reclamation.statusReclamation }}</span>
-              <span class="stat-label">Status</span>
-            </div>
 
+          <!-- Status Tracker -->
+          <div class="status-tracker">
+            <div class="tracker-point" [class.active]="reclamation.statusReclamation === 'PENDING'">
+              <div class="point"></div>
+              <span>PENDING</span>
+            </div>
+            <div class="tracker-line" [class.active]="reclamation.statusReclamation === 'IN_PROGRESS' || reclamation.statusReclamation === 'RESOLVED'"></div>
+
+            <div class="tracker-point" [class.active]="reclamation.statusReclamation === 'IN_PROGRESS'">
+              <div class="point"></div>
+              <span>IN PROGRESS</span>
+            </div>
+            <div class="tracker-line" [class.active]="reclamation.statusReclamation === 'RESOLVED'"></div>
+
+            <div class="tracker-point" [class.active]="reclamation.statusReclamation === 'RESOLVED'">
+              <div class="point"></div>
+              <span>RESOLVED</span>
+            </div>
           </div>
+          <!-- End Status Tracker -->
+
           <div class="stat-item">
             <span class="stat-label">Date</span>
             <span class="stat-value">{{ reclamation.dateReclamation | date }}</span>
           </div>
         </div>
-      </div>
-    </div>
+      </div>    </div>
   </div>
 
   <ng-template #noData>
