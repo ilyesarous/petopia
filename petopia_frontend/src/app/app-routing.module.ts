@@ -77,14 +77,14 @@ import { AddServiceAnimalComponent } from './simple-user/Event/add-service-anima
 import { DreamPetComponent } from './simple-user/adoption/dream-pet/dream-pet.component';
 import { EventDetailsComponent } from './simple-user/Event/event-details/event-details.component';
 import { NewsComponent } from './simple-user/news/news.component';
+import {PetListComponent} from "./components/pet-list/pet-list.component";
 import {UserProfileComponent} from "./components/user-profile/user-profile.component";
 import {ForgetpasswordComponent} from "./components/forgetpassword/forgetpassword.component";
-import {ListReclamationComponent} from "./components/list-reclamation/list-reclamation.component";
-import {ListUsersComponent} from "./components/list-users/list-users.component";
-import {ReclamationComponent} from "./components/reclamation/reclamation.component";
 import {ReclamationListComponent} from "./components/reclamation-list/reclamation-list.component";
-import {PetListComponent} from "./components/pet-list/pet-list.component";
+import {ReclamationComponent} from "./components/reclamation/reclamation.component";
 import {PetComponent} from "./components/pet/pet.component";
+import {ListUsersComponent} from "./components/list-users/list-users.component";
+import {ListReclamationComponent} from "./components/list-reclamation/list-reclamation.component";
 
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },

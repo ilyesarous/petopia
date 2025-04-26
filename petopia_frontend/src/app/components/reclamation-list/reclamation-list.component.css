@@ -228,3 +228,54 @@
   box-shadow: 0 4px 8px rgba(0,0,0,0.1);
   transform: translateY(-2px);
 }
+.status-tracker {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 1rem 0;
+  position: relative;
+}
+
+.tracker-point {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 1;
+}
+
+.tracker-point .point {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background-color: #ccc;
+  border: 3px solid #f0f0f0;
+  margin-bottom: 5px;
+}
+
+.tracker-point.active .point {
+  background-color: #F83182;
+  border-color: rgba(248, 49, 130, 0.2);
+}
+
+.tracker-point span {
+  font-size: 0.8rem;
+  color: #999;
+  text-align: center;
+}
+
+.tracker-point.active span {
+  color: #F83182;
+  font-weight: 500;
+}
+
+.tracker-line {
+  flex-grow: 1;
+  height: 3px;
+  background-color: #eee;
+  position: relative;
+  margin: 0 -5px;
+}
+
+.tracker-line.active {
+  background-color: #F83182;
+}
