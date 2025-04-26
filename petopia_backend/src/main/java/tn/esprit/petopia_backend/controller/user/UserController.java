@@ -138,5 +138,9 @@ public class UserController {
     public List<User> getAllVeterinarians() {
         return usersManagementService.getAllVets();
     }
+    @GetMapping("/admin/partners")
+    public List<User> getAllPartners() {
+        return usersManagementService.getAllPartners();
+    }
 
 }

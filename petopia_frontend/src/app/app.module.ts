@@ -137,6 +137,8 @@ import { CountdownComponent } from './simple-user/Event/countdown/countdown.comp
 import { ReceiptModalComponent } from './simple-user/store/receipt-modal/receipt-modal.component';
 import { XpBarComponent } from './simple-user/Event/xp-bar/xp-bar.component';
 import { DreamPetComponent } from './simple-user/adoption/dream-pet/dream-pet.component';
+import { AddAdsComponent } from './admin/store/add-ads/add-ads.component';
+import { AddBrandsComponent } from './admin/store/add-brands/add-brands.component';
 
 
 @NgModule({
@@ -236,7 +238,9 @@ import { DreamPetComponent } from './simple-user/adoption/dream-pet/dream-pet.co
     AddServiceAnimalComponent,
     CountdownComponent,
     XpBarComponent,
-    ReceiptModalComponent
+    ReceiptModalComponent,
+    AddAdsComponent,
+    AddBrandsComponent
   ],
   imports: [
     BrowserModule,

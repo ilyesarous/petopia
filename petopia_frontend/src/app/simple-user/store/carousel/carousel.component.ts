@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { AdsService } from 'src/app/services/store/ads/ads.service';
 
 @Component({
   selector: 'app-carousel',
@@ -6,35 +7,23 @@ import { Component } from '@angular/core';
   styleUrls: ['./carousel.component.css']
 })
 export class CarouselComponent {
-  slides = [
-    {
-      image: '../../../../assets/images/store/carousel/banner1.jpg',
-      title: 'Summer Collection',
-      text: 'Up to 50% off selected items'
-    },
-    {
-      image: '../../../../assets/images/store/carousel/banner3.png',
-      title: 'New Arrivals', 
-      text: 'Discover our latest products'
-    },
-    {
-      image: '../../../../assets/images/store/carousel/banner4.png',
-      title: 'New Arrivals', 
-      text: 'Discover our latest products'
-    },
-  ];
+  slides: any[] = [];
 
   currentSlide = 0;
+  constructor(private adService: AdsService){}
 
   // Add to your component
 startAutoRotation() {
   setInterval(() => {
     this.next();
-  }, 5000);
+  }, 3000);
 }
 
 // Call in ngOnInit()
 ngOnInit() {
+  this.adService.getAllAdsUser().subscribe(
+    res => this.slides = res
+  )
   this.startAutoRotation();
 }
 

@@ -385,6 +385,9 @@ public class UserService {
     public List<User> getAllVets() {
         return usersRepo.findByRole(UserRole.VET);
     }
+    public List<User> getAllPartners() {
+        return usersRepo.findByRole(UserRole.PARTNER);
+    }
 
     public void addXp(Integer userId, int xpToAdd) {
         User user = usersRepo.findById(userId).orElseThrow();

@@ -73,10 +73,11 @@ import { EventParticipantsComponent } from './admin/Event/event-participants/eve
 import { ServiceAnimalListComponent } from './simple-user/Event/service-animal-list/service-animal-list.component';
 import { AddServiceAnimalComponent } from './simple-user/Event/add-service-animal/add-service-animal.component';
 import { DreamPetComponent } from './simple-user/adoption/dream-pet/dream-pet.component';
+import { HomeComponent } from './simple-user/home/home.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
-  { path: 'home', component: ComponentWrapperComponent, canActivate: [AuthGuard]},
+  { path: 'home', component: HomeComponent, canActivate: [AuthGuard]},
   { path: 'products', component: ProductsComponent, canActivate: [AuthGuard]},
   { path: 'products/:id', component: ProductDetailComponent, canActivate: [AuthGuard] },
   { path: 'favorites', component: FavoriteComponent, canActivate: [AuthGuard]},

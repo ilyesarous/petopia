@@ -194,43 +194,82 @@
 }
 
 /* Table Styles */
+/* Table Container */
 .table-container {
-  overflow-x: auto;
+  background: white;
+  border-radius: 8px;
+  overflow: hidden;
 }
 
+/* Table Structure */
 table {
   width: 100%;
   border-collapse: collapse;
-}
-
-th,
-td {
-  padding: 1rem;
-  text-align: left;
-  border-bottom: 1px solid #eee;
+  font-family: sans-serif;
 }
 
 th {
-  background-color: #f8f9fa;
+  background: #f9f2f0;
+  color: #d82172;
+  padding: 12px 16px;
+  text-align: left;
   font-weight: 600;
+  border-bottom: 2px solid #f0d6df;
 }
 
+td {
+  padding: 12px 16px;
+  border-bottom: 1px solid #f8e9e9;
+}
+
+/* Brand Logo */
 .brand-logo {
   width: 50px;
-  height: 50px;
   object-fit: contain;
+  border-radius: 4px;
+  border: 1px solid #f0d6df;
 }
 
-.status-badge {
-  padding: 0.25rem 0.75rem;
-  border-radius: 20px;
-  font-size: 0.8rem;
-  font-weight: 600;
+/* Product Count */
+.product-count {
+  font-weight: 500;
+  color: #e6516c;
 }
 
-.status-badge.active {
-  background-color: #e1f7e6;
-  color: #27ae60;
+/* Icon Actions */
+.actions {
+  display: flex;
+  gap: 8px;
+}
+
+.action-btn {
+  background: none;
+  border: none;
+  padding: 6px;
+  cursor: pointer;
+  color: #999;
+  transition: all 0.2s;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.action-btn:hover {
+  background: #f5f5f5;
+}
+
+.edit-btn {
+  color: #e88a6a;
+}
+
+.delete-btn {
+  color: #d82172;
+}
+
+/* Hover Effects */
+tr:hover td {
+  background: #fff9fa;
 }
 
 /* Partners Grid */
