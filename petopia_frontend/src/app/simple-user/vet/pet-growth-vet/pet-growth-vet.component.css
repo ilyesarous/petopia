@@ -39,3 +39,16 @@
     border-color: #F83182;
     box-shadow: 0 0 0 0.25rem rgba(248, 49, 130, 0.25);
 }
+
+.btn-gradient {
+    background: linear-gradient(135deg, #FF617C 0%, #FE9A7A 100%);
+    color: white;
+    border: none;
+  }
+  .btn-gradient:hover {
+    background: linear-gradient(135deg, #E85172 0%, #EE8A6A 100%);
+  }
+  .btn-gradient:disabled {
+    background: #cccccc;
+    cursor: not-allowed;
+  }

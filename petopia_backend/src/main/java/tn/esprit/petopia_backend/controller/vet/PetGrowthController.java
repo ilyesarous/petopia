@@ -6,6 +6,7 @@ import tn.esprit.petopia_backend.entities.vet.Pet_Growth;
 import tn.esprit.petopia_backend.services.vet.IPetGrowthService;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 //@RequestMapping("/PetGrowth")
@@ -42,5 +43,11 @@ public class PetGrowthController {
     @GetMapping("/auth/PetGrowth/retrievePetGrowthsByPetId/{petId}")
     public List<Pet_Growth> retrievePetGrowthsByPetId(@PathVariable int petId) {
         return petGrowthService.retrievePetGrowthsByPetId(petId);
+    }
+
+    // Dans PetGrowthController.java
+    @GetMapping("/auth/PetGrowth/calculateBMI/{petId}")
+    public Map<String, String> calculateBMI(@PathVariable int petId) {
+        return petGrowthService.calculatePetBMI(petId);
     }
 }
