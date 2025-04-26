@@ -1,30 +1,38 @@
 import { Component, OnInit } from '@angular/core';
+import { AdsService } from 'src/app/services/store/ads/ads.service';
+import { BrandsService } from 'src/app/services/store/brands/brands.service';
+import { AuthService } from 'src/app/services/user/auth.service';
 
 @Component({
   selector: 'app-store-dash',
   templateUrl: './store-dash.component.html',
-  styleUrls: ['./store-dash.component.css']
+  styleUrls: ['./store-dash.component.css'],
 })
 export class StoreDashComponent implements OnInit {
   activeTab: string = 'ads';
   adsCount: number = 0;
   brandsCount: number = 0;
   partnersCount: number = 0;
-  
+
   // Ads
   adsSearchQuery: string = '';
   adsFilter: string = 'all';
   ads: any[] = []; // Populate from your API
-  
+
   // Brands
   brandsSearchQuery: string = '';
   brands: any[] = []; // Populate from your API
-  
+
   // Partners
   partnersSearchQuery: string = '';
   partnersFilter: string = 'all';
   partners: any[] = []; // Populate from your API
 
+  constructor(
+    private adService: AdsService,
+    private brandService: BrandsService,
+    private userService: AuthService
+  ) {}
   ngOnInit(): void {
     // Initialize with API calls
     this.loadData();
@@ -32,82 +40,103 @@ export class StoreDashComponent implements OnInit {
 
   loadData(): void {
     // Example - replace with actual API calls
-    /*
-    this.adService.getAllAds().subscribe(ads => {
+
+    this.adService.getAllAds().subscribe((ads) => {
       this.ads = ads;
       this.adsCount = ads.length;
     });
-    */
+    this.brandService.getAllBrands().subscribe((brand) => {
+      console.log(brand);
+
+      this.brands = brand;
+      this.brandsCount = brand.length;
+    });
+    this.userService.getAllPartners().subscribe((partner) => {
+      console.log(partner);
+
+      this.partners = partner;
+      this.partnersCount = partner.length;
+    });
   }
 
   setActiveTab(tab: string): void {
     this.activeTab = tab;
   }
+  isTabActive(tabName: string): boolean {
+    return this.activeTab === tabName;
+  }
 
   get filteredAds(): any[] {
-    return this.ads.filter(ad => {
-      const matchesSearch = ad.title.toLowerCase().includes(this.adsSearchQuery.toLowerCase()) || 
-                          ad.description.toLowerCase().includes(this.adsSearchQuery.toLowerCase());
-      const matchesFilter = this.adsFilter === 'all' || 
-                          (this.adsFilter === 'active' && ad.isActive) || 
-                          (this.adsFilter === 'inactive' && !ad.isActive);
+    return this.ads.filter((ad) => {
+      const matchesSearch =
+        ad.title.toLowerCase().includes(this.adsSearchQuery.toLowerCase()) ||
+        ad.description
+          .toLowerCase()
+          .includes(this.adsSearchQuery.toLowerCase());
+      const matchesFilter =
+        this.adsFilter === 'all' ||
+        (this.adsFilter === 'active' && ad.isActive) ||
+        (this.adsFilter === 'inactive' && !ad.isActive);
       return matchesSearch && matchesFilter;
     });
   }
 
   get filteredBrands(): any[] {
-    return this.brands.filter(brand => 
+    return this.brands.filter((brand) =>
       brand.name.toLowerCase().includes(this.brandsSearchQuery.toLowerCase())
     );
   }
 
   get filteredPartners(): any[] {
-    return this.partners.filter(partner => {
-      const matchesSearch = partner.name.toLowerCase().includes(this.partnersSearchQuery.toLowerCase()) || 
-                          partner.contactEmail.toLowerCase().includes(this.partnersSearchQuery.toLowerCase());
-      const matchesFilter = this.partnersFilter === 'all' || 
-                          partner.tier === this.partnersFilter;
+    return this.partners.filter((partner) => {
+      const matchesSearch =
+        partner.name
+          .toLowerCase()
+          .includes(this.partnersSearchQuery.toLowerCase()) ||
+        partner.contactEmail
+          .toLowerCase()
+          .includes(this.partnersSearchQuery.toLowerCase());
+      const matchesFilter =
+        this.partnersFilter === 'all' || partner.tier === this.partnersFilter;
       return matchesSearch && matchesFilter;
     });
   }
 
-  openAddAdModal(): void {
-    // Implement modal opening logic
-    console.log('Open Add Ad Modal');
+  // In your parent component (e.g., ads-list.component.ts)
+  showAddAdPopup = false;
+  showBrandAddPopup = false;
+
+  openAddPopup(): void {
+    this.showAddAdPopup = true;
   }
 
-  openAddBrandModal(): void {
-    // Implement modal opening logic
-    console.log('Open Add Brand Modal');
+  closeAddPopup(): void {
+    this.showAddAdPopup = false;
   }
 
-  editAd(adId: number): void {
-    // Implement edit logic
-    console.log('Edit Ad', adId);
+  onAdAdded(newAd: any): void {
+    this.loadData();
+    this.closeAddPopup();
   }
 
-  deleteAd(adId: number): void {
-    // Implement delete logic
-    console.log('Delete Ad', adId);
+  openAddBrandPopup(): void {
+    this.showBrandAddPopup = true;
   }
 
-  editBrand(brandId: number): void {
-    // Implement edit logic
-    console.log('Edit Brand', brandId);
+  closeAddBrandPopup(): void {
+    this.showBrandAddPopup = false;
   }
 
-  deleteBrand(brandId: number): void {
-    // Implement delete logic
-    console.log('Delete Brand', brandId);
+  onBrandAdded(newBrand: any): void {
+    // Refresh your brands list or add the new brand directly
+    this.loadData();
+    this.closeAddPopup();
   }
 
-  editPartner(partnerId: number): void {
-    // Implement edit logic
-    console.log('Edit Partner', partnerId);
+  deleteAd(id: number) {
+    this.adService.deleteAd(id).subscribe((res) => this.loadData());
   }
-
-  deletePartner(partnerId: number): void {
-    // Implement delete logic
-    console.log('Delete Partner', partnerId);
+  deleteBrand(id: number){
+    this.brandService.deleteBrand(id).subscribe((res) => this.loadData())
   }
 }

@@ -140,6 +140,8 @@ import { CountdownComponent } from './simple-user/Event/countdown/countdown.comp
 import { ReceiptModalComponent } from './simple-user/store/receipt-modal/receipt-modal.component';
 import { XpBarComponent } from './simple-user/Event/xp-bar/xp-bar.component';
 import { DreamPetComponent } from './simple-user/adoption/dream-pet/dream-pet.component';
+import { AddAdsComponent } from './admin/store/add-ads/add-ads.component';
+import { AddBrandsComponent } from './admin/store/add-brands/add-brands.component';
 
 import { EventDetailsComponent } from './simple-user/Event/event-details/event-details.component';
 import { ServiceAnimalDetailsComponent } from './simple-user/Event/service-animal-details/service-animal-details.component';
@@ -276,7 +278,9 @@ import { PetListComponent } from './components/pet-list/pet-list.component';
     UserDetailsDialogComponent,
     ReclamationComponent,
     ReclamationListComponent,
-    PetListComponent
+    PetListComponent,
+    AddAdsComponent,
+    AddBrandsComponent
   ],
   imports: [
     BrowserModule,

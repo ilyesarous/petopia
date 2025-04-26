@@ -75,6 +75,7 @@ import { EventParticipantsComponent } from './admin/Event/event-participants/eve
 import { ServiceAnimalListComponent } from './simple-user/Event/service-animal-list/service-animal-list.component';
 import { AddServiceAnimalComponent } from './simple-user/Event/add-service-animal/add-service-animal.component';
 import { DreamPetComponent } from './simple-user/adoption/dream-pet/dream-pet.component';
+import { HomeComponent } from './simple-user/home/home.component';
 import { EventDetailsComponent } from './simple-user/Event/event-details/event-details.component';
 import { NewsComponent } from './simple-user/news/news.component';
 import {PetListComponent} from "./components/pet-list/pet-list.component";
@@ -88,7 +89,7 @@ import {ListReclamationComponent} from "./components/list-reclamation/list-recla
 
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
-  { path: 'home', component: ComponentWrapperComponent, canActivate: [AuthGuard]},
+  { path: 'home', component: HomeComponent, canActivate: [AuthGuard]},
   { path  : 'profileUser',component:UserProfileComponent,canActivate:[AuthGuard]},
   { path  : 'forgetpassword',component:ForgetpasswordComponent},
   { path : 'ListReclamationFront',component:ReclamationListComponent,canActivate:[AuthGuard]}, // list reclmaations front

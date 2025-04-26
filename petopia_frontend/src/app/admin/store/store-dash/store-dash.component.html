@@ -19,19 +19,19 @@
   
     <!-- Action Buttons -->
     <div class="action-buttons">
-      <button class="btn btn-add" (click)="openAddAdModal()">
+      <button class="btn btn-add" (click)="openAddPopup()">
         <i class="fas fa-plus"></i> Add New Ad
       </button>
-      <button class="btn btn-add" (click)="openAddBrandModal()">
+      <button class="btn btn-add" (click)="openAddBrandPopup()">
         <i class="fas fa-plus"></i> Add New Brand
       </button>
     </div>
   
     <!-- Tabs Navigation -->
     <div class="tabs">
-      <button class="tab-btn active" (click)="setActiveTab('ads')">Ads</button>
-      <button class="tab-btn" (click)="setActiveTab('brands')">Brands</button>
-      <button class="tab-btn" (click)="setActiveTab('partners')">Partners</button>
+      <button class="tab-btn" [class.active]="isTabActive('ads')" (click)="setActiveTab('ads')">Ads</button>
+      <button class="tab-btn" [class.active]="isTabActive('brands')" (click)="setActiveTab('brands')">Brands</button>
+      <button class="tab-btn" [class.active]="isTabActive('partners')" (click)="setActiveTab('partners')">Partners</button>
     </div>
   
     <!-- Ads Section -->
@@ -53,12 +53,12 @@
             <h3>{{ ad.title }}</h3>
             <p>{{ ad.description }}</p>
             <div class="card-meta">
-              <span class="status" [class.active]="ad.isActive">{{ ad.isActive ? 'Active' : 'Inactive' }}</span>
+              <span class="status" [class.active]="ad.isActive">{{ ad.status==="ACTIVE" ? 'Active' : 'Inactive' }}</span>
               <span class="date">{{ ad.startDate | date }} - {{ ad.endDate | date }}</span>
             </div>
             <div class="card-actions">
-              <button class="btn-edit" (click)="editAd(ad.id)">Edit</button>
-              <button class="btn-delete" (click)="deleteAd(ad.id)">Delete</button>
+              <button class="btn-edit">Edit</button>
+              <button class="btn-delete" (click)="deleteAd(ad.idAds)">Delete</button>
             </div>
           </div>
         </div>
@@ -72,34 +72,40 @@
         <input type="text" placeholder="Search brands..." [(ngModel)]="brandsSearchQuery">
       </div>
       
-      <div class="table-container">
-        <table>
-          <thead>
-            <tr>
-              <th>Logo</th>
-              <th>Name</th>
-              <th>Products</th>
-              <th>Status</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let brand of filteredBrands">
-              <td><img [src]="brand.logoUrl" class="brand-logo"></td>
-              <td>{{ brand.name }}</td>
-              <td>{{ brand.productCount }}</td>
-              <td>
-                <span class="status-badge" [class.active]="brand.isActive">
-                  {{ brand.isActive ? 'Active' : 'Inactive' }}
-                </span>
-              </td>
-              <td class="actions">
-                <button class="btn-edit" (click)="editBrand(brand.id)">Edit</button>
-                <button class="btn-delete" (click)="deleteBrand(brand.id)">Delete</button>
-              </td>
-            </tr>
-          </tbody>
-        </table>
+      <div class="brands-table-container">
+        <div class="table-responsive">
+          <table class="brands-table">
+            <thead>
+              <tr>
+                <th class="logo-col">Logo</th>
+                <th class="name-col">Brand Name</th>
+                <th class="products-col">Products</th>
+                <th class="actions-col">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let brand of filteredBrands">
+                <td>
+                  <div class="brand-logo-container">
+                    <img [src]="brand.image" class="brand-logo" alt="{{brand.name}} logo">
+                  </div>
+                </td>
+                <td class="brand-name">{{ brand.name }}</td>
+                <td class="product-count">
+                  <span class="count-badge">{{ brand.products.length }}</span>
+                </td>
+                <td class="actions">
+                  <button class="action-btn edit-btn" >
+                    <i class="fas fa-pencil-alt"></i>
+                  </button>
+                  <button class="action-btn delete-btn" (click)="deleteBrand(brand.id)" >
+                    <i class="fas fa-trash"></i>
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   
@@ -108,17 +114,13 @@
       <h2>All Partners</h2>
       <div class="search-filter">
         <input type="text" placeholder="Search partners..." [(ngModel)]="partnersSearchQuery">
-        <select [(ngModel)]="partnersFilter">
-          <option value="all">All</option>
-          <option value="premium">Premium</option>
-          <option value="standard">Standard</option>
-        </select>
+        
       </div>
       
       <div class="partners-grid">
         <div class="partner-card" *ngFor="let partner of filteredPartners">
           <div class="partner-header">
-            <img [src]="partner.logoUrl" class="partner-logo">
+            <img [src]="partner.image" class="partner-logo">
             <div class="partner-tier" [class.premium]="partner.tier === 'premium'">
               {{ partner.tier | titlecase }}
             </div>
@@ -130,10 +132,20 @@
             <p class="partner-since">Partner since {{ partner.joinDate | date }}</p>
           </div>
           <div class="partner-actions">
-            <button class="btn-edit" (click)="editPartner(partner.id)">Edit</button>
-            <button class="btn-delete" (click)="deletePartner(partner.id)">Delete</button>
+            <button class="btn-edit" >Edit</button>
+            <button class="btn-delete">Delete</button>
           </div>
         </div>
       </div>
     </div>
   </div>
+
+  <app-add-ads 
+  *ngIf="showAddAdPopup"
+  (close)="closeAddPopup()"
+  (adAdded)="onAdAdded($event)"/>
+
+  <app-add-brands
+  *ngIf="showBrandAddPopup"
+  (close)="closeAddBrandPopup()"
+  (brandAdded)="onBrandAdded($event)"/>

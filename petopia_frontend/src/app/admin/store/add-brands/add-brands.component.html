@@ -1,0 +1,27 @@
+<div class="popup-container">
+    <div class="popup-header">
+      <h2 class="popup-title">Add New Advertisement</h2>
+      <button class="close-btn" (click)="closePopup()">&times;</button>
+    </div>
+  
+    <form [formGroup]="brandForm" (ngSubmit)="onSubmit()">
+      <div class="form-group">
+        <label for="name">Name *</label>
+        <input type="text" id="name" formControlName="name" class="form-control">
+      </div>
+  
+      <div class="form-group">
+        <label for="image">Brand Image *</label>
+        <input type="file" id="image" class="form-control" accept="image/*" (change)="onFileSelected($event)" required>
+        
+        <div *ngIf="previewUrl" class="image-preview-container">
+          <img [src]="previewUrl" alt="Preview" class="image-preview">
+        </div>
+      </div>
+  
+      <button type="submit" class="btn-submit" [disabled]="!brandForm.valid || !selectedFile || isLoading">
+        <span *ngIf="!isLoading">Create Brand</span>
+        <span *ngIf="isLoading">Creating...</span>
+      </button>
+    </form>
+  </div>

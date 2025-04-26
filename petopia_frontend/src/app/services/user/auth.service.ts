@@ -171,18 +171,24 @@ export class AuthService {
     console.log(newPassword);
     return this.http.post(`${this.baseUrl}/reset-password`, formData);
   }
+    getAllVets(): Observable<any> {
+      const token = localStorage.getItem('token');
+      const headers = new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      });
 
+      return this.http.get(`${this.baseUrl}/vets`, { headers });
+    }
+    getAllPartners(): Observable<any> {
+      const token = localStorage.getItem('token');
+      const headers = new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      });
 
-
-  getAllVets(): Observable<any> {
-    const token = localStorage.getItem('token');
-    const headers = new HttpHeaders({
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${token}`
-    });
-
-    return this.http.get(`${this.baseUrl}/vets`, { headers });
-  }
+      return this.http.get(`${this.baseUrlAdmin}/partners`, { headers });
+    }
 
   RetriveAllUsers(): Observable<any> {
     const token = localStorage.getItem('token');

@@ -1,40 +1,21 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { BrandsService } from 'src/app/services/store/brands/brands.service';
 
 @Component({
   selector: 'app-brands',
   templateUrl: './brands.component.html',
   styleUrls: ['./brands.component.css']
 })
-export class BrandsComponent {
-  stories = [
-    {
-      profileImage: '../../../../assets/images/store/brands/brand1.png',
-      profileName: 'YourBrand',
-      seen: false
-    },
-    {
-      profileImage: '../../../../assets/images/store/brands/brand1.png',
-      profileName: 'Partner1',
-      seen: true
-    },
-    {
-      profileImage: '../../../../assets/images/store/brands/brand1.png',
-      profileName: 'Partner2',
-      seen: false
-    },
-    // Add more stories as needed
-  ];
+export class BrandsComponent implements OnInit{
 
-  openStory(index: number) {
-    // Mark as seen when opened
-    this.stories[index].seen = true;
-    
-    // Implement your story opening logic here
-    console.log('Opening story:', index);
-    // You would typically:
-    // 1. Set the current story index
-    // 2. Show the full-screen story component
-    // 3. Start the story progression
+  constructor(private brandService: BrandsService){}
+
+  stories: any[] = [];
+
+  ngOnInit(): void {
+    this.brandService.getAllBrandsUser().subscribe(
+      brand => this.stories = brand
+    )
   }
 
 }

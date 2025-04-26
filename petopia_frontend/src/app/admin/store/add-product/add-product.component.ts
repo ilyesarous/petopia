@@ -2,6 +2,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
+import { BrandsService } from 'src/app/services/store/brands/brands.service';
 import { ProductService } from 'src/app/services/store/products/product.service';
 
 @Component({
@@ -19,6 +20,7 @@ export class AddProductComponent {
   currentProductId: number | null = null;
   userId: number = 0;
   toast: any[]= [];
+  brands: any[] = [];
   @Input() product: any = null;
   @Input() isEditMode: boolean = false;
   @Input() role: string = "";
@@ -27,7 +29,8 @@ export class AddProductComponent {
   constructor(
     private fb: FormBuilder,
     private productService: ProductService,
-    private sanitizer: DomSanitizer
+    private sanitizer: DomSanitizer,
+    private brandService: BrandsService
   ) {
     this.productForm = this.fb.group({
       product_name: ['', [Validators.required, Validators.minLength(3)]],
@@ -36,7 +39,7 @@ export class AddProductComponent {
         [Validators.required, Validators.minLength(20)],
       ],
       old_price: [0, [Validators.required, Validators.min(0)]],
-      // old_price: [0, [Validators.min(0)]],
+      idBrand: [0, Validators.required],
       cuppon_price: [0, [Validators.min(0), Validators.max(100)]],
       category: ['', Validators.required],
       availableQuantity: [0, [Validators.required, Validators.min(0)]],
@@ -50,6 +53,9 @@ export class AddProductComponent {
       if (this.isEditMode && this.product) {
         this.loadProductData(this.product);
       }
+    this.brandService.getAllBrandsPartner().subscribe(
+      brand => this.brands = brand
+    )
   }
 
   loadProductData(product: any): void {
@@ -125,6 +131,8 @@ export class AddProductComponent {
         100;
     formData.append('product_price', priviousProce.toString());
     formData.append('id_user', this.userId.toString());
+    console.log(formData.get("idBrand"));
+    
     
     this.productService.addProduct(formData, this.role).subscribe({
       next: (newProduct) => {

@@ -41,6 +41,7 @@ public class Product {
     private User user;
 
     @ManyToOne
+    @JsonIgnore
     private Brand brand;
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
