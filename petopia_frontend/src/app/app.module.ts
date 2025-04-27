@@ -135,6 +135,7 @@ import { ServiceAnimalListComponent } from './simple-user/Event/service-animal-l
 import { AddServiceAnimalComponent } from './simple-user/Event/add-service-animal/add-service-animal.component';
 import { CountdownComponent } from './simple-user/Event/countdown/countdown.component';
 import { XpBarComponent } from './simple-user/Event/xp-bar/xp-bar.component';import { DreamPetComponent } from './simple-user/adoption/dream-pet/dream-pet.component';
+import { BabypetComponent } from './simple-user/matching/babypet/babypet.component';
 
 
 @NgModule({
@@ -234,6 +235,7 @@ import { XpBarComponent } from './simple-user/Event/xp-bar/xp-bar.component';imp
     AddServiceAnimalComponent,
     CountdownComponent,
     XpBarComponent,
+    BabypetComponent,
   ],
   imports: [
     BrowserModule,

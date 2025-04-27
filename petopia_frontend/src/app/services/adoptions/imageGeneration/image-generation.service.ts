@@ -19,5 +19,13 @@ export class ImageGenerationService {
       { description: desc }
     );
   }
+  generateBabyPet(petId1: string, petId2: string): Observable<{ image_url: string }> {
+    const body = {
+      pet_id_1: petId1,
+      pet_id_2: petId2
+    };
+
+    return this.http.post<{ image_url: string }>(`${this.apiUrl}/generate-baby-pet`, body);
+  }
   
 }

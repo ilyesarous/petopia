@@ -15,5 +15,6 @@ export class Pet {
     size!: string;       // e.g., "SMALL", "MEDIUM", "LARGE"
     healthStatus!: string;
     shelter?: Shelter;
+  user: any;
     }
   

@@ -1,6 +1,4 @@
 package  tn.esprit.petopia_backend.services.user;
-
-
 import tn.esprit.petopia_backend.entities.pet.Pet;
 import tn.esprit.petopia_backend.entities.event.Coupon;
 import tn.esprit.petopia_backend.entities.user.RevokedToken;

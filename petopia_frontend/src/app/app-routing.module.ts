@@ -73,6 +73,7 @@ import { EventParticipantsComponent } from './admin/Event/event-participants/eve
 import { ServiceAnimalListComponent } from './simple-user/Event/service-animal-list/service-animal-list.component';
 import { AddServiceAnimalComponent } from './simple-user/Event/add-service-animal/add-service-animal.component';
 import { DreamPetComponent } from './simple-user/adoption/dream-pet/dream-pet.component';
+import { BabypetComponent } from './simple-user/matching/babypet/babypet.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -127,6 +128,7 @@ const routes: Routes = [
   { path: 'shelter/pets', component: ShelterPetListComponent },
   { path: 'shelter/pets/add', component: ShelterAddPetComponent },
   {path: 'add-shelter', component: AddShelterComponent},
+  {path: 'bbypet', component: BabypetComponent},
   {
     path: 'shelter/adoption-requests',
     component: ShelterAdoptionRequestsComponent,

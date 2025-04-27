@@ -83,7 +83,10 @@ export class ChatWebSocketService {
   }
 
   async subscribeToMatch(matchId: number): Promise<void> {
+    // Réinitialiser les messages pour le nouveau match
+    this.messagesSubject.next([]);
     this.currentMatchId = matchId;
+
     if (!this.stompClient) {
       console.warn('WebSocket not initialized. Initializing now...');
       this.initializeWebSocket();
@@ -100,6 +103,21 @@ export class ChatWebSocketService {
       return;
     }
 
+    // Désabonner des souscriptions précédentes
+    Object.keys(this.subscriptions).forEach((oldMatchId) => {
+      if (+oldMatchId !== matchId) {
+        console.log(`Unsubscribing from match ${oldMatchId}, subscription ID: ${this.subscriptions[+oldMatchId]}`);
+        try {
+          this.stompClient!.unsubscribe(this.subscriptions[+oldMatchId]);
+          console.log(`Successfully unsubscribed from match ${oldMatchId}`);
+        } catch (error) {
+          console.error(`Error unsubscribing from match ${oldMatchId}:`, error);
+        }
+        delete this.subscriptions[+oldMatchId];
+      }
+    });
+
+    // Vérifier si une souscription existe déjà pour ce match
     if (this.subscriptions[matchId]) {
       console.log(`Unsubscribing from existing subscription for match ${matchId}, subscription ID: ${this.subscriptions[matchId]}`);
       try {
@@ -116,17 +134,22 @@ export class ChatWebSocketService {
       const subscription = this.stompClient!.subscribe(destination, (message: IMessage) => {
         try {
           const parsedMessage: ChatMessage = JSON.parse(message.body);
-          console.log(`Received message for match ${matchId} [Message ID: ${message.headers['message-id']}]:`, parsedMessage);
-          const currentMessages = this.messagesSubject.value;
-          const index = currentMessages.findIndex(msg => msg.id === parsedMessage.id);
-          if (index !== -1) {
-            // Mettre à jour le message existant
-            currentMessages[index] = { ...currentMessages[index], ...parsedMessage };
+          // Vérifier que le message correspond au matchId actif
+          if (parsedMessage.matchId === this.currentMatchId) {
+            console.log(`Received message for match ${matchId} [Message ID: ${message.headers['message-id']}]:`, parsedMessage);
+            const currentMessages = this.messagesSubject.value;
+            const index = currentMessages.findIndex(msg => msg.id === parsedMessage.id);
+            if (index !== -1) {
+              // Mettre à jour le message existant
+              currentMessages[index] = { ...currentMessages[index], ...parsedMessage };
+            } else {
+              // Ajouter un nouveau message
+              currentMessages.push(parsedMessage);
+            }
+            this.messagesSubject.next([...currentMessages]);
           } else {
-            // Ajouter un nouveau message
-            currentMessages.push(parsedMessage);
+            console.warn(`Ignoring message for non-active match ID: ${parsedMessage.matchId}`);
           }
-          this.messagesSubject.next([...currentMessages]);
         } catch (error) {
           console.error('Error parsing WebSocket message:', error);
         }
@@ -236,18 +259,11 @@ export class ChatWebSocketService {
 
   loadMessages(messages: ChatMessage[]): void {
     console.log('Loading messages:', messages);
-    const currentMessages = this.messagesSubject.value;
-    // Fusionner les messages pour éviter les duplications
-    const updatedMessages = [...currentMessages];
-    messages.forEach(newMsg => {
-      const index = updatedMessages.findIndex(msg => msg.id === newMsg.id);
-      if (index !== -1) {
-        updatedMessages[index] = { ...updatedMessages[index], ...newMsg };
-      } else {
-        updatedMessages.push(newMsg);
-      }
-    });
-    this.messagesSubject.next(updatedMessages);
+    // Remplacer complètement les messages existants
+    this.messagesSubject.next(messages.map(msg => ({
+      ...msg,
+      showReactionPicker: false
+    })));
   }
 
   isConnected(): boolean {
@@ -270,6 +286,7 @@ export class ChatWebSocketService {
         this.stompClient = null;
         this.connected = false;
         this.isInitializing = false;
+        this.currentMatchId = null;
         this.messagesSubject.next([]);
         console.log('WebSocket disconnected');
       }

@@ -1,0 +1,61 @@
+/* Animation for spinner */
+@keyframes spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  
+  /* Chart container */
+  .chart-container {
+    position: relative;
+    width: 100%;
+    height: 400px;
+    overflow: hidden;
+    border-radius: 0.5rem;
+  }
+  
+  .chart-container apx-chart {
+    width: 100%;
+    height: 100%;
+  }
+  
+  /* Card hover effect */
+  div[style*="background: white"] {
+    transition: box-shadow 0.3s, border-color 0.3s;
+  }
+  
+  div[style*="background: white"]:hover {
+    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.15);
+    border-color: #FFCCD5; /* Orange-200 */
+  }
+  
+  /* Logo next to titles */
+  div[style*="display: flex; align-items: center"] img {
+    vertical-align: middle;
+  }
+  
+  /* ApexCharts toolbar */
+  .apexcharts-toolbar {
+    background: white;
+    border-radius: 0.5rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 0.5rem;
+  }
+  
+  .apexcharts-menu {
+    background: white;
+    border: 1px solid #FFE6F0; /* Rose-100 */
+    border-radius: 0.5rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .apexcharts-menu-item {
+    color: #F83182; /* Rose-600 */
+    padding: 0.5rem 1rem;
+    transition: background-color 0.2s, color 0.2s;
+  }
+  
+  .apexcharts-menu-item:hover {
+    background-color: #FFF3F5; /* Orange-50 */
+    color: #FF617C; /* Orange-600 */
+  }

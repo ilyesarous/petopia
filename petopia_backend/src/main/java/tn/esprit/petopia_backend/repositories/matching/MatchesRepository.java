@@ -12,4 +12,10 @@ import java.util.List;
 public interface MatchesRepository extends JpaRepository  <Matches,Integer> {
     @Query("SELECT m FROM Matches m WHERE m.pet_2.idPet = ?1 AND m.status = ?2")
     List<Matches> findByPet2IdAndStatus(int pet2Id, MatchStatus status);
+//    @Query("SELECT m FROM Matches m WHERE m.status = ?1")
+//    List<Matches> findByStatus(MatchStatus status);
+
+    // Method to find matches by status
+    List<Matches> findByStatus(MatchStatus status);
+
 }

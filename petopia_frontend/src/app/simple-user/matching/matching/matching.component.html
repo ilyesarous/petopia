@@ -66,22 +66,6 @@
               <i class="bi bi-trash"></i>
             </button>
           </div>
-          <div>
-            <button
-              class="btn btn-sm btn-primary"
-              (click)="viewPetDetails(notification.match.pet_2)"
-              title="View"
-            >
-              <i class="bi bi-eye"></i>
-            </button>
-            <button
-              class="btn btn-sm btn-danger"
-              (click)="dismissNotification(notification.id)"
-              title="Dismiss"
-            >
-              <i class="bi bi-x"></i>
-            </button>
-          </div>
         </div>
       </div>
       <div
@@ -118,7 +102,7 @@
         </div>
         <div class="d-flex justify-content-center gap-3">
           <button class="btn btn-pink w-100" (click)="sendMessage()">Send a Message</button>
-          <button class="btn btn-outline-pink w-100" (click)="closeMatchConfirmation()">Keep Swiping</button>
+          <button class="btn btn-outline-pink w-100" (click)="generateBabyPhoto()">See your baby pet </button>
         </div>
       </div>
     </div>
@@ -150,9 +134,18 @@
             <button class="btn btn-sm btn-outline-light" (click)="togglePreferencesForm()" title="Manage Preferences" *ngIf="selectedPet">
               <i class="bi bi-gear"></i>
             </button>
+            <!-- Button for blocked users list -->
+            <button class="btn btn-sm btn-outline-light ms-2" (click)="toggleBlockedUsers()" title="Blocked Users">
+              <i class="bi bi-person-x"></i>
+            </button>
           </div>
         </div>
       </div>
+    </div>
+
+    <!-- Welcome Banner -->
+    <div class="alert alert-info text-center" *ngIf="!selectedPet && matchingPets.length > 0">
+      Select one of your pets to start matching, or browse all available pets below.
     </div>
 
     <!-- Preferences Section -->
@@ -226,6 +219,27 @@
       </div>
     </div>
 
+    <!-- Blocked Users List -->
+    <div class="preferences-overlay" *ngIf="showBlockedUsers" [@fadeInOut]>
+      <div class="preferences-container card shadow-lg border-0">
+        <div class="card-header text-white d-flex justify-content-between align-items-center" style="background: linear-gradient(135deg, #FF617C 0%, #FE9A7A 100%);">
+          <h5 class="mb-0"><i class="bi bi-person-x me-2"></i>Blocked Users</h5>
+          <button class="btn-close btn-close-white" (click)="toggleBlockedUsers()"></button>
+        </div>
+        <div class="card-body bg-light p-4">
+          <div *ngIf="blockedUsers.length === 0" class="text-center py-3">
+            <p class="text-muted">No blocked users.</p>
+          </div>
+          <div *ngIf="blockedUsers.length > 0" class="list-group">
+            <div class="list-group-item d-flex justify-content-between align-items-center" *ngFor="let user of blockedUsers">
+              <span>{{ getBlockedUserName(user.id) }}</span>
+              <button class="btn btn-sm btn-danger" (click)="unblockUser(user.id)">Unblock</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <!-- Matching Pets List (Tinder-Style Cards in Grid) -->
     <div class="row">
       <div class="col-md-6 col-lg-4 mb-4" *ngFor="let match of matchingPets">
@@ -235,20 +249,27 @@
           </div>
           <div class="tinder-card-info">
             <h3 class="pet-name">{{ match.petName }}, {{ match.petAge }}</h3>
-            <p class="pet-details text-white">{{ match.breed || 'net specified' }}</p>
+            <p class="pet-details text-white">{{ match.breed || 'not specified' }}</p>
           </div>
           <div class="tinder-actions">
             <button class="btn tinder-btn tinder-btn-view" (click)="viewPetDetails(match)">
               <i class="bi bi-info-circle"></i>
             </button>
-            <button class="btn tinder-btn tinder-btn-match" (click)="matchPet(match)">
+            <button *ngIf="selectedPet" class="btn tinder-btn tinder-btn-match" (click)="matchPet(match)">
               <i class="bi bi-heart-fill"></i>
             </button>
           </div>
         </div>
       </div>
       <div class="col-12 text-center py-5" *ngIf="matchingPets.length === 0 && !showPreferencesForm">
-        <p class="text-muted fs-5"><i class="bi bi-emoji-frown me-2"></i> No compatible pets found</p>
+        <p class="text-muted fs-5">
+          <i class="bi bi-emoji-frown me-2"></i>
+          <span *ngIf="currentPreferences">No compatible pets found for your preferences.</span>
+          <span *ngIf="!currentPreferences && selectedPet">
+            No {{ selectedPet.gender === 'Female' ? 'male' : 'female' }} {{ selectedPet.species }}s available at the moment.
+          </span>
+          <span *ngIf="!currentPreferences && !selectedPet">No pets available at the moment. Browse all available pets above.</span>
+        </p>
       </div>
     </div>
   </div>
@@ -263,14 +284,18 @@
     <div class="friends-body">
       <div class="friend-item" *ngFor="let friend of matchedFriends">
         <div class="friend-content p-2">
-          <div *ngFor="let pet of friend.matchedPets" class="d-flex flex-wrap gap-2">
-            <div (click)="openChat(friend, pet)" class="d-flex align-items-center">
+          <div *ngFor="let pet of friend.matchedPets" class="d-flex flex-wrap gap-2 align-items-center">
+            <div (click)="openChat(friend, pet)" class="d-flex align-items-center flex-grow-1">
               <img [src]="pet.petImage" alt="{{ pet.petName }}" class="rounded-circle me-2" style="width: 40px; height: 40px; object-fit: cover; border: 2px solid #F83182;" />
               <div>
                 <p class="mb-0 text-dark">{{ pet.petName }}</p>
                 <small class="text-muted">{{ pet.breed }}</small>
               </div>
             </div>
+            <!-- Button to block user -->
+            <button class="btn btn-sm btn-danger" (click)="blockUser(friend)" title="Block User">
+              <i class="bi bi-person-x"></i>
+            </button>
           </div>
         </div>
       </div>
@@ -286,7 +311,13 @@
       <h6 class="mb-0">
         <i class="bi bi-chat-dots me-2"></i>{{ selectedFriend?.petName }}
       </h6>
-      <button class="btn-close btn-close-white btn-close-sm" (click)="closeChat()"></button>
+      <div class="d-flex align-items-center">
+        <!-- Button to block user from chat -->
+        <button class="btn btn-sm btn-danger me-2" (click)="blockUser(selectedFriend)" title="Block User">
+          <i class="bi bi-person-x"></i>
+        </button>
+        <button class="btn-close btn-close-white btn-close-sm" (click)="closeChat()"></button>
+      </div>
     </div>
     <div class="chat-body card-body d-flex flex-column p-0" style="height: 400px;">
       <div *ngIf="chatMessages.length === 0" class="text-center py-3">
@@ -297,13 +328,24 @@
           <div class="message-bubble p-2 rounded shadow-sm position-relative" 
                [ngStyle]="{'background-color': message.senderId === ownerId ? '#F83182' : '#e9ecef', 'color': message.senderId === ownerId ? '#fff' : '#333', 'max-width': '70%'}"
                (mouseenter)="showReactionPicker(message)" (mouseleave)="hideReactionPicker(message)">
-            <p class="mb-0">{{ message.content }}</p>
+            <ng-container *ngIf="message.content.startsWith('Ma localisation :'); else regularMessage">
+              <div class="location-message p-2 rounded shadow-sm" [ngStyle]="{'background-color': message.senderId === ownerId ? '#F83182' : '#e9ecef'}">
+                <p class="mb-1 text-dark" *ngIf="message.address">
+                  <i class="bi bi-geo-alt me-2"></i>{{ message.address }}
+                </p>
+                <img [src]="matchedPet1?.petImage || '../../../../assets/images/pet/mapsChatA.jpg'" alt="Image de localisation statique" style="height: 150px; width: 100%; border-radius: 8px; object-fit: cover;" />
+                <a [href]="getGoogleMapsLink(message.content)" target="_blank" class="btn btn-sm btn-outline-primary mt-2">
+                  <i class="bi bi-map me-1"></i> Ouvrir dans Google Maps
+                </a>
+              </div>
+            </ng-container>
+            <ng-template #regularMessage>
+              <p class="mb-0">{{ message.content }}</p>
+            </ng-template>
             <small class="text-muted d-block" [ngStyle]="{'color': message.senderId === ownerId ? '#ddd' : '#666'}">{{ message.timestamp | date:'shortTime' }}</small>
-            <!-- Affichage des réactions -->
             <div class="reactions mt-1" *ngIf="message.reactions && message.reactions.length > 0">
               <span *ngFor="let reaction of message.reactions" class="reaction me-1" [@reactionAnimation]>{{ reaction.reaction }}</span>
             </div>
-            <!-- Sélecteur de réactions -->
             <div class="reaction-picker" *ngIf="message.showReactionPicker" [@pickerAnimation]>
               <button class="reaction-btn" (click)="sendReaction(message, '❤️')" title="Heart" aria-label="Réagir avec un cœur">❤️</button>
               <button class="reaction-btn" (click)="sendReaction(message, '👍')" title="Thumbs Up" aria-label="Réagir avec un pouce">👍</button>
@@ -318,6 +360,9 @@
     <div class="chat-footer card-footer p-2 bg-light">
       <form (ngSubmit)="sendChatMessage(); messageInput.focus()" class="d-flex gap-2">
         <input #messageInput type="text" class="form-control" [(ngModel)]="newMessage" name="newMessage" placeholder="Type a message..." required />
+        <button type="button" class="btn btn-outline-secondary" (click)="sendLocation()" title="Send Location">
+          <i class="bi bi-geo-alt"></i>
+        </button>
         <button type="submit" class="btn btn-pink">
           <i class="bi bi-send"></i>
         </button>
