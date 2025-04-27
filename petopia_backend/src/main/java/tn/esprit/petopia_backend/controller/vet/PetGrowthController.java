@@ -45,7 +45,6 @@ public class PetGrowthController {
         return petGrowthService.retrievePetGrowthsByPetId(petId);
     }
 
-    // Dans PetGrowthController.java
     @GetMapping("/auth/PetGrowth/calculateBMI/{petId}")
     public Map<String, String> calculateBMI(@PathVariable int petId) {
         return petGrowthService.calculatePetBMI(petId);

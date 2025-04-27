@@ -91,16 +91,20 @@ public class PetGrowthServiceImplement implements IPetGrowthService {
         // Déterminer l'état de santé
         String status;
         String advice;
+        String videoUrl;
 
         if (bmi < 15) {
             status = "UNDERWEIGHT";
             advice = "Your pet is underweight. Consider increasing meal portions or consulting a vet for a special diet plan.";
+            videoUrl = "https://youtu.be/drFie83MZpQ?si=M4umibUg9QNRX-vd";
         } else if (bmi >= 15 && bmi <= 30) {
             status = "NORMAL";
             advice = "Your pet is at a healthy weight. Maintain current diet and exercise routine.";
+            videoUrl = "https://youtu.be/N5UPW2NFFjA?si=ghTrnDcJzFczZtzG";
         } else {
             status = "OVERWEIGHT";
             advice = "Your pet is overweight. Consider reducing meal portions, switching to diet food, and increasing daily exercise.";
+            videoUrl = "https://youtu.be/Erta4eh6oYE?si=1xjwhze9a4wKaoVd";
         }
 
         // Formater le résultat
@@ -111,6 +115,7 @@ public class PetGrowthServiceImplement implements IPetGrowthService {
         result.put("lastMeasurementDate", latestGrowth.getMeasurement_date().toString());
         result.put("weight", String.format("%.1f kg", latestGrowth.getWeight()));
         result.put("height", String.format("%.1f cm", latestGrowth.getHeight()));
+        result.put("videoUrl", videoUrl);
 
         return result;
     }
