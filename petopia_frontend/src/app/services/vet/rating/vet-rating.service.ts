@@ -82,4 +82,13 @@ export class VetRatingService {
       });
     });
   }
+
+  toggleUserLock(userId: number): Observable<any> {
+    return this.http.post(
+      `${this.apiUrl}/toggleUserLock/${userId}`,
+      null,
+      this.getAuthHeaders()
+    );
+  }
+  
 }

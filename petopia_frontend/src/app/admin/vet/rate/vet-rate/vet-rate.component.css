@@ -302,3 +302,70 @@
         white-space: normal;
     }
 }
+
+.lock-button {
+    margin-top: 15px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  
+  .success-snackbar {
+    background-color: #4CAF50;
+    color: white;
+  }
+  
+  .error-snackbar {
+    background-color: #F44336;
+    color: white;
+  }
+
+/* Locked / unlocked button  */
+.account-status-container {
+    display: flex;
+    align-items: center;
+    gap: 8px; /* Espace entre le texte et le bouton */
+}
+
+.account-status {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin: 15px 0;
+    padding: 8px;
+    border-radius: 4px;
+    font-weight: 500;
+}
+
+.account-status.locked {
+    background-color: #ffebee;
+    color: #c62828;
+}
+
+.account-status.unlocked {
+    background-color: #e8f5e9;
+    color: #2e7d32;
+}
+
+.lock-button {
+    margin-top: 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    border-radius: 50% !important; /* Rend le bouton rond */
+}
+
+.red-button {
+    background-color: #FF0000 !important;
+    color: white !important;
+  }
+
+  .green-button {
+    background-color: #008000 !important;
+    color: white !important;
+  }
+
+  
+
+
+

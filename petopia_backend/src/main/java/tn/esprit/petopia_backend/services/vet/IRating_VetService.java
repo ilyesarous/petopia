@@ -11,4 +11,5 @@ public interface IRating_VetService {
     List<Rating_Vet> retrieveAllRatingVet();
     Rating_Vet retrieveRatingVet(int idRating);
     List<Rating_Vet> getRatingVetByUserId(Integer userId);
+    void toggleUserLock(Integer userId);
 }
