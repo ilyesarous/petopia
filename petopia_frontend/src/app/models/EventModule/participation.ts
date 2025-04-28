@@ -10,6 +10,7 @@ export enum ParticipationStatus {
 
 
 export interface Participation {
+    isPaying?: boolean;
     idParticipation?: number;
     dateInscription: Date;
     event: Event;                      // L'événement auquel on participe

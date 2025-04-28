@@ -1,102 +1,136 @@
 <div class="service-form-container">
   <div class="form-header">
-    <h1>{{ isEditMode ? 'Edit' : 'Add New' }} Animal Service</h1>
+    <h1><i class="fas {{ isEditMode ? 'fa-edit' : 'fa-paw' }}"></i> {{ isEditMode ? 'Edit' : 'Add New' }} Animal Service</h1>
     <div class="header-decoration"></div>
+    <p class="form-subtitle">Fill in the details to {{ isEditMode ? 'update' : 'create' }} your pet service</p>
   </div>
 
   <form [formGroup]="serviceForm" (ngSubmit)="onSubmit()" class="service-form">
     <div class="form-card">
-      <div class="form-group">
-        <label for="type">Service Type*</label>
+      <!-- Service Type -->
+      <div class="form-group floating-label">
         <div class="select-wrapper">
           <select id="type" formControlName="typeService" required>
-            <option value="" disabled selected>Select a service type</option>
+            <option value="" disabled selected></option>
             <option *ngFor="let type of serviceTypes" [value]="type">{{type | titlecase}}</option>
           </select>
+          <label for="type">Service Type*</label>
           <i class="fas fa-chevron-down"></i>
         </div>
         <div *ngIf="serviceForm.get('typeService')?.invalid && 
                    (serviceForm.get('typeService')?.dirty || serviceForm.get('typeService')?.touched)"
              class="error-message">
-          <i class="fas fa-exclamation-circle"></i> Service type is required
+          <i class="fas fa-exclamation-circle"></i> Please select a service type
         </div>
       </div>
 
-      
-      <div class="form-group">
-        <label for="description">Description*</label>
+      <!-- Description -->
+      <div class="form-group floating-label">
         <textarea id="description" formControlName="descriptionServiceAnimal" 
-                  required placeholder="Enter service description..."></textarea>
+                  required placeholder=" "></textarea>
+        <label for="description">Description*</label>
+
+ <!-- Add this button below the description field -->
+ <div class="generate-ad-container" *ngIf="serviceForm.get('descriptionServiceAnimal')?.value">
+  <button type="button" 
+          class="generate-ad-button"
+          (click)="generateAd()"
+          [disabled]="isGeneratingAd">
+    <i class="fas fa-magic"></i>
+    {{ isGeneratingAd ? 'Generating...' : 'Generate Advertisement' }}
+  </button>
+</div>
+
+
         <div *ngIf="serviceForm.get('descriptionServiceAnimal')?.invalid && 
                    (serviceForm.get('descriptionServiceAnimal')?.dirty || serviceForm.get('descriptionServiceAnimal')?.touched)"
              class="error-message">
-          <i class="fas fa-exclamation-circle"></i> Description is required
+          <i class="fas fa-exclamation-circle"></i> Please provide a description
         </div>
       </div>
 
-<!-- New fields -->
-<div class="form-group">
-  <label for="location">Location*</label>
-  <input id="location" type="text" formControlName="location" required>
-</div>
+         <!-- Generated Ad Display -->
+         <div *ngIf="generatedAd" class="generated-ad-section">
+          <h4 class="ad-header">
+            <i class="fas fa-ad"></i> Generated Advertisement
+            <button type="button" class="copy-ad-button" (click)="copyAdToClipboard()">
+              <i class="fas fa-copy"></i> Copy
+            </button>
+          </h4>
+          <div class="ad-content">
+            {{ generatedAd }}
+          </div>
+          <button type="button" class="use-ad-button" (click)="useGeneratedAd()">
+            <i class="fas fa-check-circle"></i> Use This Ad
+          </button>
+        </div>
 
-<div class="form-group">
-  <label for="animalType">Animal Type*</label>
-  <input id="animalType" type="text" formControlName="animalType" required>
-</div>
+      <!-- Location & Animal Type -->
+      <div class="form-row">
+        <div class="form-group floating-label">
+          <input id="location" type="text" formControlName="location" required placeholder=" ">
+          <label for="location">Location*</label>
+        </div>
+        
+        <div class="form-group floating-label">
+          <input id="animalType" type="text" formControlName="animalType" required placeholder=" ">
+          <label for="animalType">Animal Type*</label>
+        </div>
+      </div>
 
-<div class="form-group">
-  <label for="specialRequirements">Special Requirements</label>
-  <textarea id="specialRequirements" formControlName="specialRequirements"></textarea>
-</div>
+      <!-- Special Requirements -->
+      <div class="form-group floating-label">
+        <textarea id="specialRequirements" formControlName="specialRequirements" placeholder=" "></textarea>
+        <label for="specialRequirements">Special Requirements</label>
+        <span class="hint-text">(Dietary needs, behavior notes, etc.)</span>
+      </div>
 
-<div class="form-row">
-  <div class="form-group">
-    <label for="startDate">Start Date*</label>
-    <input id="startDate" type="date" formControlName="startDate" required>
-  </div>
-  
-  <div class="form-group">
-    <label for="endDate">End Date*</label>
-    <input id="endDate" type="date" formControlName="endDate" required>
-  </div>
-</div>
+      <!-- Dates -->
+      <div class="form-row">
+        <div class="form-group floating-label">
+          <input id="startDate" type="date" formControlName="startDate" required>
+          <label for="startDate">Start Date*</label>
+        </div>
+        
+        <div class="form-group floating-label">
+          <input id="endDate" type="date" formControlName="endDate" required>
+          <label for="endDate">End Date*</label>
+        </div>
+      </div>
 
+      <!-- Price -->
+      <div class="form-group floating-label with-icon">
+        <input id="price" type="number" formControlName="prixServiceAnimal" min="0" placeholder=" ">
+        <label for="price">Price (optional)</label>
+        <i class="fas fa-dollar-sign"></i>
+      </div>
 
-
-<div class="form-group">
-  <label for="price">Price (optional)</label>
-  <input id="price" type="number" formControlName="prixServiceAnimal" min="0">
-</div>
-
-
-
-<div class="form-group">
-  <label for="logo">Service Logo (optional)</label>
-  <input id="logo" type="file" (change)="onFileSelected($event)" accept="image/*">
-  
-  <!-- Logo preview -->
-  <div *ngIf="previewLogo" class="logo-preview">
-    <img [src]="previewLogo" alt="Logo Preview" class="preview-image">
-  </div>
-</div>
-
-
-
-
-
-
-
-     
+      <!-- Logo Upload -->
+      <div class="form-group file-upload">
+        <label class="upload-label">
+          <i class="fas fa-cloud-upload-alt"></i>
+          <span>{{ previewLogo ? 'Change Logo' : 'Upload Service Logo' }}</span>
+          <input id="logo" type="file" (change)="onFileSelected($event)" accept="image/*">
+        </label>
+        <span class="file-hint">(Optional, max 2MB)</span>
+        
+        <!-- Logo preview -->
+        <div *ngIf="previewLogo" class="logo-preview">
+          <img [src]="previewLogo" alt="Logo Preview" class="preview-image">
+          <button type="button" class="remove-logo" (click)="removeLogo()">
+            <i class="fas fa-times"></i>
+          </button>
+        </div>
+      </div>
     </div>
 
     <div class="form-actions">
       <button type="button" (click)="goBack()" class="cancel-button">
-        <i class="fas fa-times"></i> Cancel
+        <i class="fas fa-arrow-left"></i> Cancel
       </button>
       <button type="submit" class="submit-button" [disabled]="serviceForm.invalid">
-        <i class="fas" [class.fa-save]="isEditMode" [class.fa-plus]="!isEditMode"></i>
-        {{ isEditMode ? 'Update' : 'Add' }} Service
+        <i class="fas" [class.fa-save]="isEditMode" [class.fa-plus-circle]="!isEditMode"></i>
+        {{ isEditMode ? 'Update Service' : 'Create Service' }}
       </button>
     </div>
   </form>

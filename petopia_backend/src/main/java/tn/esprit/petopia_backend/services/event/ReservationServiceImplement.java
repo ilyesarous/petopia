@@ -1,7 +1,10 @@
 package tn.esprit.petopia_backend.services.event;
 
+import com.twilio.rest.taskrouter.v1.workspace.task.Reservation;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import tn.esprit.petopia_backend.dto.ReservationDTO;
 import tn.esprit.petopia_backend.entities.event.ReservationService;
 import tn.esprit.petopia_backend.entities.event.ServiceAnimal;
 import tn.esprit.petopia_backend.entities.user.User;
@@ -20,6 +23,8 @@ public class ReservationServiceImplement implements IReservationService {
 
     @Autowired
     private ServiceAnimalImplement serviceAnimalService;
+    @Autowired
+    private ServiceAnimalRepository serviceAnimalrepository;
 
     @Autowired
     private UserService userService;
@@ -38,15 +43,23 @@ public class ReservationServiceImplement implements IReservationService {
     public ReservationService createReservation(ReservationService reservation) {
         ServiceAnimal serviceAnimal = serviceAnimalService.getServiceAnimalById(reservation.getServiceAnimal().getIdServiceAnimal())
                 .orElseThrow(() -> new RuntimeException("ServiceAnimal not found"));
-
-        //User user = userService.getUsersById(reservation.getUtilisateur().getId_user()).getOurUsers();
-//        reservation.setUtilisateur(user);
+        System.out.println(reservation.getUtilisateur().getId_user());
+        User user = userService.getUsersById (reservation.getUtilisateur().getId_user()).getOurUsers();
+       reservation.setUtilisateur(user);
 //
       reservation.setServiceAnimal(serviceAnimal);
 //        reservation.setUtilisateur(user);
+        serviceAnimal.setDisponibilite(false);
+
+        System.out.println("=============================="+serviceAnimal);
+        // Example in your ReservationService backend logic:
+        serviceAnimalrepository.save(serviceAnimal);
+
 
         return reservationRepository.save(reservation);
     }
+
+
 
 
 
@@ -64,4 +77,6 @@ public class ReservationServiceImplement implements IReservationService {
     public void deleteReservation(Long id) {
         reservationRepository.deleteById(id);
     }
+
+
 }

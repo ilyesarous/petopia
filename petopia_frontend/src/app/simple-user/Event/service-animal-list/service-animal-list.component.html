@@ -1,7 +1,10 @@
 <div class="services-container">
   <div class="services-header">
     <div class="header-content">
-      <h1><i class="fas fa-paw"></i> Animal Services</h1>
+      <div class="header-text">
+        <h1><i class="fas fa-paw"></i> Animal Services</h1>
+        <p class="subtitle">Find and manage pet care services</p>
+      </div>
       <button routerLink="/services/add" class="add-button">
         <i class="fas fa-plus-circle"></i> Add New Service
       </button>
@@ -9,62 +12,102 @@
     <div class="header-decoration"></div>
   </div>
 
+  <!-- Filters Card -->
   <div class="filters-card">
     <div class="search-container">
       <i class="fas fa-search"></i>
-      <input type="text" [(ngModel)]="searchTerm" (input)="filterServices()" 
-             placeholder="Search services by name or description...">
+      <input type="text" [(ngModel)]="searchTerm" (input)="filterServices()"
+        placeholder="Search services by name, description...">
     </div>
-    
-    <div class="filter-select">
-      <i class="fas fa-filter"></i>
-      <select [(ngModel)]="selectedType" (change)="filterServices()">
-        <option value="ALL">All Service Types</option>
-        <option *ngFor="let type of serviceTypes" [value]="type">{{type | titlecase}}</option>
-      </select>
+
+    <div class="filter-group">
+      <div class="filter-select">
+        <i class="fas fa-filter"></i>
+        <select [(ngModel)]="selectedType" (change)="filterServices()">
+          <option value="ALL">All Service Types</option>
+          <option *ngFor="let type of serviceTypes" [value]="type">{{type | titlecase}}</option>
+        </select>
+      </div>
+      <button class="reset-filters" (click)="resetFilters()">
+        <i class="fas fa-sync-alt"></i> Reset
+      </button>
     </div>
   </div>
 
+  <!-- Empty State -->
   <div *ngIf="filteredServices.length === 0" class="no-results">
-    <i class="far fa-frown"></i>
-    <p>No services found matching your criteria</p>
+    <div class="empty-state-illustration">
+      <i class="fas fa-dog"></i>
+      <i class="fas fa-cat"></i>
+      <i class="fas fa-paw"></i>
+    </div>
+    <h3>No services found</h3>
+    <p>Try adjusting your search filters or create a new service</p>
     <button routerLink="/services/add" class="empty-state-button">
-      <i class="fas fa-plus"></i> Create New Service
+      <i class="fas fa-plus"></i> Create Your First Service
     </button>
   </div>
 
+  <!-- Services Grid -->
   <div class="services-grid">
-    <div *ngFor="let service of filteredServices" class="service-card" [routerLink]="['/services', service.idServiceAnimal]">
+    <div *ngFor="let service of filteredServices" class="service-card"
+      [routerLink]="['/services', service.idServiceAnimal]">
       <!-- Image Display -->
       <div class="service-image-container">
-        <!-- Show image if path exists and is valid -->
-        <img *ngIf="service?.imagePath" 
-             [src]="service.imagePath" 
-             alt="Service image" 
-             class="service-image"
-             >
-        
-        <!-- Show placeholder if no image or if error occurred -->
-        <div *ngIf="!service?.imagePath " class="image-placeholder">
-          <i class="fas fa-paw"></i>
+        <img *ngIf="service?.imagePath" [src]="service.imagePath" alt="Service image" class="service-image"
+          (error)="handleImageError($event, service)">
+
+        <div *ngIf="!service?.imagePath" class="image-placeholder" [ngClass]="getServiceTypeClass(service.typeService)">
+          <i class="fas" [class.fa-dog]="service.animalType?.toLowerCase() === 'dog'"
+            [class.fa-cat]="service.animalType?.toLowerCase() === 'cat'" [class.fa-paw]="!service.animalType"></i>
         </div>
       </div>
 
-      <div class="service-header" [ngClass]="getServiceTypeClass(service.typeService)">
-       
-        <h3>{{ service.typeService | titlecase }}</h3>
-      </div>
-      <div class="service-body">
-        <p class="service-description">{{ service.descriptionServiceAnimal }}</p>
-        <p class="service-description">{{ service.typeService  }}</p>
-        
-        <div class="service-details">
-          
-          
+      <div class="service-content">
+        <div class="service-header">
+          <span class="service-type-badge" [ngClass]="getServiceTypeClass(service.typeService)">
+            {{ service.typeService | titlecase }}
+          </span>
+          <span class="service-animal-type">
+            <i class="fas" [class.fa-dog]="service.animalType?.toLowerCase() === 'dog'"
+              [class.fa-cat]="service.animalType?.toLowerCase() === 'cat'" [class.fa-paw]="!service.animalType"></i>
+            {{ service.animalType || 'All pets' }}
+          </span>
         </div>
-      </div>
-      <div class="service-footer">
-        <span class="view-details">View details <i class="fas fa-arrow-right"></i></span>
+
+        <div class="service-body">
+          <h3 class="service-title">{{ service.typeService | titlecase }}</h3>
+          <p class="service-description">{{ truncateText(service.descriptionServiceAnimal, 100) }}</p>
+
+          <div class="service-meta">
+            <span class="service-price" *ngIf="service.prixServiceAnimal">
+              <i class="fas fa-tag"></i> {{ service.prixServiceAnimal }} TND
+            </span>
+            <span class="service-duration" *ngIf="service.startDate && service.endDate">
+              <i class="far fa-calendar-alt"></i>
+              {{ service.startDate | date:'shortDate' }} - {{ service.endDate | date:'shortDate' }}
+            </span>
+          </div>
+        </div>
+
+        <div class="service-footer">
+          <span class="view-details">
+            View details <i class="fas fa-arrow-right"></i>
+
+          </span>
+          <!-- Add this inside your service-card div, near the footer -->
+          <div class="service-actions">
+            <button *ngIf="service.disponibilite"
+              (click)="openReservationModal(service.idServiceAnimal); $event.stopPropagation()" class="reserve-button"
+              [routerLink]="['/reservation', service.idServiceAnimal]">
+              <i class="fas fa-calendar-plus"></i> Reserve
+            </button>
+            <button *ngIf="!service.disponibilite"
+              class="booked-button"
+              disabled>
+              <i class="fas fa-calendar-check"></i> Booked</button>
+          </div>
+        </div>
       </div>
     </div>
   </div>

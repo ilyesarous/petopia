@@ -1,1 +1,106 @@
-<p>service-animal-details works!</p>
+<div class="service-overlay">
+    <div class="service-container">
+      <div *ngIf="isLoading" class="loading">
+        <i class="fas fa-spinner fa-spin"></i> Loading service details...
+      </div>
+      
+      <div *ngIf="error" class="error">
+        <i class="fas fa-exclamation-triangle"></i> {{ error }}
+      </div>
+    
+      <div *ngIf="service && !isLoading" class="service-card">
+        <div class="service-header">
+          <button routerLink="/services" class="back-button">
+            <i class="fas fa-arrow-left"></i> Back to Services
+          </button>
+          <div class="header-content">
+            <h2>{{ service.typeService | titlecase }}</h2>
+            <span class="availability" [class.available]="service.disponibilite">
+              {{ service.disponibilite ? 'Available' : 'Unavailable' }}
+            </span>
+          </div>
+        </div>
+        
+        <div class="service-content">
+          <div class="service-image-section">
+            <div class="service-image-container">
+              <img *ngIf="service.imagePath" 
+                   [src]="service.imagePath" 
+                   alt="Service image"
+                   class="service-image">
+              <div *ngIf="!service.imagePath" class="image-placeholder">
+                <i class="fas fa-paw"></i>
+              </div>
+            </div>
+          </div>
+          
+          <div class="service-details">
+            <div class="description-section">
+              <h3><i class="fas fa-info-circle"></i> Description</h3>
+              <p>{{ service.descriptionServiceAnimal }}</p>
+            </div>
+            
+            <div class="details-section">
+              <div class="detail-row">
+                <div class="detail-item">
+                  <span class="tnd-symbol">TND</span>
+                  <div class="detail-content">
+                    <span class="label">Price</span>
+                    <span class="value">{{ service.prixServiceAnimal | currency }}</span>
+                  </div>
+                </div>
+                
+                <div class="detail-item">
+                  <i class="fas fa-map-marker-alt"></i>
+                  <div class="detail-content">
+                    <span class="label">Location</span>
+                    <span class="value">{{ service.location }}</span>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="detail-row">
+                <div class="detail-item">
+                  <i class="fas fa-dog"></i>
+                  <div class="detail-content">
+                    <span class="label">Animal Type</span>
+                    <span class="value">{{ service.animalType }}</span>
+                  </div>
+                </div>
+                
+                <div class="detail-item">
+                  <i class="fas fa-calendar-alt"></i>
+                  <div class="detail-content">
+                    <span class="label">Available From</span>
+                    <span class="value">{{ service.startDate | date }}</span>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="detail-row">
+                <div class="detail-item">
+                  <i class="fas fa-calendar-alt"></i>
+                  <div class="detail-content">
+                    <span class="label">Available To</span>
+                    <span class="value">{{ service.endDate | date }}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <div *ngIf="service.specialRequirements" class="requirements-section">
+              <h3><i class="fas fa-exclamation-triangle"></i> Special Requirements</h3>
+              <p>{{ service.specialRequirements }}</p>
+            </div>
+          </div>
+        </div>
+        
+        <div class="action-section">
+          <button class="book-button" [disabled]="!service.disponibilite">
+            <i class="fas fa-calendar-check"></i> Book Service
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  

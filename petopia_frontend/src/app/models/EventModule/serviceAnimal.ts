@@ -3,7 +3,8 @@
 export enum ServiceType {
     DOG_SITTING = 'DOG_SITTING',
     PROMONADE='PROMONADE',
-    DOG_WALKING='DOG_WALKING'
+    DOG_WALKING='DOG_WALKING',
+    
   // Add any other types you have in your Enum
 }
 

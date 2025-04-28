@@ -4,6 +4,11 @@ import { CommonModule } from '@angular/common';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatInputModule } from '@angular/material/input';
+import { MatNativeDateModule } from '@angular/material/core';
+import { MatFormFieldModule } from '@angular/material/form-field';
+
 
 // Routing & Core
 import { AppRoutingModule } from './app-routing.module';
@@ -140,6 +145,9 @@ import { DreamPetComponent } from './simple-user/adoption/dream-pet/dream-pet.co
 
 import { EventDetailsComponent } from './simple-user/Event/event-details/event-details.component';
 import { ServiceAnimalDetailsComponent } from './simple-user/Event/service-animal-details/service-animal-details.component';
+import { EventHelperComponent } from './admin/Event/event-helper/event-helper.component';
+import { Nl2BrPipe } from './pipes/nl2-br.pipe';
+import { ReservationFormComponent } from './simple-user/Event/reservation-form/reservation-form.component';
 
 
 
@@ -243,6 +251,10 @@ import { ServiceAnimalDetailsComponent } from './simple-user/Event/service-anima
     ReceiptModalComponent,
     EventDetailsComponent,
     ServiceAnimalDetailsComponent,
+    EventHelperComponent,
+    Nl2BrPipe,
+    ReservationFormComponent,
+    
   ],
   imports: [
     BrowserModule,
@@ -266,6 +278,11 @@ import { ServiceAnimalDetailsComponent } from './simple-user/Event/service-anima
     MatRadioModule,
     MatCardModule,
     MatRippleModule,
+    MatDatepickerModule,
+    MatInputModule,
+    MatNativeDateModule,
+    MatFormFieldModule,
+    
     
 
   ],

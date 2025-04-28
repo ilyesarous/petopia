@@ -4,7 +4,8 @@ import { ParticipationService } from 'src/app/services/Event/participation.servi
 import { Participation, ParticipationStatus } from 'src/app/models/EventModule/participation';
 import { EventService } from 'src/app/services/Event/event.service';
 import { Event as AppEvent } from 'src/app/models/EventModule/appevent'; // Importez le modèle Event
-
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-event-participants',
@@ -17,6 +18,10 @@ export class EventParticipantsComponent implements OnInit {
   eventName: string = 'Chargement...'; // Initialisation par défaut
   isLoading = true;
   error: string | null = null;
+  private refreshInterval: any;
+  private destroy$ = new Subject<void>();
+private refresh$ = new Subject<void>();
+
 
   statusOptions = Object.values(ParticipationStatus); // Ajoutez cette ligne
   editingParticipations: {[key: number]: boolean} = {}; // Pour gérer l'édition
@@ -31,9 +36,40 @@ export class EventParticipantsComponent implements OnInit {
   ngOnInit(): void {
     this.eventId = Number(this.route.snapshot.paramMap.get('id'));
     this.loadEventDetails(); // Chargez d'abord les détails de l'événement
+ // S'abonner aux mises à jour en temps réel
+ this.refresh$.pipe(
+  takeUntil(this.destroy$)
+).subscribe(() => {
+  this.loadParticipants();
+});
 
-    this.loadParticipants();
-  }
+// Chargement initial
+this.loadParticipants();
+
+// Écouter les événements SSE pour les mises à jour en temps réel
+this.setupSSEListener();
+ }
+
+ private setupSSEListener(): void {
+  const eventSource = new EventSource(`http://localhost:8082/api/participations/updates`);
+  
+  eventSource.addEventListener('participation_updated', (event) => {
+    const updatedParticipation = JSON.parse(event.data);
+    if (updatedParticipation.event?.idEvent === this.eventId) {
+      this.refresh$.next(); // Déclencher le rafraîchissement
+    }
+  });
+
+  eventSource.onerror = (error) => {
+    console.error('EventSource failed:', error);
+    eventSource.close();
+  };
+}
+ ngOnDestroy(): void {
+  this.destroy$.next();
+  this.destroy$.complete();
+}
+
   loadParticipants(): void {
     this.isLoading = true;
     this.error = null;
@@ -69,17 +105,42 @@ export class EventParticipantsComponent implements OnInit {
     }
 
       // Ajoutez cette méthode pour sauvegarder les modifications
+  // saveParticipationStatus(participation: Participation): void {
+  //   if (!participation.idParticipation) return;
+
+  //   this.participationService.updateParticipation(
+  //     participation.idParticipation, 
+  //     participation
+  //   ).subscribe({
+  //     next: () => {
+  //       this.editingParticipations[participation.idParticipation!] = false;
+  //       // Recharger les données si nécessaire
+  //       this.loadParticipants();
+  //     },
+  //     error: (err) => {
+  //       console.error('Erreur lors de la mise à jour:', err);
+  //       alert('Une erreur est survenue lors de la mise à jour');
+  //     }
+  //   });
+  // }
+
   saveParticipationStatus(participation: Participation): void {
     if (!participation.idParticipation) return;
-
+  
+    // Prepare the update payload
+    const updatePayload = {
+      statusParticipation: participation.statusParticipation,
+      paid: participation.paid
+    };
+  
     this.participationService.updateParticipation(
       participation.idParticipation, 
-      participation
+      updatePayload // Send the updated payload
     ).subscribe({
       next: () => {
         this.editingParticipations[participation.idParticipation!] = false;
-        // Recharger les données si nécessaire
-        this.loadParticipants();
+        // Optional: Show success message
+        console.log('Participation updated successfully');
       },
       error: (err) => {
         console.error('Erreur lors de la mise à jour:', err);
@@ -87,6 +148,7 @@ export class EventParticipantsComponent implements OnInit {
       }
     });
   }
+
 
     // Ajoutez cette méthode pour annuler l'édition
     cancelEdit(participationId: number): void {

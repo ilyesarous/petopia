@@ -146,7 +146,6 @@
         <div class="event-card-header">
           <h3>{{ event.nameEvent }}</h3>
           <div class="event-meta">
-            <span class="event-id">#{{ event.idEvent }}</span>
             <span class="event-status">{{ event.statusEvent | lowercase }}</span>
           </div>
         </div>
@@ -209,6 +208,9 @@
             <div class="detail-item">
               <h4>Location Details</h4>
               <p><strong>Coordinates:</strong> {{ event.lattitudeEvent }}, {{ event.longitudeEvent }}</p>
+              <button (click)="openMap(event.lieuEvent)" class="btn-map">
+                <i class="icon">🗺️</i> Show on Map
+              </button>
             </div>
             
             <div class="detail-item">
@@ -330,6 +332,8 @@
    
 
 </div>
+  
+  </div>
    <!-- Calendar View Modal -->
 <div class="modal fade" id="calendarModal" tabindex="-1" aria-hidden="true">
   <div class="modal-dialog modal-lg">
@@ -346,4 +350,4 @@
     </div>
   </div>
 </div>
-  </div>
+  <app-event-helper></app-event-helper>

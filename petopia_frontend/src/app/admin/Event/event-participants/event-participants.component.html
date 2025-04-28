@@ -46,6 +46,7 @@
               <th>Email</th>
               <th>Registration Date</th>
               <th>Status</th>
+              <th>Payment Status</th> <!-- New column -->
               <th>Actions</th>
             </tr>
           </thead>
@@ -81,6 +82,19 @@
                   <option *ngFor="let status of statusOptions" [value]="status">
                     {{status}}
                   </option>
+                </select>
+              </td>
+              <!-- Add this new column after the Status column -->
+              <td class="payment-status">
+                <span *ngIf="!editingParticipations[participant.idParticipation!]" 
+                      class="payment-badge payment-{{participant.paid ? 'paid' : 'unpaid'}}">
+                  {{participant.paid ? 'Paid' : 'Unpaid'}}
+                </span>
+                <select *ngIf="editingParticipations[participant.idParticipation!]" 
+                        [(ngModel)]="participant.paid"
+                        class="payment-select">
+                  <option [value]="true">Paid</option>
+                  <option [value]="false">Unpaid</option>
                 </select>
               </td>
               <td class="actions-cell">

@@ -54,9 +54,13 @@ export class ParticipationService {
     });
   }
 
-  updateParticipation(id: number, participation: Participation): Observable<Participation> {
-    return this.http.put<Participation>(`${this.baseUrl}/updateParticipation/${id}`, participation, {
-      headers: this.getAuthHeaders()});
+  // updateParticipation(id: number, participation: Participation): Observable<Participation> {
+  //   return this.http.put<Participation>(`${this.baseUrl}/updateParticipation/${id}`, participation, {
+  //     headers: this.getAuthHeaders()});
+  // }
+  updateParticipation(id: number, participation: any): Observable<any> {
+    return this.http.put(`${this.baseUrl}/updateParticipation/${id}`, participation, {
+         headers: this.getAuthHeaders()});
   }
 
   deleteParticipation(id: number): Observable<void> {
@@ -110,6 +114,6 @@ confirmParticipation(participationId: number): Observable<any> {
   //   );
   // }
 
- 
+  
 }
 
