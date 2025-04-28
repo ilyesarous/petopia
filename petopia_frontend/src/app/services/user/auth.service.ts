@@ -187,7 +187,7 @@ export class AuthService {
         'Authorization': `Bearer ${token}`
       });
 
-      return this.http.get(`${this.baseUrlAdmin}/partners`, { headers });
+      return this.http.get(`${this.baseUrlAdmin1}/partners`, { headers });
     }
 
   RetriveAllUsers(): Observable<any> {
