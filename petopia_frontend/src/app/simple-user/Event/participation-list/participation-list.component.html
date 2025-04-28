@@ -34,7 +34,7 @@
     
     <!-- XP Progress Bar -->
     <div class="user-progress" *ngIf="userXp !== undefined">
-      <app-xp-bar [currentXp]="userXp" [level]="userLevel"></app-xp-bar>
+      <app-xp-bar [currentXp]="user.ourUsers.nb_points" [level]="user.ourUsers.level"></app-xp-bar>
     </div>
   </div>
 
@@ -148,7 +148,7 @@
           <!-- Update your payment button section to show different states -->
           <div *ngIf="p.statusParticipation === 'CONFIRMED'" class="payment-section">
             <button 
-              [disabled]="paidNow"
+              [disabled]="!paidNow"
               class="pay-btn" 
               (click)="payForParticipation(p)">
               <i class="icon" *ngIf="!p.isPaying">💳</i>
