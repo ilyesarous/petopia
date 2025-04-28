@@ -1,7 +1,6 @@
 <footer class="site-footer">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
   <div class="footer-content">
-    <!-- Newsletter Section -->
     <div class="footer-section newsletter">
       <h3>Stay Updated</h3>
       <form class="newsletter-form">
@@ -39,10 +38,14 @@
           </div>
 
           <div class="form-group">
-            <textarea [(ngModel)]="reclamationText" name="reclamationText"
-                      placeholder="Describe your issue..." required></textarea>
+        <textarea [(ngModel)]="reclamationText" name="reclamationText"
+                  placeholder="Describe your issue..." required></textarea>
+            <div *ngIf="showBadWordWarning" class="bad-word-warning">
+              <i class="fas fa-exclamation-triangle"></i>
+              <p>Your feedback contains inappropriate language. Please revise your message.</p>
+            </div>
           </div>
-
+          <br>
           <button type="submit" class="submit-btn">Submit</button>
 
           <div *ngIf="showNotification" class="notification">
@@ -52,7 +55,6 @@
         </form>
       </div>
     </ng-container>
-
     <ng-template #guestFooter>
       <div class="footer-section guest-message">
         <h3>Join Our Community</h3>

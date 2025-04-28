@@ -1,0 +1,77 @@
+.reclamation-list-container {
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.reclamation-list-container h2 {
+  text-align: center;
+  font-size: 1.8rem;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.reclamation-list-container > div {
+  display: flex;
+  flex-wrap: wrap; /* Allow wrapping to the next line if there's not enough space */
+  gap: 15px; /* Space between cards */
+  justify-content: flex-start; /* Align cards to the left */
+}
+
+.reclamation-card {
+  display: flex;
+  background-color: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  width: calc(50% - 10px); /* Two cards per row with spacing */
+  max-width: 400px; /* Limit card width */
+}
+
+.reclamation-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.reclamation-image {
+  flex: 1;
+  max-width: 120px; /* Smaller image size */
+}
+
+.reclamation-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Reclamation details */
+.reclamation-details {
+  flex: 2;
+  padding: 15px;
+}
+
+.reclamation-details h3 {
+  font-size: 1.2rem;
+  color: #333;
+  margin-bottom: 8px;
+}
+
+.reclamation-details p {
+  font-size: 0.9rem;
+  color: #555;
+  margin: 4px 0;
+}
+
+.delete-btn {
+  background-color: red;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  cursor: pointer;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+

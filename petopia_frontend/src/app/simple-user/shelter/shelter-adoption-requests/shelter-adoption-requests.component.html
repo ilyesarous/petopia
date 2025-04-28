@@ -33,7 +33,9 @@
     <span class="remove-tag" (click)="clearStatus()">✕</span>
   </div>
   
-    
+  <div *ngIf="adoptionRequests.length === 0" class="pets-list-message">
+    <p class="no-pets">You don't have adoption request yet.</p>
+  </div>
     <div class="request-card" *ngFor="let req of adoptionRequests">
       <!-- Left: Pet Image -->
       <div class="pet-image">

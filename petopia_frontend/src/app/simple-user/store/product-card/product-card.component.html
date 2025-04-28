@@ -22,7 +22,8 @@
   <div class="card-body">
     <div class="product-info">
       <h3 class="product-name">{{ product.product_name }}</h3>
-      <div class="pre-order-badge">Pre-Order</div>
+      <div class="pre-order-badge" *ngIf="product.availableQuantity > 1">Pre-Order</div>
+      <div class="pre-order-badgee" *ngIf="product.availableQuantity===1">Out of Stock</div>
       <span class="product-category">{{ product.category }}</span>
 
       <div class="rating">

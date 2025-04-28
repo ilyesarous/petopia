@@ -332,3 +332,7 @@ textarea {
   color: #dc3545;        /* Bootstrap red, can be customized */
   margin-top: 0.5rem;
 }
+
+.file-error-wrapper {
+  margin-top: 0.25rem;
+}

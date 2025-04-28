@@ -103,7 +103,11 @@
     </button>
   </div>
   
-  <div class="row">
+  <div *ngIf="filteredPets.length === 0" class="text-center text-muted my-4">
+    No pets found matching your filters.
+  </div>
+  <div class="row"  *ngIf="filteredPets.length > 0">
+
     <!-- Loop over filteredPets instead of pets -->
     <div *ngFor="let pet of filteredPets" class="col-md-4 mb-4">
       <div class="card pet-card shadow-sm" style="cursor:pointer;" (click)="goToDetails(pet.idPet)">

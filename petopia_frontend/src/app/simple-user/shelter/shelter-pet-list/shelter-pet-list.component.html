@@ -42,7 +42,14 @@
       
       </div>
       
-
+      <div *ngIf="pets.length === 0" class="pets-list-message">
+        <p class="no-pets">You haven’t added any pets yet.</p>
+      </div>
+      
+      <div *ngIf="filteredPets.length === 0 && (searchQuery || statusFilter !== 'ALL')" class="pets-list-message">
+        <p class="no-pets">No pets match your search or filter.</p>
+      </div>
+      
       <div *ngFor="let pet of paginatedPets" class="col-md-4 mb-4">
         <div class="shelter-pet-card">
             <div class="pet-image-wrapper">
@@ -70,6 +77,7 @@
           </div>
           
       </div>
+      
     </div>
     <div class="pagination-controls" *ngIf="pageNumbers.length > 1">
       <button class="page-btn" [disabled]="currentPage === 1" (click)="changePage(currentPage - 1)">Prev</button>

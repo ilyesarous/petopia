@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { AuthService } from '../../services/user/auth.service';
 import { jwtDecode } from 'jwt-decode';
+import {AuthService} from "../../services/user/auth.service";
 
 @Component({
   selector: 'app-login',
@@ -55,17 +55,15 @@ export class LoginComponent implements OnInit {
           this.successMessage = '';
           return;
         }
-
         console.log('Token received:', response.token);
         localStorage.setItem('token', response.token);
         this.authService.updateAuthStatus(true);
         try {
           const decodedToken: any = jwtDecode(response.token);
           console.log('Decoded Token:', decodedToken);
-
+          localStorage.setItem('shetlerID',response.shelter_id);
           localStorage.setItem('userId', decodedToken.userId); //userid yeta7at fel localstorage
-          localStorage.setItem('shelterID', response.shelter_id);
-          localStorage.setItem('username', decodedToken.username);
+          localStorage.setItem('username',decodedToken.username);
           this.authService.updateUsername(decodedToken.username);
           this.authService.updateUsername(decodedToken.username);
           localStorage.setItem('role', decodedToken.roles[0]); // Store role
@@ -111,10 +109,10 @@ export class LoginComponent implements OnInit {
             this.router.navigate(['/shelter/home']);
           }
         }
-      //  else if (role === 'ROLE_VET') this.router.navigate(['/vet-dashboard']);
-       else if (role === 'ROLE_PARTNER') this.router.navigate(['/partner/home']);
+        //  else if (role === 'ROLE_VET') this.router.navigate(['/vet-dashboard']);
+        else if (role === 'ROLE_PARTNER') this.router.navigate(['/partner/home']);
         else if (role === 'ROLE_VET') this.router.navigate(['/vet']);
-       // else if (role === 'ROLE_PARTNER') this.router.navigate(['/partner-dashboard']);
+        // else if (role === 'ROLE_PARTNER') this.router.navigate(['/partner-dashboard']);
         else this.router.navigate(['/']);
       }, 500);
     } catch (error) {

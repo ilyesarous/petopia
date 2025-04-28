@@ -1,15 +1,21 @@
 package tn.esprit.petopia_backend.controller.reclamation;
 
 
+import jakarta.mail.MessagingException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import tn.esprit.petopia_backend.dto.ReclamationDTO;
+import tn.esprit.petopia_backend.dto.ReclamationResponseDTO;
 import tn.esprit.petopia_backend.dto.ReqRes;
 import tn.esprit.petopia_backend.entities.pet.Pet;
 import tn.esprit.petopia_backend.entities.reclamation.Reclamation;
+import tn.esprit.petopia_backend.entities.user.User;
+import tn.esprit.petopia_backend.repositories.user.UserRepository;
 import tn.esprit.petopia_backend.services.reclamation.ReclamationService;
+import tn.esprit.petopia_backend.services.user.EmailService;
 
 import java.util.Collections;
 import java.util.List;
@@ -19,6 +25,56 @@ import java.util.Map;
 @CrossOrigin(origins = "http://localhost:4200")
 public class ReclamationController {
     private final ReclamationService reclamationService;
+
+    @Autowired
+    private UserRepository userRepository;
+    @Autowired
+    private EmailService emailService;
+
+
+    @PostMapping("/reclamation/respond/{reclamationId}")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    public ResponseEntity<ReqRes> respondToReclamation(
+            @PathVariable int reclamationId,
+            @RequestBody ReclamationResponseDTO responseDTO) {
+        System.out.println("respond to reclamation");
+        ReqRes response = new ReqRes();
+        try {
+            ReclamationDTO reclamation = reclamationService.getReclamationById(reclamationId);
+            User user = userRepository.findByName(reclamation.getUserName())
+                    .orElseThrow(() -> new RuntimeException("User not found with name: " + reclamation.getUserName()));
+
+            // Send email response
+            String htmlContent = emailService.getReclamationResponseTemplate(
+                    user.getName(),
+                    reclamation.getType(),
+                    responseDTO.getAdminResponse()
+            );
+
+            emailService.sendHtmlMessage(
+                    user.getEmail(),
+                    "Re: [REC-" + reclamationId + "] " + reclamation.getType(),
+                    htmlContent
+            );
+            if (responseDTO.getNewStatus() != null && !responseDTO.getNewStatus().isEmpty()) {
+                reclamationService.updateReclamationStatus(reclamationId, responseDTO.getNewStatus());
+            }
+            response.setStatusCode(HttpStatus.OK.value());
+            response.setMessage("Response sent successfully");
+            return ResponseEntity.ok(response);
+
+        } catch (MessagingException e) {
+            response.setStatusCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
+            response.setMessage("Failed to send email: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        } catch (Exception e) {
+            response.setStatusCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
+            response.setMessage("Error processing request: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }
+    }
+
+
 
     public ReclamationController(ReclamationService reclamationService) {
         this.reclamationService = reclamationService;
@@ -90,6 +146,12 @@ public class ReclamationController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(Collections.singletonMap("error", "No reclamation found for this user"));
         }
     }
+
+    @GetMapping("/reclamation/stats")
+    public ResponseEntity<Map<String, Integer>> getStats() {
+        return ResponseEntity.ok(reclamationService.getStatsFromPython());
+    }
+
 
 
 
