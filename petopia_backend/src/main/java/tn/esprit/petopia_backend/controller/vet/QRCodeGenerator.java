@@ -39,7 +39,8 @@ public class QRCodeGenerator {
                         "Pet Gender: "+diagnosis.getPetdiagnosis().getGender()+ "\n"+
                         "Pet Age: "+diagnosis.getPetdiagnosis().getPetAge()+ "\n"+
                         "Diagnosis Date: "+diagnosis.getDiagnosis_date()+ "\n"+
-                        "Diagnosis Description: "+diagnosis.getDiagnosis_description() , BarcodeFormat.QR_CODE, 400, 400);
+                        "Diagnosis Type: "+diagnosis.getDiagnosisT(),BarcodeFormat.QR_CODE, 400, 400);
+                        //"Diagnosis Description: "+diagnosis.getDiagnosis_description() , BarcodeFormat.QR_CODE, 400, 400);
         Path path = FileSystems.getDefault().getPath(qrCodeName);
         MatrixToImageWriter.writeToPath(bitMatrix, "PNG", path);
     }
