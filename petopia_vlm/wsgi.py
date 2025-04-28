@@ -12,6 +12,7 @@ from src.api.pet_recommendation_api import pet_recommendation_api
 from src.api.verify_person_api import verify_person_apibp
 from src.api.breed_detect_api import breed_detect_api
 from src.api.pet_baby_api import baby_pet_api
+from src.api.post_detect_api import post_detect_api
 
 # Load environment variables
 weaviate_url = os.getenv("WEAVIATE_URL")
@@ -71,6 +72,7 @@ app.register_blueprint(pet_recommendation_api, url_prefix='/api')
 app.register_blueprint(verify_person_apibp, url_prefix='/api')
 app.register_blueprint(baby_pet_api, url_prefix='/api')
 app.register_blueprint(breed_detect_api, url_prefix='/api')
+app.register_blueprint(post_detect_api, url_prefix='/api')
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=5002)
