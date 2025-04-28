@@ -21,7 +21,6 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatDialogModule } from '@angular/material/dialog';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { NgApexchartsModule } from 'ng-apexcharts';
-import { FullCalendarModule } from '@fullcalendar/angular';
 import { CanvasJSAngularChartsModule } from '@canvasjs/angular-charts';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { library } from '@fortawesome/fontawesome-svg-core';
@@ -148,6 +147,7 @@ import { ServiceAnimalDetailsComponent } from './simple-user/Event/service-anima
 import { EventHelperComponent } from './admin/Event/event-helper/event-helper.component';
 import { Nl2BrPipe } from './pipes/nl2-br.pipe';
 import { ReservationFormComponent } from './simple-user/Event/reservation-form/reservation-form.component';
+import { FullCalendarModule } from '@fullcalendar/angular';
 
 
 
