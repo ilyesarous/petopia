@@ -74,7 +74,7 @@
 
   <!-- Products -->
   <div *ngIf="searchQuery.length == 0">
-    <div class="row" *ngFor="let category of categories">
+    <div class="row mb-5" *ngFor="let category of categories">
       <h2 class="my-4" *ngIf="category.items.length != 0">{{ category.titel }}</h2>
       <div
         class="col-md-3 mt-3"
