@@ -22,6 +22,5 @@ public class Brand {
     private String image;
 
     @OneToMany(mappedBy = "brand", cascade = CascadeType.ALL)
-    @JsonIgnore
     private List<Product> products;
 }

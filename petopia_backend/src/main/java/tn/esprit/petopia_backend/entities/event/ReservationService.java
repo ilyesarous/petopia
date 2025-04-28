@@ -22,6 +22,8 @@ public class ReservationService {
 
     private Date dateReservation;
 
+
+
     @ManyToOne
     private ServiceAnimal serviceAnimal;
 

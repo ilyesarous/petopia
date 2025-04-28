@@ -68,6 +68,7 @@ public class ParticipationServiceImplement implements IParticipationService {
             }
             participation.setStatusParticipation(updatedParticipation.getStatusParticipation());
             participation.setDateInscription(updatedParticipation.getDateInscription());
+            participation.setPaid(updatedParticipation.getPaid());
             return participationRepository.save(participation);
         }).orElseThrow(() -> new RuntimeException("Participation not found"));
     }

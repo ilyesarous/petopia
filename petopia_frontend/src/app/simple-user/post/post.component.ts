@@ -7,6 +7,7 @@ import { CommentService } from '../../services/community/comment.service';
 import { PostService } from '../../services/community/post.service';
 import { NgForm } from '@angular/forms';
 import { TranslationService } from 'src/app/services/community/translation.service';
+import { ImageGenerationService } from '../../services/adoptions/imageGeneration/image-generation.service';
 
 
 @Component({
@@ -58,7 +59,8 @@ PostType = PostType;
     private reactionService: ReactionService,
     private commentService: CommentService,
     private postService: PostService,
-    private translationService: TranslationService
+    private translationService: TranslationService,
+    private imageGenerationService: ImageGenerationService 
 
   ) {}
 
@@ -207,49 +209,92 @@ PostType = PostType;
   }
 
   updateComment(comment: Comment): void {
-    if (!comment['editedContent'] || !comment.id) return;
+    this.commentErrorMessage = '';
   
-    this.commentService.updateComment(comment.id, comment['editedContent']).subscribe({
-      next: updated => {
-        comment.content = updated.content;
-        comment['isEditing'] = false;
-        this.commentErrorMessage = ''; // ✅ clear error
-      },
-      error: (err) => {
-        console.error('❌ Update comment failed:', err);
-        if (err.status === 400 && err.error) {
-          this.commentErrorMessage = err.error; // ✅ custom backend message
-        } else {
-          this.commentErrorMessage = 'An error occurred while updating the comment.';
+    const content = comment['editedContent'];
+    const commentId = comment.id;
+
+    if (!content || commentId == null) {
+      this.commentErrorMessage = 'Comment cannot be empty.';
+      return;
+    }
+
+  
+    this.imageGenerationService.checkPostContent(content).subscribe({
+      next: (moderationRes) => {
+        const status = moderationRes.status;
+  
+        if (status === 'inappropriate') {
+          this.commentErrorMessage = '🚫 Your updated comment contains inappropriate content.';
+          return;
+        } else if (status === 'try another') {
+          this.commentErrorMessage = '⚠️ Please write meaningful, pet-related content.';
+          return;
         }
+  
+        this.commentService.updateComment(commentId, content).subscribe({    
+                next: updated => {
+            comment.content = updated.content;
+            comment['isEditing'] = false;
+            this.commentErrorMessage = '';
+          },
+          error: (err) => {
+            console.error('❌ Update comment failed:', err);
+            this.commentErrorMessage = 'An error occurred while updating the comment.';
+          }
+        });
+      },
+      error: () => {
+        this.commentErrorMessage = '❌ Error while moderating comment content.';
       }
     });
   }
+  
 
   addComment(commentForm: NgForm): void {
-    if (!this.newComment.trim()) return;
-    const userIdStr = localStorage.getItem('userId');
-    if (!userIdStr) return;
-    const currentUserId = parseInt(userIdStr, 10);
+    this.commentErrorMessage = '';
   
-    this.commentService.addComment(currentUserId, this.post.id, this.newComment).subscribe({
-      next: comment => {
-        this.post.comments = this.post.comments || [];
-        this.post.comments.push(comment);
-        this.newComment = '';
-        this.commentErrorMessage = ''; // ✅ clear error
-        commentForm.resetForm();
-      },
-      error: (err) => {
-        console.error('❌ Add comment failed:', err);
-        if (err.status === 400 && err.error) {
-          this.commentErrorMessage = err.error; // ✅ custom backend message
-        } else {
-          this.commentErrorMessage = 'An error occurred while adding the comment.';
+    if (!this.newComment.trim()) {
+      this.commentErrorMessage = 'Comment cannot be empty.';
+      return;
+    }
+  
+    this.imageGenerationService.checkPostContent(this.newComment).subscribe({
+      next: (moderationRes) => {
+        const status = moderationRes.status;
+  
+        if (status === 'inappropriate') {
+          this.commentErrorMessage = '🚫 Your comment contains inappropriate content.';
+          return;
+        } else if (status === 'try another') {
+          this.commentErrorMessage = '⚠️ Please write meaningful, pet-related content.';
+          return;
         }
+  
+        const userIdStr = localStorage.getItem('userId');
+        if (!userIdStr) return;
+        const currentUserId = parseInt(userIdStr, 10);
+  
+        this.commentService.addComment(currentUserId, this.post.id, this.newComment).subscribe({
+          next: comment => {
+            this.post.comments = this.post.comments || [];
+            this.post.comments.push(comment);
+            this.newComment = '';
+            this.commentErrorMessage = '';
+            commentForm.resetForm();
+          },
+          error: (err) => {
+            console.error('❌ Add comment failed:', err);
+            this.commentErrorMessage = 'An error occurred while adding the comment.';
+          }
+        });
+      },
+      error: () => {
+        this.commentErrorMessage = '❌ Error while moderating comment content.';
       }
     });
   }
+  
 
   // Image Handling
   onPostImageSelected(event: Event): void {
@@ -312,7 +357,7 @@ PostType = PostType;
         this.selectedPostImageFiles = [];
         this.selectedPostImagePreviews = [];
         this.deletedImageIndexes = [];
-        this.updateErrorMessage = ''; // ✅ clear error message on success
+        this.updateErrorMessage = ''; 
       },
       error: (err: any) => {
         console.error('Error updating post:', err);

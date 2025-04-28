@@ -12,6 +12,8 @@ from src.api.pet_recommendation_api import pet_recommendation_api
 from src.api.verify_person_api import verify_person_apibp
 from src.api.breed_detect_api import breed_detect_api
 from src.api.pet_baby_api import baby_pet_api
+from src.service.find_similar_pets_service import find_similar_pets
+from src.api.post_detect_api import post_detect_api
 
 # Load environment variables
 weaviate_url = os.getenv("WEAVIATE_URL")
@@ -58,8 +60,30 @@ openai_api_key = os.getenv("OPENAI_API_KEY")
 #     print("❌ The following failed:")
 #     for f in failed:
 #         print(f"- {f['uuid']}: {f['error']}")
+#---------------------------------------------------------------
+# collection = client.collections.get("ImageDescription")
+# deleted = []
+# failed = []
 
+# try:
+#     # Fetch all objects' UUIDs
+#     objects = collection.query.fetch_objects(limit=10000)  # Adjust limit as needed
+#     uuids_to_delete = [obj.uuid for obj in objects.objects]
 
+#     for uuid in uuids_to_delete:
+#         try:
+#             collection.data.delete_by_id(uuid)
+#             print(f"✅ Deleted UUID: {uuid}")
+#             deleted.append(uuid)
+#         except Exception as e:
+#             print(f"❌ Failed: {uuid} -> {str(e)}")
+#             failed.append(uuid)
+
+#     print(f"\n🧹 Summary: {len(deleted)} deleted, {len(failed)} failed.")
+# except Exception as e:
+#     print(f"❌ Error during deletion: {str(e)}")
+# finally:
+#     client.close()
 
 app = Flask(__name__)
 CORS(app, origins=["*"], supports_credentials=True)
@@ -71,6 +95,7 @@ app.register_blueprint(pet_recommendation_api, url_prefix='/api')
 app.register_blueprint(verify_person_apibp, url_prefix='/api')
 app.register_blueprint(baby_pet_api, url_prefix='/api')
 app.register_blueprint(breed_detect_api, url_prefix='/api')
+app.register_blueprint(post_detect_api, url_prefix='/api')
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=5002)

@@ -54,16 +54,6 @@ public class ProductService implements IProductService {
                     throw new RuntimeException("Could not save file: " + uniqueFileName, e);
                 }
             }
-
-            // Set user and brand (as you already have)
-            User user = userService.getUsersById(product.getUser().getId_user()).getOurUsers();
-            Brand brand = brandRepository.findById(2).get();
-            if (user == null) {
-                throw new RuntimeException("User not found");
-            }
-            product.setUser(user);
-            product.setBrand(brand);
-
             return repository.save(product);
         } catch (Exception e) {
             throw new RuntimeException("Could not store the file. Error: " + e.getMessage());
@@ -114,7 +104,7 @@ public class ProductService implements IProductService {
                     throw new RuntimeException("Could not save file: " + uniqueFileName, e);
                 }
             }
-            Brand brand = brandRepository.findById(2).get();
+            Brand brand = brandRepository.findById(product.getBrand().getId()).get();
             product.setBrand(brand);
             return repository.save(product);
         } catch (Exception e) {
@@ -137,6 +127,7 @@ public class ProductService implements IProductService {
         if (product.getAvailableQuantity() - quantity <= 0)
             throw new RuntimeException("not enough quantity available");
         product.setAvailableQuantity(product.getAvailableQuantity() - quantity);
+        product.setQuantity(product.getQuantity() + quantity);
         repository.save(product);
     }
 
@@ -144,6 +135,7 @@ public class ProductService implements IProductService {
         if (repository.findById(idProduct).isEmpty())
             throw new RuntimeException("Product not found");
         Product product = repository.findById(idProduct).get();
+        product.setQuantity(product.getQuantity() - quantity);
         product.setAvailableQuantity(product.getAvailableQuantity() + quantity);
         repository.save(product);
     }

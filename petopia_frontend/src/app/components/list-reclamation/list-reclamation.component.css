@@ -1,0 +1,290 @@
+/* Users List Container */
+.users-list-container {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+  padding: 1.5rem;
+  margin-top: 2rem;
+}
+
+/* Section Header */
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.section-header h3 {
+  margin: 0;
+  font-size: 1.3rem;
+  color: #333;
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+}
+
+.section-header h3 i {
+  color: #F83182;
+}
+
+.header-actions {
+  display: flex;
+  gap: 0.8rem;
+}
+
+.refresh-btn, .export-btn {
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: all 0.3s ease;
+}
+
+.refresh-btn {
+  background: rgba(248, 49, 130, 0.1);
+  border: 1px solid rgba(248, 49, 130, 0.2);
+  color: #F83182;
+}
+
+.refresh-btn:hover {
+  background: rgba(248, 49, 130, 0.2);
+}
+
+.export-btn {
+  background: rgba(40, 167, 69, 0.1);
+  border: 1px solid rgba(40, 167, 69, 0.2);
+  color: #28a745;
+}
+
+.export-btn:hover {
+  background: rgba(40, 167, 69, 0.2);
+}
+
+/* Users Table */
+.users-table-container {
+  overflow-x: auto;
+}
+
+.users-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.users-table th {
+  text-align: left;
+  padding: 1rem;
+  background: rgba(248, 49, 130, 0.05);
+  color: #F83182;
+  font-weight: 600;
+  text-transform: uppercase;
+  font-size: 0.8rem;
+  letter-spacing: 0.5px;
+}
+
+.users-table td {
+  padding: 1rem;
+  border-bottom: 1px solid #f5f5f5;
+  color: #555;
+}
+
+.users-table tr:last-child td {
+  border-bottom: none;
+}
+
+.users-table tr:hover td {
+  background: rgba(248, 49, 130, 0.03);
+}
+
+/* Status Badges */
+.status-badge {
+  padding: 0.3rem 0.6rem;
+  border-radius: 20px;
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+.status-badge.active {
+  background: rgba(40, 167, 69, 0.1);
+  color: #28a745;
+}
+
+.status-badge.locked {
+  background: rgba(220, 53, 69, 0.1);
+  color: #dc3545;
+}
+
+/* Points Badge */
+.points-badge {
+  display: inline-block;
+  min-width: 30px;
+  padding: 0.2rem 0.5rem;
+  background: rgba(13, 110, 253, 0.1);
+  color: #0d6efd;
+  border-radius: 20px;
+  text-align: center;
+  font-weight: 500;
+  font-size: 0.8rem;
+}
+
+/* Role Badges */
+.role-badge {
+  padding: 0.3rem 0.6rem;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  text-transform: capitalize;
+}
+
+.role-badge.admin {
+  background: rgba(248, 49, 130, 0.1);
+  color: #F83182;
+}
+
+.role-badge.user {
+  background: rgba(13, 110, 253, 0.1);
+  color: #0d6efd;
+}
+
+.role-badge.vet {
+  background: rgba(255, 193, 7, 0.1);
+  color: #ffc107;
+}
+
+.role-badge.partner {
+  background: rgba(111, 66, 193, 0.1);
+  color: #6f42c1;
+}
+
+/* Action Buttons */
+.actions-cell {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.action-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.action-btn i {
+  font-size: 0.9rem;
+}
+
+.action-btn.view {
+  background: rgba(13, 110, 253, 0.1);
+  color: #0d6efd;
+}
+
+.action-btn.view:hover {
+  background: rgba(13, 110, 253, 0.2);
+}
+
+.action-btn.edit {
+  background: rgba(255, 193, 7, 0.1);
+  color: #ffc107;
+}
+
+.action-btn.edit:hover {
+  background: rgba(255, 193, 7, 0.2);
+}
+
+.action-btn.delete {
+  background: rgba(220, 53, 69, 0.1);
+  color: #dc3545;
+}
+
+.action-btn.delete:hover {
+  background: rgba(220, 53, 69, 0.2);
+}
+
+/* Empty State */
+.empty-state {
+  padding: 3rem 1rem;
+  text-align: center;
+  color: #999;
+}
+
+.empty-state i {
+  font-size: 3rem;
+  color: #eee;
+  margin-bottom: 1rem;
+}
+
+.empty-state p {
+  margin: 0 0 1.5rem;
+  font-size: 1.1rem;
+}
+
+.add-user-btn {
+  padding: 0.7rem 1.5rem;
+  background: linear-gradient(135deg, #F83182 0%, #FE9A7A 100%);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.7rem;
+}
+
+.add-user-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(248, 49, 130, 0.3);
+}
+
+/* Responsive Table */
+@media (max-width: 768px) {
+  .users-table {
+    display: block;
+  }
+
+  .users-table thead {
+    display: none;
+  }
+
+  .users-table tbody, .users-table tr, .users-table td {
+    display: block;
+    width: 100%;
+  }
+
+  .users-table tr {
+    margin-bottom: 1rem;
+    border: 1px solid #f0f0f0;
+    border-radius: 8px;
+    overflow: hidden;
+  }
+
+  .users-table td {
+    padding: 0.8rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    text-align: right;
+    border-bottom: 1px solid #f5f5f5;
+  }
+
+  .users-table td:before {
+    content: attr(data-label);
+    font-weight: 600;
+    color: #F83182;
+    margin-right: 1rem;
+  }
+
+  .actions-cell {
+    justify-content: flex-end;
+  }
+}

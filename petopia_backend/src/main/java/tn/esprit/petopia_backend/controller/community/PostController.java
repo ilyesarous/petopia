@@ -28,7 +28,6 @@ public class PostController {
 
     private final IPostService postService;
     private final CloudinaryService cloudinaryService;
-    private final PostModerationService postModerationService;
 
     @PostMapping("/add")
     @PreAuthorize("hasAnyAuthority('ROLE_USER', 'ROLE_VET', 'ROLE_PARTNER', 'ROLE_SHELTER')")
@@ -41,10 +40,6 @@ public class PostController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         User user = (User) authentication.getPrincipal();
         Integer userId = user.getId_user();
-
-        if (postModerationService.containsInappropriateContent(content)) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("❌ Your post contains inappropriate content.");
-        }
 
         try {
             String normalizedType = postTypeStr.trim().toUpperCase().replace(" ", "_");
@@ -103,10 +98,7 @@ public class PostController {
             @RequestParam(value = "files", required = false) MultipartFile[] files,
             @RequestParam(value = "image", required = false) String image
     ) throws IOException {
-        if (postModerationService.containsInappropriateContent(content)) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                    .body("❌ Your updated post contains inappropriate content.");
-        }
+
         Post existingPost = postService.getPostById(id);
         existingPost.setContent(content);
         existingPost.setPostType(PostType.valueOf(postTypeStr));

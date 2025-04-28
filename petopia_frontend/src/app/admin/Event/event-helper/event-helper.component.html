@@ -1,0 +1,36 @@
+<div class="event-helper-container">
+  <button class="helper-toggle-btn" (click)="toggleHelper()">
+    {{ showHelper ? '❌ Close Helper' : '🐕‍🦺  Event Helper' }}
+  </button>
+
+  <div *ngIf="showHelper" class="helper-content">
+    <div class="helper-header">
+      <h3>🐾  Event Suggestion Helper</h3>
+      <p>✨ Describe your pet or dog to get paw-some event recommendations!</p>
+    </div>
+
+    <div class="input-group">
+      <textarea 
+        [(ngModel)]="petDescription" 
+        placeholder="🐶 E.g., 'I have a golden retriever, 2 years old, loves fetch and swimming'"
+        rows="3"
+      ></textarea>
+      <button (click)="getSuggestion()" [disabled]="!petDescription.trim() || isLoading">
+        {{ isLoading ? '🔍 Searching...' : '🎯 Get Suggestions' }}
+      </button>
+    </div>
+
+    <div *ngIf="isLoading" class="loading-indicator">
+      <div class="spinner"></div>
+      <p>🐾 Sniffing out the perfect events for your pet...</p>
+    </div>
+
+    <div *ngIf="suggestion" class="suggestion-result">
+      <h4>🎉 Woof-tastic Event Suggestions:</h4>
+      <div class="suggestion-text" [innerHTML]="suggestion | nl2br"></div>
+      <div *ngIf="suggestion" class="suggestion-footer">
+        🐶 Happy tails! Let us know if you need more suggestions 🐱
+      </div>
+    </div>
+  </div>
+</div>

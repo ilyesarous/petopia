@@ -5,6 +5,7 @@ import { EventService } from 'src/app/services/Event/event.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Event } from 'src/app/models/EventModule/appevent';
 import { Location } from '@angular/common';  // Importer Location
+import { OpenAIService } from 'src/app/services/Event/open-ai.service'; // Add this import
 
 
 @Component({
@@ -19,12 +20,17 @@ export class EventFormComponent implements OnInit {
   eventId: number | null = null;
   minDate: string;
 
+    // ... existing properties ...
+    generatedImageUrl: string | null = null;
+    isGeneratingImage: boolean = false;
+
   constructor(
     private fb: FormBuilder,
     private eventService: EventService,
     private router: Router,
     private route: ActivatedRoute,
-    private location: Location
+    private location: Location,
+    private  openAIService: OpenAIService 
 
   ) {
     // Set minimum date to today
@@ -154,6 +160,42 @@ export class EventFormComponent implements OnInit {
   goBack(): void {
     this.location.back();  // Effectue un retour en arrière dans l'historique de navigation
   }
+
+
+   // Add these new methods:
+   generateEventImage(): void {
+    const description = this.eventForm.get('descriptionEvent')?.value;
+    
+    if (!description) {
+      alert('Please enter an event description first');
+      return;
+    }
+
+    this.isGeneratingImage = true;
+    this.generatedImageUrl = null;
+
+    this.openAIService.generateEventImage(description).subscribe({
+      next: (imageUrl) => {
+        this.generatedImageUrl = imageUrl;
+        this.isGeneratingImage = false;
+      },
+      error: (err) => {
+        console.error('Error generating image:', err);
+        this.isGeneratingImage = false;
+        alert('Error generating event image. Please try again.');
+      }
+    });
+  }
+
+  useGeneratedImage(): void {
+    if (this.generatedImageUrl) {
+      // You might want to store this URL in your form or handle it differently
+      alert('Image URL ready to use: ' + this.generatedImageUrl);
+      // Alternatively, you could add an imageUrl field to your form
+      // this.eventForm.patchValue({ imageUrl: this.generatedImageUrl });
+    }
+  }
+
 }
 
   

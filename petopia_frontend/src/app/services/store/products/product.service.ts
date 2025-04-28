@@ -35,8 +35,9 @@ export class ProductService {
       headers: this.getAuthHeaders(),
     });
   }
-  addProduct(formData: FormData): Observable<Product> {
-    return this.http.post<Product>(this.url1 + 'product/add', formData, {
+  addProduct(formData: FormData, role: string): Observable<Product> {
+    let u = role==="ROLE_USER" ? this.url : this.url1  
+    return this.http.post<Product>(u + 'product/add', formData, {
       headers: this.getAuthHeaders(),
     });
   }

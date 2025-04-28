@@ -19,6 +19,9 @@ public class Ads {
     private int idAds;
     private String title;
     private String imageUrl;
+    @Enumerated(EnumType.STRING)
+    private StatusType status;
+    private String description;
     private Date startDate;
     private Date endDate;
 }

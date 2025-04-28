@@ -20,6 +20,7 @@ import { Product } from 'src/app/models/product/Product';
 import { FeedbackService } from 'src/app/services/store/feedback/feedback.service';
 import { DashboardService } from 'src/app/services/store/partner/dashboard.service';
 import { ProductService } from 'src/app/services/store/products/product.service';
+import { AuthService } from 'src/app/services/user/auth.service';
 
 interface stats {
   totalProducts: number;
@@ -96,48 +97,48 @@ export class HomePartnerComponent implements OnInit {
     },
   };
 
-  public topProductsChartOptions: ChartOptions = {
-    series: [],
-    chart: {
-      type: 'bar',
-      height: 350,
-      toolbar: { show: false },
-    },
-    plotOptions: {
-      bar: {
-        horizontal: true,
-        borderRadius: 4,
-        dataLabels: { position: 'top' },
+    public topProductsChartOptions: ChartOptions = {
+      series: [],
+      chart: {
+        type: 'bar',
+        height: 350,
+        toolbar: { show: false },
       },
-    },
-    dataLabels: {
-      enabled: true,
-      style: { colors: ['#fff'] },
-    },
-    xaxis: {
-      categories: [],
-      position: 'top',
-      axisBorder: { show: false },
-      axisTicks: { show: false },
-      labels: {
-        style: { colors: '#666', fontSize: '12px' },
+      plotOptions: {
+        bar: {
+          horizontal: true,
+          borderRadius: 4,
+          dataLabels: { position: 'top' },
+        },
       },
-    },
-    yaxis: {
-      labels: {
-        style: { colors: '#666', fontSize: '12px' },
+      dataLabels: {
+        enabled: true,
+        style: { colors: ['#fff'] },
       },
-    },
-    grid: {
-      borderColor: '#f0f0f0',
-      strokeDashArray: 3,
-    },
-    colors: ['#d82172'],
-    tooltip: {
-      enabled: true,
-      style: { fontSize: '12px' },
-    },
-  };
+      xaxis: {
+        categories: [],
+        position: 'top',
+        axisBorder: { show: false },
+        axisTicks: { show: false },
+        labels: {
+          style: { colors: '#666', fontSize: '12px' },
+        },
+      },
+      yaxis: {
+        labels: {
+          style: { colors: '#666', fontSize: '12px' },
+        },
+      },
+      grid: {
+        borderColor: '#f0f0f0',
+        strokeDashArray: 3,
+      },
+      colors: ['#d82172'],
+      tooltip: {
+        enabled: true,
+        style: { fontSize: '12px' },
+      },
+    };
 
   public ratingChartOptions: ChartOptions = {
     series: [0],
@@ -172,6 +173,7 @@ export class HomePartnerComponent implements OnInit {
   categoryFilter = '';
   categories = ['ACCESSORY', 'FOOD', 'TOY', 'GROOMING'];
   showAddProductModal = false;
+  role: string = ""
   idUser = 0;
   //added
   currentProduct: Product | null = null;
@@ -179,7 +181,8 @@ export class HomePartnerComponent implements OnInit {
   constructor(
     private productService: ProductService,
     private dashboardService: DashboardService,
-    private feedbackService: FeedbackService
+    private feedbackService: FeedbackService,
+    private authService : AuthService
   ) {
     Chart.register(...registerables);
   }
@@ -200,6 +203,9 @@ export class HomePartnerComponent implements OnInit {
     this.idUser = localStorage.getItem('userId')
       ? parseInt(localStorage.getItem('userId')!)
       : 0;
+      this.authService.role.subscribe((role) => {
+        this.role = role || ''; // Ensure role is never undefined
+      });
     this.getAllProducts();
     this.loadRecentSearches();
     this.loadDashboardData();

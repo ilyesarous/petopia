@@ -1,6 +1,7 @@
 package  tn.esprit.petopia_backend.services.user;
 
 
+import tn.esprit.petopia_backend.dto.UserUpdateDTO;
 import tn.esprit.petopia_backend.entities.pet.Pet;
 import tn.esprit.petopia_backend.entities.event.Coupon;
 import tn.esprit.petopia_backend.entities.user.RevokedToken;
@@ -127,7 +128,7 @@ public class UserService {
         return response;
     }
     public String getHtmlTemplate(String name, String email, String password, String userId) {
-        String activationUrl = "http://localhost:888/auth/activate?userId=" + userId; // Change localhost to your domain
+        String activationUrl = "http://localhost:888/petopia/auth/activate?userId=" + userId; // Change localhost to your domain
         return "<!DOCTYPE html>\n" +
                 "<html lang=\"en\">\n" +
                 "<head>\n" +
@@ -279,28 +280,31 @@ public class UserService {
         return reqRes;
     }
 
-    public ReqRes updateUser(Integer userId, User updatedUser) {
+    public ReqRes updateUser(Integer userId, UserUpdateDTO updatedUser) {
         ReqRes reqRes = new ReqRes();
         try {
             Optional<User> userOptional = usersRepo.findById(userId);
-            if (userOptional.isPresent()) {
-                User existingUser = userOptional.get();
-                existingUser.setEmail(updatedUser.getEmail());
-                existingUser.setName(updatedUser.getUsername());
-                existingUser.setRole(updatedUser.getRole());
-
-                if (updatedUser.getPassword() != null && !updatedUser.getPassword().isEmpty()) {
-                    existingUser.setPassword(passwordEncoder.encode(updatedUser.getPassword()));
-                }
-
-                User savedUser = usersRepo.save(existingUser);
-                reqRes.setOurUsers(savedUser);
-                reqRes.setStatusCode(200);
-                reqRes.setMessage("User updated successfully");
-            } else {
+            if (userOptional.isEmpty()) {
                 reqRes.setStatusCode(404);
                 reqRes.setMessage("User not found for update");
+                return reqRes;
             }
+            System.out.println("dectect modified user : " + userOptional.get().getEmail());
+            String email = updatedUser.getEmail();
+            String username = updatedUser.getUsername();
+            String phoneNumber = updatedUser.getPhoneNumber();
+
+            User existing = userOptional.get();
+            if (email == null || email.isBlank()) email = existing.getEmail();
+            if (username == null || username.isBlank()) username = existing.getUsername();
+            if (phoneNumber == null || phoneNumber.isBlank()) phoneNumber = existing.getPhoneNumber();
+
+            usersRepo.updateUserInfo(userId, email, username, phoneNumber);
+            System.out.println("after modfiied user" + userOptional.get().getEmail());
+            Optional<User> updated = usersRepo.findById(userId);
+            reqRes.setOurUsers(updated.get());
+            reqRes.setStatusCode(200);
+            reqRes.setMessage("User updated successfully");
         } catch (Exception e) {
             reqRes.setStatusCode(500);
             reqRes.setMessage("Error occurred while updating user: " + e.getMessage());
@@ -384,6 +388,9 @@ public class UserService {
 
     public List<User> getAllVets() {
         return usersRepo.findByRole(UserRole.VET);
+    }
+    public List<User> getAllPartners() {
+        return usersRepo.findByRole(UserRole.PARTNER);
     }
 
     public void addXp(Integer userId, int xpToAdd) {

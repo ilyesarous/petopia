@@ -1,10 +1,6 @@
 <div class="carousel">
-    <div class="slide" [style.background-image]="'url(' + slides[currentSlide].image + ')'">
-      <div class="slide-content">
-        <h2>{{ slides[currentSlide].title }}</h2>
-        <p>{{ slides[currentSlide].text }}</p>
-        <button class="btn">Shop Now</button>
-      </div>
+    <div class="slide" [style.background-image]="'url(' + slides[currentSlide].imageUrl+')'">
+      
     </div>
     
     <button class="carousel-control prev" (click)="prev()"><i class="bi bi-caret-left"></i></button>

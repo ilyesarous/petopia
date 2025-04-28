@@ -31,7 +31,13 @@ export class ImageGenerationService {
       { image_base64: base64 }
     );
   }
+  checkPostContent(text: string) {
+    return this.http.post<{ status: string }>(
+     `${this.apiUrl}/moderate-text`,
+      { text }
+    );
+  }
   
-  
+
   
 }

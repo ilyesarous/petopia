@@ -4,6 +4,11 @@ import { CommonModule } from '@angular/common';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatInputModule } from '@angular/material/input';
+import { MatNativeDateModule } from '@angular/material/core';
+import { MatFormFieldModule } from '@angular/material/form-field';
+
 
 // Routing & Core
 import { AppRoutingModule } from './app-routing.module';
@@ -95,6 +100,7 @@ import { ReactionComponent } from './simple-user/reaction/reaction.component';
 import { CommentComponent } from './simple-user/comment/comment.component';
 import { StoryComponent } from './simple-user/story/story.component';
 import { RelativeTimePipe } from './pipes/relative-time.pipe';
+import {BaseChartDirective} from "ng2-charts";
 
 import { CartComponent } from './simple-user/store/cart/cart.component';
 import { ShelterListComponent } from './admin/shelter/shelter-list/shelter-list.component';
@@ -121,7 +127,7 @@ import { UserViewCertificateComponent } from './simple-user/adoption/user-view-c
 import { VetSelectionPopupComponent } from './simple-user/vet/vet-selection-popup/vet-selection-popup.component';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatCardModule } from '@angular/material/card';
-import { MatRippleModule } from '@angular/material/core';
+import {MatOptionModule, MatRippleModule} from '@angular/material/core';
 import { LocationVetComponent } from './simple-user/vet/location-vet/location-vet.component';
 import { InfoSpecificVetComponent } from './simple-user/vet/info-specific-vet/info-specific-vet.component';
 import { QrCodeVetScannerComponent } from './simple-user/vet/qr-code-vet-scanner/qr-code-vet-scanner.component';
@@ -139,12 +145,30 @@ import { CountdownComponent } from './simple-user/Event/countdown/countdown.comp
 import { ReceiptModalComponent } from './simple-user/store/receipt-modal/receipt-modal.component';
 import { XpBarComponent } from './simple-user/Event/xp-bar/xp-bar.component';
 import { DreamPetComponent } from './simple-user/adoption/dream-pet/dream-pet.component';
+import { AddAdsComponent } from './admin/store/add-ads/add-ads.component';
+import { AddBrandsComponent } from './admin/store/add-brands/add-brands.component';
 
 import { EventDetailsComponent } from './simple-user/Event/event-details/event-details.component';
 import { ServiceAnimalDetailsComponent } from './simple-user/Event/service-animal-details/service-animal-details.component';
+import { EventHelperComponent } from './admin/Event/event-helper/event-helper.component';
+import { Nl2BrPipe } from './pipes/nl2-br.pipe';
+import { ReservationFormComponent } from './simple-user/Event/reservation-form/reservation-form.component';
 
 
 import { NewsComponent } from './simple-user/news/news.component';
+import { UserProfileComponent } from './components/user-profile/user-profile.component';
+import { EditProfilePanelComponent } from './components/edit-profile-panel/edit-profile-panel.component';
+import { ForgetpasswordComponent } from './components/forgetpassword/forgetpassword.component';
+import { PetComponent } from './components/pet/pet.component';
+import { ListReclamationComponent } from './components/list-reclamation/list-reclamation.component';
+import { ResponseDialogComponent } from './components/response-dialog/response-dialog.component';
+import {MatSelectModule} from "@angular/material/select";
+import { ListUsersComponent } from './components/list-users/list-users.component';
+import { UserDetailsDialogComponent } from './components/user-details-dialog/user-details-dialog.component';
+import { ReclamationComponent } from './components/reclamation/reclamation.component';
+import { ReclamationListComponent } from './components/reclamation-list/reclamation-list.component';
+import { PetListComponent } from './components/pet-list/pet-list.component';
+
 import { BmiResultDialogComponent } from './simple-user/vet/bmi-result-dialog/bmi-result-dialog.component';
 import { HealthTipsComponent } from './simple-user/vet/health-tips/health-tips.component';
 
@@ -252,6 +276,23 @@ import { HealthTipsComponent } from './simple-user/vet/health-tips/health-tips.c
     EventDetailsComponent,
     ServiceAnimalDetailsComponent,
     NewsComponent,
+    UserProfileComponent,
+    EditProfilePanelComponent,
+    ForgetpasswordComponent,
+    PetComponent,
+    ListReclamationComponent,
+    ResponseDialogComponent,
+    ListUsersComponent,
+    UserDetailsDialogComponent,
+    ReclamationComponent,
+    ReclamationListComponent,
+    PetListComponent,
+    AddAdsComponent,
+    AddBrandsComponent,
+    EventHelperComponent,
+    Nl2BrPipe,
+    ReservationFormComponent,
+
     BmiResultDialogComponent,
     HealthTipsComponent,
   ],
@@ -277,8 +318,11 @@ import { HealthTipsComponent } from './simple-user/vet/health-tips/health-tips.c
     MatRadioModule,
     MatCardModule,
     MatRippleModule,
-
-
+    BaseChartDirective,
+    MatFormFieldModule,
+    MatOptionModule,
+    MatSelectModule,
+    MatInputModule
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }

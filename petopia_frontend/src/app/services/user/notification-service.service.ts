@@ -3,7 +3,6 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { Client, Message } from '@stomp/stompjs';
 import SockJS from 'sockjs-client';
 
-
 export interface SignupNotification {
   userId: string;
   name: string;
@@ -26,7 +25,7 @@ export class NotificationService {
   }
 
   private initializeWebSocketConnection() {
-    const serverUrl = 'http://localhost:888/ws';
+    const serverUrl = 'http://localhost:888/petopia/ws';
     const ws = new SockJS(serverUrl);
     this.stompClient = new Client({
       webSocketFactory: () => ws,

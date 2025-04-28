@@ -1,0 +1,223 @@
+.service-overlay {
+    background-color: #f5f5f5;
+    min-height: 100vh;
+    padding: 30px 0;
+  }
+  
+  .service-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+  }
+  
+  .service-card {
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+  }
+  
+  .service-header {
+    padding: 20px;
+    background-color: #F83182;
+    color: white;
+    position: relative;
+  }
+  
+  .header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 10px;
+  }
+  
+  .service-header h2 {
+    margin: 0;
+    color: white;
+  }
+  
+  .back-button {
+    background: none;
+    border: none;
+    color: white;
+    cursor: pointer;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    padding: 5px 10px;
+    border-radius: 4px;
+    transition: background-color 0.3s;
+  }
+  
+  .back-button:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+  }
+  
+  .availability {
+    padding: 5px 10px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: bold;
+  }
+  
+  .availability.available {
+    background-color: #4CAF50;
+    color: white;
+  }
+  
+  .availability:not(.available) {
+    background-color: #f44336;
+    color: white;
+  }
+  
+  .service-content {
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+  }
+  
+  @media (min-width: 768px) {
+    .service-content {
+      flex-direction: row;
+    }
+  }
+  
+  .service-image-section {
+    flex: 1;
+    padding: 10px;
+  }
+  
+  .service-image-container {
+    width: 100%;
+    height: 300px;
+    border-radius: 8px;
+    overflow: hidden;
+    background-color: #f0f0f0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .service-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  
+  .image-placeholder {
+    font-size: 50px;
+    color: #ccc;
+  }
+  
+  .service-details {
+    flex: 2;
+    padding: 10px 20px;
+  }
+  
+  .description-section h3,
+  .requirements-section h3 {
+    color: #F83182;
+    margin-top: 0;
+  }
+  
+  .description-section p,
+  .requirements-section p {
+    line-height: 1.6;
+    color: #555;
+  }
+  
+  .details-section {
+    margin: 20px 0;
+  }
+  
+  .detail-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-bottom: 15px;
+  }
+  
+  .detail-item {
+    flex: 1;
+    min-width: 200px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+  }
+  
+  .detail-item i {
+    font-size: 18px;
+    color: #F83182;
+  }
+  
+  .detail-content {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .label {
+    font-size: 12px;
+    color: #777;
+  }
+  
+  .value {
+    font-weight: 500;
+    color: #333;
+  }
+  
+  .action-section {
+    padding: 20px;
+    border-top: 1px solid #eee;
+    text-align: center;
+  }
+  
+  .book-button {
+    background-color: #F83182;
+    color: white;
+    border: none;
+    padding: 12px 25px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+  
+  .book-button:hover:not(:disabled) {
+    background-color: #FF617C;
+  }
+  
+  .book-button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+  }
+  
+  .loading, .error {
+    text-align: center;
+    padding: 40px;
+    font-size: 18px;
+  }
+  
+  .loading i {
+    color: #F83182;
+    margin-right: 10px;
+  }
+  
+  .error i {
+    color: #f44336;
+    margin-right: 10px;
+  }
+  .tnd-symbol {
+    font-weight: bold;
+    color: #FF617C; /* Matching your color scheme */
+    min-width: 30px;
+    text-align: center;
+    font-size: 0.9rem;
+  }
+  

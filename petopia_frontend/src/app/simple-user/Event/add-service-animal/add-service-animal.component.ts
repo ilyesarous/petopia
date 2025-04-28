@@ -4,6 +4,8 @@ import { ServiceAnimalService } from 'src/app/services/Event/service-animal.serv
 import { ServiceType } from 'src/app/models/EventModule/serviceAnimal';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Location } from '@angular/common';
+import { ImageGenerationService } from 'src/app/services/adoptions/imageGeneration/image-generation.service';
+import { OpenAIService } from 'src/app/services/Event/open-ai.service'; // Add this import
 
 @Component({
   selector: 'app-add-service-animal',
@@ -19,14 +21,17 @@ export class AddServiceAnimalComponent implements OnInit {
   isEditMode = false;
 
   previewLogo: string | ArrayBuffer | null = null;
-
+  generatedAd: string = ''; // Add this to store the generated ad
+  isGeneratingAd: boolean = false; // Loading state
 
   constructor(
     private fb: FormBuilder,
     private serviceAnimalService: ServiceAnimalService,
     private router: Router,
     private route: ActivatedRoute,
-    private location: Location
+    private location: Location,
+    private imageGenrationService: ImageGenerationService,
+    private openAIService: OpenAIService 
   ) {}
 
   ngOnInit(): void {
@@ -60,6 +65,13 @@ export class AddServiceAnimalComponent implements OnInit {
       endDate: ['', Validators.required],
       logoFile: [null] 
   });
+}
+// Add this method to your component class
+removeLogo(): void {
+  this.previewLogo = null;
+  this.serviceForm.patchValue({ logo: null });
+  // If you're using a separate property for the file object, reset that too
+  // this.selectedLogoFile = null;
 }
 
   loadServiceForUpdate(serviceId: number): void {
@@ -113,25 +125,50 @@ export class AddServiceAnimalComponent implements OnInit {
 
   onFileSelected(event: any): void {
     const file: File = event.target.files[0];
-    if (file) {
-      if (!file.type.match(/image\/(jpeg|png|gif|jpg)/)) {
-        alert('Only JPEG, PNG, or GIF images are allowed');
-        return;
-      }
-      
-
-
-      this.serviceForm.patchValue({
-        logoFile: file 
-      });
-
-      // Create preview
-      const reader = new FileReader();
-      reader.onload = () => {
-        this.previewLogo = reader.result;
-      };
-      reader.readAsDataURL(file);
+    if (!file) return;
+  
+    if (!file.type.match(/image\/(jpeg|png|gif|jpg)/)) {
+      alert('Only JPEG, PNG, or GIF images are allowed');
+      return;
     }
+  
+    this.serviceForm.patchValue({ logoFile: file });
+  
+    const reader = new FileReader();
+    reader.onload = () => {
+      this.previewLogo = reader.result;
+  
+      const base64 = (reader.result as string).split(',')[1];
+  
+      this.imageGenrationService.detectBreedFromImage(base64).subscribe({
+        next: (res: any) => {
+          console.log("🧠 AI Raw Response:", res);
+  
+          const analysis = res.analysis || res.result;
+  
+          if (typeof analysis !== 'string') {
+            console.error("❌ Unexpected response format:", analysis);
+            return;
+          }
+  
+          // Match species from GPT string
+          const speciesMatch = analysis.match(/Species:\s*(Dog|Cat)/i);
+          const species = speciesMatch?.[1]?.toUpperCase();
+  
+          if (species === 'DOG' || species === 'CAT') {
+            this.serviceForm.patchValue({ animalType: species });
+            console.log("✅ Auto-filled species:", species);
+          } else {
+            console.warn("⚠️ Species not found in AI response.");
+          }
+        },
+        error: (err) => {
+          console.error("❌ Error from detection service:", err);
+        }
+      });
+    };
+  
+    reader.readAsDataURL(file);
   }
 
   // Helper method to mark all form controls as touched
@@ -148,4 +185,42 @@ export class AddServiceAnimalComponent implements OnInit {
   goBack(): void {
     this.location.back();
   }
+
+  generateAd(): void {
+    const description = this.serviceForm.get('descriptionServiceAnimal')?.value;
+    
+    if (!description) {
+      alert('Please enter a service description first');
+      return;
+    }
+  
+    this.isGeneratingAd = true;
+    this.generatedAd = '';
+  
+    this.openAIService.generatePetAd(description).subscribe({
+      next: (adText) => {
+        this.generatedAd = adText;
+        this.isGeneratingAd = false;
+      },
+      error: (err) => {
+        console.error('Error generating ad:', err);
+        this.isGeneratingAd = false;
+        alert('Error generating advertisement. Please try again.');
+      }
+    });
+  }
+  copyAdToClipboard(): void {
+    navigator.clipboard.writeText(this.generatedAd)
+      .then(() => alert('Ad copied to clipboard!'))
+      .catch(err => console.error('Failed to copy:', err));
+  }
+  
+  useGeneratedAd(): void {
+    if (this.generatedAd) {
+      this.serviceForm.patchValue({
+        descriptionServiceAnimal: this.generatedAd
+      });
+    }
+  }
+  
 }

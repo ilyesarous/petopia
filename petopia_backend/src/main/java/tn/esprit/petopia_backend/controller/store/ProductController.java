@@ -9,9 +9,11 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import tn.esprit.petopia_backend.entities.store.Brand;
 import tn.esprit.petopia_backend.entities.store.Product;
 import tn.esprit.petopia_backend.entities.store.ProductCategory;
 import tn.esprit.petopia_backend.entities.user.User;
+import tn.esprit.petopia_backend.repositories.store.BrandRepository;
 import tn.esprit.petopia_backend.services.store.ProductService;
 import tn.esprit.petopia_backend.services.user.UserService;
 
@@ -20,6 +22,7 @@ import java.util.List;
 @RestController
 @AllArgsConstructor
 public class ProductController {
+    private final BrandRepository brandRepository;
     private ProductService productService;
     private UserService userService;
 
@@ -47,9 +50,10 @@ public class ProductController {
                               @RequestParam("cuppon_price") float cupponPrice,
                               @RequestParam("category") String category,
                               @RequestParam("availableQuantity") int availableQuantity,
+                              @RequestParam("idBrand") int idBrand,
                               @RequestParam("id_user") int idUser) {
         int idProduct = 0;
-        Product product = getProduct(idProduct, productName, productDescription, productPrice, oldPrice, cupponPrice, category, availableQuantity, idUser);
+        Product product = getProduct(idProduct, productName, productDescription, productPrice, oldPrice, cupponPrice, category, availableQuantity, idUser, idBrand);
         return productService.addProduct(file, product);
     }
 
@@ -62,15 +66,17 @@ public class ProductController {
                                         @RequestParam("cuppon_price") float cupponPrice,
                                         @RequestParam("category") String category,
                                         @RequestParam("availableQuantity") int availableQuantity,
+                                        @RequestParam("idBrand") int idBrand,
                                         @RequestParam("id_user") int idUser) {
         int idProduct = 0;
-        Product product = getProduct(idProduct, productName, productDescription, productPrice, oldPrice, cupponPrice, category, availableQuantity, idUser);
+        Product product = getProduct(idProduct, productName, productDescription, productPrice, oldPrice, cupponPrice, category, availableQuantity, idUser, idBrand);
         return productService.addProduct(file, product);
     }
 
-    private Product getProduct(int idProduct, String productName,String productDescription, float productPrice, float oldPrice, float cupponPrice, String category, int availableQuantity, int idUser) {
+    private Product getProduct(int idProduct, String productName,String productDescription, float productPrice, float oldPrice, float cupponPrice, String category, int availableQuantity, int idUser, int idBrand) {
         Product product = new Product();
         User user = userService.getUsersById(idUser).getOurUsers();
+        Brand brand = brandRepository.findById(idBrand).get();
         if (idProduct != 0) {
             product.setProduct_id(idProduct);
             product.setProduct_image(productService.findById(idProduct).getProduct_image());
@@ -86,6 +92,7 @@ public class ProductController {
         product.setReview_count(0);
         product.setLiked(false);
         product.setUser(user);
+        product.setBrand(brand);
         return product;
     }
 
@@ -99,8 +106,9 @@ public class ProductController {
                                  @RequestParam("cuppon_price") float cupponPrice,
                                  @RequestParam("category") String category,
                                  @RequestParam("availableQuantity") int availableQuantity,
+                                 @RequestParam("idBrand") int idBrand,
                                  @RequestParam("id_user") int idUser) {
-        Product product = getProduct(productId, productName, productDescription, productPrice, oldPrice, cupponPrice, category, availableQuantity, idUser);
+        Product product = getProduct(productId, productName, productDescription, productPrice, oldPrice, cupponPrice, category, availableQuantity, idUser, idBrand);
         return productService.updateProduct(file, product);
     }
 

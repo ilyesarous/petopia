@@ -75,14 +75,32 @@ import { EventParticipantsComponent } from './admin/Event/event-participants/eve
 import { ServiceAnimalListComponent } from './simple-user/Event/service-animal-list/service-animal-list.component';
 import { AddServiceAnimalComponent } from './simple-user/Event/add-service-animal/add-service-animal.component';
 import { DreamPetComponent } from './simple-user/adoption/dream-pet/dream-pet.component';
+import { HomeComponent } from './simple-user/home/home.component';
 import { EventDetailsComponent } from './simple-user/Event/event-details/event-details.component';
 import { NewsComponent } from './simple-user/news/news.component';
+import {PetListComponent} from "./components/pet-list/pet-list.component";
+import {UserProfileComponent} from "./components/user-profile/user-profile.component";
+import {ForgetpasswordComponent} from "./components/forgetpassword/forgetpassword.component";
+import {ReclamationListComponent} from "./components/reclamation-list/reclamation-list.component";
+import {ReclamationComponent} from "./components/reclamation/reclamation.component";
+import {PetComponent} from "./components/pet/pet.component";
+import {ListUsersComponent} from "./components/list-users/list-users.component";
+import {ListReclamationComponent} from "./components/list-reclamation/list-reclamation.component";
+import { ServiceAnimalDetailsComponent } from './simple-user/Event/service-animal-details/service-animal-details.component';
+import { ReservationFormComponent } from './simple-user/Event/reservation-form/reservation-form.component';
 
 import { HealthTipsComponent } from './simple-user/vet/health-tips/health-tips.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
-  { path: 'home', component: ComponentWrapperComponent, canActivate: [AuthGuard]},
+  { path: 'home', component: HomeComponent, canActivate: [AuthGuard]},
+  { path  : 'profileUser',component:UserProfileComponent,canActivate:[AuthGuard]},
+  { path  : 'forgetpassword',component:ForgetpasswordComponent},
+  { path : 'ListReclamationFront',component:ReclamationListComponent,canActivate:[AuthGuard]}, // list reclmaations front
+  { path: 'reclamation', component: ReclamationComponent, canActivate: [AuthGuard]  }, // add and update reclamation front
+  { path:  'ListPets',component: PetListComponent , canActivate: [AuthGuard]}, // list pets of user front
+  { path: 'pet', component: PetComponent, canActivate: [AuthGuard]  },
+
   { path: 'products', component: ProductsComponent, canActivate: [AuthGuard]},
   { path: 'products/:id', component: ProductDetailComponent, canActivate: [AuthGuard] },
   { path: 'favorites', component: FavoriteComponent, canActivate: [AuthGuard]},
@@ -99,6 +117,9 @@ const routes: Routes = [
   { path: 'services', component: ServiceAnimalListComponent, canActivate: [AuthGuard] },
   { path: 'services/add', component: AddServiceAnimalComponent, canActivate: [AuthGuard] },
   { path: 'event/:id', component: EventDetailsComponent },
+  { path: 'services/:id', component: ServiceAnimalDetailsComponent },
+  {path: 'reservation/:id', component: ReservationFormComponent, canActivate: [AuthGuard]},
+
 
   { path: 'vet', component: DashPrincipaleHomeVetComponent, canActivate: [AuthGuard] },
   { path: 'vet/pet-growth/:id', component: PetGrowthVetComponent, canActivate: [AuthGuard] },
@@ -153,7 +174,11 @@ const routes: Routes = [
     children: [
       { path: 'user', component: ChartComponent },
       { path: 'store', component: StoreDashComponent },
+      { path: 'listReclamation', component: ListReclamationComponent, canActivate: [AuthGuard]  }, // list reclamation back
       { path: 'vet', component: DashPrincipaleComponent },
+      { path  : 'ListUsers',component:ListUsersComponent,canActivate:[AuthGuard]},
+      { path:  'ListPets',component: PetListComponent , canActivate: [AuthGuard]}, // list pets of user front
+
       { path: 'consultations', component: ConsultationListComponent },
       { path: 'diagnosis', component: DiagnosisListComponent },
       { path: 'notifications', component: NotificationListComponent },

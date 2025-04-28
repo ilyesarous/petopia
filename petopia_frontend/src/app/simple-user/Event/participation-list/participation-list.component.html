@@ -34,7 +34,7 @@
     
     <!-- XP Progress Bar -->
     <div class="user-progress" *ngIf="userXp !== undefined">
-      <app-xp-bar [currentXp]="userXp" [level]="userLevel"></app-xp-bar>
+      <app-xp-bar [currentXp]="user.ourUsers.nb_points" [level]="user.ourUsers.level"></app-xp-bar>
     </div>
   </div>
 
@@ -146,14 +146,38 @@
           <div class="card-footer">
             <!-- Payment Button - Only show if participation is confirmed and not paid -->
           <!-- Update your payment button section to show different states -->
-<div *ngIf="p.statusParticipation === 'CONFIRMED' && !showPaymentSuccess"  class="payment-section">
-  <button *ngIf="!p.paid" class="pay-btn" (click)="payForParticipation(p)">
-    <i class="icon">💳</i> Pay {{ p.event.prixEvent }} TND
-  </button>
-  <div *ngIf="showPaymentSuccess" class="payment-confirmed">
-    <i class="icon">✓</i> Paid
-  </div>
-</div>
+          <div *ngIf="p.statusParticipation === 'CONFIRMED'" class="payment-section">
+            <button 
+              [disabled]="!paidNow"
+              class="pay-btn" 
+              (click)="payForParticipation(p)">
+              <i class="icon" *ngIf="!p.isPaying">💳</i>
+              <span *ngIf="p.isPaying">Processing...</span>
+              <span *ngIf="!p.isPaying">Pay {{ p.event.prixEvent }} TND</span>
+            </button>
+          
+            <div *ngIf="p.paid" class="payment-confirmed">
+              <i class="icon">✓</i> Paid
+            </div>
+          </div>
+<!-- 
+          <div ngIf="p.statusParticipation === 'CONFIRMED'" class="payment-section">
+            <button 
+              [disabled]="p.paid || p.isPaying"
+              class="pay-btn" 
+              (click)="payForParticipation(p)">
+              <i class="icon"ngIf="!p.isPaying">💳</i>
+              <span ngIf="p.isPaying">Processing...</span>
+              <span ngIf="!p.isPaying">Pay {{ p.event.prixEvent }} TND</span>
+            </button>
+          
+            <div *ngIf="p.paid" class="payment-confirmed">
+              <i class="icon">✓</i> Paid
+            </div>
+          </div> -->
+          
+          
+          
 
             <!-- Action Buttons -->
             <div class="action-buttons">

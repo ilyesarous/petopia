@@ -215,6 +215,7 @@
     margin-left: auto;
     flex-wrap: wrap;
     justify-content: flex-end;
+    width: 45%;
   }
   
   .status-pill {
@@ -270,4 +271,31 @@
   .cert-btn.view:hover {
     background-color: #e6e6e6;
   }
+  .filter-group select {
+    padding: 8px 14px;
+    border-radius: 10px;
+    border: 2px solid #F83182;
+    font-size: 0.95rem;
+    background-color: white;
+    color: #F83182;
+    font-weight: 600;
+    appearance: none; /* hide default arrow on Chrome */
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg viewBox='0 0 140 140' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M35 50l35 40 35-40' fill='none' stroke='%23F83182' stroke-width='14'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    background-size: 14px;
+    cursor: pointer;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  }
   
+  .filter-group select:hover,
+  .filter-group select:focus {
+    border-color: #F83182;
+    box-shadow: 0 0 5px rgba(248, 49, 130, 0.5);
+    outline: none;
+    background-color: #fff0f5; /* light pink on focus */
+  }
+  .filter-group select {
+    border-radius: 50px;
+  }
+    

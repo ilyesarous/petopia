@@ -6,6 +6,7 @@ import { Story } from '../../models/community/story';
 import { StoryService } from '../../services/community/story.service';
 import { Router } from '@angular/router';
 import { NgForm } from '@angular/forms';
+import { ImageGenerationService } from '../../services/adoptions/imageGeneration/image-generation.service';
 
 
 @Component({
@@ -68,7 +69,8 @@ export class CommunityComponent implements OnInit {
     private postService: PostService,
     private storyService: StoryService,
     private router: Router,
-    private geminiService: GeminiService
+    private geminiService: GeminiService,
+    private imageGenerationService: ImageGenerationService
   ) {}
 
   ngOnInit(): void {
@@ -194,53 +196,78 @@ export class CommunityComponent implements OnInit {
       : '';
   }
   createPost(postForm: NgForm): void {
-    // Check if post content is valid and the post type is chosen.
+    // Reset error
+    this.postErrorMessage = '';
+  
     if (!this.newPostContent || !this.newPostContent.trim() || this.newPostType === null) {
+      this.postErrorMessage = 'Post content and type are required.';
       return;
     }
-    
   
-    const newPost: Post = {
-      id: 0,
-      title: '',
-      content: this.newPostContent,
-      postType: this.newPostType,  // now this.newPostType is guaranteed not to be null
-      date: new Date(),
-      user: undefined
-    };
+    // ✅ Step 1: Check content moderation
+    this.imageGenerationService.checkPostContent(this.newPostContent)
+.subscribe({
+      next: (moderationRes) => {
+        const status = moderationRes.status;
   
-    const formData = new FormData();
-    const normalizedPostType = newPost.postType
-      .toString()
-      .trim()
-      .toUpperCase()
-      .replace(/ /g, '_');
-    formData.append('content', newPost.content);
-    formData.append('postType', normalizedPostType);
-    this.selectedFiles.forEach(file => {
-      formData.append('files', file, file.name);
-    });
+        // 🛑 Step 2: Handle moderation result
+        if (status === 'inappropriate') {
+          this.postErrorMessage = '🚫 Your post contains inappropriate content.';
+          return;
+        } else if (status === 'try another') {
+          this.postErrorMessage = '⚠️ Please write meaningful, pet-related content.';
+          return;
+        }
   
-    this.postService.createPost(newPost, formData).subscribe({
-      next: (post) => {
-        this.originalPosts = [post, ...this.originalPosts];
-        this.updatePosts();
-        this.newPostContent = '';
-        this.selectedFiles = [];
-        this.newPostType = PostType.GENERAL;
-        postForm.resetForm();
-        this.postErrorMessage = ''; 
+        // ✅ Step 3: Proceed with post creation
+        const newPost: Post = {
+          id: 0,
+          title: '',
+          content: this.newPostContent,
+          postType: this.newPostType,
+          date: new Date(),
+          user: undefined
+        };
+  
+        const formData = new FormData();
+        const normalizedPostType = newPost.postType
+          .toString()
+          .trim()
+          .toUpperCase()
+          .replace(/ /g, '_');
+  
+        formData.append('content', newPost.content);
+        formData.append('postType', normalizedPostType);
+        this.selectedFiles.forEach(file => {
+          formData.append('files', file, file.name);
+        });
+  
+        this.postService.createPost(newPost, formData).subscribe({
+          next: (post) => {
+            this.originalPosts = [post, ...this.originalPosts];
+            this.updatePosts();
+            this.newPostContent = '';
+            this.selectedFiles = [];
+            this.newPostType = PostType.GENERAL;
+            postForm.resetForm();
+            this.postErrorMessage = '';
+          },
+          error: (err) => {
+            if (err.status === 400 && err.error) {
+              this.postErrorMessage = err.error;
+            } else {
+              this.postErrorMessage = '❌ An error occurred while creating the post.';
+            }
+          }
+        });
       },
       error: (err) => {
-        if (err.status === 400 && err.error) {
-          this.postErrorMessage = err.error;
-        } else {
-          this.postErrorMessage = "An error occurred while creating the post.";
-        }
+        console.error('Moderation error:', err);
+        this.postErrorMessage = '❌ Error while checking post content.';
       }
     });
-    
   }
+  
   
   
   updatePosts(): void {
@@ -262,6 +289,65 @@ export class CommunityComponent implements OnInit {
     this.posts = filtered;
     this.setupPagination();
   }
+  updatePost(postId: number, postForm: NgForm): void {
+    this.postErrorMessage = '';
+  
+    if (!this.newPostContent || !this.newPostContent.trim() || this.newPostType === null) {
+      this.postErrorMessage = 'Post content and type are required.';
+      return;
+    }
+  
+    this.imageGenerationService.checkPostContent(this.newPostContent).subscribe({
+      next: (moderationRes) => {
+        const status = moderationRes.status;
+  
+        if (status === 'inappropriate') {
+          this.postErrorMessage = '🚫 Your post contains inappropriate content.';
+          return;
+        } else if (status === 'try another') {
+          this.postErrorMessage = '⚠️ Please write meaningful, pet-related content.';
+          return;
+        }
+  
+        const formData = new FormData();
+        const normalizedPostType = this.newPostType
+          .toString()
+          .trim()
+          .toUpperCase()
+          .replace(/ /g, '_');
+  
+        formData.append('content', this.newPostContent);
+        formData.append('postType', normalizedPostType);
+  
+        this.selectedFiles.forEach(file => {
+          formData.append('files', file, file.name);
+        });
+  
+        this.postService.updatePost(postId, formData).subscribe({
+          next: (updatedPost) => {
+            this.loadPosts(); // Refresh posts
+            this.newPostContent = '';
+            this.selectedFiles = [];
+            this.newPostType = PostType.GENERAL;
+            postForm.resetForm();
+            this.postErrorMessage = '';
+          },
+          error: (err) => {
+            if (err.status === 400 && err.error) {
+              this.postErrorMessage = err.error;
+            } else {
+              this.postErrorMessage = '❌ An error occurred while updating the post.';
+            }
+          }
+        });
+      },
+      error: (err) => {
+        console.error('Moderation error:', err);
+        this.postErrorMessage = '❌ Error while checking post content.';
+      }
+    });
+  }
+  
   filterByType(type: PostType): void {
     this.selectedPostType = type;
     this.updatePosts();
