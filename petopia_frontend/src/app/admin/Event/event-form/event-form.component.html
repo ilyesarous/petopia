@@ -168,6 +168,43 @@
         <label for="descriptionEvent">Description *</label>
         <textarea id="descriptionEvent" formControlName="descriptionEvent" 
                   placeholder="Enter event description" class="form-input" rows="4"></textarea>
+
+<!-- Add this after the description textarea -->
+<div class="image-generation-section" *ngIf="eventForm.get('descriptionEvent')?.value">
+  <button 
+    type="button" 
+    class="btn-generate-image"
+    (click)="generateEventImage()"
+    [disabled]="isGeneratingImage"
+  >
+    <span *ngIf="!isGeneratingImage">🎨 Generate Event Image</span>
+    <span *ngIf="isGeneratingImage">Generating Image...</span>
+  </button>
+
+  <div *ngIf="generatedImageUrl" class="generated-image-container">
+    <h5>Generated Event Image:</h5>
+    <img [src]="generatedImageUrl" alt="Generated event image" class="event-image-preview">
+    <div class="image-actions">
+      <a 
+        [href]="generatedImageUrl" 
+        target="_blank"
+        class="btn-view-image"
+      >
+        View Full Size
+      </a>
+      <button 
+        type="button" 
+        class="btn-use-image"
+        (click)="useGeneratedImage()"
+      >
+        Use This Image
+      </button>
+    </div>
+  </div>
+</div>
+
+
+
         <div *ngIf="eventForm.get('descriptionEvent')?.invalid && (eventForm.get('descriptionEvent')?.dirty || eventForm.get('descriptionEvent')?.touched)"
              class="error-message">
           <div *ngIf="eventForm.get('descriptionEvent')?.errors?.['required']">

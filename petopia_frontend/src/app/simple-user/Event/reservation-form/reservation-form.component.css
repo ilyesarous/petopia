@@ -1,0 +1,251 @@
+.reservation-section {
+    display: flex;
+    max-width: 1200px;
+    margin: 40px auto;
+    gap: 40px;
+    padding: 20px;
+  }
+  
+  .reservation-form-container {
+    flex: 1;
+    padding: 30px;
+    background-color: #ffe9f0;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(248, 49, 130, 0.1);
+  }
+  
+  .form-header {
+    text-align: center;
+    margin-bottom: 30px;
+  }
+  
+  .form-header h2 {
+    color: #f83182;
+    margin-bottom: 10px;
+    font-size: 32px;
+  }
+  
+  .form-header p {
+    color: #ff617c;
+    font-size: 16px;
+  }
+  
+  .reservation-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  
+  .form-row {
+    display: flex;
+    gap: 20px;
+  }
+  
+  .form-row .form-group {
+    flex: 1;
+  }
+  
+  .form-group {
+    margin-bottom: 15px;
+  }
+  
+  label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: #ff617c;
+  }
+  
+  label i {
+    font-size: 16px;
+  }
+  
+  .form-input {
+    width: 100%;
+    padding: 12px 15px;
+    border: 2px solid #fe9a7a;
+    border-radius: 12px;
+    background-color: #fff;
+    font-size: 16px;
+    transition: all 0.3s ease;
+  }
+  
+  .form-input:focus {
+    border-color: #f83182;
+    box-shadow: 0 0 0 3px rgba(248, 49, 130, 0.2);
+    outline: none;
+  }
+  
+  .input-error {
+    border-color: #ff4757;
+  }
+  
+  textarea.form-input {
+    min-height: 100px;
+  }
+  
+  .hint {
+    display: block;
+    margin-top: 5px;
+    color: #fe9a7a;
+    font-size: 13px;
+  }
+  
+  .error-message {
+    background-color: #ffebee;
+    color: #ff4757;
+    padding: 12px 15px;
+    border-radius: 10px;
+    margin: 15px 0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border-left: 4px solid #ff4757;
+  }
+  
+  .success-message {
+    background-color: #e8f5e9;
+    color: #2e7d32;
+    padding: 12px 15px;
+    border-radius: 10px;
+    margin: 15px 0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border-left: 4px solid #2e7d32;
+  }
+  
+  .error-message i,
+  .success-message i {
+    font-size: 18px;
+  }
+  
+  .form-actions {
+    margin-top: 20px;
+  }
+  
+  .submit-button {
+    width: 100%;
+    background: linear-gradient(135deg, #f83182, #ff617c);
+    color: white;
+    border: none;
+    padding: 16px;
+    border-radius: 12px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(248, 49, 130, 0.3);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+  }
+  
+  .submit-button:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(248, 49, 130, 0.4);
+  }
+  
+  .submit-button:disabled {
+    background: #ccc;
+    cursor: not-allowed;
+    box-shadow: none;
+  }
+  
+  .submit-button i {
+    font-size: 16px;
+  }
+  
+  .form-footer {
+    margin-top: 30px;
+    text-align: center;
+    color: #ff617c;
+    font-size: 14px;
+    padding-top: 15px;
+    border-top: 1px dashed #fe9a7a;
+  }
+  
+  .form-footer i {
+    margin-right: 5px;
+  }
+  
+  .reservation-benefits {
+    flex: 0 0 350px;
+    background-color: #fff;
+    border-radius: 20px;
+    padding: 30px;
+    box-shadow: 0 10px 30px rgba(248, 49, 130, 0.1);
+  }
+  
+  .reservation-benefits h3 {
+    color: #f83182;
+    text-align: center;
+    margin-bottom: 25px;
+    font-size: 24px;
+  }
+  
+  .benefit-item {
+    margin-bottom: 25px;
+    padding: 20px;
+    background-color: #ffe9f0;
+    border-radius: 12px;
+    transition: transform 0.3s ease;
+  }
+  
+  .benefit-item:hover {
+    transform: translateY(-5px);
+  }
+  
+  .benefit-item i {
+    font-size: 24px;
+    color: #f83182;
+    margin-bottom: 10px;
+    display: block;
+  }
+  
+  .benefit-item h4 {
+    color: #ff617c;
+    margin-bottom: 8px;
+    font-size: 18px;
+  }
+  
+  .benefit-item p {
+    color: #666;
+    font-size: 14px;
+    line-height: 1.5;
+  }
+  
+  @media (max-width: 900px) {
+    .reservation-section {
+      flex-direction: column;
+      gap: 30px;
+    }
+    
+    .reservation-benefits {
+      flex: 1;
+      width: 100%;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .reservation-form-container,
+    .reservation-benefits {
+      padding: 20px;
+    }
+    
+    .form-row {
+      flex-direction: column;
+      gap: 15px;
+    }
+    
+    .form-header h2 {
+      font-size: 26px;
+    }
+    
+    .submit-button {
+      padding: 14px;
+    }
+  }

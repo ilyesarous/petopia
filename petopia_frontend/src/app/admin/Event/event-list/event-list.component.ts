@@ -34,6 +34,8 @@ export class EventListComponent implements OnInit {
   showParticipationPopup: boolean = false;
   notifications: EventNotification[] = [];
 
+  
+
   filters: any = {};
 
 
@@ -48,7 +50,10 @@ calendarOptions: CalendarOptions = {
   },
   events: [],
   eventClick: this.handleEventClick.bind(this),
-  eventDisplay: 'block'
+  eventDisplay: 'block',
+  height: 'auto', // Add this
+  contentHeight: 'auto', // Add this
+  aspectRatio: 1.5 // Adjust this as needed
 };
 
 
@@ -323,6 +328,30 @@ toggleFilterExpansion() {
 
 
 toggleCalendarView(): void {
+  // this.showCalendar = true;
+  
+  // // Convert events to FullCalendar format
+  // this.calendarOptions.events = this.events.map(event => ({
+  //   id: event.idEvent.toString(),
+  //   title: event.nameEvent,
+  //   start: event.dateEvent,
+  //   extendedProps: {
+  //     location: event.lieuEvent,
+  //     description: event.descriptionEvent,
+  //     status: event.statusEvent
+  //   },
+  //   backgroundColor: this.getEventColor(event.statusEvent),
+  //   borderColor: this.getEventColor(event.statusEvent)
+  // }));
+  
+  
+  // // Show the modal
+  // setTimeout(() => {
+  //   const modal = new bootstrap.Modal(document.getElementById('calendarModal'));
+  //   modal.show();
+  // }, 0);
+
+
   this.showCalendar = true;
   
   // Convert events to FullCalendar format
@@ -338,12 +367,17 @@ toggleCalendarView(): void {
     backgroundColor: this.getEventColor(event.statusEvent),
     borderColor: this.getEventColor(event.statusEvent)
   }));
-  
-  // Show the modal
+  // Show the modal and trigger a resize event after a small delay
   setTimeout(() => {
     const modal = new bootstrap.Modal(document.getElementById('calendarModal'));
     modal.show();
+    
+    // This forces FullCalendar to recalculate its dimensions
+    setTimeout(() => {
+      window.dispatchEvent(new Event('resize'));
+    }, 100);
   }, 0);
+
 }
 
 private getEventColor(status: string): string {
@@ -378,6 +412,19 @@ handleEventClick(clickInfo: { event: EventApi }): void {
   }
 }
 
+// Add this method to your EventListComponent class
+openMap(location: string): void {
+  if (!location) {
+    alert('No location specified for this event');
+    return;
+  }
+
+  // Encode the location for URL
+  const encodedLocation = encodeURIComponent(location);
+  
+  // Open Google Maps with the location
+  window.open(`https://www.google.com/maps/search/?api=1&query=${encodedLocation}`, '_blank');
+}
 }
 
 

@@ -4,7 +4,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import tn.esprit.petopia_backend.entities.event.Participation;
 import tn.esprit.petopia_backend.entities.event.ReservationService;
+import tn.esprit.petopia_backend.entities.event.ServiceAnimal;
+import tn.esprit.petopia_backend.entities.user.User;
 import tn.esprit.petopia_backend.services.event.IEventService;
 import tn.esprit.petopia_backend.services.event.IReservationService;
 import tn.esprit.petopia_backend.services.event.ReservationServiceImplement;
@@ -39,7 +42,9 @@ public class ReservationServiceController {
     @PostMapping("/addReservation")
     public ResponseEntity<ReservationService> createReservation(@RequestBody ReservationService reservationService) {
         ReservationService createdReservation = reservationServiceImplement.createReservation(reservationService);
-        return ResponseEntity.status(HttpStatus.CREATED).body(createdReservation);
+
+
+        return ResponseEntity.ok(createdReservation);
     }
 
     // Modifier une réservation existante
@@ -59,5 +64,12 @@ public class ReservationServiceController {
         reservationServiceImplement.deleteReservation(id);
         return ResponseEntity.noContent().build();
     }
+
+
+
+
+
+
+
 
 }

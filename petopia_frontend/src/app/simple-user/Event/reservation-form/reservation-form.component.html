@@ -1,0 +1,80 @@
+<div class="reservation-section">
+    <div class="reservation-form-container">
+      <div class="form-header">
+        <h2>Make a Reservation</h2>
+        <p>Book the service</p>
+      </div>
+      
+      <form [formGroup]="reservationForm" (ngSubmit)="onSubmit()" class="reservation-form">
+        <div class="form-row">
+          <div class="form-group">
+            <label for="reservationDate">
+              <i class="fas fa-calendar-alt"></i> Date & Time
+            </label>
+            <input 
+              type="datetime-local" 
+              id="reservationDate" 
+              formControlName="reservationDate"
+              class="form-input"
+              [class.input-error]="reservationForm.get('reservationDate')?.invalid && reservationForm.get('reservationDate')?.touched">
+            <small class="hint">Select your date and time</small>
+          </div>
+          
+          
+        </div>
+        
+        <div class="form-group">
+          <label for="specialRequests">
+            <i class="fas fa-edit"></i> Special Requests
+          </label>
+          <textarea 
+            id="specialRequests" 
+            formControlName="specialRequests" 
+            rows="3"
+            class="form-input"
+            placeholder="Any allergies, special occasions, or seating preferences?"></textarea>
+          <small class="hint">Let us know how we can make your experience special</small>
+        </div>
+        
+        <div class="form-group">
+          <label for="contactNumber">
+            <i class="fas fa-phone"></i> Contact Number
+          </label>
+          <input 
+            type="tel" 
+            id="contactNumber" 
+            formControlName="contactNumber"
+            class="form-input"
+            placeholder="50505050">
+        </div>
+        
+        <div *ngIf="errorMessage" class="error-message">
+          <i class="fas fa-exclamation-circle"></i> {{ errorMessage }}
+        </div>
+        
+        <div *ngIf="successMessage" class="success-message">
+          <i class="fas fa-check-circle"></i> {{ successMessage }}
+        </div>
+        
+        <div class="form-actions">
+          <button 
+            type="submit" 
+            [disabled]="isSubmitting" 
+            class="submit-button"
+            [class.loading]="isSubmitting">
+            <span *ngIf="!isSubmitting">
+              <i class="fas fa-calendar-check"></i> Confirm Reservation
+            </span>
+            <span *ngIf="isSubmitting">
+              <i class="fas fa-spinner fa-spin"></i> Processing...
+            </span>
+          </button>
+        </div>
+      </form>
+      
+      <div class="form-footer">
+        <p><i class="fas fa-info-circle"></i> We'll contact you to confirm your reservation within 30 minutes.</p>
+      </div>
+    </div>
+    
+   

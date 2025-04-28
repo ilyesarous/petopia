@@ -4,6 +4,11 @@ import { CommonModule } from '@angular/common';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatInputModule } from '@angular/material/input';
+import { MatNativeDateModule } from '@angular/material/core';
+import { MatFormFieldModule } from '@angular/material/form-field';
+
 
 // Routing & Core
 import { AppRoutingModule } from './app-routing.module';
@@ -145,6 +150,9 @@ import { AddBrandsComponent } from './admin/store/add-brands/add-brands.componen
 
 import { EventDetailsComponent } from './simple-user/Event/event-details/event-details.component';
 import { ServiceAnimalDetailsComponent } from './simple-user/Event/service-animal-details/service-animal-details.component';
+import { EventHelperComponent } from './admin/Event/event-helper/event-helper.component';
+import { Nl2BrPipe } from './pipes/nl2-br.pipe';
+import { ReservationFormComponent } from './simple-user/Event/reservation-form/reservation-form.component';
 
 
 import { NewsComponent } from './simple-user/news/news.component';
@@ -155,8 +163,6 @@ import { PetComponent } from './components/pet/pet.component';
 import { ListReclamationComponent } from './components/list-reclamation/list-reclamation.component';
 import { ResponseDialogComponent } from './components/response-dialog/response-dialog.component';
 import {MatSelectModule} from "@angular/material/select";
-import {MatFormFieldModule} from "@angular/material/form-field";
-import {MatInputModule} from "@angular/material/input";
 import { ListUsersComponent } from './components/list-users/list-users.component';
 import { UserDetailsDialogComponent } from './components/user-details-dialog/user-details-dialog.component';
 import { ReclamationComponent } from './components/reclamation/reclamation.component';
@@ -280,7 +286,11 @@ import { PetListComponent } from './components/pet-list/pet-list.component';
     ReclamationListComponent,
     PetListComponent,
     AddAdsComponent,
-    AddBrandsComponent
+    AddBrandsComponent,
+    EventHelperComponent,
+    Nl2BrPipe,
+    ReservationFormComponent,
+
   ],
   imports: [
     BrowserModule,

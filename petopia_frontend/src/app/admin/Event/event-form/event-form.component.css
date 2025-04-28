@@ -177,3 +177,74 @@ label:after {
     justify-content: center;
   }
 }
+
+
+/* Add these styles */
+.image-generation-section {
+  margin: 20px 0;
+  padding: 15px;
+  border: 1px solid #eee;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+}
+
+.btn-generate-image {
+  background-color: #4a6fa5;
+  color: white;
+  border: none;
+  padding: 8px 15px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.3s;
+}
+
+.btn-generate-image:hover {
+  background-color: #3a5a8a;
+}
+
+.btn-generate-image:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+}
+
+.generated-image-container {
+  margin-top: 15px;
+  padding: 15px;
+  background-color: white;
+  border-radius: 5px;
+  border-left: 4px solid #4CAF50;
+}
+
+.event-image-preview {
+  max-width: 100%;
+  height: auto;
+  border-radius: 4px;
+  border: 1px solid #ddd;
+  margin-bottom: 10px;
+}
+
+.image-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.btn-view-image, .btn-use-image {
+  padding: 5px 10px;
+  border-radius: 3px;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.btn-view-image {
+  background-color: #f0f0f0;
+  border: 1px solid #ddd;
+  color: #333;
+  text-decoration: none;
+}
+
+.btn-use-image {
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+}

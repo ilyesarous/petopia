@@ -12,4 +12,7 @@ public interface IReservationService {
     public ReservationService createReservation(ReservationService reservation);
     public ReservationService updateReservation(Long id, ReservationService updatedReservation);
     public void deleteReservation(Long id);
+
+
+
 }

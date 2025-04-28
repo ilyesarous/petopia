@@ -2,10 +2,7 @@ package tn.esprit.petopia_backend.entities.event;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import tn.esprit.petopia_backend.entities.event.Enum.ServiceType;
 import tn.esprit.petopia_backend.entities.user.User;
 
@@ -19,6 +16,7 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@ToString
 public class ServiceAnimal {
 
     @Id
@@ -27,7 +25,7 @@ public class ServiceAnimal {
 
     private float prixServiceAnimal;
     private String descriptionServiceAnimal;
-    private boolean disponibilite;
+    private boolean disponibilite = true;
 
     @Enumerated(EnumType.STRING)
     private ServiceType typeService;

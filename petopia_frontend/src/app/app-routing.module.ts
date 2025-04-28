@@ -86,6 +86,8 @@ import {ReclamationComponent} from "./components/reclamation/reclamation.compone
 import {PetComponent} from "./components/pet/pet.component";
 import {ListUsersComponent} from "./components/list-users/list-users.component";
 import {ListReclamationComponent} from "./components/list-reclamation/list-reclamation.component";
+import { ServiceAnimalDetailsComponent } from './simple-user/Event/service-animal-details/service-animal-details.component';
+import { ReservationFormComponent } from './simple-user/Event/reservation-form/reservation-form.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -113,6 +115,9 @@ const routes: Routes = [
   { path: 'services', component: ServiceAnimalListComponent, canActivate: [AuthGuard] },
   { path: 'services/add', component: AddServiceAnimalComponent, canActivate: [AuthGuard] },
   { path: 'event/:id', component: EventDetailsComponent },
+  { path: 'services/:id', component: ServiceAnimalDetailsComponent },
+  {path: 'reservation/:id', component: ReservationFormComponent, canActivate: [AuthGuard]},
+
 
   { path: 'vet', component: DashPrincipaleHomeVetComponent, canActivate: [AuthGuard] },
   { path: 'vet/pet-growth/:id', component: PetGrowthVetComponent, canActivate: [AuthGuard] },

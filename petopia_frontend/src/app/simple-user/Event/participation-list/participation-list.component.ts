@@ -21,6 +21,7 @@ export class ParticipationListComponent implements OnInit {
   paymentSuccessMessage = '';
   currentPaymentEventId: number | null = null;
   paid?: boolean = false;
+  paidNow: boolean = true;
 
   participations: Participation[] = [];
   userId: number = 0; // ID de l'utilisateur connecté
@@ -53,6 +54,7 @@ export class ParticipationListComponent implements OnInit {
     const storedUserId = localStorage.getItem('userId');
     this.userId = storedUserId ? parseInt(storedUserId, 10) : 0;
     this.loadAllParticipations(); 
+    this.paidNow = localStorage.getItem("isPaid") === "true" ? true : false;
 
     // this.startGlobalCountdown();
     //this.loadUserData();
@@ -147,6 +149,16 @@ payForParticipation(participation: Participation): void {
     console.error('No event associated with this participation');
     return;
   }
+  this.paidNow=!this.paidNow;
+  localStorage.setItem("isPaid", this.paidNow.toString());
+  participation.paid = true;
+  participation.isPaying = true;
+
+   
+    
+  this.updatePaymentStatus(participation.idParticipation!);
+
+
   this.currentPaymentEventId = participation.event.idEvent;
 
   const paymentRequest = {
@@ -161,30 +173,41 @@ payForParticipation(participation: Participation): void {
 
   this.stripePaymentService.createCheckoutSessionForEvent(paymentRequest).subscribe({
     next: (response: any) => {
+
       if (response.sessionId) {
-        this.listenForPaymentSuccess(participation.event!.idEvent);
+        //this.listenForPaymentSuccess(participation.event!.idEvent, participation);
         this.stripePaymentService.redirectToCheckout(response.sessionId);
+
       } else {
+        participation.isPaying = false;
         console.error('No session ID received from server');
       }
     },
     error: (err) => {
+      participation.isPaying = false;
       console.error('Error creating checkout session:', err);
       // Handle error (show message to user)
     }
   });
+  this.paidNow=true;
 
 }
 
 // Add this new method to listen for payment success
-private listenForPaymentSuccess(eventId: number): void {
-  const eventSource = new EventSource(`your-api-base-url/payments/status/${eventId}`);
+private listenForPaymentSuccess(eventId: number, participation: Participation): void {
+  const eventSource = new EventSource(`http://localhost:8082/petopia/participations
+/payments/status/${eventId}`);
   
   eventSource.addEventListener('payment_success', (event) => {
     const data = JSON.parse(event.data);
     this.paymentSuccessMessage = `Payment confirmed for ${data.eventName}`;
     this.showPaymentSuccess = true;
-    
+    this.paidNow=true;
+
+     // Set paid and stop spinner
+     participation.paid = true;
+     participation.isPaying = false;
+
     // Update the participation status
     this.participations = this.participations.map(p => {
       if (p.event?.idEvent === eventId) {
@@ -198,12 +221,30 @@ private listenForPaymentSuccess(eventId: number): void {
 
   eventSource.addEventListener('error', (err) => {
     console.error('EventSource error:', err);
+    participation.isPaying = false;
     eventSource.close();
   });
 }
 closePaymentSuccess(): void {
   this.showPaymentSuccess = false;
   this.currentPaymentEventId = null;
+}
+
+private updatePaymentStatus(participationId: number): void {
+  const updatePayload = {
+    paid: true,
+    statusParticipation: 'CONFIRMED'
+  };
+
+  this.participationService.updateParticipation(participationId, updatePayload).subscribe({
+    next: () => {
+      console.log('Payment status updated on server');
+      // Ne pas recharger pour garder l'état immédiat
+    },
+    error: (err) => {
+      console.error('Error updating payment status:', err);
+    }
+  });
 }
 
 
