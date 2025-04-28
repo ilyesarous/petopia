@@ -146,6 +146,7 @@ import { ServiceAnimalDetailsComponent } from './simple-user/Event/service-anima
 
 import { NewsComponent } from './simple-user/news/news.component';
 import { BmiResultDialogComponent } from './simple-user/vet/bmi-result-dialog/bmi-result-dialog.component';
+import { HealthTipsComponent } from './simple-user/vet/health-tips/health-tips.component';
 
 @NgModule({
   declarations: [
@@ -252,6 +253,7 @@ import { BmiResultDialogComponent } from './simple-user/vet/bmi-result-dialog/bm
     ServiceAnimalDetailsComponent,
     NewsComponent,
     BmiResultDialogComponent,
+    HealthTipsComponent,
   ],
   imports: [
     BrowserModule,

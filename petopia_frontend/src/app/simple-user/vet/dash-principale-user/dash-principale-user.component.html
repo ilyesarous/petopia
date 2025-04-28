@@ -2,13 +2,7 @@
     <div class="dashboard-header">
         <div class="header-content">
             <h1 class="welcome-title">Welcome back! 👋</h1>
-            <div class="right-elements">
-                <div class="game-icon" routerLink="/vet/tic-tac-toe">
-                    🎮 
-                </div>
-                <div class="rate-vet" routerLink="/vet/qrcode-vet-scanner">
-                    ⭐👨‍⚕️
-                </div>                
+            <div class="right-elements">              
                 <div class="notification-container">
                     <app-notification-vet></app-notification-vet>
                 </div>
@@ -40,6 +34,30 @@
                 <mat-card-content>
                     <h3>Dog Breed Recognition</h3>
                     <p>Identify dog breeds with AI</p>
+                </mat-card-content>
+            </mat-card>
+
+            <mat-card class="feature-card recognition-card" matRipple routerLink="/vet/health-tips">
+                <div class="card-icon">🩺</div>
+                <mat-card-content>
+                    <h3>See Health Tips</h3>
+                    <p>To improve your pet's wellness</p>
+                </mat-card-content>
+            </mat-card>
+
+            <mat-card class="feature-card recognition-card" matRipple routerLink="/vet/tic-tac-toe">
+                <div class="card-icon">🎮</div>
+                <mat-card-content>
+                    <h3>Start playing</h3>
+                    <p>Play and enjoy your time!</p>
+                </mat-card-content>
+            </mat-card>
+
+            <mat-card class="feature-card recognition-card" matRipple routerLink="/vet/qrcode-vet-scanner">
+                <div class="card-icon">⭐</div>
+                <mat-card-content>
+                    <h3>Vet Rating</h3>
+                    <p>Share your vet experience!</p>
                 </mat-card-content>
             </mat-card>
         </div>

@@ -12,23 +12,44 @@
 }
 
 .rate-vet {
+    display: inline-block;
+    text-align: center;
     background: linear-gradient(135deg, #F83182, #FF617C, #FE9A7A);
     color: white;
     font-weight: bold;
-    padding: 12px 24px;
+    padding: 10px 10px;
+    margin: 10px;
+    font-size: 1.2rem;
     border-radius: 30px;
-    text-align: center;
     cursor: pointer;
-    font-size: 18px;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    width: fit-content;
-    box-shadow: 0 8px 16px rgba(248, 49, 130, 0.3);
-    margin: 16px auto;
+    text-decoration: none;
+    box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
   }
+
+  .pets-section{
+    background: #fce9ec; 
+    border-radius: 30px;
+  }
+  
   
   .rate-vet:hover {
     transform: scale(1.05);
-    box-shadow: 0 10px 20px rgba(248, 49, 130, 0.4);
+    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.3);
+    background: linear-gradient(135deg, #FF617C, #FE9A7A, #F83182);
+  }
+  
+  .feature-card {
+    opacity: 0;
+    transform: translateY(10px);
+    animation: fadeInUp 0.6s forwards;
+  }
+  
+  @keyframes fadeInUp {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
   
 

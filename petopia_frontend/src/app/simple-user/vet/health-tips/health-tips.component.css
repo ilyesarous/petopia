@@ -1,0 +1,49 @@
+.health-tips-container {
+    padding: 2rem;
+    background-color: #fff;
+  }
+  
+  .title {
+    text-align: center;
+    color: #F83182;
+    margin-bottom: 2rem;
+    font-size: 2.5rem;
+  }
+  
+  .subtitle {
+    color: #FF617C;
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+    font-size: 1.8rem;
+  }
+  
+  .cards-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1rem;
+  }
+  
+  .card {
+    padding: 1.2rem;
+    border-radius: 12px;
+    background-color: #FE9A7A;
+    color: white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s, background-color 0.3s;
+    text-align: center;
+    font-size: 1.1rem;
+  }
+  
+  .card.dog {
+    background-color: #F83182;
+  }
+  
+  .card.cat {
+    background-color: #FF617C;
+  }
+  
+  .card:hover {
+    transform: translateY(-5px);
+    background-color: #FE9A7A;
+  }
+  

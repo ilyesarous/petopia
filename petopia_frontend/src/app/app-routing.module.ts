@@ -78,6 +78,8 @@ import { DreamPetComponent } from './simple-user/adoption/dream-pet/dream-pet.co
 import { EventDetailsComponent } from './simple-user/Event/event-details/event-details.component';
 import { NewsComponent } from './simple-user/news/news.component';
 
+import { HealthTipsComponent } from './simple-user/vet/health-tips/health-tips.component';
+
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
   { path: 'home', component: ComponentWrapperComponent, canActivate: [AuthGuard]},
@@ -117,7 +119,7 @@ const routes: Routes = [
   { path: 'vet/RatingVet/:id' , component: UserRatingVetComponent, canActivate: [AuthGuard] },
   { path: 'vet/info-rating-vet', component:InfoRatingVetComponent, canActivate: [AuthGuard] },
   { path: 'vet/payment/:id', component: PaymentVetComponent, canActivate: [AuthGuard] },
-
+  { path: 'vet/health-tips', component: HealthTipsComponent, canActivate: [AuthGuard] },
 
   { path: 'community', component: CommunityComponent},
   { path: 'news', component: NewsComponent },
