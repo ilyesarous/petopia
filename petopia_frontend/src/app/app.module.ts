@@ -169,6 +169,7 @@ import { ReclamationComponent } from './components/reclamation/reclamation.compo
 import { ReclamationListComponent } from './components/reclamation-list/reclamation-list.component';
 import { PetListComponent } from './components/pet-list/pet-list.component';
 
+import { BmiResultDialogComponent } from './simple-user/vet/bmi-result-dialog/bmi-result-dialog.component';
 
 @NgModule({
   declarations: [
@@ -291,6 +292,7 @@ import { PetListComponent } from './components/pet-list/pet-list.component';
     Nl2BrPipe,
     ReservationFormComponent,
 
+    BmiResultDialogComponent,
   ],
   imports: [
     BrowserModule,

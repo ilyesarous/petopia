@@ -8,6 +8,14 @@
         <i class="fas fa-heartbeat icon"></i>
       </div>
     </div>
+    
+    <button class="btn btn-gradient rounded-pill" 
+            (click)="calculatePetBMI()"
+            [disabled]="petGrowths.length === 0">
+        <i class="fas fa-calculator me-2"></i>
+        Calculate BMI
+    </button>
+<br>
 <br>
   <div class="row">
     <!-- Weight Chart -->

@@ -585,3 +585,17 @@
 .title-wrapper {
   margin-top: 0; /* Supprime la marge supérieure du titre */
 }
+
+
+.btn-gradient {
+  background: linear-gradient(135deg, #FF617C 0%, #FE9A7A 100%);
+  color: white;
+  border: none;
+}
+.btn-gradient:hover {
+  background: linear-gradient(135deg, #E85172 0%, #EE8A6A 100%);
+}
+.btn-gradient:disabled {
+  background: #cccccc;
+  cursor: not-allowed;
+}

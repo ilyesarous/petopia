@@ -1,105 +1,120 @@
 <div class="ratings-container">
-    <h2 class="h2">All Reviews for Veterinarians</h2>
+  <h2 class="h2">All Reviews for Veterinarians</h2>
 
-    <!-- Section des statistiques -->
-    <div class="vet-stats-section">
-        <!-- Top Rated -->
-        <div class="top-rated-section" *ngIf="topRatedVet">
+  <!-- Section des statistiques -->
+  <div class="vet-stats-section">
+      <!-- Top Rated -->
+      <div class="top-rated-section" *ngIf="topRatedVet">
           <div class="top-rated-card">
-            <div class="crown-icon">👑</div>
-            <h3>Top Rated Veterinarian</h3>
-            <div class="vet-info">
-              <h4>{{topRatedVet.name}}</h4>
-              <div class="stats">
-                <div class="avg-rating">
-                  <span class="label">Average Rating:</span>
-                  <span class="stars">
-                    <span *ngFor="let star of [1,2,3,4,5]"
-                          [style.color]="star <= topRatedVet.average ? '#F83182' : '#ccc'">
-                      ★
-                    </span>
-                  </span>
-                  <span class="value">{{topRatedVet.average}}/5</span>
-                </div>
-                <div class="rating-count">
-                  <span class="label">Based on:</span>
-                  <span class="value">{{topRatedVet.count}} rating(s)</span>
-                </div>
+              <div class="crown-icon">👑</div>
+              <h3>Top Rated Veterinarian</h3>
+              <div class="vet-info">
+                  <h4>{{topRatedVet.name}}</h4>
+                  <div class="stats">
+                      <div class="avg-rating">
+                          <span class="label">Average Rating:</span>
+                          <span class="stars">
+                              <span *ngFor="let star of [1,2,3,4,5]"
+                                  [style.color]="star <= topRatedVet.average ? '#F83182' : '#ccc'">
+                                  ★
+                              </span>
+                          </span>
+                          <span class="value">{{topRatedVet.average}}/5</span>
+                      </div>
+                      <div class="rating-count">
+                          <span class="label">Based on:</span>
+                          <span class="value">{{topRatedVet.count}} rating(s)</span>
+                      </div>
+                  </div>
               </div>
-            </div>
           </div>
-        </div>
-        
-        <!-- Worst Rated -->
-        <div class="worst-rated-section" *ngIf="worstRatedVet && (!topRatedVet || worstRatedVet.id !== topRatedVet.id)">
-          <div class="worst-rated-card">
+      </div>
+      
+      <!-- Worst Rated -->
+      <div class="worst-rated-section" *ngIf="worstRatedVet && (!topRatedVet || worstRatedVet.id !== topRatedVet.id)">
+        <div class="worst-rated-card">
             <div class="warning-icon">⚠️</div>
             <h3>Needs Improvement</h3>
             <div class="vet-info">
-              <h4>{{worstRatedVet.name}}</h4>
-              <div class="stats">
-                <div class="avg-rating">
-                  <span class="label">Average Rating:</span>
-                  <span class="stars">
-                    <span *ngFor="let star of [1,2,3,4,5]"
-                          [style.color]="star <= worstRatedVet.average ? '#F83182' : '#ccc'">
-                      ★
-                    </span>
-                  </span>
-                  <span class="value">{{worstRatedVet.average}}/5</span>
+                <h4>{{worstRatedVet.name}}</h4>
+                <div class="stats">
+                    <div class="avg-rating">
+                        <span class="label">Average Rating:</span>
+                        <span class="stars">
+                            <span *ngFor="let star of [1,2,3,4,5]"
+                                [style.color]="star <= worstRatedVet.average ? '#F83182' : '#ccc'">
+                                ★
+                            </span>
+                        </span>
+                        <span class="value">{{worstRatedVet.average}}/5</span>
+                    </div>
+                    <div class="rating-count">
+                        <span class="label">Based on:</span>
+                        <span class="value">{{worstRatedVet.count}} rating(s)</span>
+                    </div>
                 </div>
-                <div class="rating-count">
-                  <span class="label">Based on:</span>
-                  <span class="value">{{worstRatedVet.count}} rating(s)</span>
+                <!-- État du compte avec bouton intégré -->
+                <div class="account-status-container">
+                  <button mat-icon-button 
+                            [class.red-button]="worstRatedVet.locked"
+                            [class.green-button]="!worstRatedVet.locked"
+                            (click)="toggleLockUser(worstRatedVet.id)"
+                            class="lock-button">
+                        <mat-icon>{{worstRatedVet.locked ? 'lock' : 'lock_open'}}</mat-icon>
+                    </button>
+
+                    <div class="account-status" [class.locked]="!worstRatedVet.locked" [class.unlocked]="worstRatedVet.locked">
+                        <span>Account is currently {{worstRatedVet.locked ? 'Unlocked' : 'Blocked'}}</span>
+                    </div>
                 </div>
-              </div>
             </div>
-          </div>
         </div>
       </div>
-    
-    <!-- Filtre -->
-    <div class="filter-control">
+  </div>
+
+  <!-- Filtre -->
+  <div class="filter-control">
       <label for="vetFilter">Filter by Veterinarian:</label>
       <select id="vetFilter" [(ngModel)]="selectedVet" (change)="filterRatings()">
-        <option value="">All Veterinarians</option>
-        <option *ngFor="let vet of uniqueVets" [value]="vet">{{vet}}</option>
+          <option value="">All Veterinarians</option>
+          <option *ngFor="let vet of uniqueVets" [value]="vet">{{vet}}</option>
       </select>
-    </div>
-
-    <div class="table-responsive">
-      <table class="ratings-table">
-        <thead>
-          <tr>
-            <th>Client</th>
-            <th>Veterinarian</th>
-            <th>Contact</th>
-            <th>Rating</th>
-            <th>Comment</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let rating of filteredRatings">
-            <td>{{rating.userclientR.name || 'Anonymous'}}</td>
-            <td>{{rating.uservetR.name || 'Unknown Veterinarian'}}</td>
-            <td>
-              <div class="contact-info">
-                <p><i class="fas fa-envelope"></i> {{rating.uservetR.email || 'N/A'}}</p>
-                <p><i class="fas fa-phone"></i> {{rating.uservetR.phoneNumber || 'N/A'}}</p>
-              </div>
-            </td>
-            <td>
-              <div class="star-rating">
-                <span *ngFor="let star of [1,2,3,4,5]"
-                      [style.color]="star <= rating.note ? '#F83182' : '#ccc'">
-                  ★
-                </span>
-                <span class="rating-value">{{rating.note}}/5</span>
-              </div>
-            </td>
-            <td class="comment-cell">"{{rating.comment || 'No comment'}}"</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
   </div>
+
+  <!-- Tableau des évaluations -->
+  <div class="table-responsive">
+      <table class="ratings-table">
+          <thead>
+              <tr>
+                  <th>Client</th>
+                  <th>Veterinarian</th>
+                  <th>Contact</th>
+                  <th>Rating</th>
+                  <th>Comment</th>
+              </tr>
+          </thead>
+          <tbody>
+              <tr *ngFor="let rating of filteredRatings">
+                  <td>{{rating.userclientR.name || 'Anonymous'}}</td>
+                  <td>{{rating.uservetR.name || 'Unknown Veterinarian'}}</td>
+                  <td>
+                      <div class="contact-info">
+                          <p><i class="fas fa-envelope"></i> {{rating.uservetR.email || 'N/A'}}</p>
+                          <p><i class="fas fa-phone"></i> {{rating.uservetR.phoneNumber || 'N/A'}}</p>
+                      </div>
+                  </td>
+                  <td>
+                      <div class="star-rating">
+                          <span *ngFor="let star of [1,2,3,4,5]"
+                              [style.color]="star <= rating.note ? '#F83182' : '#ccc'">
+                              ★
+                          </span>
+                          <span class="rating-value">{{rating.note}}/5</span>
+                      </div>
+                  </td>
+                  <td class="comment-cell">"{{rating.comment || 'No comment'}}"</td>
+              </tr>
+          </tbody>
+      </table>
+  </div>
+</div>

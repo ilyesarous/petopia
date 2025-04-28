@@ -6,6 +6,8 @@ import { ActivatedRoute } from '@angular/router';
 import { PetGrowthsService } from 'src/app/services/vet/pet-growth/pet-growths.service';
 import { PetGrowth } from 'src/app/models/vet/pet-growth';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
+import { BmiResultDialogComponent } from "src/app/simple-user/vet/bmi-result-dialog/bmi-result-dialog.component";
 
 export type ChartOptions = {
   series: any[];
@@ -88,7 +90,8 @@ export class TreatmentSpecificPetsUserComponent implements OnInit {
   constructor(
     private diagnosisService: DiagnosisService, 
     private route: ActivatedRoute,
-    private petGrowthService: PetGrowthsService
+    private petGrowthService: PetGrowthsService,
+    private dialog: MatDialog 
   ) { }
 
   ngOnInit(): void {
@@ -319,5 +322,26 @@ export class TreatmentSpecificPetsUserComponent implements OnInit {
       }
     };
   }
+
+  calculatePetBMI(): void {
+    if (!this.petId) {
+      console.error('No pet ID available');
+      return;
+    }
+
+    this.petGrowthService.calculateBMI(this.petId).subscribe({
+      next: (result) => {
+        this.dialog.open(BmiResultDialogComponent, {
+          data: result,
+          panelClass: 'custom-dialog-container',
+          width: '450px' // Vous pouvez ajuster la largeur
+        });
+      },
+      error: (err) => {
+        console.error('Error calculating BMI:', err);
+      }
+    });
+  }
+  
 
 }

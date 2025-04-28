@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { VetRatingService } from 'src/app/services/vet/rating/vet-rating.service';
 import { RatingVet } from 'src/app/models/vet/rating-vet';
 
+
+
 @Component({
   selector: 'app-vet-rate',
   templateUrl: './vet-rate.component.html',
@@ -15,12 +17,12 @@ export class VetRateComponent implements OnInit {
     selectedVet: string = '';
     filteredRatings: RatingVet[] = [];
 
-    topRatedVet: {name: string, average: number, count: number, id: number} | null = null;
-    worstRatedVet: {name: string, average: number, count: number, id: number} | null = null;
+    topRatedVet: {name: string, average: number, count: number, id: number, locked: boolean} | null = null;
+    worstRatedVet: {name: string, average: number, count: number, id: number, locked: boolean} | null = null;
 
-     constructor(
-        private vetRatingService: VetRatingService
-      ) { }
+    constructor(
+      private vetRatingService: VetRatingService,
+    ) { }
 
       ngOnInit(): void {
         this.loadAllRatings();
@@ -56,28 +58,33 @@ export class VetRateComponent implements OnInit {
       }
     
       private calculateVetStats(ratings: RatingVet[]): void {
-        const vetStats: {[key: string]: {total: number, count: number, id: number}} = {};
+        const vetStats: {[key: string]: {total: number, count: number, id: number, locked: boolean}} = {};
       
         ratings.forEach(rating => {
           const vetName = rating.uservetR.name || 'Unknown Veterinarian';
           const vetId = rating.uservetR.id_user;
+          const vetLocked = rating.uservetR.locked || false; // Ajout d'une valeur par défaut
           
           if (!vetStats[vetName]) {
-            vetStats[vetName] = {total: 0, count: 0, id: vetId};
+            vetStats[vetName] = {
+              total: 0, 
+              count: 0, 
+              id: vetId,
+              locked: vetLocked
+            };
           }
           vetStats[vetName].total += rating.note;
           vetStats[vetName].count++;
         });
-    
-        let topVet: {name: string, average: number, count: number, id: number} | null = null;
-        let worstVet: {name: string, average: number, count: number, id: number} | null = null;
+
+        let topVet: {name: string, average: number, count: number, id: number, locked: boolean} | null = null;
+        let worstVet: {name: string, average: number, count: number, id: number, locked: boolean} | null = null;
         let highestAvg = 0;
         let lowestAvg = 5;
-    
+
         for (const [name, stats] of Object.entries(vetStats)) {
           const average = stats.total / stats.count;
           
-          // Trouver le meilleur vétérinaire
           if (topVet === null || average > highestAvg || 
               (average === highestAvg && stats.count > topVet.count)) {
             highestAvg = average;
@@ -85,11 +92,11 @@ export class VetRateComponent implements OnInit {
               name,
               id: stats.id,
               average: parseFloat(average.toFixed(2)),
-              count: stats.count
+              count: stats.count,
+              locked: stats.locked
             };
           }
           
-          // Trouver le pire vétérinaire
           if (worstVet === null || average < lowestAvg || 
               (average === lowestAvg && stats.count > worstVet.count)) {
             lowestAvg = average;
@@ -97,12 +104,12 @@ export class VetRateComponent implements OnInit {
               name,
               id: stats.id,
               average: parseFloat(average.toFixed(2)),
-              count: stats.count
+              count: stats.count,
+              locked: stats.locked
             };
           }
         }
-    
-        // Ne pas afficher le worst vet si c'est le même que le top vet
+
         if (topVet && worstVet && topVet.id === worstVet.id) {
           this.topRatedVet = topVet;
           this.worstRatedVet = null;
@@ -110,6 +117,18 @@ export class VetRateComponent implements OnInit {
           this.topRatedVet = topVet;
           this.worstRatedVet = worstVet;
         }
+    }
+
+    toggleLockUser(userId: number): void {
+      this.vetRatingService.toggleUserLock(userId).subscribe({
+        next: () => {
+          // Recharger les données si nécessaire
+          this.loadAllRatings();
+        },
+        error: (err) => {
+          console.error('Error toggling lock status:', err);
+        }
+      });
     }
 
 }

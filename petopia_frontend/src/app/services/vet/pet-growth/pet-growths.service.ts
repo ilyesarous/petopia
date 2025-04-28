@@ -36,4 +36,8 @@ export class PetGrowthsService {
     return this.http.delete<void>(`${this.apiUrl}/deletePetGrowth/${id}`);
   }
 
+  calculateBMI(petId: number): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/calculateBMI/${petId}`);
+  }
+
 }
