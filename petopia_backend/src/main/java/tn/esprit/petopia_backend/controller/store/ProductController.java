@@ -73,10 +73,13 @@ public class ProductController {
         return productService.addProduct(file, product);
     }
 
-    private Product getProduct(int idProduct, String productName,String productDescription, float productPrice, float oldPrice, float cupponPrice, String category, int availableQuantity, int idUser, int idBrand) {
+    private Product getProduct(int idProduct, String productName, String productDescription, float productPrice, float oldPrice, float cupponPrice, String category, int availableQuantity, int idUser, int idBrand) {
         Product product = new Product();
         User user = userService.getUsersById(idUser).getOurUsers();
-        Brand brand = brandRepository.findById(idBrand).get();
+        Brand brand = null;
+        if (user.getRole().equals("PARTNER")) {
+            brand = brandRepository.findById(idBrand).get();
+        }
         if (idProduct != 0) {
             product.setProduct_id(idProduct);
             product.setProduct_image(productService.findById(idProduct).getProduct_image());

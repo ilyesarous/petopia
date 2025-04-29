@@ -19,11 +19,11 @@ export class AddProductComponent {
   categories: string[] = ['FOOD', 'ACCESSORY', 'TOYS', 'CLOTHES'];
   currentProductId: number | null = null;
   userId: number = 0;
-  toast: any[]= [];
+  toast: any[] = [];
   brands: any[] = [];
   @Input() product: any = null;
   @Input() isEditMode: boolean = false;
-  @Input() role: string = "";
+  @Input() role: string = '';
   @Output() productAdded = new EventEmitter<any>();
   @Output() cancel = new EventEmitter<void>();
   constructor(
@@ -50,12 +50,14 @@ export class AddProductComponent {
     this.userId = localStorage.getItem('userId')
       ? parseInt(localStorage.getItem('userId')!)
       : 0;
-      if (this.isEditMode && this.product) {
-        this.loadProductData(this.product);
-      }
-    this.brandService.getAllBrandsPartner().subscribe(
-      brand => this.brands = brand
-    )
+    if (this.isEditMode && this.product) {
+      this.loadProductData(this.product);
+    }
+    if (this.role === 'ROLE_PARTNER') {
+      this.brandService
+        .getAllBrandsPartner()
+        .subscribe((brand) => (this.brands = brand));
+    }
   }
 
   loadProductData(product: any): void {
@@ -65,9 +67,9 @@ export class AddProductComponent {
       old_price: product.old_price,
       cuppon_price: product.cuppon_price,
       category: product.category,
-      availableQuantity: product.availableQuantity
+      availableQuantity: product.availableQuantity,
     });
-    
+
     if (product.product_image) {
       this.previewUrl = product.product_image;
     }
@@ -110,7 +112,7 @@ export class AddProductComponent {
 
     if (this.selectedFile) {
       formData.append('product_image', this.selectedFile);
-    }else {
+    } else {
       formData.append('product_image', new File([], ''));
     }
 
@@ -131,9 +133,8 @@ export class AddProductComponent {
         100;
     formData.append('product_price', priviousProce.toString());
     formData.append('id_user', this.userId.toString());
-    console.log(formData.get("idBrand"));
-    
-    
+    console.log(formData.get('idBrand'));
+
     this.productService.addProduct(formData, this.role).subscribe({
       next: (newProduct) => {
         this.productAdded.emit(newProduct);
@@ -167,5 +168,4 @@ export class AddProductComponent {
   onCancel(): void {
     this.cancel.emit();
   }
-
 }
