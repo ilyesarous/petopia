@@ -68,7 +68,6 @@ public class CartProductService implements ICartProductService {
     public List<Product> getTopProducts() {
         return productRepository.findAll()
                 .stream()
-                .filter(product -> product.getUser().getRole().equals("PARTNER"))
                 .sorted((c1, c2) -> c2.getQuantity() - c1.getQuantity())
                 .limit(4)
                 .collect(Collectors.toList());
