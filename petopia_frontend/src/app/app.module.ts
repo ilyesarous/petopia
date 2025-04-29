@@ -100,7 +100,7 @@ import { ReactionComponent } from './simple-user/reaction/reaction.component';
 import { CommentComponent } from './simple-user/comment/comment.component';
 import { StoryComponent } from './simple-user/story/story.component';
 import { RelativeTimePipe } from './pipes/relative-time.pipe';
-import {BaseChartDirective} from "ng2-charts";
+import {NgChartsModule} from "ng2-charts";
 
 import { CartComponent } from './simple-user/store/cart/cart.component';
 import { ShelterListComponent } from './admin/shelter/shelter-list/shelter-list.component';
@@ -320,7 +320,7 @@ import { HealthTipsComponent } from './simple-user/vet/health-tips/health-tips.c
     MatRadioModule,
     MatCardModule,
     MatRippleModule,
-    BaseChartDirective,
+    NgChartsModule,
     MatFormFieldModule,
     MatOptionModule,
     MatSelectModule,

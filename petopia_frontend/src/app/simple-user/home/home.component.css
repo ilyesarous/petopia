@@ -1,210 +1,161 @@
-/* Dashboard Container */
-.dashboard-container {
-  padding: 2rem;
-  max-width: 1200px;
-  margin: 0 auto;
-}
+/* ==== HERO SECTION STYLES (HOME) ==== */
 
-/* Welcome Section */
-.welcome-section {
-  margin-bottom: 2rem;
-  text-align: center;
-}
-
-.welcome-section h2 {
-  font-size: 2rem;
-  color: #F83182;
-  margin-bottom: 0.5rem;
-  background: linear-gradient(to right, #F83182, #FE9A7A);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-
-.welcome-message {
-  color: #666;
-  font-size: 1.1rem;
-}
-
-/* Dashboard Cards */
-.dashboard-cards {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 1.5rem;
-  margin-bottom: 2rem;
-}
-
-.dashboard-card {
-  background: white;
-  border-radius: 12px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
-  overflow: hidden;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-}
-
-.dashboard-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 8px 25px rgba(248, 49, 130, 0.15);
-}
-
-.card-header {
-  background: linear-gradient(135deg, rgba(248, 49, 130, 0.1) 0%, rgba(254, 154, 122, 0.1) 100%);
-  padding: 1.2rem;
+.hero-section {
+  width: 100%;
+  padding: 5rem 2rem;
+  background: #fff;
   display: flex;
+  justify-content: center;
   align-items: center;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+  position: relative;
+  overflow: hidden;
 }
 
-.card-header i {
+.hero-content {
+  display: flex;
+  flex-wrap: wrap;
+  max-width: 1400px;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  gap: 2rem;
+}
+
+.hero-left, .hero-right {
+  flex: 1 1 25%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+.hero-center {
+  flex: 1 1 45%;
+  text-align: center;
+  background: rgba(255, 255, 255, 0.95);
+  padding: 2rem;
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+}
+
+.sale-badge {
+  position: absolute;
+  top: -10px;
+  left: -10px;
+  background: #ff617c;
+  color: white;
+  padding: 0.6rem 1.2rem;
+  border-radius: 40px;
+  font-size: 0.95rem;
+  font-weight: bold;
+  z-index: 10;
+}
+
+.subtitle {
+  font-size: 1.1rem;
+  color: #F83182;
+  letter-spacing: 1px;
+  margin-bottom: 0.5rem;
+  text-transform: uppercase;
+}
+
+.title {
+  font-size: 2.8rem;
+  color: #333;
+  margin-bottom: 1rem;
+  font-weight: 800;
+  line-height: 1.2;
+}
+
+.desc {
+  font-size: 1.1rem;
+  color: #555;
+  margin-bottom: 1.5rem;
+  line-height: 1.6;
+}
+
+.cta-button {
+  padding: 0.9rem 2rem;
+  background: linear-gradient(to right, #F83182, #FE9A7A);
+  color: white;
+  font-weight: bold;
+  font-size: 1rem;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.cta-button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 15px rgba(248, 49, 130, 0.3);
+}
+
+.decor-icons {
+  margin-top: 1rem;
   font-size: 1.5rem;
   color: #F83182;
-  margin-right: 0.8rem;
 }
 
-.card-header h3 {
-  margin: 0;
-  color: #333;
-  font-size: 1.2rem;
+/* Images */
+.main-img {
+  width: 230px;
+  border-radius: 50%;
+  object-fit: cover;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
 }
 
-.card-body {
-  padding: 1.5rem;
+.dog-img, .cat-img, .food-img {
+  position: absolute;
+  max-width: 220px;
+  opacity: 0.85;
 }
 
-/* Pet Summary Card */
-.pet-stats {
-  display: flex;
-  justify-content: space-around;
-  margin-bottom: 1.5rem;
+.dog-img {
+  top: -20px;
+  right: 10px;
 }
 
-.stat-item {
-  text-align: center;
+.cat-img {
+  bottom: -10px;
+  right: 30px;
 }
 
-.stat-value {
-  display: block;
-  font-size: 2rem;
-  font-weight: 700;
-  color: #F83182;
-  line-height: 1;
+.food-img {
+  bottom: 20px;
+  left: 10px;
 }
 
-.stat-label {
-  color: #666;
-  font-size: 0.9rem;
-}
-
-/* Buttons */
-.card-button {
-  width: 100%;
-  padding: 10px;
-  background: linear-gradient(135deg, #F83182 0%, #FE9A7A 100%);
-  color: white;
-  border: none;
-  border-radius: 6px;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-}
-
-.card-button:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(248, 49, 130, 0.3);
-}
-
-.action-buttons {
-  display: flex;
-  flex-direction: column;
-  gap: 0.8rem;
-}
-
-.action-button {
-  padding: 10px;
-  background: white;
-  border: 1px solid #eee;
-  border-radius: 6px;
-  color: #555;
-  font-weight: 500;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.action-button:hover {
-  border-color: #F83182;
-  color: #F83182;
-  background: rgba(248, 49, 130, 0.05);
-}
-
-/* Recent Activity */
-.activity-list {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-.activity-list li {
-  padding: 0.6rem 0;
-  border-bottom: 1px solid #f0f0f0;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.activity-list li:last-child {
-  border-bottom: none;
-}
-
-.activity-list i {
-  color: #F83182;
-}
-
-/* Chat Section */
-.chat-section {
-  background: white;
-  border-radius: 12px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
-  padding: 1.5rem;
-  margin-top: 2rem;
-}
-
-.chat-section h3 {
-  color: #333;
-  margin-top: 0;
-  margin-bottom: 1rem;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.chat-section h3 i {
-  color: #F83182;
-}
+/* Section Specific Background Colors (optional) */
+.adoption-section { background: #fff6f8; }
+.vet-section { background: #f7f9ff; }
+.matching-section { background: #fffef4; }
+.event-section { background: #fef8ef; }
+.shop-section { background: #f9f9ff; }
+.community-section { background: #fffdf4; }
 
 /* Responsive */
 @media (max-width: 768px) {
-  .dashboard-cards {
-    grid-template-columns: 1fr;
+  .hero-content {
+    flex-direction: column;
+    text-align: center;
   }
 
-  .action-buttons {
-    flex-direction: row;
-    flex-wrap: wrap;
+  .hero-left, .hero-right, .hero-center {
+    flex: 1 1 100%;
+    position: relative;
+    margin-bottom: 2rem;
   }
 
-  .action-button {
-    flex: 1 1 150px;
+  .main-img {
+    width: 180px;
+  }
+
+  .dog-img, .cat-img, .food-img {
+    position: relative;
+    max-width: 80px;
+    margin: 10px;
   }
 }
 
-.content {
-  padding: 20px;
-  height: calc(100vh - 60px);
-  overflow-y: auto;
-}
+/* ==== END ==== */

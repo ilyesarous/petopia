@@ -1,98 +1,140 @@
-<div class="dashboard-container">
-    <div class="welcome-section">
-        <h2>Welcome Back!</h2>
-        <p class="welcome-message">Here's what's happening with your pets</p>
+<!-- New Services Section --><!-- === HOME PAGE SECTIONS (PETOPIA) === -->
+
+<!-- ADOPTION SECTION -->
+<section class="hero-section adoption-section">
+    <div class="hero-content">
+      <div class="hero-left">
+        <div class="sale-badge">🐾 Free Adoption </div>
+        <img src="assets/images/girl-holding-cat.png" alt="Girl with cat" class="main-img">
+      </div>
+  
+      <div class="hero-center">
+        <h5 class="subtitle">❤️ BEST FRIENDS AWAIT</h5>
+        <h1 class="title">Adopt a Paw, Change a Life</h1>
+        <p class="desc">Every paw deserves a home. Find your perfect furry friend and bring happiness to both of your lives.</p>
+        <button routerLink="/adoption" class="cta-button">Explore Adoption</button>
+       
+      </div>
+  
+      <div class="hero-right">
+        <img src="assets/images/jumping-dog.png" alt="Jumping dog" class="dog-img">
+        <img src="assets/images/dog-food.png" alt="Dog food" class="food-img">
+      </div>
     </div>
-
-    <div class="dashboard-cards">
-        <!-- Pet Summary Card -->
-        <div class="dashboard-card pet-summary">
-            <div class="card-header">
-                <i class="fas fa-paw"></i>
-                <h3>My Pets</h3>
-            </div>
-            <div class="card-body">
-                <div class="pet-stats">
-                    <div class="stat-item">
-                        <span class="stat-value">3</span>
-                        <span class="stat-label">Total Pets</span>
-                    </div>
-                    <div class="stat-item">
-                        <span class="stat-value">1</span>
-                        <span class="stat-label">Upcoming Care</span>
-                    </div>
-                </div>
-                <button routerLink="/ListPets" class="card-button">
-                    View All Pets <i class="fas fa-arrow-right"></i>
-                </button>
-            </div>
-        </div>
-
-        <!-- Quick Actions Card -->
-        <div class="dashboard-card quick-actions">
-            <div class="card-header">
-                <i class="fas fa-bolt"></i>
-                <h3>Quick Actions</h3>
-            </div>
-            <div class="card-body">
-                <div class="action-buttons">
-                    <button routerLink="/pet" class="action-button">
-                        <i class="fas fa-plus"></i> Add New Pet
-                    </button>
-                    <button routerLink="/ListReclamationFront" class="action-button">
-                        <i class="fas fa-comment-alt"></i> My Requests
-                    </button>
-                    <button routerLink="/profileUser" class="action-button">
-                        <i class="fas fa-user-cog"></i> Edit Profile
-                    </button>
-                </div>
-            </div>
-        </div>
-
-        <!-- Recent Activity Card -->
-        <div class="dashboard-card recent-activity">
-            <div class="card-header">
-                <i class="fas fa-history"></i>
-                <h3>Recent Activity</h3>
-            </div>
-            <div class="card-body">
-                <ul class="activity-list">
-                    <li>
-                        <i class="fas fa-check-circle"></i>
-                        <span>Vet visit completed for Max</span>
-                    </li>
-                    <li>
-                        <i class="fas fa-bell"></i>
-                        <span>Vaccination due for Bella in 3 days</span>
-                    </li>
-                    <li>
-                        <i class="fas fa-comment"></i>
-                        <span>New message from your vet</span>
-                    </li>
-                </ul>
-            </div>
-        </div>
+  </section>
+  
+  <!-- VET SERVICES SECTION -->
+  <section class="hero-section vet-section">
+    <div class="hero-content">
+      <div class="hero-left">
+        <div class="sale-badge">🩺 24/7 Care</div>
+        <img src="assets/images/medical-pet.png" alt="Vet with dog" class="main-img">
+      </div>
+  
+      <div class="hero-center">
+        <h5 class="subtitle">🧑‍⚕️ PROFESSIONAL CARE</h5>
+        <h1 class="title">Expert Vet Services</h1>
+        <p class="desc">Keep your pets healthy with top-notch medical attention and regular checkups from our trusted vets.</p>
+        <button routerLink="/vet/dash-principale-user" class="cta-button">Visit Vet Services</button>
+       
+      </div>
+  
+      <div class="hero-right">
+        <img src="assets/images/stethoscope.png" alt="Stethoscope" class="dog-img">
+        <img src="assets/images/medicine.png" alt="Medicine" class="food-img">
+      </div>
     </div>
-
-    <!-- Pet Care Tips Section -->
-    <div class="dashboard-card tips-section">
-        <div class="card-header">
-            <i class="fas fa-lightbulb"></i>
-            <h3>Pet Care Tips</h3>
-        </div>
-        <div class="card-body">
-            <div class="tip-items">
-                <button class="action-button">
-                    <i class="fas fa-book-open"></i> Read Care Guides
-                </button>
-                <button class="action-button">
-                    <i class="fas fa-video"></i> Watch Tutorials
-                </button>
-                <button class="action-button">
-                    <i class="fas fa-store"></i> Shop Recommended Products
-                </button>
-            </div>
-        </div>
+  </section>
+  
+  <!-- MATCHING SECTION -->
+  <section class="hero-section matching-section">
+    <div class="hero-content">
+      <div class="hero-left">
+        <div class="sale-badge">💘 Love Match</div>
+        <img src="assets/images/two-dogs-hugging.png" alt="Matching pets" class="main-img">
+      </div>
+  
+      <div class="hero-center">
+        <h5 class="subtitle">💞 FIND THE PERFECT MATCH</h5>
+        <h1 class="title">Pet Matching Service</h1>
+        <p class="desc">Looking for a playmate for your pet? Our smart matching system will find their perfect companion!</p>
+        <button routerLink="/matchy" class="cta-button">Start Matching</button>
+      </div>
+  
+      <div class="hero-right">
+        <img src="assets/images/puppy-love.png" alt="Puppy love" class="dog-img">
+        <img src="assets/images/ball-toy.png" alt="Ball toy" class="food-img">
+      </div>
     </div>
-</div>
-
+  </section>
+  
+  <!-- EVENTS SECTION -->
+  <section class="hero-section event-section">
+    <div class="hero-content">
+      <div class="hero-left">
+        <div class="sale-badge">🎉 Join Fun!</div>
+        <img src="assets/images/dog-party.jpg" alt="Dog at event" class="main-img">
+      </div>
+  
+      <div class="hero-center">
+        <h5 class="subtitle">🎈 PET HANGOUTS</h5>
+        <h1 class="title">Events & Dog Sitting</h1>
+        <p class="desc">Join weekly events, dog promenades, meetups, and even host your own!</p>
+        <button routerLink="/events" class="cta-button">Check Events</button>
+    
+      </div>
+  
+      <div class="hero-right">
+        <img src="assets/images/party-dog.png" alt="Party dog" class="dog-img">
+        <img src="assets/images/cake.png" alt="Cake" class="food-img">
+      </div>
+    </div>
+  </section>
+  
+  <!-- SHOP SECTION -->
+  <section class="hero-section shop-section">
+    <div class="hero-content">
+      <div class="hero-left">
+        <div class="sale-badge">🛍️ Best Deals</div>
+        <img src="assets/images/pet-products.png" alt="Pet products" class="main-img">
+      </div>
+  
+      <div class="hero-center">
+        <h5 class="subtitle">🛒 EVERYTHING YOUR PET NEEDS</h5>
+        <h1 class="title">Petopia Shop</h1>
+        <p class="desc">Toys, food, grooming — shop the best items selected just for your pets!</p>
+        <button routerLink="/products" class="cta-button">Visit Shop</button>
+    
+      </div>
+  
+      <div class="hero-right">
+        <img src="assets/images/toys.png" alt="Toys" class="dog-img">
+        <img src="assets/images/shampoo.png" alt="Shampoo" class="food-img">
+      </div>
+    </div>
+  </section>
+  
+  <!-- COMMUNITY SECTION -->
+  <section class="hero-section community-section">
+    <div class="hero-content">
+      <div class="hero-left">
+        <div class="sale-badge">💬 Connect Now</div>
+        <img src="assets/images/pet-owners.png" alt="Pet community" class="main-img">
+      </div>
+  
+      <div class="hero-center">
+        <h5 class="subtitle">🐾 SHARE THE LOVE</h5>
+        <h1 class="title">Petopia Community</h1>
+        <p class="desc">Post stories, ask for help, get advice — meet your local pet family!</p>
+        <button routerLink="/community" class="cta-button">Join the Community</button>
+    
+      </div>
+  
+      <div class="hero-right">
+        <img src="assets/images/posting.png" alt="Posting" class="dog-img">
+        <img src="assets/images/chat.png" alt="Chat" class="food-img">
+      </div>
+    </div>
+  </section>
+  
+  <!-- === END === -->
