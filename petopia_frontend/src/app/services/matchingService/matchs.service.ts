@@ -9,6 +9,9 @@ import { FriendWithPets } from 'src/app/models/matching/friend-with-pets';
   providedIn: 'root'
 })
 export class MatchsService {
+  getById(matchId: number) {
+    throw new Error('Method not implemented.');
+  }
   private apiUrl = 'http://localhost:8082/petopia';
   private staticToken = localStorage.getItem('token');
 
@@ -70,4 +73,5 @@ export class MatchsService {
     const headers = this.getAuthHeaders();
     return this.http.get<FriendWithPets[]>(`${this.apiUrl}/user/matches/friends`,{ headers });
   }*/
+ 
 }

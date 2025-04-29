@@ -12,6 +12,9 @@ import java.util.List;
 public class MatchesService  implements IMatchesService{
     @Autowired
     private MatchesRepository matchesRepository;
+    @Autowired
+    private BlockedUserService blockedUserService;
+
     @Override
     public Matches addMatches(Matches matches) {
         return matchesRepository.save(matches);
@@ -33,6 +36,12 @@ public class MatchesService  implements IMatchesService{
     }
 
     @Override
+    public List<Matches> getAllMatches(Integer userId) {
+        List<Integer> blockedUserIds = blockedUserService.getBlockedUserIds(userId);
+        return matchesRepository.findByStatusWithBlockFilter(MatchStatus.ACCEPTED, blockedUserIds);
+    }
+
+    @Override
     public void deleteMatches(int id) {
         matchesRepository.deleteById(id);
 
@@ -40,5 +49,10 @@ public class MatchesService  implements IMatchesService{
     @Override
     public List<Matches> getMatchesByPet2IdAndPending(int pet2Id) {
         return matchesRepository.findByPet2IdAndStatus(pet2Id, MatchStatus.PENDING);
+    }
+    @Override
+    public List<Matches> getMatchesByPet2IdAndPending(int pet2Id, Integer userId) {
+        List<Integer> blockedUserIds = blockedUserService.getBlockedUserIds(userId);
+        return matchesRepository.findByPet2IdAndStatusWithBlockFilter(pet2Id, MatchStatus.PENDING, blockedUserIds);
     }
 }

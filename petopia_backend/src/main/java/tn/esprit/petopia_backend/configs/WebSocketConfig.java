@@ -33,4 +33,5 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
         registry.setUserDestinationPrefix("/user"); // Enables private messaging
         System.out.println("Message broker configured: /app, /topic, /queue, /user");
     }
+
 }

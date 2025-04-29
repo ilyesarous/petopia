@@ -1,0 +1,194 @@
+.baby-pet-container {
+  max-width: 800px;
+  margin: 2rem auto;
+  padding: 1rem;
+  background: linear-gradient(135deg, #fff 0%, #f8f4f0 100%);
+  border-radius: 15px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Parent Pets */
+.parent-pets {
+  position: relative;
+}
+
+.parent-images {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  gap: 40px; /* Space between parent images */
+}
+
+.pet-image-wrapper {
+  width: 150px; /* Increased size */
+  height: 150px; /* Increased size */
+  background: #fff;
+  border-radius: 50%;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  position: relative;
+  z-index: 1;
+}
+
+.pet1 .pet-image {
+  border: 3px solid #F83182; /* Pink border for pet1 */
+}
+
+.pet2 .pet-image {
+  border: 3px solid #FF617C; /* Lighter pink border for pet2 */
+}
+
+.pet-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.placeholder {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  background-color: #f8f9fa;
+  color: #F83182;
+}
+
+.placeholder i {
+  font-size: 2rem;
+}
+
+/* Linker Between Images */
+.linker {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 200px; /* Adjusted for larger images (150px + 40px gap + borders) */
+  height: 2px;
+  background: #FE9A7A; /* Use a color from your palette for harmony */
+  z-index: 0;
+}
+
+.linker .heart-icon {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: #fff;
+  border-radius: 50%;
+  padding: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.linker .heart-icon i {
+  color: #F83182;
+  font-size: 1.2rem;
+}
+
+/* Generate Button */
+.generate-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #F83182 0%, #FF617C 50%, #FE9A7A 100%);
+  border: none;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.generate-btn i {
+  font-size: 1.5rem;
+  color: #fff;
+}
+
+.generate-btn:hover:not(:disabled) {
+  transform: scale(1.1);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.25);
+}
+
+.generate-btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.generate-btn:not(:disabled) {
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
+  50% {
+    transform: scale(1.05);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.25);
+  }
+  100% {
+    transform: scale(1);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
+}
+
+/* Generated Pet */
+.generated-image-wrapper {
+  max-width: 300px;
+  margin: 0 auto;
+  background: #fff;
+  padding: 15px 15px 40px 15px; /* Extra padding at the bottom for Polaroid effect */
+  border-radius: 5px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+  transform: rotate(2deg); /* Slight tilt for Polaroid effect */
+}
+
+.generated-image {
+  width: 100%;
+  height: auto;
+  border: 2px solid #FE9A7A;
+  border-radius: 5px;
+}
+
+/* Alert */
+.alert {
+  max-width: 400px;
+  margin: 1rem auto;
+  border-radius: 10px;
+}
+
+/* Loading Spinner */
+.spinner-border {
+  color: #F83182;
+}
+
+/* Responsive Design */
+@media (max-width: 576px) {
+  .parent-images {
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+  }
+
+  .linker {
+    width: 2px;
+    height: 110px; /* Adjusted for larger images in vertical layout */
+    background: #FE9A7A;
+  }
+
+  .linker .heart-icon {
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  .generated-image-wrapper {
+    max-width: 250px;
+  }
+}

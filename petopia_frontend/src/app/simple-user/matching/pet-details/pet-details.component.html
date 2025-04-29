@@ -19,7 +19,7 @@
       <div class="row align-items-center">
         <!-- Pet Image -->
         <div class="col-md-4 text-center">
-          <img src="../../../../assets/images/pet/11416.jpg" alt="{{ pet.petName }}" class="img-fluid rounded-circle mb-3 pet-image">
+          <img [src]="pet.petImage || '../../../../assets/images/pet/11416.jpg'" alt="{{ pet.petName }}" class="img-fluid rounded-circle mb-3 pet-image">
           <p class="text-muted small">{{ pet.petAge }} years old • {{ pet.location || 'Nearby' }}</p>
         </div>
 

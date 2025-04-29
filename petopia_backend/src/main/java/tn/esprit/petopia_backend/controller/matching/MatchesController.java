@@ -3,10 +3,12 @@ package tn.esprit.petopia_backend.controller.matching;
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import tn.esprit.petopia_backend.dto.FriendWithPets;
+import tn.esprit.petopia_backend.dto.NotificationMessage;
 import tn.esprit.petopia_backend.entities.user.ChatMessage;
 import tn.esprit.petopia_backend.entities.matching.MatchStatus;
 import tn.esprit.petopia_backend.entities.matching.Matches;
@@ -18,9 +20,12 @@ import tn.esprit.petopia_backend.services.matching.MatchesService;
 import tn.esprit.petopia_backend.services.matching.MessagingService;
 import tn.esprit.petopia_backend.services.pet.PetService;
 
+
+import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @RestController
@@ -35,6 +40,8 @@ public class MatchesController {
 
     @Autowired
     private MessagingService messagingService;
+    @Autowired
+    private SimpMessagingTemplate messagingTemplate;
 
     @DeleteMapping("/deleteMatches/{idMatches}")
     @PreAuthorize("hasAuthority('ROLE_USER')")
@@ -138,36 +145,59 @@ public class MatchesController {
 
         Matches match = matchesService.getMatches(idMatch);
         if (match == null) {
+            System.err.println("Match not found for ID: " + idMatch);
             return ResponseEntity.notFound().build();
         }
 
         if (!match.getPet_2().getUser().getId_user().equals(user.getId_user())) {
-            System.out.println("403: User not authorized to accept this match");
+            System.err.println("403: User " + user.getId_user() + " not authorized to accept match ID: " + idMatch);
             return ResponseEntity.status(403).build();
         }
 
         if (match.getStatus() != MatchStatus.PENDING) {
+            System.err.println("Match ID: " + idMatch + " is not in PENDING status");
             return ResponseEntity.badRequest().body(null);
         }
 
         match.setStatus(MatchStatus.ACCEPTED);
         Matches updatedMatch = matchesService.updateMatches(match);
 
-        // In acceptMatch method
+        // Send welcome message
         ChatMessage welcomeMessage = ChatMessage.builder()
                 .matchId(idMatch)
                 .senderId(user.getId_user())
                 .receiverId(match.getPet_1().getUser().getId_user())
-                .sender(user.getUsername()) // or getEmail()
+                .sender(user.getUsername())
                 .recipient(match.getPet_1().getUser().getUsername())
                 .content("Salut ! Le match a été accepté, discutons !")
                 .type(MessageType.CHAT)
+                .timestamp(LocalDateTime.now())
                 .build();
         messagingService.sendMessage(welcomeMessage);
+
+        // Notify pet_1 user (User A, who initiated the match)
+        NotificationMessage notificationForPet1 = NotificationMessage.builder()
+                .id(UUID.randomUUID().toString())
+                .type("ACCEPTED")
+                .message(user.getUsername() + " a accepté votre demande de match entre " +
+                        match.getPet_1().getPetName() + " et " + match.getPet_2().getPetName() + " !")
+                .matchId(idMatch)
+                .senderId(user.getId_user())
+                .receiverId(match.getPet_1().getUser().getId_user())
+                .timestamp(LocalDateTime.now().toString())
+                .build();
+        try {
+            String destination = "/user/" + match.getPet_1().getUser().getId_user() + "/queue/notifications";
+            System.out.println("Sending notification to destination: " + destination + ", notification: " + notificationForPet1);
+            messagingTemplate.convertAndSend(destination, notificationForPet1);
+        } catch (Exception e) {
+            System.err.println("Failed to send notification to user ID: " + match.getPet_1().getUser().getId_user() +
+                    ", match ID: " + idMatch + ", error: " + e.getMessage());
+            e.printStackTrace();
+        }
+
         return ResponseEntity.ok(updatedMatch);
     }
-
-
     @GetMapping("/friends")
     @PreAuthorize("hasAuthority('ROLE_USER')")
     public ResponseEntity<List<FriendWithPets>> getAcceptedFriends(Authentication authentication) {

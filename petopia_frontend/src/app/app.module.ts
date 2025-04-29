@@ -163,6 +163,7 @@ import { ServiceAnimalDetailsComponent } from './simple-user/Event/service-anima
 import { EventHelperComponent } from './admin/Event/event-helper/event-helper.component';
 import { Nl2BrPipe } from './pipes/nl2-br.pipe';
 import { ReservationFormComponent } from './simple-user/Event/reservation-form/reservation-form.component';
+import { BabypetComponent } from './simple-user/matching/babypet/babypet.component';
 
 import { NewsComponent } from './simple-user/news/news.component';
 import { UserProfileComponent } from './components/user-profile/user-profile.component';
@@ -282,6 +283,7 @@ import { HealthTipsComponent } from './simple-user/vet/health-tips/health-tips.c
     AddServiceAnimalComponent,
     CountdownComponent,
     XpBarComponent,
+    BabypetComponent,
     ReceiptModalComponent,
     EventDetailsComponent,
     ServiceAnimalDetailsComponent,

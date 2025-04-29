@@ -10,5 +10,6 @@ export interface ChatMessage {
   type: 'CHAT' | 'JOIN' | 'LEAVE' | 'REACTION' | 'CONNECTION';
   reactions?: { id: number; userId: number; reaction: string; timestamp: string }[];
   showReactionPicker?: boolean;
+  address?: string; // Nouveau champ pour l'adresse
 
 }
