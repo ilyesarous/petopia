@@ -709,10 +709,10 @@ export class MatchingComponent implements OnInit, OnDestroy, AfterViewInit {
       },
       error: (err: any) => {
         console.error('Error loading notifications:', err);
-        if (err.status === 403) {
-          alert('Accès refusé : veuillez vous reconnecter.');
-          this.router.navigate(['/login']);
-        }
+        // if (err.status === 403) {
+        //   alert('Accès refusé : veuillez vous reconnecter.');
+        //   this.router.navigate(['/login']);
+        // }
       }
     });
   }

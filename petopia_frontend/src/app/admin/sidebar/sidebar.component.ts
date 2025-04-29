@@ -45,8 +45,9 @@ export class SidebarComponent {
     { name: 'Shop', route: 'store', icon: 'bi bi-cart'},
     { name: 'Vet', route: 'vet', icon: 'bi bi-activity'},
     { name: 'Event', route: 'events', icon: 'bi bi-calendar3'},
-    { name: 'Community Hub', route: 'community', icon: 'bi bi-people'},
+    { name: 'Community', route: 'community', icon: 'bi bi-people'},
     { name: 'Requests', route: 'listReclamation', icon: 'bi bi-inbox' },
+    { name: 'Matching', route: 'match-back', icon: 'bi bi-heart'},
     { name: 'Logout', icon: 'bi bi-box-arrow-right' },
   ];
 

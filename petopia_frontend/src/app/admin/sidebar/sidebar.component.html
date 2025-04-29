@@ -4,36 +4,34 @@
     <h3>Petopia</h3>
   </div>
   <hr />
-  <ul *ngFor="let item of items">
-    <li
-      *ngIf="item.name !== 'Logout'"
-      class="selected"
-      [ngClass]="{ isSelected: item.name === selectedItem }"
-      (click)="selectItem(item)"
-    >
-      <a
-        class="d-flex flex-row gap-2 align-items-center sidebar-link"
-        [routerLink]="item.route"
-        routerLinkActive="active"
-      >
-        <i [class]="item.icon"></i>
-        <span>{{ item.name }}</span>
-      </a>
-    </li>
-    <li
-      *ngIf="item.name == 'Logout'"
-      class="selected"
-      [ngClass]="{ isSelected: item.name === selectedItem }"
-      (click)="logout(); selectedItem = ''"
-    >
-      <a
-        class="d-flex flex-row gap-2 align-items-center sidebar-link"
-        [routerLink]="item.route"
-        routerLinkActive="active"
-      >
-        <i [class]="item.icon"></i>
-        <span>{{ item.name }}</span>
-      </a>
-    </li>
-  </ul>
+  <div class="scrollable-content">
+    <ul *ngFor="let item of items">
+      <li 
+          *ngIf="item.name !== 'Logout'"
+          class="selected"
+          [ngClass]="{ isSelected: item.name === selectedItem }"
+          (click)="selectItem(item)">
+        <a class="d-flex flex-row gap-2 align-items-center sidebar-link"
+           [routerLink]="item.route"
+           routerLinkActive="active">
+          <i [class]="item.icon"></i>
+          <span>{{ item.name }}</span>
+        </a>
+      </li>
+    </ul>
+  </div>
+  
+  <!-- Fixed logout at bottom -->
+  <div class="fixed-bottom">
+    <ul>
+      <li class="selected"
+          [ngClass]="{ isSelected: 'Logout' === selectedItem }"
+          (click)="logout(); selectedItem = ''">
+        <a class="d-flex flex-row gap-2 align-items-center sidebar-link">
+          <i class="fas fa-sign-out-alt"></i>
+          <span>Logout</span>
+        </a>
+      </li>
+    </ul>
+  </div>
 </div>
