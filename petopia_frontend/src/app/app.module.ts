@@ -137,7 +137,7 @@ import { UserViewCertificateComponent } from './simple-user/adoption/user-view-c
 import { VetSelectionPopupComponent } from './simple-user/vet/vet-selection-popup/vet-selection-popup.component';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatCardModule } from '@angular/material/card';
-import { MatOptionModule, MatRippleModule } from '@angular/material/core';
+import {MatOptionModule, MatRippleModule} from '@angular/material/core';
 import { LocationVetComponent } from './simple-user/vet/location-vet/location-vet.component';
 import { InfoSpecificVetComponent } from './simple-user/vet/info-specific-vet/info-specific-vet.component';
 import { QrCodeVetScannerComponent } from './simple-user/vet/qr-code-vet-scanner/qr-code-vet-scanner.component';

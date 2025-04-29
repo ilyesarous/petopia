@@ -65,7 +65,7 @@
 
 .coordinate-item i {
   margin-right: 8px;
-  color: #25D366;
+  color: #F83182;
 }
 
 /* Form Section */
@@ -86,7 +86,7 @@
 
 .form-header i {
   font-size: 1.5rem;
-  color: #25D366;
+  color: #F83182;
   margin-right: 12px;
 }
 
@@ -120,7 +120,7 @@
 .form-group label i {
   margin-right: 8px;
   font-size: 0.9rem;
-  color: #25D366;
+  color: #F83182;
 }
 
 .input-wrapper, .select-wrapper {
@@ -157,7 +157,7 @@ input, select {
 
 input:focus, select:focus {
   outline: none;
-  border-color: #25D366;
+  border-color: #F83182;
   box-shadow: 0 0 0 3px rgba(37, 211, 102, 0.2);
 }
 
@@ -178,18 +178,18 @@ select {
 }
 
 .file-upload .upload-area:hover {
-  border-color: #25D366;
+  border-color: #F83182;
   background: rgba(37, 211, 102, 0.05);
 }
 
 .file-upload .upload-area.has-file {
-  border-color: #25D366;
+  border-color: #F83182;
   background: rgba(37, 211, 102, 0.05);
 }
 
 .file-upload .upload-area i {
   font-size: 2rem;
-  color: #25D366;
+  color: #F83182;
   margin-bottom: 10px;
 }
 
@@ -288,7 +288,7 @@ select {
 
 #search-button {
   padding: 10px 15px;
-  background-color: #4CAF50;
+  background-color: #F83182;
   color: white;
   border: none;
   border-radius: 0 4px 4px 0;
@@ -296,5 +296,5 @@ select {
 }
 
 #search-button:hover {
-  background-color: #45a049;
+  background-color: #F83182;
 }

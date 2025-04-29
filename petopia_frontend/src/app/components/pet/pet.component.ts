@@ -4,6 +4,7 @@ import * as L from 'leaflet';
 import axios from 'axios';
 import {AuthService} from "../../services/user/auth.service";
 import {PetService} from "../../services/user/pet.service";
+import { ImageGenerationService } from 'src/app/services/adoptions/imageGeneration/image-generation.service';
 enum Gender {
   MALE = 'MALE',
   FEMALE = 'FEMALE'
@@ -42,7 +43,9 @@ export class PetComponent implements AfterViewInit {
   constructor(
     private fb: FormBuilder,
     private petService: PetService,
-    private authService: AuthService
+    private authService: AuthService,
+    private imageGenerationService: ImageGenerationService
+
   ) {
     this.petForm = this.fb.group({
       petName: ['', [
@@ -130,7 +133,20 @@ export class PetComponent implements AfterViewInit {
 
           // Show species and breed in success message
           console.log('Pet added:', response.pet);
-
+          const newPetId = String(response.pet.idPet);
+          const newPetImage = String(response.pet.petImage);
+          
+          if (newPetImage && newPetId) {
+            this.imageGenerationService
+              .storeImageDescription(newPetImage, newPetId)
+              .subscribe({
+                next: (res) => console.log("📝 Description stored:", res),
+                error: (err) => console.error("❌ Failed to store description:", err)
+              });
+          } else {
+            console.warn('⚠️ Missing image or pet ID.');
+          }
+          
           setTimeout(() => this.showSuccess = false, 3000);
         },
         (error) => {
