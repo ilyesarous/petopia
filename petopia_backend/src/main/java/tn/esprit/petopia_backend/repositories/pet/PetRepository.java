@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import tn.esprit.petopia_backend.entities.pet.Pet;
+import tn.esprit.petopia_backend.entities.pet.PetStatus;
 import tn.esprit.petopia_backend.entities.user.User;
 
 import java.util.List;
@@ -40,5 +41,19 @@ public interface PetRepository extends JpaRepository<Pet,Integer>
 
     Optional<Pet> findByPetRefVet(int petRefVet);
 
+    // New methods for blocking filter
+    @Query("SELECT p FROM Pet p WHERE p.status = :status " +
+            "AND (p.user IS NULL OR p.user.id_user NOT IN :blockedUserIds)")
+    List<Pet> findByStatusWithBlockFilter(@Param("status") PetStatus status, @Param("blockedUserIds") List<Integer> blockedUserIds);
 
+    @Query("SELECT p FROM Pet p WHERE p.shelter.id_shelter = :shelterId " +
+            "AND (p.user IS NULL OR p.user.id_user NOT IN :blockedUserIds)")
+    List<Pet> findByShelterIdWithBlockFilter(@Param("shelterId") Integer shelterId, @Param("blockedUserIds") List<Integer> blockedUserIds);
+
+    @Query("SELECT p FROM Pet p WHERE p.status = 'AVAILABLE' " +
+            "AND p.user IS NULL " +
+            "AND p.idPet NOT IN (" +
+            "SELECT a.pet.idPet FROM Adoption a WHERE a.requester.id_user = :userId) " +
+            "AND (p.user IS NULL OR p.user.id_user NOT IN :blockedUserIds)")
+    List<Pet> findAllUnassignedPetsWithBlockFilter(@Param("userId") Integer userId, @Param("blockedUserIds") List<Integer> blockedUserIds);
 }

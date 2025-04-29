@@ -75,6 +75,7 @@ import { EventParticipantsComponent } from './admin/Event/event-participants/eve
 import { ServiceAnimalListComponent } from './simple-user/Event/service-animal-list/service-animal-list.component';
 import { AddServiceAnimalComponent } from './simple-user/Event/add-service-animal/add-service-animal.component';
 import { DreamPetComponent } from './simple-user/adoption/dream-pet/dream-pet.component';
+import { BabypetComponent } from './simple-user/matching/babypet/babypet.component';
 import { HomeComponent } from './simple-user/home/home.component';
 import { EventDetailsComponent } from './simple-user/Event/event-details/event-details.component';
 import { NewsComponent } from './simple-user/news/news.component';
@@ -88,6 +89,8 @@ import {ListUsersComponent} from "./components/list-users/list-users.component";
 import {ListReclamationComponent} from "./components/list-reclamation/list-reclamation.component";
 import { ServiceAnimalDetailsComponent } from './simple-user/Event/service-animal-details/service-animal-details.component';
 import { ReservationFormComponent } from './simple-user/Event/reservation-form/reservation-form.component';
+
+import { HealthTipsComponent } from './simple-user/vet/health-tips/health-tips.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -138,10 +141,10 @@ const routes: Routes = [
   { path: 'vet/RatingVet/:id' , component: UserRatingVetComponent, canActivate: [AuthGuard] },
   { path: 'vet/info-rating-vet', component:InfoRatingVetComponent, canActivate: [AuthGuard] },
   { path: 'vet/payment/:id', component: PaymentVetComponent, canActivate: [AuthGuard] },
+  { path: 'vet/health-tips', component: HealthTipsComponent, canActivate: [AuthGuard] },
 
-
-  { path: 'community', component: CommunityComponent},
-  { path: 'news', component: NewsComponent },
+  { path: 'community', component: CommunityComponent, canActivate: [AuthGuard]},
+  { path: 'news', component: NewsComponent, canActivate: [AuthGuard] },
   { path: 'adoption', component: PetAdoptionListComponent },
   { path: 'adoption/pets/:id', component: PetAdoptDetailsComponent },
   { path: 'adoption/form/:idPet', component: AdoptPetComponent },
@@ -153,6 +156,7 @@ const routes: Routes = [
   { path: 'shelter/pets', component: ShelterPetListComponent },
   { path: 'shelter/pets/add', component: ShelterAddPetComponent },
   {path: 'add-shelter', component: AddShelterComponent},
+  {path: 'bbypet', component: BabypetComponent},
   {
     path: 'shelter/adoption-requests',
     component: ShelterAdoptionRequestsComponent,
@@ -174,8 +178,8 @@ const routes: Routes = [
       { path: 'store', component: StoreDashComponent },
       { path: 'listReclamation', component: ListReclamationComponent, canActivate: [AuthGuard]  }, // list reclamation back
       { path: 'vet', component: DashPrincipaleComponent },
-      { path  : 'ListUsers',component:ListUsersComponent,canActivate:[AuthGuard]},
-      { path:  'ListPets',component: PetListComponent , canActivate: [AuthGuard]}, // list pets of user front
+      { path: 'ListUsers',component:ListUsersComponent,canActivate:[AuthGuard]},
+      { path: 'ListPets',component: PetListComponent , canActivate: [AuthGuard]}, // list pets of user front
 
       { path: 'consultations', component: ConsultationListComponent },
       { path: 'diagnosis', component: DiagnosisListComponent },
@@ -193,8 +197,8 @@ const routes: Routes = [
       },
       {path:'shelters',component: ShelterListComponent, canActivate: [AuthGuard]},
       {path:'shelters/:id',component: ShelterDetailsComponent, canActivate: [AuthGuard]},
-      { path: 'community', component: CommunityListComponent },
-      { path: 'community/details/:type/:id', component: CommunityDetailsComponent },
+      { path: 'community', component: CommunityListComponent, canActivate: [AuthGuard] },
+      { path: 'community/details/:type/:id', component: CommunityDetailsComponent, canActivate: [AuthGuard] },
       { path: 'match-back', component: MatchbackComponent },
     ],
   },

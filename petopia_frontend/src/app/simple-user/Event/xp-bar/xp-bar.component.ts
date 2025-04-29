@@ -9,11 +9,5 @@ export class XpBarComponent {
   @Input() currentXp!: number;
   @Input() level!: number;
   
-  get xpNeeded(): number {
-    return this.level * 100;
-  }
   
-  get progressPercentage(): number {
-    return (this.currentXp / this.xpNeeded) * 100;
-  }
 }

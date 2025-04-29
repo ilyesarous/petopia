@@ -9,7 +9,6 @@ import { MatInputModule } from '@angular/material/input';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatFormFieldModule } from '@angular/material/form-field';
 
-
 // Routing & Core
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -25,7 +24,19 @@ import { FullCalendarModule } from '@fullcalendar/angular';
 import { CanvasJSAngularChartsModule } from '@canvasjs/angular-charts';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { library } from '@fortawesome/fontawesome-svg-core';
-import { faCoffee, faUser, faHome, faLightbulb, faPaw, faHeart, faHandHoldingHeart, faInfoCircle, faCommentDots, faCamera, faPen } from '@fortawesome/free-solid-svg-icons';
+import {
+  faCoffee,
+  faUser,
+  faHome,
+  faLightbulb,
+  faPaw,
+  faHeart,
+  faHandHoldingHeart,
+  faInfoCircle,
+  faCommentDots,
+  faCamera,
+  faPen,
+} from '@fortawesome/free-solid-svg-icons';
 
 // Auth
 import { AuthInterceptor } from './interceptors/auth.interceptor';
@@ -100,7 +111,7 @@ import { ReactionComponent } from './simple-user/reaction/reaction.component';
 import { CommentComponent } from './simple-user/comment/comment.component';
 import { StoryComponent } from './simple-user/story/story.component';
 import { RelativeTimePipe } from './pipes/relative-time.pipe';
-import {BaseChartDirective} from "ng2-charts";
+import { NgChartsModule } from 'ng2-charts';
 
 import { CartComponent } from './simple-user/store/cart/cart.component';
 import { ShelterListComponent } from './admin/shelter/shelter-list/shelter-list.component';
@@ -120,14 +131,13 @@ import { MatchingComponent } from './simple-user/matching/matching/matching.comp
 import { PetDetailsComponent } from './simple-user/matching/pet-details/pet-details.component';
 import { MatchbackComponent } from './admin/matching/matchback/matchback.component';
 
-
 import { HomePartnerComponent } from './simple-user/store/partner/home-partner/home-partner.component';
 import { UserSignCertificateComponent } from './simple-user/adoption/user-sign-certificate/user-sign-certificate.component';
 import { UserViewCertificateComponent } from './simple-user/adoption/user-view-certificate/user-view-certificate.component';
 import { VetSelectionPopupComponent } from './simple-user/vet/vet-selection-popup/vet-selection-popup.component';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatCardModule } from '@angular/material/card';
-import {MatOptionModule, MatRippleModule} from '@angular/material/core';
+import { MatOptionModule, MatRippleModule } from '@angular/material/core';
 import { LocationVetComponent } from './simple-user/vet/location-vet/location-vet.component';
 import { InfoSpecificVetComponent } from './simple-user/vet/info-specific-vet/info-specific-vet.component';
 import { QrCodeVetScannerComponent } from './simple-user/vet/qr-code-vet-scanner/qr-code-vet-scanner.component';
@@ -153,7 +163,7 @@ import { ServiceAnimalDetailsComponent } from './simple-user/Event/service-anima
 import { EventHelperComponent } from './admin/Event/event-helper/event-helper.component';
 import { Nl2BrPipe } from './pipes/nl2-br.pipe';
 import { ReservationFormComponent } from './simple-user/Event/reservation-form/reservation-form.component';
-
+import { BabypetComponent } from './simple-user/matching/babypet/babypet.component';
 
 import { NewsComponent } from './simple-user/news/news.component';
 import { UserProfileComponent } from './components/user-profile/user-profile.component';
@@ -162,13 +172,16 @@ import { ForgetpasswordComponent } from './components/forgetpassword/forgetpassw
 import { PetComponent } from './components/pet/pet.component';
 import { ListReclamationComponent } from './components/list-reclamation/list-reclamation.component';
 import { ResponseDialogComponent } from './components/response-dialog/response-dialog.component';
-import {MatSelectModule} from "@angular/material/select";
+import { MatSelectModule } from '@angular/material/select';
 import { ListUsersComponent } from './components/list-users/list-users.component';
 import { UserDetailsDialogComponent } from './components/user-details-dialog/user-details-dialog.component';
 import { ReclamationComponent } from './components/reclamation/reclamation.component';
 import { ReclamationListComponent } from './components/reclamation-list/reclamation-list.component';
 import { PetListComponent } from './components/pet-list/pet-list.component';
+import { DashboardComponentComponent } from './components/dashboard-component/dashboard-component.component';
 
+import { BmiResultDialogComponent } from './simple-user/vet/bmi-result-dialog/bmi-result-dialog.component';
+import { HealthTipsComponent } from './simple-user/vet/health-tips/health-tips.component';
 
 @NgModule({
   declarations: [
@@ -270,6 +283,7 @@ import { PetListComponent } from './components/pet-list/pet-list.component';
     AddServiceAnimalComponent,
     CountdownComponent,
     XpBarComponent,
+    BabypetComponent,
     ReceiptModalComponent,
     EventDetailsComponent,
     ServiceAnimalDetailsComponent,
@@ -291,6 +305,9 @@ import { PetListComponent } from './components/pet-list/pet-list.component';
     Nl2BrPipe,
     ReservationFormComponent,
 
+    BmiResultDialogComponent,
+    HealthTipsComponent,
+    DashboardComponentComponent,
   ],
   imports: [
     BrowserModule,
@@ -314,14 +331,14 @@ import { PetListComponent } from './components/pet-list/pet-list.component';
     MatRadioModule,
     MatCardModule,
     MatRippleModule,
-    BaseChartDirective,
+    NgChartsModule,
     MatFormFieldModule,
     MatOptionModule,
     MatSelectModule,
-    MatInputModule
+    MatInputModule,
   ],
   providers: [
-    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
   ],
   bootstrap: [AppComponent],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
@@ -329,8 +346,17 @@ import { PetListComponent } from './components/pet-list/pet-list.component';
 export class AppModule {
   constructor() {
     library.add(
-      faCoffee, faUser, faHome, faLightbulb, faPaw, faHeart,
-      faHandHoldingHeart, faInfoCircle, faCommentDots, faCamera, faPen
+      faCoffee,
+      faUser,
+      faHome,
+      faLightbulb,
+      faPaw,
+      faHeart,
+      faHandHoldingHeart,
+      faInfoCircle,
+      faCommentDots,
+      faCamera,
+      faPen
     );
   }
 }

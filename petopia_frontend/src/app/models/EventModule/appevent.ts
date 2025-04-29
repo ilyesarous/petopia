@@ -11,11 +11,13 @@ export interface Event {
     prixEvent: number;
     placesMaxEvent: number;
     availablePlaces: number;
-    eventType: string; // ou enum si tu veux
+    eventType: string; 
     visibiliteEvent: string;
     statusEvent: string;
-    organisateur?: any; // tu peux typifier ça plus tard si besoin
-    participations?: Participation[]; // Add this line
+    organisateur?: any; 
+    participations?: Participation[]; 
+    generatedImageUrl?: string; 
+
 
   }
   

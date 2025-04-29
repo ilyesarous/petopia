@@ -75,5 +75,11 @@ private getAuthHeaders(): HttpHeaders {
     return this.http.delete<void>(`${this.apiUrl}/user/preferences/deletePreferences/${idPreferences}`, { headers });
 }
 
+// New method for filtered pets
+getPetsByStatusWithBlockFilter(status: string, userId: number): Observable<any[]> {
+  const headers = this.getAuthHeaders();
+  return this.http.get<any[]>(`${this.apiUrl}/status/${status}/filtered?userId=${userId}`, { headers });
+}
+
 
 }

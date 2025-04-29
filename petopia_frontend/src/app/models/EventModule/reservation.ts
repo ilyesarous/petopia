@@ -4,6 +4,7 @@ export interface Reservation {
     serviceAnimal: any ;
     utilisateur: any;
     reservationDate: Date;
+    contactNumber: string;
     
     status: 'PENDING' | 'CONFIRMED' | 'CANCELLED';
     specialRequests?: string;

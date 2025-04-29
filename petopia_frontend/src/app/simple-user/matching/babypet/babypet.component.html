@@ -1,0 +1,74 @@
+<div class="baby-pet-container">
+  <!-- Parent Pets Display -->
+  <div class="parent-pets text-center mb-4">
+    <div class="parent-images">
+      <div class="pet-image-wrapper pet1">
+        <div *ngIf="!pet1?.petImage" class="placeholder">
+          <i class="bi bi-image" aria-hidden="true"></i>
+        </div>
+        <img
+          *ngIf="pet1?.petImage"
+          [src]="pet1.petImage"
+          alt="{{ pet1.petName || 'Pet 1' }}"
+          class="pet-image rounded-circle"
+          [attr.aria-label]="'Image of ' + (pet1.petName || 'Pet 1')"
+        />
+      </div>
+      <div class="pet-image-wrapper pet2">
+        <div *ngIf="!pet2?.petImage" class="placeholder">
+          <i class="bi bi-image" aria-hidden="true"></i>
+        </div>
+        <img
+          *ngIf="pet2?.petImage"
+          [src]="pet2.petImage"
+          alt="{{ pet2.petName || 'Pet 2' }}"
+          class="pet-image rounded-circle"
+          [attr.aria-label]="'Image of ' + (pet2.petName || 'Pet 2')"
+        />
+      </div>
+      <div class="linker">
+        <span class="heart-icon">
+          <i class="bi bi-heart-fill" aria-hidden="true"></i>
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Generate Button -->
+  <div class="text-center mb-4">
+    <button
+      class="btn generate-btn"
+      (click)="onGenerate()"
+      [disabled]="loading"
+      aria-label="Generate Baby Pet"
+      [attr.aria-busy]="loading ? 'true' : 'false'"
+    >
+      <i class="bi bi-heart-fill" aria-hidden="true"></i>
+      <span *ngIf="loading" class="spinner-border spinner-border-sm ms-2" role="status" aria-hidden="true"></span>
+    </button>
+  </div>
+
+  <!-- Error Message -->
+  <div class="alert alert-danger text-center" role="alert" *ngIf="error">
+    {{ error }}
+  </div>
+
+  <!-- Generated Baby Pet -->
+  <div class="generated-pet text-center" *ngIf="babyImageUrl" [@imageReveal] role="region" aria-live="polite">
+    <div class="generated-image-wrapper">
+      <img
+        [src]="babyImageUrl"
+        alt="Generated Baby Pet"
+        class="generated-image"
+        aria-label="Generated Baby Pet Image"
+      />
+    </div>
+  </div>
+
+  <!-- Loading State -->
+  <div class="text-center" *ngIf="loading && !babyImageUrl" role="status">
+    <div class="spinner-border" style="color: #F83182;" aria-label="Loading">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+  </div>
+</div>

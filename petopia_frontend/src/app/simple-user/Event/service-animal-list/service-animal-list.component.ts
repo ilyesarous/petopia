@@ -19,7 +19,12 @@ export class ServiceAnimalListComponent implements OnInit {
 showReservationModal = false;
 selectedServiceId: number | null = null;
 
-
+// Add these properties to your component class
+currentPage = 1;
+itemsPerPage = 3; // Now showing 3 services per page
+totalItems = 0;
+public Math = Math;
+showAll = false;
 
   constructor(private serviceAnimalService: ServiceAnimalService,
               private router: Router, // Inject Router if you need it for navigation
@@ -31,6 +36,21 @@ selectedServiceId: number | null = null;
     this.loadServices();
   }
  
+// Modify your paginatedServices getter
+get paginatedServices(): ServiceAnimal[] {
+  if (this.showAll) {
+    return this.filteredServices; // Return all when showAll is true
+  }
+  const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+  return this.filteredServices.slice(startIndex, startIndex + this.itemsPerPage);
+}
+
+
+// Add this method to toggle show-all
+toggleShowAll(): void {
+  this.showAll = !this.showAll;
+  window.scrollTo(0, 0); // Optional: scroll to top when changing view
+}
 
   // Add these methods to your services component
 openReservationModal(serviceId: number): void {
@@ -50,26 +70,65 @@ onReservationCreated(): void {
   // Optionally refresh your services or show a success message
 }
 
+loadServices(): void {
+  this.serviceAnimalService.getAllServiceAnimals().subscribe({
+    next: (data) => {
+      this.services = data;
+      this.filteredServices = data;
+      this.totalItems = this.filteredServices.length; // Initialize totalItems
+    },
+    error: (err) => console.error('Error fetching services:', err)
+  });
+}
+  // filterServices(): void {
+  //   this.filteredServices = this.services.filter(service => {
+  //     const matchesSearch = service.descriptionServiceAnimal.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+  //                         service.typeService.toLowerCase().includes(this.searchTerm.toLowerCase());
+  //     const matchesType = this.selectedType === 'ALL' || service.typeService === this.selectedType;
+  //     return matchesSearch && matchesType;
+  //   });
+  // }
 
-  loadServices(): void {
-    this.serviceAnimalService.getAllServiceAnimals().subscribe({
-      next: (data) => {
-        this.services = data;
-        this.filteredServices = data;
-      },
-      error: (err) => console.error('Error fetching services:', err)
-    });
+  // Update your filterServices method to reset page when filtering
+filterServices(): void {
+  this.filteredServices = this.services.filter(service => {
+    const matchesSearch = service.descriptionServiceAnimal.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+                        service.typeService.toLowerCase().includes(this.searchTerm.toLowerCase());
+    const matchesType = this.selectedType === 'ALL' || service.typeService === this.selectedType;
+    return matchesSearch && matchesType;
+  });
+  this.totalItems = this.filteredServices.length;
+  this.currentPage = 1; // Reset to first page when filtering
+}
+
+// Add page change handler
+pageChanged(page: number): void {
+  this.currentPage = page;
+  window.scrollTo(0, 0); // Optional: scroll to top when page changes
+}
+// Add these helper methods to your component
+totalPages(): number {
+  return Math.ceil(this.totalItems / this.itemsPerPage);
+}
+
+getPageNumbers(): number[] {
+  const pages = [];
+  const totalPages = this.totalPages();
+  const maxVisiblePages = 5;
+  
+  let startPage = Math.max(1, this.currentPage - Math.floor(maxVisiblePages / 2));
+  let endPage = Math.min(totalPages, startPage + maxVisiblePages - 1);
+  
+  if (endPage - startPage + 1 < maxVisiblePages) {
+    startPage = Math.max(1, endPage - maxVisiblePages + 1);
   }
-
-  filterServices(): void {
-    this.filteredServices = this.services.filter(service => {
-      const matchesSearch = service.descriptionServiceAnimal.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
-                          service.typeService.toLowerCase().includes(this.searchTerm.toLowerCase());
-      const matchesType = this.selectedType === 'ALL' || service.typeService === this.selectedType;
-      return matchesSearch && matchesType;
-    });
+  
+  for (let i = startPage; i <= endPage; i++) {
+    pages.push(i);
   }
-
+  
+  return pages;
+}
    // Add this method to fix the resetFilters error
    resetFilters(): void {
     this.searchTerm = '';

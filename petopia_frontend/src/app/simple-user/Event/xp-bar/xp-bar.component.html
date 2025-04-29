@@ -2,9 +2,9 @@
 <div class="xp-container">
     <div class="xp-info">
       <span class="level">Niveau {{ level }}</span>
-      <span class="xp">{{ currentXp }}/{{ xpNeeded }} XP</span>
+      <span class="xp">{{ currentXp }}/{{ level * 100 }} XP</span>
     </div>
     <div class="progress-bar">
-      <div class="progress" [style.width.%]="progressPercentage"></div>
+      <div class="progress" [style.width.%]="(currentXp / (level * 100)) * 100"></div>
     </div>
   </div>

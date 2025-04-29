@@ -55,5 +55,13 @@ public class RatingVetServiceImplement implements IRating_VetService {
         return ratingVetRepository.findByUserId(userId);
     }
 
+    @Override
+    public void toggleUserLock(Integer userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        user.setLocked(!user.getLocked());
+        userRepository.save(user);
+    }
 
 }

@@ -20,6 +20,8 @@ public interface EventRepository extends JpaRepository<Event, Long>, JpaSpecific
 
     // Optionally add this if you need events before a certain date
     List<Event> findByDateEventBefore(Date endDate);
+    // Add this if you need to find events with images
+    List<Event> findByGeneratedImageUrlIsNotNull();
 }
 
 

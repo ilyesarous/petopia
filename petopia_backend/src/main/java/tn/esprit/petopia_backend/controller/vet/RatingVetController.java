@@ -40,4 +40,10 @@ public class RatingVetController {
         List<Rating_Vet> rating = ratingVetService.getRatingVetByUserId(userId);
         return ResponseEntity.ok(rating);
     }
+
+    @PostMapping("/auth/ratingVet/toggleUserLock/{userId}")
+    public ResponseEntity<String> toggleUserLock(@PathVariable Integer userId) {
+        ratingVetService.toggleUserLock(userId);
+        return ResponseEntity.ok("User lock status updated");
+    }
 }

@@ -21,6 +21,7 @@ public class ReservationService {
     private long idReservation;
 
     private Date dateReservation;
+    private String contactNumber;
 
 
 

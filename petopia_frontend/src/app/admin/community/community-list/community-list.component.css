@@ -156,4 +156,34 @@
     cursor: not-allowed;
   }
   
+  .post-info {
+    max-width: 600px;
+    overflow: hidden;
+  }
+  
+  .post-title {
+    font-weight: bold;
+    font-size: 16px;
+    margin-bottom: 6px;
+  }
+  
+  .post-content-truncate {
+    font-size: 0.9rem;
+    color: #555;
+    display: -webkit-box;
+    -webkit-line-clamp: 3; /* Show max 3 lines */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: normal;
+    margin-bottom: 4px;
+  }
+  
+  small.text-muted {
+    color: #F83182 !important; /* Bright rose color */
+    font-weight: 600;           /* Make it bolder */
+    font-size: 0.85rem;         /* Slightly bigger than default small */
+    margin-top: 4px;
+    display: inline-block;
+  }
   

@@ -40,8 +40,13 @@ public class EventServiceImplement implements IEventService {
         return eventRepository.findById(id);
     }
 
+    public Event saveEventWithImage(Event event, String imageUrl) {
+        event.setGeneratedImageUrl(imageUrl);
+        return eventRepository.save(event);
+    }
+
     @Override
-    public Event createEvent(Event event) {
+    public Event createEvent(Event event,String imageUrl) {
         User user = userService.getUsersById(event.getOrganisateur().getId_user()).getOurUsers();
         event.setOrganisateur(user);
         //return eventRepository.save(event);
@@ -50,8 +55,9 @@ public class EventServiceImplement implements IEventService {
                     event.getNameEvent());
             eventSmsService.sendSms(user.getPhoneNumber(),message);
 */
-
-
+        if (imageUrl != null && !imageUrl.isEmpty()) {
+            event.setGeneratedImageUrl(imageUrl);
+        }
         // Envoyer SMS seulement si la date est demain
         LocalDate today = LocalDate.now();
         LocalDate eventDate = event.getDateEvent().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
@@ -159,7 +165,9 @@ public class EventServiceImplement implements IEventService {
             }
         }
     }
-
+    public List<Event> getEventsWithImages() {
+        return eventRepository.findByGeneratedImageUrlIsNotNull();
+    }
 }
 
 

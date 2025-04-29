@@ -9,13 +9,13 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 @Service
 public class EventSmsService {
-    @Value("ACdb4d61d38a0604c41ebaaa8bcc9a0d1b")
+    @Value("ACe14db7b6c2a28d478ca681ef115606e1")
     private String accountSid;
 
-    @Value("25e8d65a29c5031d00ee062a2a789d2b")
+    @Value("f0dc52545a8f5d61ec7230b9cb4eae8d")
     private String authToken;
 
-    @Value("+17173409935")
+    @Value("+16204720295")
     private String twilioPhoneNumber;
     @PostConstruct
     public void init() {

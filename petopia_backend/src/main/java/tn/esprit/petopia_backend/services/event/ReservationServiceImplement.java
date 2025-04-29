@@ -28,6 +28,8 @@ public class ReservationServiceImplement implements IReservationService {
 
     @Autowired
     private UserService userService;
+    @Autowired
+    private EventSmsService smsService;
 
     @Override
     public List<ReservationService> getAllReservations() {
@@ -45,6 +47,7 @@ public class ReservationServiceImplement implements IReservationService {
                 .orElseThrow(() -> new RuntimeException("ServiceAnimal not found"));
         System.out.println(reservation.getUtilisateur().getId_user());
         User user = userService.getUsersById (reservation.getUtilisateur().getId_user()).getOurUsers();
+
        reservation.setUtilisateur(user);
 //
       reservation.setServiceAnimal(serviceAnimal);
@@ -54,12 +57,24 @@ public class ReservationServiceImplement implements IReservationService {
         System.out.println("=============================="+serviceAnimal);
         // Example in your ReservationService backend logic:
         serviceAnimalrepository.save(serviceAnimal);
+        // Save the reservation
+        ReservationService savedReservation = reservationRepository.save(reservation);
+        // Send SMS to the organizer
+        try {
+            String organizerPhone = serviceAnimal.getOrganisateurServiceAnimal().getPhoneNumber();
+            String message = "New reservation for your service '" + serviceAnimal.getDescriptionServiceAnimal() +
+                    "' by " + user.getName() + " "  +
+                    " on " + reservation.getUtilisateur().getPhoneNumber() + " "+
+                    reservation.getUtilisateur().getEmail();
 
+            smsService.sendSms(organizerPhone, message);
+        } catch (Exception e) {
+            // Log the error but don't fail the reservation
+            System.err.println("Failed to send SMS notification: " + e.getMessage());
+        }
 
-        return reservationRepository.save(reservation);
+        return savedReservation;
     }
-
-
 
 
 

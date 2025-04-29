@@ -5,6 +5,8 @@ import { PetGrowth } from 'src/app/models/vet/pet-growth';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { WebsocketService } from 'src/app/services/vet/WebsocketArduino/websocket.service';
 import { Subscription } from 'rxjs';
+import { MatDialog } from '@angular/material/dialog';
+import { BmiResultDialogComponent } from "src/app/simple-user/vet/bmi-result-dialog/bmi-result-dialog.component";
 
 export type ChartOptions = {
   series: any[];
@@ -64,7 +66,8 @@ export class PetGrowthVetComponent implements OnInit , OnDestroy {
     private petGrowthService: PetGrowthsService,
     private router: Router,
     private websocketService: WebsocketService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private dialog: MatDialog,
   ) {
     this.growthForm = this.fb.group({
       weight: ['', [Validators.required, Validators.min(0)]],
@@ -303,5 +306,19 @@ export class PetGrowthVetComponent implements OnInit , OnDestroy {
         colors: [this.colorPalette.yellow]
       }
     };
+  }
+
+  calculatePetBMI(): void {
+    this.petGrowthService.calculateBMI(this.petId).subscribe({
+      next: (result) => {
+        this.dialog.open(BmiResultDialogComponent, {
+          data: result,
+          panelClass: 'custom-dialog-container'
+        });
+      },
+      error: (err) => {
+        console.error('Error calculating BMI:', err);
+      }
+    });
   }
 }

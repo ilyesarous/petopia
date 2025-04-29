@@ -98,10 +98,21 @@
 
    <!-- Bouton Add New Growth -->
    <div class="text-center mb-4">
-    <button class="btn btn-pink rounded-pill" (click)="toggleAddForm()">
-        <i class="fas fa-plus me-2"></i>
-        {{ showAddForm ? 'Cancel' : 'Add New Growth Record' }}
-    </button>
+    <div class="button-container" style="display: flex; gap: 1rem;">
+
+        <button class="btn btn-pink rounded-pill" (click)="toggleAddForm()">
+            <i class="fas fa-plus me-2"></i>
+            {{ showAddForm ? 'Cancel' : 'Add New Growth Record' }}
+        </button>
+
+        <button class="btn btn-gradient rounded-pill" 
+            (click)="calculatePetBMI()"
+            [disabled]="petGrowths.length === 0">
+        <i class="fas fa-calculator me-2"></i>
+        Calculate BMI
+        </button>
+    </div>
+
 </div>
 
 <!-- Formulaire Add/Edit -->

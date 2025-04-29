@@ -4,14 +4,18 @@ import { PetService } from 'src/app/services/matchingService/pet.service';
 import { MatchsService } from 'src/app/services/matchingService/matchs.service';
 import { MessagingService } from 'src/app/services/matchingService/messaging.service';
 import { ChatWebSocketService } from 'src/app/services/matchingService/chat-web-socket.service';
+import { BlockedUserService } from 'src/app/services/matchingService/BlockedUserService';
+import { NotificationMatchService } from 'src/app/services/matchingService/NotificationMatchService';
 import { trigger, state, style, animate, transition, keyframes } from '@angular/animations';
 import { Subscription } from 'rxjs';
 import { ChatMessage } from 'src/app/models/matching/chat-message';
 import { FriendWithPets } from 'src/app/models/matching/friend-with-pets';
 import { Pet } from 'src/app/models/pet/Pet';
 import { Notification } from 'src/app/models/matching/notification';
+import { ReqRes } from 'src/app/models/matching/ReqRes';
 import * as L from 'leaflet';
 import { HttpClient } from '@angular/common/http';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-matching',
@@ -54,17 +58,10 @@ export class MatchingComponent implements OnInit, OnDestroy, AfterViewInit {
   showPetDropdown: boolean = false;
   matchingPets: any[] = [];
   showPreferencesForm: boolean = false;
-  newPreferences: any = {
-    preferred_breed: '',
-    min_age: 0,
-    max_age: 0,
-    preferred_gender: '',
-    preferred_location: ''
-  };
   currentPreferences: any = null;
   notifications: Notification[] = [];
   notificationCount: number = 0;
-  ownerId: number | null;
+  ownerId: number | null = null;
   showMatchConfirmation: boolean = false;
   matchedPet1: any = null;
   matchedPet2: any = null;
@@ -75,13 +72,17 @@ export class MatchingComponent implements OnInit, OnDestroy, AfterViewInit {
   newMessage: string = '';
   showFriendsList: boolean = false;
   showNotifications: boolean = false;
+  showBlockedUsers: boolean = false;
+  blockedUsers: { id: number; username: string; email?: string }[] = [];
   private previousPendingMatches: any[] = [];
   private messagesSubscription: Subscription | null = null;
+  private notificationsSubscription: Subscription | null = null;
   private currentMatchId: number | null = null;
   map!: L.Map;
   isMapInitialized: boolean = false;
   private currentMarker: L.Marker | null = null;
   private coords: { lat: number; lng: number } | null = null;
+  preferencesForm: FormGroup;
 
   @ViewChild('chatContainer') chatContainer!: ElementRef;
 
@@ -90,8 +91,11 @@ export class MatchingComponent implements OnInit, OnDestroy, AfterViewInit {
     private matchsService: MatchsService,
     private messagingService: MessagingService,
     private chatWebSocketService: ChatWebSocketService,
+    private notificationMatchService: NotificationMatchService,
     private router: Router,
-    private http: HttpClient
+    private http: HttpClient,
+    private blockedUserService: BlockedUserService,
+    private fb: FormBuilder
   ) {
     const userId = localStorage.getItem('userId');
     this.ownerId = userId ? parseInt(userId, 10) : null;
@@ -99,18 +103,32 @@ export class MatchingComponent implements OnInit, OnDestroy, AfterViewInit {
       console.error('No userId or token found in localStorage');
       this.router.navigate(['/login']);
     }
+    this.preferencesForm = this.fb.group({
+      preferred_breed: ['', Validators.required],
+      min_age: [null, [Validators.required, Validators.min(0)]],
+      max_age: [null, [Validators.required, Validators.min(0)]],
+      preferred_gender: ['', Validators.required],
+      preferred_location: ['', Validators.required]
+    }, { validators: this.ageValidator });
   }
 
   ngOnInit() {
     this.loadUserPets();
-    this.loadAllAvailablePets();
+    this.loadFilteredPets();
     this.checkNotifications();
     this.loadMatchedFriends();
+    this.loadBlockedUsers();
     setInterval(() => this.checkNotifications(), 30000);
     this.messagesSubscription = this.chatWebSocketService.getMessages().subscribe(messages => {
       console.log('Chat messages updated:', messages);
       this.chatMessages = messages;
       this.scrollToBottom();
+    });
+    this.notificationsSubscription = this.notificationMatchService.getNotifications().subscribe((notifications: Notification[]) => {
+      console.log('Received notifications from NotificationMatchService:', notifications);
+      notifications.forEach((notification: Notification) => {
+        this.handleWebSocketNotification(notification);
+      });
     });
   }
 
@@ -123,13 +141,161 @@ export class MatchingComponent implements OnInit, OnDestroy, AfterViewInit {
     if (this.messagesSubscription) {
       this.messagesSubscription.unsubscribe();
     }
+    if (this.notificationsSubscription) {
+      this.notificationsSubscription.unsubscribe();
+    }
     if (this.map) {
       this.map.remove();
     }
   }
 
+  ageValidator(form: FormGroup) {
+    const minAge = form.get('min_age')?.value;
+    const maxAge = form.get('max_age')?.value;
+    if (minAge !== null && maxAge !== null && minAge >= maxAge) {
+      return { ageInvalid: true };
+    }
+    return null;
+  }
+
+  loadBlockedUsers() {
+    if (!this.ownerId) {
+      console.error('No ownerId available for fetching blocked users');
+      return;
+    }
+    this.blockedUserService.getBlockedUsers(this.ownerId).subscribe({
+      next: (response: ReqRes) => {
+        if (response.statusCode === 200 && response.ourUsersList) {
+          this.blockedUsers = response.ourUsersList.map(user => ({
+            id: user.id_user,
+            username: user.name,
+            email: user.email || undefined
+          }));
+          console.log('Blocked users loaded:', this.blockedUsers);
+        } else {
+          this.blockedUsers = [];
+          console.warn('No blocked users found or invalid response:', response);
+        }
+      },
+      error: (err: any) => {
+        console.error('Error loading blocked users:', err);
+        this.blockedUsers = [];
+        if (err.status === 403) {
+          alert('Accès refusé : veuillez vous reconnecter.');
+          this.router.navigate(['/login']);
+        }
+      }
+    });
+  }
+
   toggleFriendsList() {
     this.showFriendsList = !this.showFriendsList;
+  }
+
+  toggleBlockedUsers() {
+    this.showBlockedUsers = !this.showBlockedUsers;
+  }
+
+  private handleWebSocketNotification(notification: Notification): void {
+    console.log('Processing notification:', notification);
+    if (notification.type === 'ACCEPTED') {
+      if (this.blockedUsers.some(user => user.id === notification.senderId)) {
+        console.log('Ignoring notification from blocked user:', notification.senderId);
+        return;
+      }
+      const acceptedNotification: Notification = {
+        id: notification.id || `match-accept-${notification.matchId}`,
+        type: 'accepted',
+        message: notification.message,
+        match: null,
+        matchId: notification.matchId,
+        timestamp: new Date(notification.timestamp),
+        senderId: notification.senderId
+      };
+      this.notifications.unshift(acceptedNotification);
+      this.notificationCount = this.notifications.length;
+      console.log('Added accepted notification:', acceptedNotification);
+      this.showNotifications = true;
+      alert(`Nouveau match accepté ! ${notification.message}`);
+    } else {
+      console.log('Unhandled notification type:', notification.type);
+    }
+  }
+
+  blockUser(friend: any) {
+    if (!this.ownerId || !friend.user.id_user) {
+      console.error('Cannot block user: missing ownerId or friend user ID');
+      return;
+    }
+    if (this.blockedUsers.some(user => user.id === friend.user.id_user)) {
+      console.log('User is already blocked:', friend.user.id_user);
+      return;
+    }
+
+    this.blockedUserService.blockUser(this.ownerId, friend.user.id_user).subscribe({
+      next: (response: ReqRes) => {
+        if (response.statusCode === 200) {
+          this.blockedUsers.push({
+            id: friend.user.id_user,
+            username: friend.user.username || 'Unknown',
+            email: friend.user.email || undefined
+          });
+          console.log('User blocked:', friend.user.id_user);
+          if (this.selectedFriend && this.selectedFriend.user.id_user === friend.user.id_user) {
+            this.closeChat();
+          }
+          this.loadFilteredPets();
+          this.checkNotifications();
+          this.loadMatchedFriends();
+          if (this.showMatchConfirmation && (this.matchedPet1?.user?.id_user === friend.user.id_user || this.matchedPet2?.user?.id_user === friend.user.id_user)) {
+            this.closeMatchConfirmation();
+          }
+        } else {
+          console.error('Failed to block user:', response.message);
+          alert('Erreur lors du blocage de l’utilisateur.');
+        }
+      },
+      error: (err: any) => {
+        console.error('Error blocking user:', err);
+        if (err.status === 403) {
+          alert('Accès refusé : veuillez vous reconnect grandes lignes reconnecter.');
+          this.router.navigate(['/login']);
+        } else {
+          alert('Erreur lors du blocage de l’utilisateur.');
+        }
+      }
+    });
+  }
+
+  unblockUser(userId: number) {
+    if (!this.ownerId) {
+      console.error('Cannot unblock user: missing ownerId');
+      return;
+    }
+    this.blockedUserService.unblockUser(this.ownerId, userId).subscribe({
+      next: (response: ReqRes) => {
+        if (response.statusCode === 200) {
+          const user = this.blockedUsers.find(u => u.id === userId);
+          this.blockedUsers = this.blockedUsers.filter(u => u.id !== userId);
+          console.log('User unblocked:', userId, user?.username, user?.email);
+          this.loadFilteredPets();
+          this.checkNotifications();
+          this.loadMatchedFriends();
+        } else {
+          console.error('Failed to unblock user:', response.message);
+          alert('Erreur lors du déblocage de l’utilisateur.');
+        }
+      },
+      error: (err: any) => {
+        console.error('Error unblocking user:', err);
+        if (err.status === 403) {
+          alert('Accès refusé : veuillez vous reconnecter.');
+          this.router.navigate(['/login']);
+        } else {
+          alert('Erreur lors du déblocage de l’utilisateur.');
+        }
+      }
+    });
   }
 
   loadUserPets() {
@@ -143,7 +309,7 @@ export class MatchingComponent implements OnInit, OnDestroy, AfterViewInit {
         this.petList = data;
         this.isLoading = false;
       },
-      error: (err) => {
+      error: (err: any) => {
         console.error('Error loading user pets:', err);
         this.isLoading = false;
         if (err.status === 403) {
@@ -154,14 +320,33 @@ export class MatchingComponent implements OnInit, OnDestroy, AfterViewInit {
     });
   }
 
-  loadAllAvailablePets() {
-    this.petService.getPetsByStatus('AVAILABLE').subscribe({
+  loadFilteredPets() {
+    this.isLoading = true;
+    if (!this.ownerId) {
+      console.error('No ownerId available');
+      this.isLoading = false;
+      return;
+    }
+    this.petService.getPetsByStatusWithBlockFilter('AVAILABLE', this.ownerId).subscribe({
       next: (data) => {
-        this.matchingPets = data;
+        if (this.selectedPet) {
+          this.matchingPets = data.filter((pet: { species: string; gender: string; ownerId: number | null }) =>
+            pet.species?.toLowerCase() === this.selectedPet.species?.toLowerCase() &&
+            pet.gender?.toLowerCase() !== this.selectedPet.gender?.toLowerCase() &&
+            pet.ownerId !== this.ownerId &&
+            !this.blockedUsers.some(user => user.id === pet.ownerId)
+          );
+        } else {
+          this.matchingPets = data.filter((pet: { ownerId: number | null }) =>
+            pet.ownerId !== this.ownerId &&
+            !this.blockedUsers.some(user => user.id === pet.ownerId)
+          );
+        }
+        console.log('Filtered pets:', this.matchingPets);
         this.isLoading = false;
       },
-      error: (err) => {
-        console.error('Error loading all available pets:', err);
+      error: (err: any) => {
+        console.error('Error loading filtered pets:', err);
         this.matchingPets = [];
         this.isLoading = false;
         if (err.status === 403) {
@@ -182,16 +367,17 @@ export class MatchingComponent implements OnInit, OnDestroy, AfterViewInit {
     this.showPreferencesForm = false;
     this.resetPreferencesForm();
     this.checkPreferences(pet.idPet);
+    this.loadFilteredPets();
   }
 
   resetPreferencesForm() {
-    this.newPreferences = {
+    this.preferencesForm.reset({
       preferred_breed: '',
-      min_age: 0,
-      max_age: 0,
+      min_age: null,
+      max_age: null,
       preferred_gender: '',
       preferred_location: ''
-    };
+    });
     this.currentPreferences = null;
     this.coords = null;
   }
@@ -256,7 +442,11 @@ export class MatchingComponent implements OnInit, OnDestroy, AfterViewInit {
       const coords = e.latlng;
       this.coords = { lat: coords.lat, lng: coords.lng };
       console.log('Map clicked, coords:', JSON.stringify(this.coords));
-      this.reverseGeocode(coords.lat, coords.lng);
+
+      this.reverseGeocode(coords.lat, coords.lng, (address) => {
+        this.preferencesForm.patchValue({ preferred_location: address });
+        console.log('Geocoded address:', address);
+      });
 
       if (this.currentMarker) {
         this.map.removeLayer(this.currentMarker);
@@ -264,22 +454,21 @@ export class MatchingComponent implements OnInit, OnDestroy, AfterViewInit {
 
       this.currentMarker = L.marker([coords.lat, coords.lng], { icon: customIcon })
         .addTo(this.map)
-        .bindPopup('Selected Location')
+        .bindPopup(`Selected Location: ${this.preferencesForm.get('preferred_location')?.value || 'Loading address...'}`)
         .openPopup();
     });
   }
 
-  reverseGeocode(lat: number, lng: number): void {
+  reverseGeocode(lat: number, lng: number, callback: (address: string) => void): void {
     const url = `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}&zoom=10&addressdetails=1`;
     this.http.get(url).subscribe({
       next: (response: any) => {
-        const address = response.display_name || 'Unknown location';
-        this.newPreferences.preferred_location = address;
-        console.log('Geocoded location:', address);
+        const address = response.display_name || `Lat: ${lat}, Lng: ${lng}`;
+        callback(address);
       },
-      error: (err) => {
+      error: (err: any) => {
         console.error('Error during reverse geocoding:', err);
-        this.newPreferences.preferred_location = `Lat: ${lat}, Lng: ${lng}`;
+        callback(`Lat: ${lat}, Lng: ${lng}`);
       }
     });
   }
@@ -289,14 +478,31 @@ export class MatchingComponent implements OnInit, OnDestroy, AfterViewInit {
       next: (response) => {
         console.log('Preferences checked:', JSON.stringify(response));
         if (response.hasPreferences) {
-          this.matchingPets = response.matchingPets || [];
+          this.matchingPets = response.matchingPets?.filter((pet: any) =>
+            !this.blockedUsers.some(user => user.id === pet.ownerId)
+          ) || [];
           this.currentPreferences = response.preferences;
+          this.preferencesForm.patchValue({
+            preferred_breed: this.currentPreferences.preferred_breed,
+            min_age: this.currentPreferences.min_age,
+            max_age: this.currentPreferences.max_age,
+            preferred_gender: this.currentPreferences.preferred_gender,
+            preferred_location: this.currentPreferences.preferred_location
+          });
+          if (this.currentPreferences.preferred_location && this.currentPreferences.preferred_location.includes('Lat:')) {
+            const [lat, lng] = this.currentPreferences.preferred_location
+              .replace('Lat: ', '')
+              .replace('Lng: ', '')
+              .split(', ')
+              .map((val: string) => parseFloat(val));
+            this.coords = { lat, lng };
+          }
         } else {
-          this.matchingPets = [];
           this.currentPreferences = null;
+          this.loadFilteredPets();
         }
       },
-      error: (err) => {
+      error: (err: any) => {
         console.error('Error checking preferences:', err);
         this.matchingPets = [];
         this.currentPreferences = null;
@@ -313,13 +519,17 @@ export class MatchingComponent implements OnInit, OnDestroy, AfterViewInit {
       alert('Veuillez sélectionner un animal avant d’enregistrer les préférences.');
       return;
     }
+    if (this.preferencesForm.invalid) {
+      this.preferencesForm.markAllAsTouched();
+      return;
+    }
     const preferencesToSave = {
       id_preference: this.currentPreferences?.id_preference || null,
-      preferred_breed: this.newPreferences.preferred_breed,
-      min_age: this.newPreferences.min_age,
-      max_age: this.newPreferences.max_age,
-      preferred_gender: this.newPreferences.preferred_gender,
-      preferred_location: this.newPreferences.preferred_location,
+      preferred_breed: this.preferencesForm.get('preferred_breed')?.value,
+      min_age: this.preferencesForm.get('min_age')?.value,
+      max_age: this.preferencesForm.get('max_age')?.value,
+      preferred_gender: this.preferencesForm.get('preferred_gender')?.value,
+      preferred_location: this.preferencesForm.get('preferred_location')?.value,
       pet: { idPet: this.selectedPet.idPet }
     };
     console.log('Saving preferences:', JSON.stringify(preferencesToSave));
@@ -329,7 +539,7 @@ export class MatchingComponent implements OnInit, OnDestroy, AfterViewInit {
         this.showPreferencesForm = false;
         this.checkPreferences(this.selectedPet.idPet);
       },
-      error: (err) => {
+      error: (err: any) => {
         console.error('Error saving preferences:', err);
         if (err.status === 403) {
           this.router.navigate(['/login']);
@@ -348,9 +558,24 @@ export class MatchingComponent implements OnInit, OnDestroy, AfterViewInit {
         next: (preferences) => {
           console.log('Preferences retrieved:', JSON.stringify(preferences));
           this.currentPreferences = preferences;
+          this.preferencesForm.patchValue({
+            preferred_breed: preferences.preferred_breed,
+            min_age: preferences.min_age,
+            max_age: preferences.max_age,
+            preferred_gender: preferences.preferred_gender,
+            preferred_location: preferences.preferred_location
+          });
+          if (preferences.preferred_location && preferences.preferred_location.includes('Lat:')) {
+            const [lat, lng] = preferences.preferred_location
+              .replace('Lat: ', '')
+              .replace('Lng: ', '')
+              .split(', ')
+              .map((val: string) => parseFloat(val));
+            this.coords = { lat, lng };
+          }
           this.showPreferencesForm = false;
         },
-        error: (err) => {
+        error: (err: any) => {
           console.error('Error retrieving preferences:', err);
           if (err.status === 403) {
             this.router.navigate(['/login']);
@@ -362,7 +587,13 @@ export class MatchingComponent implements OnInit, OnDestroy, AfterViewInit {
 
   editPreferences() {
     if (this.currentPreferences) {
-      this.newPreferences = { ...this.currentPreferences };
+      this.preferencesForm.patchValue({
+        preferred_breed: this.currentPreferences.preferred_breed,
+        min_age: this.currentPreferences.min_age,
+        max_age: this.currentPreferences.max_age,
+        preferred_gender: this.currentPreferences.preferred_gender,
+        preferred_location: this.currentPreferences.preferred_location
+      });
       if (this.currentPreferences.preferred_location && this.currentPreferences.preferred_location.includes('Lat:')) {
         const [lat, lng] = this.currentPreferences.preferred_location
           .replace('Lat: ', '')
@@ -419,7 +650,7 @@ export class MatchingComponent implements OnInit, OnDestroy, AfterViewInit {
           this.matchingPets = [];
           this.checkPreferences(this.selectedPet.idPet);
         },
-        error: (err) => {
+        error: (err: any) => {
           console.error('Error deleting preferences:', err);
           if (err.status === 403) {
             this.router.navigate(['/login']);
@@ -434,13 +665,17 @@ export class MatchingComponent implements OnInit, OnDestroy, AfterViewInit {
       alert('Please select a pet before matching.');
       return;
     }
+    if (this.blockedUsers.some(user => user.id === match.ownerId)) {
+      alert('Vous ne pouvez pas matcher avec un utilisateur bloqué.');
+      return;
+    }
     this.matchsService.createMatch(this.selectedPet.idPet, match.idPet).subscribe({
       next: (response) => {
         alert(`You have matched ${this.selectedPet.petName} with ${match.petName}!`);
         this.checkPreferences(this.selectedPet.idPet);
         this.checkNotifications();
       },
-      error: (err) => {
+      error: (err: any) => {
         console.error('Error creating match:', err);
         if (err.status === 400) {
           alert('Matching already exists with ' + match.petName + '!');
@@ -456,61 +691,29 @@ export class MatchingComponent implements OnInit, OnDestroy, AfterViewInit {
   checkNotifications() {
     this.matchsService.getPendingMatches().subscribe({
       next: (matches) => {
-        const pendingNotifications: Notification[] = matches.map((match) => ({
-          id: match.id_match,
-          type: 'pending',
-          message: `${match.pet_1.petName} wants to match with ${match.pet_2.petName}`,
-          match: match,
-          timestamp: new Date(),
-        }));
-
-        const acceptedNotifications: Notification[] = [];
-        this.previousPendingMatches.forEach((prevMatch) => {
-          if (!matches.find((m) => m.id_match === prevMatch.id_match)) {
-            const wasPendingForUser =
-              prevMatch.pet_1.user?.id_user === this.ownerId ||
-              prevMatch.pet_2.user?.id_user === this.ownerId;
-            if (wasPendingForUser) {
-              const otherPet =
-                prevMatch.pet_1.user?.id_user === this.ownerId
-                  ? prevMatch.pet_2
-                  : prevMatch.pet_1;
-              if (
-                !this.notifications.some(
-                  (n) =>
-                    n.type === 'accepted' &&
-                    n.match?.id_match === prevMatch.id_match
-                )
-              ) {
-                acceptedNotifications.push({
-                  id: `accepted_${prevMatch.id_match}_${Date.now()}`,
-                  type: 'accepted',
-                  message: `Your match with ${otherPet.petName} was accepted!`,
-                  match: prevMatch,
-                  timestamp: new Date(),
-                });
-              }
-            }
-          }
-        });
-
-        this.notifications = [
-          ...pendingNotifications,
-          ...this.notifications.filter(
-            (n) => n.type === 'accepted' && !acceptedNotifications.some((an) => an.match?.id_match === n.match?.id_match)
-          ),
-          ...acceptedNotifications,
-        ];
+        const pendingNotifications: Notification[] = matches
+          .filter(match =>
+            !this.blockedUsers.some(user => user.id === match.pet_1?.user?.id_user) &&
+            !this.blockedUsers.some(user => user.id === match.pet_2?.user?.id_user)
+          )
+          .map((match) => ({
+            id: match.id_match,
+            type: 'pending',
+            message: `${match.pet_1.petName} wants to match with ${match.pet_2.petName}`,
+            match: match,
+            timestamp: new Date()
+          }));
+        this.notifications = [...pendingNotifications];
         this.notificationCount = this.notifications.length;
         this.previousPendingMatches = matches;
       },
-      error: (err) => {
+      error: (err: any) => {
         console.error('Error loading notifications:', err);
-        if (err.status === 403) {
-          alert('Accès refusé : veuillez vous reconnecter.');
-          this.router.navigate(['/login']);
-        }
-      },
+        // if (err.status === 403) {
+        //   alert('Accès refusé : veuillez vous reconnecter.');
+        //   this.router.navigate(['/login']);
+        // }
+      }
     });
   }
 
@@ -525,35 +728,26 @@ export class MatchingComponent implements OnInit, OnDestroy, AfterViewInit {
           (n) => n.match && n.match.id_match === matchId
         )?.match;
         if (acceptedMatch) {
-          const otherPet =
-            acceptedMatch.pet_1.user?.id_user === this.ownerId
-              ? acceptedMatch.pet_2
-              : acceptedMatch.pet_1;
-          const newNotification: Notification = {
-            id: `accepted_${matchId}_${Date.now()}`,
-            type: 'accepted',
-            message: `Your match with ${otherPet.petName} was accepted!`,
-            match: acceptedMatch,
-            timestamp: new Date(),
-          };
-          this.notifications = [
-            ...this.notifications.filter((n) => n.id !== matchId),
-            newNotification,
-          ];
+          if (this.blockedUsers.some(user => user.id === acceptedMatch.pet_1?.user?.id_user) ||
+              this.blockedUsers.some(user => user.id === acceptedMatch.pet_2?.user?.id_user)) {
+            this.notifications = this.notifications.filter((n) => n.id !== matchId);
+            this.notificationCount = this.notifications.length;
+            return;
+          }
+          this.notifications = this.notifications.filter((n) => n.id !== matchId);
           this.notificationCount = this.notifications.length;
-
           this.matchedPet1 = acceptedMatch.pet_1;
           this.matchedPet2 = acceptedMatch.pet_2;
           this.showMatchConfirmation = true;
         }
         this.loadMatchedFriends();
       },
-      error: (err) => {
+      error: (err: any) => {
         console.error('Error accepting match:', err);
         if (err.status === 403) {
           this.router.navigate(['/login']);
         }
-      },
+      }
     });
   }
 
@@ -567,12 +761,12 @@ export class MatchingComponent implements OnInit, OnDestroy, AfterViewInit {
           this.notificationCount = this.notifications.length;
           this.loadMatchedFriends();
         },
-        error: (err) => {
+        error: (err: any) => {
           console.error('Error deleting match:', err);
           if (err.status === 403) {
             this.router.navigate(['/login']);
           }
-        },
+        }
       });
     }
   }
@@ -583,14 +777,14 @@ export class MatchingComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   viewPetDetails(match: any) {
-    if (match && match.idPet) {
+    if (match && match.idPet && !this.blockedUsers.some(user => user.id === match.ownerId)) {
       this.router.navigate(['/pet-details', match.idPet]);
     }
   }
 
   viewPendingPetDetails(match: any, petType: 'pet_1' | 'pet_2') {
     const pet = match[petType];
-    if (pet && pet.idPet) {
+    if (pet && pet.idPet && !this.blockedUsers.some(user => user.id === pet.user?.id_user)) {
       this.router.navigate(['/pet-details', pet.idPet]);
     }
   }
@@ -599,6 +793,25 @@ export class MatchingComponent implements OnInit, OnDestroy, AfterViewInit {
     this.showMatchConfirmation = false;
     this.matchedPet1 = null;
     this.matchedPet2 = null;
+  }
+
+  generateBabyPhoto() {
+    if (this.matchedPet1 && this.matchedPet2) {
+      if (this.blockedUsers.some(user => user.id === this.matchedPet1.user?.id_user) ||
+          this.blockedUsers.some(user => user.id === this.matchedPet2.user?.id_user)) {
+        this.closeMatchConfirmation();
+        return;
+      }
+      this.router.navigate(['/bbypet'], {
+        queryParams: {
+          petId1: this.matchedPet1.idPet,
+          petId2: this.matchedPet2.idPet
+        }
+      });
+    } else {
+      console.error('Cannot navigate to baby pet: matched pets not set');
+      alert('Erreur : impossible de générer l’image du bébé pet. Veuillez réessayer.');
+    }
   }
 
   sendMessage() {
@@ -610,6 +823,10 @@ export class MatchingComponent implements OnInit, OnDestroy, AfterViewInit {
       const friendPet = this.matchedPet1.user?.id_user === this.ownerId ? this.matchedPet2 : this.matchedPet1;
       if (!friendPet || !friendPet.user) {
         console.warn('Invalid friend pet or user data');
+        return;
+      }
+      if (this.blockedUsers.some(user => user.id === friendPet.user.id_user)) {
+        this.closeMatchConfirmation();
         return;
       }
       const friend: FriendWithPets = {
@@ -626,15 +843,17 @@ export class MatchingComponent implements OnInit, OnDestroy, AfterViewInit {
   loadMatchedFriends() {
     this.matchsService.getAcceptedFriends().subscribe(
       (friends: FriendWithPets[]) => {
-        this.matchedFriends = friends.map(friend => ({
-          user: friend.user,
-          matchedPets: friend.matchedPets.map(pet => ({
-            idPet: pet.idPet,
-            petName: pet.petName,
-            breed: pet.breed || 'Not specified',
-            petImage: pet.petImage || '../../../../assets/images/pet/11416.jpg'
-          }))
-        }));
+        this.matchedFriends = friends
+          .filter(friend => !this.blockedUsers.some(user => user.id === friend.user.id_user))
+          .map(friend => ({
+            user: friend.user,
+            matchedPets: friend.matchedPets.map(pet => ({
+              idPet: pet.idPet,
+              petName: pet.petName,
+              breed: pet.breed || 'Not specified',
+              petImage: pet.petImage || '../../../../assets/images/pet/11416.jpg'
+            }))
+          }));
       },
       (error: any) => {
         console.error('Erreur lors de la récupération des amis:', error);
@@ -644,6 +863,12 @@ export class MatchingComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   openChat(friend: FriendWithPets, pet: Pet) {
+    if (this.blockedUsers.some(user => user.id === friend.user.id_user)) {
+      alert('Vous ne pouvez pas discuter avec un utilisateur bloqué.');
+      return;
+    }
+    this.chatMessages = [];
+    this.currentMatchId = null;
     this.selectedFriend = {
       user: friend.user,
       petName: pet.petName,
@@ -671,7 +896,7 @@ export class MatchingComponent implements OnInit, OnDestroy, AfterViewInit {
           this.showChat = false;
         }
       },
-      error: (err) => {
+      error: (err: any) => {
         console.error('Error fetching matches:', err);
         this.showChat = false;
       }
@@ -683,18 +908,23 @@ export class MatchingComponent implements OnInit, OnDestroy, AfterViewInit {
     this.selectedFriend = null;
     this.chatMessages = [];
     this.currentMatchId = null;
+    this.chatWebSocketService.disconnect();
   }
 
   loadChatMessages(matchId: number) {
+    this.chatMessages = [];
     this.messagingService.getMessagesForMatch(matchId).subscribe({
       next: (messages) => {
         console.log('Loaded messages for match', matchId, ':', messages);
-        this.chatWebSocketService.loadMessages(messages.map(msg => ({
+        const sortedMessages = messages.sort((a, b) =>
+          new Date(a.timestamp!).getTime() - new Date(b.timestamp!).getTime()
+        );
+        this.chatWebSocketService.loadMessages(sortedMessages.map(msg => ({
           ...msg,
           showReactionPicker: false
         })));
       },
-      error: (err) => {
+      error: (err: any) => {
         console.error('Error loading chat messages:', err);
         this.chatMessages = [];
       }
@@ -703,6 +933,11 @@ export class MatchingComponent implements OnInit, OnDestroy, AfterViewInit {
 
   sendChatMessage() {
     if (this.newMessage.trim() && this.currentMatchId && this.ownerId && this.selectedFriend) {
+      if (this.blockedUsers.some(user => user.id === this.selectedFriend.user.id_user)) {
+        alert('Vous ne pouvez pas envoyer de message à un utilisateur bloqué.');
+        this.closeChat();
+        return;
+      }
       const message: ChatMessage = {
         matchId: this.currentMatchId,
         senderId: this.ownerId,
@@ -725,10 +960,61 @@ export class MatchingComponent implements OnInit, OnDestroy, AfterViewInit {
     }
   }
 
+  sendLocation() {
+    if (!this.currentMatchId || !this.ownerId || !this.selectedFriend) {
+      console.warn('Cannot send location: missing matchId, ownerId, or selectedFriend');
+      alert('Erreur : impossible d\'envoyer la localisation. Assurez-vous qu\'une conversation est ouverte.');
+      return;
+    }
+    if (this.blockedUsers.some(user => user.id === this.selectedFriend.user.id_user)) {
+      alert('Vous ne pouvez pas envoyer de localisation à un utilisateur bloqué.');
+      this.closeChat();
+      return;
+    }
+
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const { latitude, longitude } = position.coords;
+          const locationMessage = `Ma localisation : ${latitude}, ${longitude}`;
+
+          this.reverseGeocode(latitude, longitude, (address) => {
+            const message: ChatMessage = {
+              matchId: this.currentMatchId!,
+              senderId: this.ownerId!,
+              receiverId: this.selectedFriend.user.id_user,
+              content: locationMessage,
+              type: 'CHAT',
+              timestamp: new Date().toISOString(),
+              sender: localStorage.getItem('username') || 'unknown',
+              recipient: this.selectedFriend.user.username || '',
+              address: address
+            };
+
+            this.chatWebSocketService.sendChatMessage(message);
+            console.log('Location sent:', locationMessage, 'Address:', address);
+          });
+        },
+        (error) => {
+          console.error('Error getting location:', error);
+          alert('Impossible de récupérer votre localisation. Veuillez activer la géolocalisation ou entrer votre position manuellement.');
+        },
+        { enableHighAccuracy: true, timeout: 5000, maximumAge: 0 }
+      );
+    } else {
+      alert('La géolocalisation n\'est pas prise en charge par votre navigateur.');
+    }
+  }
+
   sendReaction(message: ChatMessage, reaction: string) {
     if (message.id && this.currentMatchId) {
+      if (this.blockedUsers.some(user => user.id === this.selectedFriend?.user.id_user)) {
+        alert('Vous ne pouvez pas réagir à un message d\'un utilisateur bloqué.');
+        this.closeChat();
+        return;
+      }
       this.chatWebSocketService.sendReaction(message.id, this.currentMatchId, reaction);
-      message.showReactionPicker = false; // Cacher le sélecteur après sélection
+      message.showReactionPicker = false;
     } else {
       console.warn('Cannot send reaction: missing message ID or match ID', {
         messageId: message.id,
@@ -738,6 +1024,9 @@ export class MatchingComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   showReactionPicker(message: ChatMessage) {
+    if (this.blockedUsers.some(user => user.id === this.selectedFriend?.user.id_user)) {
+      return;
+    }
     message.showReactionPicker = true;
   }
 
@@ -751,5 +1040,20 @@ export class MatchingComponent implements OnInit, OnDestroy, AfterViewInit {
         this.chatContainer.nativeElement.scrollTop = this.chatContainer.nativeElement.scrollHeight;
       }
     }, 100);
+  }
+
+  getGoogleMapsLink(content: string): string {
+    const match = content.match(/Ma localisation : (-?\d+\.\d+), (-?\d+\.\d+)/);
+    if (match) {
+      const lat = match[1];
+      const lng = match[2];
+      return `https://www.google.com/maps?q=${lat},${lng}`;
+    }
+    return '#';
+  }
+
+  getBlockedUserName(userId: number): string {
+    const user = this.blockedUsers.find(u => u.id === userId);
+    return user ? (user.username !== 'Unknown' ? user.username : user.email || 'Utilisateur inconnu') : 'Utilisateur inconnu';
   }
 }
