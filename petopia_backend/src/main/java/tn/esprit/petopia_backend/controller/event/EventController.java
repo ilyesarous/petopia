@@ -57,7 +57,8 @@ public class EventController {
     // http://localhost:8082/petopia/admin/events/addEvent
     @PostMapping("/addEvent")
     @PreAuthorize("hasAnyAuthority('ROLE_ADMIN')")
-    public Event createEvent(@RequestBody Event event) {
+    public Event createEvent(@RequestBody Event event,
+                             @RequestParam(required = false) String imageUrl) {
         event.setAvailablePlaces(event.getPlacesMaxEvent());
         System.out.println(event);
 
@@ -67,7 +68,7 @@ public class EventController {
             eventNotificationService.notifyNewSignup(eventNotification);
             System.out.println("Done");
 
-        return eventService.createEvent(event);
+        return eventService.createEvent(event,imageUrl);
     }
 
 
@@ -127,5 +128,10 @@ public class EventController {
     }
 
 
-
+    // Add this endpoint to get events with images
+    @GetMapping("/with-images")
+    public ResponseEntity<List<Event>> getEventsWithImages() {
+        List<Event> events = eventService.getEventsWithImages();
+        return ResponseEntity.ok(events);
+    }
 }

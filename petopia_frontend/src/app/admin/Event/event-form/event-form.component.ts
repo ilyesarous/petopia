@@ -112,6 +112,10 @@ export class EventFormComponent implements OnInit {
     if (this.eventForm.valid) {
       const formData = this.eventForm.value;
       formData.organisateur = { id_user: this.userId };
+       // Add the generated image URL if available
+    if (this.generatedImageUrl) {
+      formData.generatedImageUrl = this.generatedImageUrl;
+    }
  // Combine date and time
  if (formData.dateEvent && formData.timeEvent) {
   const date = new Date(formData.dateEvent);
@@ -189,8 +193,15 @@ export class EventFormComponent implements OnInit {
 
   useGeneratedImage(): void {
     if (this.generatedImageUrl) {
+
+       // Store the image URL in the form
+    this.eventForm.patchValue({
+      generatedImageUrl: this.generatedImageUrl
+    });
+    alert('Image will be saved with your event!');
+  
       // You might want to store this URL in your form or handle it differently
-      alert('Image URL ready to use: ' + this.generatedImageUrl);
+      //alert('Image URL ready to use: ' + this.generatedImageUrl);
       // Alternatively, you could add an imageUrl field to your form
       // this.eventForm.patchValue({ imageUrl: this.generatedImageUrl });
     }

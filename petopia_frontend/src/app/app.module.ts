@@ -289,7 +289,7 @@ import { PetListComponent } from './components/pet-list/pet-list.component';
     AddBrandsComponent,
     EventHelperComponent,
     Nl2BrPipe,
-    ReservationFormComponent,
+    ReservationFormComponent
 
   ],
   imports: [

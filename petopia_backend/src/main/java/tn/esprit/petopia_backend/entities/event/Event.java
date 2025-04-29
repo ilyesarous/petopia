@@ -37,6 +37,8 @@ public class Event {
     private Integer availablePlaces;
     private Integer countdownDuration; // en minutes (optionnel)
 
+    @Column(name = "generated_image_url", length = 500)
+    private String generatedImageUrl;
 
     @Enumerated(EnumType.STRING)
     private EventType eventType;

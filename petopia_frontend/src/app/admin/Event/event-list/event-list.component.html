@@ -129,6 +129,78 @@
     </div>
   </div>
 
+
+<!-- Admin Statistics Section -->
+<div *ngIf="role === 'ROLE_ADMIN'" class="admin-stats-section">
+  <h2 class="section-title">📊 Event Statistics</h2>
+  
+  <div *ngIf="stats; else noStats" class="stats-grid">
+    <!-- Total Events Card -->
+    <div class="stat-card total-events">
+      <div class="stat-icon">🎯</div>
+      <div class="stat-content">
+        <h3>{{ stats.totalEvents || 0 }}</h3>
+        <p>Total Events</p>
+      </div>
+    </div>
+
+    <!-- Active Events Card -->
+    <div class="stat-card active-events">
+      <div class="stat-icon">✅</div>
+      <div class="stat-content">
+        <h3>{{ stats.activeEvents || 0 }}</h3>
+        <p>Active Events</p>
+      </div>
+    </div>
+<!-- Canceled Events Card -->
+<div class="stat-card canceled-events">
+  <div class="stat-icon">❌</div>
+  <div class="stat-content">
+    <h3>{{ stats.canceledEvents || 0 }}</h3>
+    <p>Canceled Events</p>
+  </div>
+</div>
+
+    <!-- Revenue Card -->
+    <div class="stat-card total-revenue">
+      <div class="stat-icon">💰</div>
+      <div class="stat-content">
+        <h3>{{ stats.totalRevenue || 0 | currency:'TND ' }}</h3>
+        <p>Total Revenue</p>
+      </div>
+    </div>
+
+    <!-- Events by Type Chart -->
+    <div class="stat-card events-by-type">
+      <div class="stat-header">
+        <h3>Events by Type</h3>
+      </div>
+      <div class="chart-container">
+        <canvas #eventsByTypeChart></canvas>
+      </div>
+    </div>
+
+    <!-- Monthly Participation Chart -->
+    <div class="stat-card monthly-participation">
+      <div class="stat-header">
+        <h3>Monthly Participation</h3>
+      </div>
+      <div class="chart-container">
+        <canvas #monthlyParticipationChart></canvas>
+      </div>
+    </div>
+  </div>
+  
+  <ng-template #noStats>
+    <div class="no-stats-message">
+      <p>No statistics available yet. Create some events to see analytics.</p>
+    </div>
+  </ng-template>
+</div>
+
+
+  
+
   <!-- Events List -->
   <div class="events-section">
     <h2 class="section-title">Available Events</h2>
@@ -229,6 +301,14 @@
               <h4>Visibility</h4>
               <p>{{ event.visibiliteEvent }}</p>
             </div>
+            <!-- Add this inside your event-card div, near the action buttons -->
+            <div *ngIf="event.generatedImageUrl" class="event-image-container">
+              <button class="btn-view-image" (click)="openImageModal(event.generatedImageUrl)">
+                <span class="btn-icon">🖼️</span>
+                View Event Affiche
+              </button>
+            </div>
+
           </div>
         </div>
       </div>
@@ -348,6 +428,14 @@
         </div>
       </div>
     </div>
+  </div>
+</div>
+
+<!-- Add this modal at the bottom of your template -->
+<div *ngIf="showImageModal" class="image-modal">
+  <div class="modal-content">
+    <span class="close" (click)="closeImageModal()">&times;</span>
+    <img [src]="currentImageUrl" alt="Event image" class="modal-image">
   </div>
 </div>
   <app-event-helper></app-event-helper>

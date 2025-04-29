@@ -13,7 +13,8 @@ import { CalendarOptions, EventApi } from '@fullcalendar/core';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import { FullCalendarModule } from '@fullcalendar/angular';
-
+import { Chart, registerables } from 'chart.js';
+Chart.register(...registerables);
 
 
 declare var bootstrap: any; 
@@ -33,8 +34,19 @@ export class EventListComponent implements OnInit {
   eventToEdit: Event | null = null;  // Contient l’événement à modifier
   showParticipationPopup: boolean = false;
   notifications: EventNotification[] = [];
+// Add these properties to your component class
+showImageModal: boolean = false;
+currentImageUrl: string = '';
+showThumbnails: boolean = true; // Set to false if you prefer buttons only
 
-  
+
+// Statistics properties
+stats: any = null;
+@ViewChild('eventsByTypeChart') eventsByTypeChartRef!: ElementRef;
+@ViewChild('monthlyParticipationChart') monthlyParticipationChartRef!: ElementRef;
+eventsByTypeChart: any;
+monthlyParticipationChart: any;
+
 
   filters: any = {};
 
@@ -98,6 +110,9 @@ calendarOptions: CalendarOptions = {
         // Se abonner à l'observable pour recevoir les mises à jour en temps réel
         this.eventService.events$.subscribe((data) => {
           this.events = data;  // Met à jour la liste des événements
+          if (this.role === 'ROLE_ADMIN') {
+            this.calculateStatistics();
+          }
         });
 
         // Charger les événements au démarrage
@@ -149,6 +164,21 @@ calendarOptions: CalendarOptions = {
 //   this.notificationSubscription?.unsubscribe();
 // }
 
+
+
+// Add this method
+openImageModal(imageUrl: string): void {
+  this.currentImageUrl = imageUrl;
+  this.showImageModal = true;
+  document.body.style.overflow = 'hidden'; // Prevent scrolling when modal is open
+
+}
+
+closeImageModal(): void {
+  this.showImageModal = false;
+  document.body.style.overflow = ''; // Re-enable scrolling
+
+}
 // In event-list.component.ts
 getAvailablePlaces(event: Event): number {
   if (!event.participations || event.participations.length === 0) {
@@ -425,6 +455,473 @@ openMap(location: string): void {
   // Open Google Maps with the location
   window.open(`https://www.google.com/maps/search/?api=1&query=${encodedLocation}`, '_blank');
 }
+
+
+
+// private calculateStatistics(): void {
+//   if (!this.events || this.events.length === 0) {
+//     this.stats = null;
+//     return;
+//   }
+
+//   // Calculate basic stats
+//   const totalEvents = this.events.length;
+//   const activeEvents = this.events.filter(e => e.statusEvent === 'ACTIF').length;
+  
+//   // Calculate total participants across all events
+//   const totalParticipants = this.events.reduce((sum, event) => {
+//     return sum + (event.participations?.length || 0);
+//   }, 0);
+  
+//   // Calculate total revenue (assuming prixEvent is the price per participant)
+//   const totalRevenue = this.events.reduce((sum, event) => {
+//     return sum + (event.prixEvent * (event.participations?.length || 0));
+//   }, 0);
+  
+//   // Calculate events by type
+//   const eventsByType = this.calculateEventsByType();
+  
+//   // Calculate monthly participation
+//   const monthlyParticipation = this.calculateMonthlyParticipation();
+
+//   this.stats = {
+//     totalEvents,
+//     activeEvents,
+//     totalParticipants,
+//     totalRevenue,
+//     eventsByType,
+//     monthlyParticipation
+//   };
+
+//   this.initCharts();
+// }
+
+private calculateStatistics(): void {
+  if (!this.events || this.events.length === 0) {
+    this.stats = null;
+    return;
+  }
+
+  
+  console.log("Debugging revenue calculation:");
+  console.log("Sample event:", {
+    name: this.events[0].nameEvent,
+    price: this.events[0].prixEvent,
+    participations: this.events[0].participations,
+    status: this.events[0].statusEvent
+  });
+
+
+
+  // Calculate basic stats
+  const totalEvents = this.events.length;
+  const activeEvents = this.events.filter(e => e.statusEvent === 'ACTIF').length;
+  const canceledEvents = this.events.filter(e => e.statusEvent === 'ANNULE').length;
+  
+  // Calculate total revenue (only for active events)
+  const totalRevenue = this.events.reduce((sum, event) => {
+    if (event.statusEvent !== 'ACTIF' || !event.prixEvent) return sum;
+    
+    const eventPrice = Number(event.prixEvent) ;
+    if (isNaN(eventPrice)) return sum;
+
+    let eventParticipants = 0;
+    
+    if (Array.isArray(event.participations)) {
+      eventParticipants = event.participations.length;
+    } else if (typeof event.participations === 'number') {
+      eventParticipants = event.participations;
+    } else if (event.availablePlaces !== undefined && event.placesMaxEvent !== undefined) {
+      eventParticipants = event.placesMaxEvent - event.availablePlaces;
+    }
+    console.log(`Event: ${event.nameEvent}, Price: ${eventPrice}, Participants: ${eventParticipants}, Revenue: ${eventPrice * eventParticipants}`);
+    
+    return sum + (eventPrice * eventParticipants);
+  }, 0);
+  
+  // Calculate events by type (only active events)
+  const eventsByType = this.calculateEventsByType();
+  
+  // Calculate monthly participation (only active events)
+  const monthlyParticipation = this.calculateMonthlyParticipation();
+
+  this.stats = {
+    totalEvents,
+    activeEvents,
+    canceledEvents, // Changed from totalParticipants
+    totalRevenue,
+    eventsByType,
+    monthlyParticipation
+  };
+
+  this.debugMonthlyData(); // Add this line
+
+  this.initCharts();
+}
+
+private calculateEventsByType(): any[] {
+  // Initialize all types with 0 count
+  const typeCounts = this.eventTypes.reduce((acc, type) => {
+    acc[type.value] = 0;
+    return acc;
+  }, {} as Record<string, number>);
+  
+  // Count active events by type
+  this.events
+    .filter(event => event.statusEvent === 'ACTIF')
+    .forEach(event => {
+      if (event.eventType in typeCounts) {
+        typeCounts[event.eventType]++;
+      }
+    });
+  
+  // Convert to array format
+  return Object.entries(typeCounts).map(([type, count]) => ({
+    type,
+    count
+  }));
+}
+
+// private calculateMonthlyParticipation(): any[] {
+//   const monthCounts: {[key: string]: number} = {};
+//   const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+  
+//   // Initialize all months with 0
+//   monthNames.forEach(month => {
+//     monthCounts[month] = 0;
+//   });
+
+//   // Count participations per month
+//   this.events.forEach(event => {
+//     if (event.participations && event.participations.length > 0) {
+//       const eventDate = new Date(event.dateEvent);
+//       const month = monthNames[eventDate.getMonth()];
+//       monthCounts[month] += event.participations.length;
+//     }
+//   });
+  
+//   return monthNames.map(month => ({
+//     month,
+//     count: monthCounts[month]
+//   }));
+// }
+private calculateMonthlyParticipation(): any[] {
+  const monthCounts: {[key: string]: number} = {};
+  const monthNames = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 
+                     'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
+  // Initialize all months with 0
+  monthNames.forEach(month => {
+    monthCounts[month] = 0;
+  });
+
+  // Process each active event
+  this.events
+    .filter(event => event.statusEvent === 'ACTIF')
+    .forEach(event => {
+      try {
+        // Get participant count
+        let participants = 0;
+        if (Array.isArray(event.participations)) {
+          participants = event.participations.length;
+        } else if (typeof event.participations === 'number') {
+          participants = event.participations;
+        } else if (event.placesMaxEvent !== undefined && event.availablePlaces !== undefined) {
+          participants = event.placesMaxEvent - event.availablePlaces;
+        }
+
+        // Only process if we have participants and a valid date
+        if (participants > 0 && event.dateEvent) {
+          const eventDate = new Date(event.dateEvent);
+          if (!isNaN(eventDate.getTime())) {
+            const monthName = monthNames[eventDate.getMonth()];
+            monthCounts[monthName] += participants;
+          }
+        }
+      } catch (e) {
+        console.error('Error processing event:', event, e);
+      }
+    });
+
+  // Convert to array format
+  return monthNames.map(month => ({
+    month,
+    count: monthCounts[month]
+  }));
+}
+
+private initCharts(): void {
+  setTimeout(() => {
+    if (this.stats?.eventsByType && this.stats.eventsByType.length > 0) {
+      this.createEventsByTypeChart();
+    }
+    
+    if (this.stats?.monthlyParticipation && this.stats.monthlyParticipation.length > 0) {
+      this.createMonthlyParticipationChart();
+    }
+  }, 0);
+}
+
+// private createEventsByTypeChart(): void {
+//   const ctx = this.eventsByTypeChartRef?.nativeElement.getContext('2d');
+//   if (!ctx) return;
+
+//   if (this.eventsByTypeChart) {
+//     this.eventsByTypeChart.destroy();
+//   }
+
+//   const labels = this.stats.eventsByType.map((item: any) => item.type);
+//   const data = this.stats.eventsByType.map((item: any) => item.count);
+
+//   this.eventsByTypeChart = new Chart(ctx, {
+//     type: 'doughnut',
+//     data: {
+//       labels: labels,
+//       datasets: [{
+//         data: data,
+//         backgroundColor: [
+//           '#4e73df',
+//           '#1cc88a',
+//           '#36b9cc',
+//           '#f6c23e'
+//         ],
+//         hoverBackgroundColor: [
+//           '#2e59d9',
+//           '#17a673',
+//           '#2c9faf',
+//           '#dda20a'
+//         ],
+//         hoverBorderColor: "rgba(234, 236, 244, 1)",
+//       }]
+//     },
+//     options: {
+//       maintainAspectRatio: false,
+//       plugins: {
+//         legend: {
+//           position: 'right'
+//         }
+//       },
+//       cutout: '70%'
+//     }
+//   });
+// }
+
+private createEventsByTypeChart(): void {
+  const ctx = this.eventsByTypeChartRef?.nativeElement.getContext('2d');
+  if (!ctx) return;
+
+  if (this.eventsByTypeChart) {
+    this.eventsByTypeChart.destroy();
+  }
+
+  const labels = this.stats.eventsByType.map((item: any) => {
+    // Map the internal values to display labels
+    const type = this.eventTypes.find(t => t.value === item.type);
+    return type ? type.label : item.type;
+  });
+  
+  const data = this.stats.eventsByType.map((item: any) => item.count);
+
+  this.eventsByTypeChart = new Chart(ctx, {
+    type: 'doughnut',
+    data: {
+      labels: labels,
+      datasets: [{
+        data: data,
+        backgroundColor: [
+          '#4e73df',  // Promenade
+          '#1cc88a',  // Randonnée
+          '#f6c23e',  // Séance Photo
+          '#36b9cc'   // Additional color if needed
+        ],
+        hoverBackgroundColor: [
+          '#2e59d9',
+          '#17a673',
+          '#dda20a',
+          '#2c9faf'
+        ],
+        hoverBorderColor: "rgba(234, 236, 244, 1)",
+      }]
+    },
+    options: {
+      maintainAspectRatio: false,
+      plugins: {
+        legend: {
+          position: 'right',
+          labels: {
+            usePointStyle: true,
+            pointStyle: 'circle'
+          }
+        }
+      },
+      cutout: '70%'
+    }
+  });
+}
+
+// private createMonthlyParticipationChart(): void {
+//   const ctx = this.monthlyParticipationChartRef?.nativeElement.getContext('2d');
+//   if (!ctx) return;
+
+//   if (this.monthlyParticipationChart) {
+//     this.monthlyParticipationChart.destroy();
+//   }
+
+//   const labels = this.stats.monthlyParticipation.map((item: any) => item.month);
+//   const data = this.stats.monthlyParticipation.map((item: any) => item.count);
+
+//   this.monthlyParticipationChart = new Chart(ctx, {
+//     type: 'bar',
+//     data: {
+//       labels: labels,
+//       datasets: [{
+//         label: "Participants",
+//         backgroundColor: "#4e73df",
+//         hoverBackgroundColor: "#2e59d9",
+//         borderColor: "#4e73df",
+//         data: data,
+//       }]
+//     },
+//     options: {
+//       maintainAspectRatio: false,
+//       scales: {
+//         y: {
+//           beginAtZero: true
+//         }
+//       }
+//     }
+//   });
+// }
+
+// private createMonthlyParticipationChart(): void {
+//   const ctx = this.monthlyParticipationChartRef?.nativeElement.getContext('2d');
+//   if (!ctx) return;
+
+//   // Destroy previous chart if exists
+//   if (this.monthlyParticipationChart) {
+//     this.monthlyParticipationChart.destroy();
+//   }
+
+//   // Prepare data
+//   const labels = this.stats.monthlyParticipation.map(item => item.month);
+//   const data = this.stats.monthlyParticipation.map(item => item.count);
+
+//   // Create new chart
+//   this.monthlyParticipationChart = new Chart(ctx, {
+//     type: 'bar',
+//     data: {
+//       labels: labels,
+//       datasets: [{
+//         label: "Participants",
+//         backgroundColor: "#4e73df",
+//         hoverBackgroundColor: "#2e59d9",
+//         borderColor: "#4e73df",
+//         borderWidth: 1,
+//         data: data,
+//       }]
+//     },
+//     options: {
+//       responsive: true,
+//       maintainAspectRatio: false,
+//       plugins: {
+//         tooltip: {
+//           callbacks: {
+//             label: (context) => `${context.parsed.y} participants`
+//           }
+//         }
+//       },
+//       scales: {
+//         y: {
+//           beginAtZero: true,
+//           title: {
+//             display: true,
+//             text: 'Number of Participants'
+//           }
+//         },
+//         x: {
+//           title: {
+//             display: true,
+//             text: 'Month'
+//           }
+//         }
+//       }
+//     }
+//   });
+// }
+
+private createMonthlyParticipationChart(): void {
+  const ctx = this.monthlyParticipationChartRef?.nativeElement.getContext('2d');
+  if (!ctx) return;
+
+  // Destroy previous chart if exists
+  if (this.monthlyParticipationChart) {
+    this.monthlyParticipationChart.destroy();
+  }
+
+  // Define interface for monthly participation data
+  interface MonthlyParticipation {
+    month: string;
+    count: number;
+  }
+
+  // Prepare data with proper typing
+  const labels = this.stats.monthlyParticipation.map((item: MonthlyParticipation) => item.month);
+  const data = this.stats.monthlyParticipation.map((item: MonthlyParticipation) => item.count);
+
+  // Create new chart
+  this.monthlyParticipationChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: labels,
+      datasets: [{
+        label: "Participants",
+        backgroundColor: "#4e73df",
+        hoverBackgroundColor: "#2e59d9",
+        borderColor: "#4e73df",
+        borderWidth: 1,
+        data: data,
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        tooltip: {
+          callbacks: {
+            label: (context: { parsed: { y: number } }) => `${context.parsed.y} participants`
+          }
+        }
+      },
+      scales: {
+        y: {
+          beginAtZero: true,
+          title: {
+            display: true,
+            text: 'Number of Participants'
+          }
+        },
+        x: {
+          title: {
+            display: true,
+            text: 'Month'
+          }
+        }
+      }
+    }
+  });
+}
+debugMonthlyData(): void {
+  console.log("Monthly Participation Data:", this.stats.monthlyParticipation);
+  console.log("All Events:", this.events.map(event => ({
+    name: event.nameEvent,
+    date: event.dateEvent,
+    participants: Array.isArray(event.participations) ? event.participations.length : 
+                 typeof event.participations === 'number' ? event.participations :
+                 event.placesMaxEvent - event.availablePlaces,
+    status: event.statusEvent
+  })));
+}
+
 }
 
 
