@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { AuthService } from "../../services/user/auth.service";
-import { Router } from "@angular/router";
+import { AuthService } from '../../services/user/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-navbar',
   templateUrl: './navbar.component.html',
-  styleUrls: ['./navbar.component.css']
+  styleUrls: ['./navbar.component.css'],
 })
 export class NavbarComponent implements OnInit {
   isAuthenticated: boolean = false;
@@ -17,12 +17,11 @@ export class NavbarComponent implements OnInit {
   showMatchingDropdown: boolean = false;
   showCommunityDropdown = false;
 
-  list:any[] = [
-    {id: 1, icon: 'bi bi-envelope'},
-    {id: 2, icon: 'bi bi-bell'},
-  ]
+  list: any[] = [
+    { id: 1, icon: 'bi bi-envelope' },
+    { id: 2, icon: 'bi bi-bell' },
+  ];
   showEventsDropdown = false; // Add this line
-
 
   ngOnInit() {
     this.authService.isAuthenticated.subscribe((status) => {
@@ -38,26 +37,23 @@ export class NavbarComponent implements OnInit {
     });
   }
 
-
   pages = [
     { id: 1, name: 'Home', link: '/home' },
     { id: 2, name: 'Store', link: '/products' },
     { id: 3, name: 'Community', link: '/community' },
     { id: 4, name: 'Events', link: '/events' },
     { id: 5, name: 'Vet', link: '/vet/dash-principale-user' },
-    {id: 6, name: 'Adoption', link: 'adoption'},
-    {id: 7, name: 'Matching', link: 'matchy'},
+    { id: 6, name: 'Adoption', link: 'adoption' },
+    { id: 7, name: 'Matching', link: 'matchy' },
   ];
 
   shelterPages = [
-    {id: 0, name: 'Home', link: 'shelter/home'},
-     {id:1 , name: 'MyPets', link: 'shelter/pets'},
-     {id:2 , name: 'Adoption Requests', link: 'shelter/adoption-requests'}
+    { id: 0, name: 'Home', link: 'shelter/home' },
+    { id: 1, name: 'MyPets', link: 'shelter/pets' },
+    { id: 2, name: 'Adoption Requests', link: 'shelter/adoption-requests' },
   ];
 
-  partnerPages = [
-    {id: 0, name: 'Home', link: 'partner/home'}
-  ]
+  partnerPages = [{ id: 0, name: 'Home', link: 'partner/home' }];
 
   VETpages = [
     { id: 1, name: 'Vet Dashboard', link: '/vet' },
@@ -66,9 +62,6 @@ export class NavbarComponent implements OnInit {
     { id: 4, name: 'ratings', link: 'vet/info-rating-vet' },
   ];
   constructor(private authService: AuthService, private router: Router) {}
-
-
-
 
   toggleDropdown() {
     this.isDropdownOpen = !this.isDropdownOpen;

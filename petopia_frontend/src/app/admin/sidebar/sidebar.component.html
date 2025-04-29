@@ -6,30 +6,34 @@
   <hr />
   <ul *ngFor="let item of items">
     <li
+      *ngIf="item.name !== 'Logout'"
       class="selected"
       [ngClass]="{ isSelected: item.name === selectedItem }"
-      (click)="selectedItem = item.name"
+      (click)="selectItem(item)"
     >
       <a
-              class="d-flex flex-row gap-2 align-items-center sidebar-link"
-              [routerLink]="item.route"
-              routerLinkActive="active"
+        class="d-flex flex-row gap-2 align-items-center sidebar-link"
+        [routerLink]="item.route"
+        routerLinkActive="active"
+      >
+        <i [class]="item.icon"></i>
+        <span>{{ item.name }}</span>
+      </a>
+    </li>
+    <li
+      *ngIf="item.name == 'Logout'"
+      class="selected"
+      [ngClass]="{ isSelected: item.name === selectedItem }"
+      (click)="logout(); selectedItem = ''"
+    >
+      <a
+        class="d-flex flex-row gap-2 align-items-center sidebar-link"
+        [routerLink]="item.route"
+        routerLinkActive="active"
       >
         <i [class]="item.icon"></i>
         <span>{{ item.name }}</span>
       </a>
     </li>
   </ul>
-
-  <!-- Logout Button (Conditional) -->
-  <div class="sidebar-footer" *ngIf="isAuthenticated">
-    <a
-            class="d-flex flex-row gap-2 align-items-center sidebar-link logout-btn"
-            routerLink="/"
-            (click)="logout(); selectedItem = ''"
-    >
-      <i class="fas fa-sign-out-alt"></i>
-      <span>Logout</span>
-    </a>
-  </div>
 </div>

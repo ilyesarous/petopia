@@ -176,8 +176,8 @@ const routes: Routes = [
       { path: 'store', component: StoreDashComponent },
       { path: 'listReclamation', component: ListReclamationComponent, canActivate: [AuthGuard]  }, // list reclamation back
       { path: 'vet', component: DashPrincipaleComponent },
-      { path  : 'ListUsers',component:ListUsersComponent,canActivate:[AuthGuard]},
-      { path:  'ListPets',component: PetListComponent , canActivate: [AuthGuard]}, // list pets of user front
+      { path: 'ListUsers',component:ListUsersComponent,canActivate:[AuthGuard]},
+      { path: 'ListPets',component: PetListComponent , canActivate: [AuthGuard]}, // list pets of user front
 
       { path: 'consultations', component: ConsultationListComponent },
       { path: 'diagnosis', component: DiagnosisListComponent },

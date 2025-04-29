@@ -12,6 +12,7 @@ export class SidebarComponent {
     isAuthenticated: boolean = false;
     username: string = '';
     role: string = '';
+    selectedItem: string = '';
 
   constructor(private authService: AuthService, private router: Router) {
   }
@@ -26,23 +27,27 @@ export class SidebarComponent {
     this.authService.role.subscribe((role) => {
       this.role = role;
     });
+    this.selectedItem = localStorage.getItem("selectedItemSideBar")! 
   }
 
 
-  selectedItem: string = '';
+  
+
+  selectItem(item: any): void{
+    this.selectedItem = item.name;
+    localStorage.setItem("selectedItemSideBar", this.selectedItem)
+  }
 
   items: any[] = [
-    //{ name: 'Home', route: '/dashboard', icon: 'bi bi-house' },
-    { name: 'Users', route: 'user', icon: 'bi bi-person'},
+    { name: 'Users', route: 'ListUsers', icon: 'bi bi-people' },
+    { name: 'Shelters', route: 'shelters', icon: 'bi bi-house-heart' },
+    { name: 'Pets', route: 'ListPets', icon: 'bi bi-house-heart' },
     { name: 'Shop', route: 'store', icon: 'bi bi-cart'},
     { name: 'Vet', route: 'vet', icon: 'bi bi-activity'},
-    { name: 'Shelters', route: 'shelters', icon: 'bi bi-house-heart' },
     { name: 'Event', route: 'events', icon: 'bi bi-calendar3'},
     { name: 'Community Hub', route: 'community', icon: 'bi bi-people'},
-    { name: 'Users', route: 'ListUsers', icon: 'bi bi-people' },
     { name: 'Requests', route: 'listReclamation', icon: 'bi bi-inbox' },
-    { name: 'Pets', route: 'ListPets', icon: 'bi bi-house-heart' },
-    //{ name: 'Settings', route: '#', icon: 'bi bi-gear'},
+    { name: 'Logout', icon: 'bi bi-box-arrow-right' },
   ];
 
   logout() {
