@@ -1,23 +1,51 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import { MatDialog } from "@angular/material/dialog";
 import { UserDetailsDialogComponent } from "../user-details-dialog/user-details-dialog.component";
 import {AuthService} from "../../services/user/auth.service";
+import {Subscription} from "rxjs";
+import {NotificationService, SignupNotification} from "../../services/user/notification-service.service";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-list-users',
   templateUrl: './list-users.component.html',
   styleUrls: ['./list-users.component.css']
 })
-export class ListUsersComponent implements OnInit {
+export class ListUsersComponent implements OnInit, OnDestroy {
 
+  notifications: SignupNotification[] = [];
+  private notificationSub!: Subscription;
+  private roleSub!: Subscription;
   users: any[] = [];
   searchTerm: string = '';
+  role: string = '';
 
-  constructor(private authService: AuthService, private dialog: MatDialog) {}
+  constructor(private authService: AuthService, private dialog: MatDialog,private notificationService: NotificationService,private router: Router) {}
 
   ngOnInit(): void {
     this.fetchAllUsers();
+    this.loadNotifications();
+
   }
+  loadNotifications() {
+    this.notificationSub = this.notificationService.getNotifications().subscribe(
+      notifications => this.notifications = notifications
+    );
+  }
+
+  ngOnDestroy() {
+    if (this.notificationSub) {
+      this.notificationSub.unsubscribe();
+    }
+    if (this.roleSub) {
+      this.roleSub.unsubscribe();
+    }
+  }
+
+  clearNotifications() {
+    this.notificationService.clearNotifications();
+  }
+
 
   fetchAllUsers(): void {
     this.authService.getAllUsers().subscribe({

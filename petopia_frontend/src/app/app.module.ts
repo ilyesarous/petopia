@@ -168,6 +168,7 @@ import { UserDetailsDialogComponent } from './components/user-details-dialog/use
 import { ReclamationComponent } from './components/reclamation/reclamation.component';
 import { ReclamationListComponent } from './components/reclamation-list/reclamation-list.component';
 import { PetListComponent } from './components/pet-list/pet-list.component';
+import { DashboardComponentComponent } from './components/dashboard-component/dashboard-component.component';
 
 import { BmiResultDialogComponent } from './simple-user/vet/bmi-result-dialog/bmi-result-dialog.component';
 import { HealthTipsComponent } from './simple-user/vet/health-tips/health-tips.component';
@@ -295,6 +296,7 @@ import { HealthTipsComponent } from './simple-user/vet/health-tips/health-tips.c
 
     BmiResultDialogComponent,
     HealthTipsComponent,
+    DashboardComponentComponent
   ],
   imports: [
     BrowserModule,
