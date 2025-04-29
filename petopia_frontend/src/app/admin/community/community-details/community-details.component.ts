@@ -86,5 +86,14 @@ export class CommunityDetailsComponent implements OnInit {
       default: return 'bi bi-star-fill text-muted';
     }
   }
+  getTitle(): string {
+    switch (this.type) {
+      case 'post': return 'Post Detail';
+      case 'story': return 'Story Detail';
+      case 'comment': return 'Comment Detail';
+      case 'reaction': return 'Reaction Detail';
+      default: return 'Community Detail';
+    }
+  }
   
 }

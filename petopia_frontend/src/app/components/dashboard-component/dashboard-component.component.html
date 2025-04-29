@@ -1,0 +1,14 @@
+<div class="dashboard-container">
+  <div class="chart-container" *ngIf="!loading; else loadingTemplate">
+    <canvas
+      baseChart
+      [data]="{ labels: chartLabels, datasets: chartDatasets }"
+      [options]="chartOptions"
+      type="bar"
+    ></canvas>
+  </div>
+  <ng-template #loadingTemplate>
+    <div class="loading">Chargement des données...</div>
+  </ng-template>
+  <div class="error" *ngIf="errorMessage">{{ errorMessage }}</div>
+</div>

@@ -508,28 +508,37 @@ changePage(page: number): void {
   this.paginatedPosts = this.posts.slice(start, end);
 }
 
-// generatePostFromAI() {
-//   if (!this.topic?.trim()) return;
 
+// generatePostFromAI(): void {
 //   this.loading = true;
-
 //   this.geminiService.generatePost(this.topic).subscribe({
 //     next: (response: string) => {
-//       console.log("✅ AI Response:", response);
-//       this.newPostContent = response; // ✅ Inject into main post content field
+//       this.newPostContent = response;
+
+//       // Wait for DOM to render updated content before expanding
+//       setTimeout(() => {
+//         const textarea = document.querySelector(
+//           'textarea[name="postContent"]'
+//         ) as HTMLTextAreaElement;
+//         if (textarea) {
+//           textarea.style.height = 'auto';
+//           textarea.style.height = textarea.scrollHeight + 'px';
+//         }
+//       }, 50);
+
 //       this.loading = false;
 //     },
 //     error: (err) => {
-//       console.error('❌ AI generation error:', err);
+//       console.error('AI generation failed:', err);
 //       this.loading = false;
-//     }
+//     },
 //   });
 // }
 generatePostFromAI(): void {
   this.loading = true;
-  this.geminiService.generatePost(this.topic).subscribe({
-    next: (response: string) => {
-      this.newPostContent = response;
+  this.imageGenerationService.generatePost(this.topic).subscribe({
+    next: (response: { postSuggestion: string }) => {
+      this.newPostContent = response.postSuggestion;
 
       // Wait for DOM to render updated content before expanding
       setTimeout(() => {

@@ -31,6 +31,14 @@ public class NotificationServiceImplement implements INotificationService{
     }
 
     @Override
+    public void createNotificationCommunity(User user, String message) {
+        Notification notification = new Notification();
+        notification.setMessage(message);
+        notification.setUser(user);
+        notificationRepository.save(notification);
+    }
+
+    @Override
     public Notification updateNotification(Notification notification) {
         return notificationRepository.save(notification);
     }

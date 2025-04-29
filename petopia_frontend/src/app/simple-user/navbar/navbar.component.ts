@@ -60,6 +60,7 @@ export class NavbarComponent implements OnInit {
     { id: 2, name: 'Locations', link: '/vet/location' },
     { id: 3, name: 'Vet Info', link: 'vet/info-specific-vet/:id' },
     { id: 4, name: 'ratings', link: 'vet/info-rating-vet' },
+    { id: 5, name: 'Community', link: '/community' },
   ];
   constructor(private authService: AuthService, private router: Router) {}
 
