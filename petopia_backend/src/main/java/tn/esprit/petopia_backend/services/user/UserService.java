@@ -128,7 +128,7 @@ public class UserService {
         return response;
     }
     public String getHtmlTemplate(String name, String email, String password, String userId) {
-        String activationUrl = "http://localhost:888/petopia/auth/activate?userId=" + userId; // Change localhost to your domain
+        String activationUrl = "http://localhost:8082/petopia/auth/activate?userId=" + userId; // Change localhost to your domain
         return "<!DOCTYPE html>\n" +
                 "<html lang=\"en\">\n" +
                 "<head>\n" +
