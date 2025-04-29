@@ -140,8 +140,8 @@ const routes: Routes = [
   { path: 'vet/payment/:id', component: PaymentVetComponent, canActivate: [AuthGuard] },
 
 
-  { path: 'community', component: CommunityComponent},
-  { path: 'news', component: NewsComponent },
+  { path: 'community', component: CommunityComponent, canActivate: [AuthGuard]},
+  { path: 'news', component: NewsComponent, canActivate: [AuthGuard] },
   { path: 'adoption', component: PetAdoptionListComponent },
   { path: 'adoption/pets/:id', component: PetAdoptDetailsComponent },
   { path: 'adoption/form/:idPet', component: AdoptPetComponent },
@@ -193,8 +193,8 @@ const routes: Routes = [
       },
       {path:'shelters',component: ShelterListComponent, canActivate: [AuthGuard]},
       {path:'shelters/:id',component: ShelterDetailsComponent, canActivate: [AuthGuard]},
-      { path: 'community', component: CommunityListComponent },
-      { path: 'community/details/:type/:id', component: CommunityDetailsComponent },
+      { path: 'community', component: CommunityListComponent, canActivate: [AuthGuard] },
+      { path: 'community/details/:type/:id', component: CommunityDetailsComponent, canActivate: [AuthGuard] },
       { path: 'match-back', component: MatchbackComponent },
     ],
   },

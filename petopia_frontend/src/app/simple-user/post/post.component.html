@@ -245,7 +245,7 @@
               <div class="comment-author fw-semibold">
                 {{ comment.user?.name || 'Commenter Name' }}
                 <span class="comment-time text-muted ms-2">
-                  {{ comment.date | date:'short' }}
+                  {{ comment.date | relativeTime }}
                 </span>
               </div>
               <div *ngIf="isCommentOwner(comment)" class="comment-menu position-relative">

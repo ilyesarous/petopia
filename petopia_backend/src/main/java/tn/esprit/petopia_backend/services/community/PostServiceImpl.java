@@ -6,8 +6,11 @@ import org.springframework.stereotype.Service;
 import tn.esprit.petopia_backend.entities.community.Post;
 import tn.esprit.petopia_backend.entities.community.PostType;
 import tn.esprit.petopia_backend.entities.user.User;
+import tn.esprit.petopia_backend.entities.user.UserRole;
 import tn.esprit.petopia_backend.repositories.community.PostRepository;
 import tn.esprit.petopia_backend.repositories.user.UserRepository;
+import tn.esprit.petopia_backend.services.notif.NotificationService;
+import tn.esprit.petopia_backend.services.vet.INotificationService;
 
 
 import java.time.LocalDateTime;
@@ -22,12 +25,25 @@ public class PostServiceImpl implements IPostService {
     private final PostRepository postRepository;
     private final UserRepository userRepository;
 
+    private final INotificationService notificationService;
+
     @Override
     public Post createPost(Post post, Integer userId) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new RuntimeException("Utilisateur non trouvé"));
         post.setUser(user);
         post.setDate(LocalDateTime.now());
+
+        String statusMessage = "A new advice post has been shared in the community. Join the discussion!";
+
+        if (post.getPostType() == PostType.ADVICE) {
+            // Envoyer à tous les vétérinaires
+            List<User> vets = userRepository.findAllByRole(UserRole.VET);
+            for (User vet : vets) {
+                notificationService.createNotificationCommunity(vet, statusMessage);
+            }
+        }
+
 
         return postRepository.save(post);
     }
