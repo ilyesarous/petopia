@@ -9,7 +9,7 @@ import java.util.Optional;
 public interface IEventService {
     public List<Event> getAllEvents();
     public Optional<Event> getEventById(Long id);
-    public Event createEvent(Event event);
+    public Event createEvent(Event event, String imageUrl);
     public Event updateEvent(Long id, Event updatedEvent);
     public void deleteEvent(Long id);
     List<Event> filterEvents(String name, String lieu, Date startDate, Date endDate, String eventType, String status, Double minPrice, Double maxPrice);

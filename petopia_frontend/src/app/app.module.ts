@@ -303,7 +303,7 @@ import { HealthTipsComponent } from './simple-user/vet/health-tips/health-tips.c
     AddBrandsComponent,
     EventHelperComponent,
     Nl2BrPipe,
-    ReservationFormComponent,
+    ReservationFormComponent
 
     BmiResultDialogComponent,
     HealthTipsComponent,

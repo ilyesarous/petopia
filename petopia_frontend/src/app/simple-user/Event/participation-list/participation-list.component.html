@@ -148,7 +148,7 @@
           <!-- Update your payment button section to show different states -->
           <div *ngIf="p.statusParticipation === 'CONFIRMED'" class="payment-section">
             <button 
-              [disabled]="!paidNow"
+              [disabled]="p.paid"
               class="pay-btn" 
               (click)="payForParticipation(p)">
               <i class="icon" *ngIf="!p.isPaying">💳</i>
@@ -156,9 +156,9 @@
               <span *ngIf="!p.isPaying">Pay {{ p.event.prixEvent }} TND</span>
             </button>
           
-            <div *ngIf="p.paid" class="payment-confirmed">
+            <!-- <div *ngIf="p.paid" class="payment-confirmed">
               <i class="icon">✓</i> Paid
-            </div>
+            </div> -->
           </div>
 <!-- 
           <div ngIf="p.statusParticipation === 'CONFIRMED'" class="payment-section">

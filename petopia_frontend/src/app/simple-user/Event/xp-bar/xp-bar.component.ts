@@ -9,4 +9,5 @@ export class XpBarComponent {
   @Input() currentXp!: number;
   @Input() level!: number;
   
+  
 }

@@ -23,7 +23,7 @@ public class Participation {
     private long idParticipation;
 
     private Date dateInscription;
-    private Boolean paid;
+    private Boolean paid = false;
 
     @ManyToOne
     private Event event;

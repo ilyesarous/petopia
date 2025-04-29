@@ -60,7 +60,7 @@ export class ParticipationListComponent implements OnInit {
     this.userId = storedUserId ? parseInt(storedUserId, 10) : 0;
 
     this.initializeUserDashboard();
-    this.paidNow = localStorage.getItem("isPaid") === "true" ? true : false;
+    // this.paidNow = localStorage.getItem("isPaid") === "true" ? true : false;
   }
 
   initializeUserDashboard(): void {
@@ -159,8 +159,8 @@ export class ParticipationListComponent implements OnInit {
       console.error('No event associated with this participation');
       return;
     }
-    this.paidNow = !this.paidNow;
-    localStorage.setItem("isPaid", this.paidNow.toString());
+    // this.paidNow = !this.paidNow;
+    // localStorage.setItem("isPaid", this.paidNow.toString());
     participation.paid = true;
     participation.isPaying = true;
 

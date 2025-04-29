@@ -50,7 +50,7 @@
 
   <!-- Services Grid -->
   <div class="services-grid">
-    <div *ngFor="let service of filteredServices" class="service-card"
+    <div *ngFor="let service of paginatedServices" class="service-card"
       [routerLink]="['/services', service.idServiceAnimal]">
       <!-- Image Display -->
       <div class="service-image-container">
@@ -62,6 +62,9 @@
             [class.fa-cat]="service.animalType?.toLowerCase() === 'cat'" [class.fa-paw]="!service.animalType"></i>
         </div>
       </div>
+
+
+
 
       <div class="service-content">
         <div class="service-header">
@@ -110,5 +113,51 @@
         </div>
       </div>
     </div>
+
+
+
+  </div>
+
+
+
+  <!-- Pagination Controls -->
+<div *ngIf="filteredServices.length > itemsPerPage" class="pagination-container">
+  <div class="pagination-controls">
+    <button class="show-all-button" (click)="toggleShowAll()">
+      <i class="fas" [class.fa-list]="!showAll" [class.fa-th]="showAll"></i>
+      {{ showAll ? 'Show Paginated' : 'Show All' }}
+    </button>
+
+  <div class="pagination" *ngIf="!showAll">
+    <button (click)="pageChanged(1)" [disabled]="currentPage === 1">
+      <i class="fas fa-angle-double-left"></i>
+    </button>
+    <button (click)="pageChanged(currentPage - 1)" [disabled]="currentPage === 1">
+      <i class="fas fa-angle-left"></i>
+    </button>
+    
+    <span *ngFor="let page of getPageNumbers()" 
+          (click)="pageChanged(page)"
+          [class.active]="page === currentPage">
+      {{ page }}
+    </span>
+    
+    <button (click)="pageChanged(currentPage + 1)" 
+            [disabled]="currentPage === totalPages()">
+      <i class="fas fa-angle-right"></i>
+    </button>
+    <button (click)="pageChanged(totalPages())" 
+            [disabled]="currentPage === totalPages()">
+      <i class="fas fa-angle-double-right"></i>
+    </button>
+  </div>
+  <div class="pagination-info">
+    Showing {{ (currentPage - 1) * itemsPerPage + 1 }} - 
+    {{ Math.min(currentPage * itemsPerPage, totalItems) }} of {{ totalItems }} services
   </div>
 </div>
+
+</div>
+
+
+
