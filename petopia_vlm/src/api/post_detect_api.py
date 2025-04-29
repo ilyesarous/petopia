@@ -16,6 +16,15 @@ def moderate_text():
 
         if not text:
             return jsonify({"status": "try another", "reason": "Empty input"}), 200
+        
+        banned_words = [
+            "aaaaa",
+            "bbbbb"
+        ]
+
+        if any(bad_word in text for bad_word in banned_words):
+            return jsonify({ "status": "inappropriate", "reason": "Detected banned word" }), 200
+
 
         response = client.chat.completions.create(
             model="gpt-4o-mini",

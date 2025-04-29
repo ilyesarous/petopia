@@ -37,6 +37,12 @@ export class ImageGenerationService {
       { text }
     );
   }
+  generatePost(topic: string) {
+    return this.http.post<{ postSuggestion: string }>(
+      `${this.apiUrl}/generate-post`,
+      { topic }
+    );
+  }
   
 
   

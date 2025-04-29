@@ -21,9 +21,9 @@
   <div class="section">
     <h4>Posts</h4>
     <div *ngFor="let post of paginatedPosts" class="entry-row">
-      <div>
-        {{ post.title }}
-        <span class="tag">{{ post.content }}</span>
+      <div class="post-info">
+        <div class="post-title">{{ post.title }}</div>
+        <div class="post-content-truncate">{{ post.content }}</div>
         <small class="text-muted ms-2">by {{ post.user?.name }}</small>
       </div>
       <div class="actions">
@@ -31,6 +31,7 @@
         <button class="btn delete-btn" (click)="deletePost(post.id)">Delete</button>
       </div>
     </div>
+    
   </div>
 
   <!-- Posts Pagination -->
