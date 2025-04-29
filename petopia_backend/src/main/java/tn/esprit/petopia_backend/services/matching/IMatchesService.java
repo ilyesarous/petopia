@@ -10,6 +10,11 @@ public interface IMatchesService {
     Matches updateMatches(Matches matches);
     Matches getMatches(int id);
     List<Matches> getAllMatches();
+
+    List<Matches> getAllMatches(Integer userId);
+
     void deleteMatches(int id);
     List<Matches> getMatchesByPet2IdAndPending(int pet2Id);
+
+    List<Matches> getMatchesByPet2IdAndPending(int pet2Id, Integer userId);
 }

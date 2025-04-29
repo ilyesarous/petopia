@@ -13,7 +13,7 @@ import lombok.Setter;
 @Builder
 public class NotificationMessage {
     private String id;
-    private String type; // e.g., "MATCH_ACCEPTED"
+    private String type;
     private String message; // e.g., "Your pet Max has been matched with Bella!"
     private int matchId;
     private int senderId; // User who accepted the match

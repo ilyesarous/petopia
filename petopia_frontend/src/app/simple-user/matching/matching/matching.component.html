@@ -1,77 +1,51 @@
 <div class="container mt-4 main-container">
   <!-- Notification Icon -->
   <div class="position-fixed top-0 end-0 p-3" style="z-index: 1000;">
-    <button
-      class="btn btn-light position-relative"
-      (click)="togglePendingMatches()"
-    >
+    <button class="btn btn-light position-relative" (click)="togglePendingMatches()">
       <i class="bi bi-bell"></i>
-      <span
-        class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
-        *ngIf="notificationCount > 0"
-      >
+      <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" *ngIf="notificationCount > 0">
         {{ notificationCount }}
       </span>
     </button>
-    <div
-      class="notifications-dropdown"
-      [ngClass]="{'show': showNotifications}"
-      *ngIf="showNotifications"
-    >
+    <div class="notifications-dropdown" [ngClass]="{'show': showNotifications}" *ngIf="showNotifications">
       <div class="notifications-header">
         <h6 class="mb-0"><i class="bi bi-bell me-2"></i> Notifications ({{ notificationCount }})</h6>
-        <button
-          class="btn-close btn-close-sm"
-          (click)="togglePendingMatches()"
-        ></button>
+        <button class="btn-close btn-close-sm" (click)="togglePendingMatches()"></button>
       </div>
       <div class="notifications-body" *ngIf="notifications.length > 0">
         <div class="notification-item" *ngFor="let notification of notifications">
           <div class="notification-content">
             <p class="mb-1">
               <span *ngIf="notification.type === 'pending' && notification.match">
-                <a href="javascript:void(0)" (click)="viewPendingPetDetails(notification.match, 'pet_1')" class="text-primary">
+                <a href="javascript:void(0)" (click)="viewPendingPetDetails
+
+(notification.match, 'pet_1')" class="text-primary">
                   <strong>{{ notification.match.pet_1.petName }}</strong>
                 </a>
                 wants to match with
-                <a
-                  href="javascript:void(0)"
-                  (click)="viewPendingPetDetails(notification.match, 'pet_2')"
-                  class="text-primary"
-                >
+                <a href="javascript:void(0)" (click)="viewPendingPetDetails(notification.match, 'pet_2')" class="text-primary">
                   <strong>{{ notification.match.pet_2.petName }}</strong>
                 </a>
               </span>
               <span *ngIf="notification.type === 'accepted'">
                 {{ notification.message }}
+                <button class="btn btn-sm btn-secondary" (click)="dismissNotification(notification.id)" title="Dismiss">
+                  <i class="bi bi-x"></i>
+                </button>
               </span>
             </p>
           </div>
-          <div
-            class="notification-actions d-flex align-items-center gap-2"
-            *ngIf="notification.type === 'pending' && notification.match"
-          >
-            <button
-              class="btn btn-sm btn-success"
-              (click)="acceptMatch(notification.match.id_match)"
-              title="Accept"
-            >
+          <div class="notification-actions d-flex align-items-center gap-2" *ngIf="notification.type === 'pending' && notification.match">
+            <button class="btn btn-sm btn-success" (click)="acceptMatch(notification.match.id_match)" title="Accept">
               <i class="bi bi-check"></i>
             </button>
-            <button
-              class="btn btn-sm btn-danger"
-              (click)="deleteMatch(notification.match.id_match)"
-              title="Delete"
-            >
+            <button class="btn btn-sm btn-danger" (click)="deleteMatch(notification.match.id_match)" title="Delete">
               <i class="bi bi-trash"></i>
             </button>
           </div>
         </div>
       </div>
-      <div
-        class="notifications-body text-center py-3"
-        *ngIf="notifications.length === 0"
-      >
+      <div class="notifications-body text-center py-3" *ngIf="notifications.length === 0">
         <p class="text-muted mb-0">No notifications.</p>
       </div>
     </div>
@@ -134,7 +108,6 @@
             <button class="btn btn-sm btn-outline-light" (click)="togglePreferencesForm()" title="Manage Preferences" *ngIf="selectedPet">
               <i class="bi bi-gear"></i>
             </button>
-            <!-- Button for blocked users list -->
             <button class="btn btn-sm btn-outline-light ms-2" (click)="toggleBlockedUsers()" title="Blocked Users">
               <i class="bi bi-person-x"></i>
             </button>
@@ -156,25 +129,69 @@
           <button class="btn-close btn-close-white" (click)="togglePreferencesForm()"></button>
         </div>
         <div class="card-body bg-light p-4">
-          <form (ngSubmit)="savePreferences()">
+          <form [formGroup]="preferencesForm" (ngSubmit)="savePreferences()" novalidate>
             <div class="row">
               <!-- Form Fields Column -->
               <div class="col-md-6">
                 <div class="mb-3">
                   <label for="breed" class="form-label fw-bold text-muted">Preferred Breed</label>
-                  <input type="text" class="form-control" id="breed" [(ngModel)]="newPreferences.preferred_breed" name="breed" placeholder="e.g., Labrador">
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="breed"
+                    formControlName="preferred_breed"
+                    placeholder="e.g., Labrador"
+                    [ngClass]="{'is-invalid': preferencesForm.get('preferred_breed')?.touched && preferencesForm.get('preferred_breed')?.invalid}"
+                  >
+                  <div class="invalid-feedback">
+                    Please enter a preferred breed.
+                  </div>
                 </div>
                 <div class="mb-3">
                   <label for="minAge" class="form-label fw-bold text-muted">Minimum Age</label>
-                  <input type="number" class="form-control" id="minAge" [(ngModel)]="newPreferences.min_age" name="minAge" min="0" placeholder="e.g., 1">
+                  <input
+                    type="number"
+                    class="form-control"
+                    id="minAge"
+                    formControlName="min_age"
+                    placeholder="e.g., 1"
+                    min="0"
+                    [ngClass]="{'is-invalid': preferencesForm.get('min_age')?.touched && (preferencesForm.get('min_age')?.invalid || preferencesForm.errors?.['ageInvalid'])}"
+                  >
+                  <div class="invalid-feedback">
+                    {{ preferencesForm.errors?.['ageInvalid'] ? 'Minimum age must be less than maximum age.' : 'Please enter a valid minimum age.' }}
+                  </div>
                 </div>
                 <div class="mb-3">
                   <label for="maxAge" class="form-label fw-bold text-muted">Maximum Age</label>
-                  <input type="number" class="form-control" id="maxAge" [(ngModel)]="newPreferences.max_age" name="maxAge" min="0" placeholder="e.g., 10">
+                  <input
+                    type="number"
+                    class="form-control"
+                    id="maxAge"
+                    formControlName="max_age"
+                    placeholder="e.g., 10"
+                    min="0"
+                    [ngClass]="{'is-invalid': preferencesForm.get('max_age')?.touched && (preferencesForm.get('max_age')?.invalid || preferencesForm.errors?.['ageInvalid'])}"
+                  >
+                  <div class="invalid-feedback">
+                    {{ preferencesForm.errors?.['ageInvalid'] ? 'Maximum age must be greater than minimum age.' : 'Please enter a valid maximum age.' }}
+                  </div>
                 </div>
                 <div class="mb-3">
                   <label for="gender" class="form-label fw-bold text-muted">Preferred Gender</label>
-                  <input type="text" class="form-control" id="gender" [(ngModel)]="newPreferences.preferred_gender" name="gender" placeholder="e.g., Male">
+                  <select
+                    class="form-select"
+                    id="gender"
+                    formControlName="preferred_gender"
+                    [ngClass]="{'is-invalid': preferencesForm.get('preferred_gender')?.touched && preferencesForm.get('preferred_gender')?.invalid}"
+                  >
+                    <option value="" disabled>Select gender</option>
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                  </select>
+                   <div class="invalid-feedback">
+                    Please select a preferred gender.
+                  </div>
                 </div>
                 <div class="mb-3">
                   <label for="location" class="form-label fw-bold text-muted">Preferred Location</label>
@@ -182,10 +199,13 @@
                     type="text"
                     class="form-control"
                     id="location"
-                    [(ngModel)]="newPreferences.preferred_location"
-                    name="location"
+                    formControlName="preferred_location"
                     placeholder="Enter an address or click on the map"
+                    [ngClass]="{'is-invalid': preferencesForm.get('preferred_location')?.touched && preferencesForm.get('preferred_location')?.invalid}"
                   >
+                  <div class="invalid-feedback">
+                    Please enter a preferred location.
+                  </div>
                 </div>
               </div>
               <!-- Map Column -->
@@ -200,7 +220,7 @@
               </div>
             </div>
             <div class="d-flex gap-2 mt-3">
-              <button type="submit" class="btn btn-pink w-100">Save Preferences</button>
+              <button type="submit" class="btn btn-pink w-100" [disabled]="preferencesForm.invalid">Save Preferences</button>
               <button type="button" class="btn btn-outline-pink w-100" (click)="togglePreferencesForm()">Cancel</button>
             </div>
           </form>
@@ -292,10 +312,6 @@
                 <small class="text-muted">{{ pet.breed }}</small>
               </div>
             </div>
-            <!-- Button to block user -->
-            <button class="btn btn-sm btn-danger" (click)="blockUser(friend)" title="Block User">
-              <i class="bi bi-person-x"></i>
-            </button>
           </div>
         </div>
       </div>
@@ -309,11 +325,13 @@
   <div class="chat-panel card shadow-lg border-0" *ngIf="showChat" [@fadeInOut] [ngStyle]="{'right': showFriendsList ? '300px' : '0'}">
     <div class="chat-header card-header text-white d-flex justify-content-between align-items-center" style="background: linear-gradient(135deg, #F83182 0%, #FF617C 50%, #FE9A7A 100%);">
       <h6 class="mb-0">
-        <i class="bi bi-chat-dots me-2"></i>{{ selectedFriend?.petName }}
+        <i class="bi bi-chat-dots me-2"></i>
+        <a href="javascript:void(0)" (click)="viewPetDetails(selectedFriend.matchedPets[0])" class="text-white text-decoration-none">
+          {{ selectedFriend?.petName }}
+        </a>
       </h6>
       <div class="d-flex align-items-center">
-        <!-- Button to block user from chat -->
-        <button class="btn btn-sm btn-danger me-2" (click)="blockUser(selectedFriend)" title="Block User">
+        <button class="btn btn-sm btn-outline-pink me-2" (click)="blockUser(selectedFriend)" title="Block User">
           <i class="bi bi-person-x"></i>
         </button>
         <button class="btn-close btn-close-white btn-close-sm" (click)="closeChat()"></button>
@@ -325,9 +343,7 @@
       </div>
       <div #chatContainer class="chat-messages flex-grow-1 p-3" style="overflow-y: auto; display: flex; flex-direction: column;">
         <div *ngFor="let message of chatMessages" class="mb-2 d-flex" [ngClass]="{'justify-content-end': message.senderId === ownerId, 'justify-content-start': message.senderId !== ownerId}">
-          <div class="message-bubble p-2 rounded shadow-sm position-relative" 
-               [ngStyle]="{'background-color': message.senderId === ownerId ? '#F83182' : '#e9ecef', 'color': message.senderId === ownerId ? '#fff' : '#333', 'max-width': '70%'}"
-               (mouseenter)="showReactionPicker(message)" (mouseleave)="hideReactionPicker(message)">
+          <div class="message-bubble p-2 rounded shadow-sm position-relative" [ngStyle]="{'background-color': message.senderId === ownerId ? '#F83182' : '#e9ecef', 'color': message.senderId === ownerId ? '#fff' : '#333', 'max-width': '70%'}" (mouseenter)="showReactionPicker(message)" (mouseleave)="hideReactionPicker(message)">
             <ng-container *ngIf="message.content.startsWith('Ma localisation :'); else regularMessage">
               <div class="location-message p-2 rounded shadow-sm" [ngStyle]="{'background-color': message.senderId === ownerId ? '#F83182' : '#e9ecef'}">
                 <p class="mb-1 text-dark" *ngIf="message.address">

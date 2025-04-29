@@ -21,6 +21,7 @@ import tn.esprit.petopia_backend.entities.pet.PetStatus;
 import tn.esprit.petopia_backend.entities.user.User;
 import tn.esprit.petopia_backend.services.adoptions.IShelterService;
 import tn.esprit.petopia_backend.services.community.CloudinaryService;
+import tn.esprit.petopia_backend.services.matching.BlockedUserService;
 import tn.esprit.petopia_backend.services.matching.MatchesService;
 import tn.esprit.petopia_backend.services.pet.PetService;
 
@@ -40,11 +41,15 @@ public class PetController {
     private final IShelterService shelterService;
     @Autowired
     private final CloudinaryService cloudinaryService;
+    @Autowired
+    private BlockedUserService blockedUserService;
 
-    public PetController(PetService petService,IShelterService shelterService,CloudinaryService cloudinaryService) {
+    public PetController(PetService petService,IShelterService shelterService,CloudinaryService cloudinaryService , BlockedUserService blockedUserService) {
         this.petService = petService;
         this.shelterService= shelterService;
         this.cloudinaryService = cloudinaryService;
+        this.blockedUserService = blockedUserService;
+
     }
 
     @PostMapping("/user/pet/add")
@@ -218,7 +223,7 @@ public class PetController {
                     .stream()
                     .filter(p -> p.getIdPet() != petId) // Exclure le pet lui-même
                     .filter(p -> p.getUser() == null || p.getUser().getId_user() != currentUserId) // Exclure les pets de l'utilisateur connecté
-                    .filter(p -> matchesPreferences(p, pet.getPreferences()))
+                    .filter(p -> matchesPreferences(p, pet.getPreferences(),currentUserId))
                     .collect(Collectors.toList());
         }
 
@@ -233,7 +238,7 @@ public class PetController {
         return ResponseEntity.ok(response);
     }
 
-    private boolean matchesPreferences(Pet pet, Preferences preferences) {
+   /* private boolean matchesPreferences(Pet pet, Preferences preferences) {
         System.out.println("Pet: " + pet.getPetName());
         System.out.println("Breed: " + pet.getBreed() + " vs " + preferences.getPreferred_breed());
         System.out.println("Age: " + pet.getPetAge() + " vs [" + preferences.getMin_age() + ", " + preferences.getMax_age() + "]");
@@ -245,7 +250,32 @@ public class PetController {
                 (preferences.getPreferred_location() == null || pet.getLocation().equalsIgnoreCase(preferences.getPreferred_location()));
         System.out.println("Résultat: " + result);
         return result;
-    }
+    }*/
+   private boolean matchesPreferences(Pet pet, Preferences preferences, int currentUserId) {
+       // Fetch blocked user IDs
+       List<Integer> blockedUserIds = blockedUserService.getBlockedUserIds(currentUserId);
+
+       // Check if the pet's owner is blocked
+       if (pet.getUser() != null && blockedUserIds.contains(pet.getUser().getId_user())) {
+           System.out.println("Pet " + pet.getPetName() + " excluded: Owner ID " + pet.getUser().getId_user() + " is blocked");
+           return false;
+       }
+
+       // Original preference checks
+       boolean matches = (preferences.getPreferred_breed() == null || pet.getBreed().equalsIgnoreCase(preferences.getPreferred_breed())) &&
+               (pet.getPetAge() >= preferences.getMin_age() && pet.getPetAge() <= preferences.getMax_age()) &&
+               (preferences.getPreferred_gender() == null || pet.getGender().toString().equalsIgnoreCase(preferences.getPreferred_gender())) &&
+               (preferences.getPreferred_location() == null || pet.getLocation().equalsIgnoreCase(preferences.getPreferred_location()));
+
+       System.out.println("Pet: " + pet.getPetName());
+       System.out.println("Breed: " + pet.getBreed() + " vs " + preferences.getPreferred_breed());
+       System.out.println("Age: " + pet.getPetAge() + " vs [" + preferences.getMin_age() + ", " + preferences.getMax_age() + "]");
+       System.out.println("Gender: " + pet.getGender().toString() + " vs " + preferences.getPreferred_gender());
+       System.out.println("Location: " + pet.getLocation() + " vs " + preferences.getPreferred_location());
+       System.out.println("Matches Preferences: " + matches);
+       return matches;
+   }
+
 
     @GetMapping("/user/pet/{petId}/matching-pets")
     @PreAuthorize("hasAuthority('ROLE_USER')")
@@ -273,7 +303,7 @@ public class PetController {
                 .stream()
                 .filter(p -> p.getIdPet() != petId) // Exclure le pet lui-même
                 .filter(p -> p.getUser() == null || p.getUser().getId_user() != currentUserId) // Exclure les pets de l'utilisateur connecté
-                .filter(p -> matchesPreferences(p, pet.getPreferences()))
+                .filter(p -> matchesPreferences(p, pet.getPreferences(),currentUserId))
                 .collect(Collectors.toList());
 
         return ResponseEntity.ok(matchingPets);
@@ -287,6 +317,14 @@ public class PetController {
         }
         return ResponseEntity.ok(pet);
     }
+
+    // New endpoint with blocked user filtering
+    @GetMapping("/status/{status}/filtered")
+    public List<Pet> getPetsByStatusWithBlockFilter(@PathVariable String status, @RequestParam Integer userId) {
+        return petService.getPetsByStatusWithBlockFilter(PetStatus.valueOf(status), userId);
+    }
+
+
 
 
 }

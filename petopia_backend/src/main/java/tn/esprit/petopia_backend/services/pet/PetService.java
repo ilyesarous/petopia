@@ -6,14 +6,18 @@ import tn.esprit.petopia_backend.entities.pet.Pet;
 import tn.esprit.petopia_backend.entities.pet.PetStatus;
 import tn.esprit.petopia_backend.entities.user.User;
 import tn.esprit.petopia_backend.repositories.pet.PetRepository;
+import tn.esprit.petopia_backend.services.matching.BlockedUserService;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class PetService {
 
     @Autowired
     private final PetRepository petRepository;
+    @Autowired
+    private BlockedUserService blockedUserService;
 
     public PetService(PetRepository petRepository) {
         this.petRepository = petRepository;
@@ -104,6 +108,21 @@ public class PetService {
 
     public Pet getPetByRefVet(int petRefVet) {
         return petRepository.findByPetRefVet(petRefVet).orElse(null);
+    }
+
+    // New method with blocked user filtering
+    public List<Pet> getPetsByStatusWithBlockFilter(PetStatus status, Integer userId) {
+        // Fetch all pets with the given status
+        List<Pet> pets = petRepository.findByStatus(status);
+
+        // Get IDs of users blocked by the current user
+        List<Integer> blockedUserIds = blockedUserService.getBlockedUserIds(userId);
+
+        // Filter out pets owned by blocked users or the current user
+        return pets.stream()
+                .filter(pet -> !blockedUserIds.contains(pet.getUser().getId_user()))
+                .filter(pet -> !pet.getUser().getId_user().equals(userId))
+                .collect(Collectors.toList());
     }
 
 }
