@@ -186,15 +186,19 @@
         </div>
 
        <!-- Health Status -->
-      <div class="form-group">
+       <div class="form-group">
         <label for="healthStatus">Health Status</label>
         <select id="healthStatus" class="form-control" formControlName="healthStatus" multiple>
-          <option *ngFor="let status of healthStatusOptions" [value]="status">{{ status }}</option>
+          <option *ngFor="let status of healthStatusOptions"
+                  [ngValue]="status">
+            {{ status }}
+          </option>
         </select>
-        <div class="validation-error" *ngIf="addPetForm.get('healthStatus')?.touched && addPetForm.get('healthStatus')?.invalid">
+        <div class="validation-error" *ngIf="editPetForm.get('healthStatus')?.touched && editPetForm.get('healthStatus')?.invalid">
           Health status is required.
         </div>
       </div>
+      
 
 
         <!-- Image -->

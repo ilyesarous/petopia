@@ -51,6 +51,7 @@ MAX_TRANSLATED_LENGTH = 350;
 translatedExpanded: boolean = false;
 PostType = PostType;
 
+selectedImage: string | null = null;
 
 
 
@@ -166,8 +167,6 @@ PostType = PostType;
  
   }
 
-
-
   deletePost(): void {
     if (!this.post.id) return;
     this.postService.deletePost(this.post.id).subscribe({
@@ -179,7 +178,6 @@ PostType = PostType;
     });
   }
   
-
   // Comments
   toggleCommentMenu(comment: Comment): void {
     (this.post.comments || []).forEach(c => c['menuOpen'] = c.id === comment.id ? !comment['menuOpen'] : false);
@@ -310,7 +308,6 @@ PostType = PostType;
         reader.readAsDataURL(file);
       });
   
-      // Reset input so same file can be picked again if needed
       input.value = '';
     }
   }
@@ -436,7 +433,13 @@ PostType = PostType;
     return urlMatch ? urlMatch[0] : '';
   }
   
+  openImageModal(imageUrl: string): void {
+    this.selectedImage = imageUrl;
+  }
   
+  closeImageModal(): void {
+    this.selectedImage = null;
+  }
   
   
 

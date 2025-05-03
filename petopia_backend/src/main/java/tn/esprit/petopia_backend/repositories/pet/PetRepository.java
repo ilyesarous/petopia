@@ -14,6 +14,9 @@ import java.util.Optional;
 @Repository
 public interface PetRepository extends JpaRepository<Pet,Integer>
 {
+    @Query("SELECT p FROM Pet p WHERE p.status = ?1 AND p.user IS NOT NULL")
+    List<Pet> findByStatusAndUser(tn.esprit.petopia_backend.entities.pet.PetStatus status);
+
     @Query("SELECT p FROM Pet p WHERE p.shelter.id_shelter = ?1")
     List<Pet> findByShelterId(Integer shelterId);
 

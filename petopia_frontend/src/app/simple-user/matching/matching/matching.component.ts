@@ -349,10 +349,10 @@ export class MatchingComponent implements OnInit, OnDestroy, AfterViewInit {
         console.error('Error loading filtered pets:', err);
         this.matchingPets = [];
         this.isLoading = false;
-        if (err.status === 403) {
-          alert('Accès refusé : veuillez vous reconnecter.');
-          this.router.navigate(['/login']);
-        }
+        // if (err.status === 403) {
+        //   alert('Accès refusé : veuillez vous reconnecter.');
+        //   this.router.navigate(['/login']);
+        // }
       }
     });
   }

@@ -114,7 +114,6 @@ public class UserController {
     @GetMapping("/admin/get-users/{userId}")
     public ResponseEntity<ReqRes> getUSerByID(@PathVariable Integer userId){
         return ResponseEntity.ok(usersManagementService.getUsersById(userId));
-
     }
 
     @PutMapping("/user/update/{userId}")

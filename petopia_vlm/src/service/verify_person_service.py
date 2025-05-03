@@ -54,7 +54,7 @@ def verify_person(image_path: str, full_latin_name: str):
             "4. Compare it with the provided Latin name (assumed to be the user's first name).\n\n"
 
             "🧠 Use fuzzy, phonetic matching for the comparison. Do NOT match letter by letter. Accept:\n"
-            "- 'hsan', 'hassan', 'hacen' ≈ 'حسن'\n"
+            "- 'hsan' ≈ 'حسن'\n"
             "- 'mohamed', 'muhammad', 'mohamad' ≈ 'محمد'\n"
             "- 'youssef', 'yusuf', 'youcef' ≈ 'يوسف'\n"
             "- 'ahmad', 'ahmed', 'ahmet' ≈ 'أحمد'\n\n"

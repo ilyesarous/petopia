@@ -29,6 +29,7 @@ export class AdsService {
     });
   }
   addAds(formData: FormData): Observable<any> {
+    console.log("data mrigla")
     return this.http.post(this.url+"/add", formData, {
       headers: this.getAuthHeaders(),
     });

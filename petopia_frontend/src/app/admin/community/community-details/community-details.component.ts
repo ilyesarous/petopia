@@ -95,5 +95,12 @@ export class CommunityDetailsComponent implements OnInit {
       default: return 'Community Detail';
     }
   }
+  isImage(fileUrl: string): boolean {
+    return fileUrl.endsWith('.jpg') || fileUrl.endsWith('.jpeg') || fileUrl.endsWith('.png');
+  }
+  
+  isVideo(fileUrl: string): boolean {
+    return fileUrl.endsWith('.mp4') || fileUrl.endsWith('.webm') || fileUrl.endsWith('.mov');
+  }
   
 }

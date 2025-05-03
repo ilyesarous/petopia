@@ -22,6 +22,8 @@ public class Product {
     private int product_id;
     private String product_image;
     private String product_name;
+    @Lob
+    @Column(columnDefinition = "TEXT")
     private String product_description;
     private float product_price;
     private float old_price;

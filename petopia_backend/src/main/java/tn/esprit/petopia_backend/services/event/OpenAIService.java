@@ -33,7 +33,7 @@ public class OpenAIService {
             Based on this pet description: %s
             Suggest the best type of event or activity that suits this pet.
             Suggest one or two event types (e.g., social playgroups, quiet training sessions, hiking meetups, agility classes, puppy yoga).
-            Also explain briefly why this event is a good fit.
+            Also explain briefly why this event is a good fit in few words.
             Make simple and clear point.
             """, petDescription);
 

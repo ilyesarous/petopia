@@ -30,6 +30,8 @@
             [plotOptions]="breedChartOptions.plotOptions"
             [dataLabels]="breedChartOptions.dataLabels"
             [title]="breedChartOptions.title"
+            [colors]="breedChartOptions.colors || []"
+
           ></apx-chart>
         </div>
       </div>
@@ -47,6 +49,7 @@
             [labels]="speciesChartOptions.labels || []"
             [title]="speciesChartOptions.title"
             [responsive]="speciesChartOptions.responsive"
+            [colors]="speciesChartOptions.colors || []"
           ></apx-chart>
         </div>
       </div>
@@ -66,6 +69,8 @@
             [plotOptions]="ageChartOptions.plotOptions"
             [dataLabels]="ageChartOptions.dataLabels"
             [title]="ageChartOptions.title"
+            [colors]="ageChartOptions.colors || []"
+            
           ></apx-chart>
         </div>
       </div>

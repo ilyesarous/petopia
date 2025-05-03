@@ -71,7 +71,7 @@ export class BabypetComponent {
     this.loading = true;
     this.error = null;
 
-  /* this.babyPetService.generateBabyPet(this.petId1, this.petId2).subscribe({
+  this.babyPetService.generateBabyPet(this.petId1, this.petId2).subscribe({
       next: (res) => {
         this.babyImageUrl = res.image_url;
         this.loading = false;
@@ -79,7 +79,7 @@ export class BabypetComponent {
       error: (err) => {
         this.loading = false;
       }
-    })*/
+    });
   }
 
 }

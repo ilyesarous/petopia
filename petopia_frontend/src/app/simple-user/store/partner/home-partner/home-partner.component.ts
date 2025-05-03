@@ -56,7 +56,7 @@ export type ChartOptions = {
 })
 export class HomePartnerComponent implements OnInit {
   @ViewChild('chart') chart!: ChartComponent;
-
+  username: string = "";
   public summaryChartOptions: ChartOptions = {
     series: [],
     chart: {
@@ -209,6 +209,7 @@ export class HomePartnerComponent implements OnInit {
     this.getAllProducts();
     this.loadRecentSearches();
     this.loadDashboardData();
+    this.partnerName = localStorage.getItem('username') || 'John Doe';
   }
   onSearch() {
     if (!this.searchQuery.trim()) {

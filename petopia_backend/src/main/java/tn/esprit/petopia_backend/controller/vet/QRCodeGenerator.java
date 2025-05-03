@@ -29,7 +29,7 @@ public class QRCodeGenerator {
 //    }
 
     public static void generateQRCode(Diagnosis diagnosis) throws WriterException, IOException {
-        String qrCodePath = "D:\\4_PI_Cloud\\Phase4\\QRCode_DiagnosisDetail";
+        String qrCodePath = "C:\\Users\\hamza\\Downloads\\pi images\\vet qr";
         String qrCodeName = qrCodePath+"\\"+diagnosis.getIdDiagnosis()+"-QRCODE.png";
         var qrCodeWriter = new QRCodeWriter();
         BitMatrix bitMatrix = qrCodeWriter.encode(

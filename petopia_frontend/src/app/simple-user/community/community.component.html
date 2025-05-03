@@ -26,7 +26,7 @@
             <video *ngIf="story.image.endsWith('.mp4') || story.image.endsWith('.webm') || story.image.endsWith('.mov')" 
                    [src]="story.image" controls></video>
           </ng-container>
-                  </div>
+        </div>
         <p class="story-owner">
           {{ story.user?.name || 'Unknown User' }}
         </p>

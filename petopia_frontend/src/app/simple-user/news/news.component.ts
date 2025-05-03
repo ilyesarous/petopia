@@ -49,7 +49,6 @@ export class NewsComponent implements OnInit {
   shareAsPost(news: News): void {
     const post: Post = {
       id: 0,
-      title: news.title,
       content: `${news.description}\n\nRead more: ${news.url}`,
       postType: PostType.NEWS,
       image: news.imageUrl,

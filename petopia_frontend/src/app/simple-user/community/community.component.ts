@@ -204,13 +204,13 @@ export class CommunityComponent implements OnInit {
       return;
     }
   
-    // ✅ Step 1: Check content moderation
+    //  Step 1: Check content moderation
     this.imageGenerationService.checkPostContent(this.newPostContent)
 .subscribe({
       next: (moderationRes) => {
         const status = moderationRes.status;
   
-        // 🛑 Step 2: Handle moderation result
+        //  Step 2: Handle moderation result
         if (status === 'inappropriate') {
           this.postErrorMessage = '🚫 Your post contains inappropriate content.';
           return;
@@ -219,10 +219,9 @@ export class CommunityComponent implements OnInit {
           return;
         }
   
-        // ✅ Step 3: Proceed with post creation
+        //  Step 3: Proceed with post creation
         const newPost: Post = {
           id: 0,
-          title: '',
           content: this.newPostContent,
           postType: this.newPostType,
           date: new Date(),
@@ -419,18 +418,42 @@ export class CommunityComponent implements OnInit {
   }
 
   startProgressTimer(): void {
-    const totalDuration = 5000; // 5 seconds
-    const updateInterval = 50;  // update every 50ms
-    const updatesCount = totalDuration / updateInterval;  // e.g., 5000/50 = 100 updates
-    const increment = 100 / updatesCount; // progress increment per update
+    const story = this.getActiveStory();
+    const media = story?.image || '';
+    const isVideo = media.endsWith('.mp4') || media.endsWith('.webm') || media.endsWith('.mov');
+  
+    if (isVideo) {
+      // Wait for video element to load and fetch duration
+      setTimeout(() => {
+        const videoEl = document.querySelector('.story-image-wrapper video') as HTMLVideoElement;
+        if (videoEl && !isNaN(videoEl.duration)) {
+          this.runProgressBar(videoEl.duration * 1000); // use actual video duration
+        } else {
+          this.runProgressBar(5000); // fallback
+        }
+      }, 300);
+    } else {
+      this.runProgressBar(5000); // default duration for images
+    }
+  }
+  
+  runProgressBar(duration: number): void {
+    const interval = 50;
+    const steps = duration / interval;
+    const increment = 100 / steps;
+  
+    this.progress = 0;
+    if (this.popupTimer) clearInterval(this.popupTimer);
+  
     this.popupTimer = setInterval(() => {
       this.progress += increment;
       if (this.progress >= 100) {
-        // Auto-navigate to next story when timer completes.
+        clearInterval(this.popupTimer);
         this.nextStory();
       }
-    }, updateInterval);
+    }, interval);
   }
+  
 
   closeStoryPopup(): void {
     this.activeStoryIndex = -1;
@@ -508,39 +531,12 @@ changePage(page: number): void {
   this.paginatedPosts = this.posts.slice(start, end);
 }
 
-
-// generatePostFromAI(): void {
-//   this.loading = true;
-//   this.geminiService.generatePost(this.topic).subscribe({
-//     next: (response: string) => {
-//       this.newPostContent = response;
-
-//       // Wait for DOM to render updated content before expanding
-//       setTimeout(() => {
-//         const textarea = document.querySelector(
-//           'textarea[name="postContent"]'
-//         ) as HTMLTextAreaElement;
-//         if (textarea) {
-//           textarea.style.height = 'auto';
-//           textarea.style.height = textarea.scrollHeight + 'px';
-//         }
-//       }, 50);
-
-//       this.loading = false;
-//     },
-//     error: (err) => {
-//       console.error('AI generation failed:', err);
-//       this.loading = false;
-//     },
-//   });
-// }
 generatePostFromAI(): void {
   this.loading = true;
   this.imageGenerationService.generatePost(this.topic).subscribe({
     next: (response: { postSuggestion: string }) => {
       this.newPostContent = response.postSuggestion;
 
-      // Wait for DOM to render updated content before expanding
       setTimeout(() => {
         const textarea = document.querySelector(
           'textarea[name="postContent"]'

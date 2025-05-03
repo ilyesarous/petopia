@@ -61,7 +61,7 @@ export class LoginComponent implements OnInit {
         try {
           const decodedToken: any = jwtDecode(response.token);
           console.log('Decoded Token:', decodedToken);
-          localStorage.setItem('shetlerID',response.shelter_id);
+          localStorage.setItem('shelterID', response.shelter_id);
           localStorage.setItem('userId', decodedToken.userId); //userid yeta7at fel localstorage
           localStorage.setItem('username',decodedToken.username);
           this.authService.updateUsername(decodedToken.username);
@@ -98,12 +98,12 @@ export class LoginComponent implements OnInit {
 
       const role = decodedToken.roles[0];
       const userId = decodedToken.userId;
-      const shelterId = localStorage.getItem('shelterID');
+      const shelterId = parseInt(localStorage.getItem('shelterID') || '-1', 10);
       setTimeout(() => {
         if (role === 'ROLE_ADMIN') this.router.navigate(['/dashboard']);
         else if (role === 'ROLE_USER') this.router.navigate(['/home']);
         else if (role === 'ROLE_SHELTER') {
-          if (!shelterId || shelterId === '-1') {
+          if (shelterId === -1) {
             this.router.navigate(['/add-shelter']);
           } else {
             this.router.navigate(['/shelter/home']);

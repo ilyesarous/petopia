@@ -176,7 +176,7 @@ export class ShelterPetListComponent {
       species: [this.selectedPet.species, Validators.required],
       gender: [this.selectedPet.gender, Validators.required],
       size: [this.selectedPet.size, Validators.required],
-      healthStatus: [this.selectedPet.healthStatus || [], Validators.required]  
+      healthStatus: [Array.isArray(this.selectedPet.healthStatus) ? [...this.selectedPet.healthStatus] : [], Validators.required]
     });
   }
   closeEditModal(): void {

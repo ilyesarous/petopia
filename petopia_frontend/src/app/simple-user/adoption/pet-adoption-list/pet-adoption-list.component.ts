@@ -113,8 +113,9 @@ export class PetAdoptionListComponent implements OnInit {
         parts[i] &&
         parts[i].toLowerCase() !== 'tunisia' &&
         !/^\d{4,}$/.test(parts[i]) &&
-        !parts[i].includes('معتمدية') 
-      ) {
+        !parts[i].includes('معتمدية') &&
+        !parts[i].includes('Gouvernorat ')
+        ) {
         return parts[i];
       }
     }

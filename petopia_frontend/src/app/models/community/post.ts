@@ -19,7 +19,6 @@ export class User {
 
 export interface Post {
   id: number;
-  title: string;
   content: string;
   image?: string;
   postType: PostType;

@@ -21,6 +21,8 @@ public class Ads {
     private String imageUrl;
     @Enumerated(EnumType.STRING)
     private StatusType status;
+    @Lob
+    @Column(columnDefinition = "TEXT")
     private String description;
     private Date startDate;
     private Date endDate;

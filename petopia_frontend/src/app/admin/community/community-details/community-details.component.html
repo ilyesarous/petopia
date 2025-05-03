@@ -16,7 +16,6 @@
 
   <!-- Post Detail -->
   <div *ngIf="post">
-    <h4 class="mb-2">{{ post.title }}</h4>
     <p class="mb-3">
       <strong class="text-pink">Content:</strong> {{ post.content }}
     </p>
@@ -84,8 +83,11 @@
   <!-- Story Detail -->
   <div *ngIf="story">
     <h4>Story by {{ story.user.name }}</h4>
-    <img *ngIf="story.image" [src]="story.image" class="img-fluid my-2" />
-    <p><strong>Created:</strong> {{ story.createdAt | date:'dd/MM/yyyy HH:mm' }}</p>
+    <ng-container *ngIf="story.image">
+      <img *ngIf="isImage(story.image)" [src]="story.image" class="img-fluid my-2" />
+      <video *ngIf="isVideo(story.image)" [src]="story.image" controls autoplay muted class="img-fluid my-2" style="max-height: 400px; border-radius: 12px;"></video>
+    </ng-container>
+        <p><strong>Created:</strong> {{ story.createdAt | date:'dd/MM/yyyy HH:mm' }}</p>
     <p><strong>Expires:</strong> {{ story.expiresAt | date:'dd/MM/yyyy HH:mm' }}</p>
   </div>
 </div>

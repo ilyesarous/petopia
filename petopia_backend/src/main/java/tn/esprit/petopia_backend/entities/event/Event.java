@@ -27,6 +27,8 @@ public class Event {
     private long idEvent;
 
     private String nameEvent;
+    @Lob
+    @Column(columnDefinition = "TEXT")
     private String descriptionEvent;
     private Date dateEvent;
     private String lieuEvent;

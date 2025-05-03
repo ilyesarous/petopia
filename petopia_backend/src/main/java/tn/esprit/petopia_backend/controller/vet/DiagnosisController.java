@@ -58,7 +58,7 @@ public class DiagnosisController {
     @GetMapping("/auth/Diagnosis/diagnosis/qrcode/{filename}")
     public ResponseEntity<byte[]> getQrCode(@PathVariable String filename) throws IOException {
         try {
-            Path path = Paths.get("D:/4_PI_Cloud/Phase4/QRCode_DiagnosisDetail/" + filename);
+            Path path = Paths.get("C:/Users/hamza/Downloads/pi images/vet qr/" + filename);
 
             if (!Files.exists(path)) {
                 return ResponseEntity.notFound().build();

@@ -55,7 +55,7 @@ export class AddAdsComponent {
       formData.append('endDate', this.adForm.value.endDate);
       formData.append('status', this.adForm.value.status);
       formData.append('imageUrl', this.selectedFile);
-
+      console.log(formData.get('title'));
       this.adsService.addAds(formData).subscribe({
         next: (response) => {
           this.adAdded.emit(response);

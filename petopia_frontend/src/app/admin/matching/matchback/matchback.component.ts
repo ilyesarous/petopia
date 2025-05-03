@@ -147,7 +147,7 @@ export class MatchbackComponent implements OnInit {
       title: { text: 'Number of Matches' },
       min: 0
     },
-    colors: ['#FE9A7A'], // Yellow
+    colors: ['#F83182', '#FF617C', '#FE9A7A'], // Yellow
     title: {
       text: 'Matches by Age Group',
       align: 'center',

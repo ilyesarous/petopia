@@ -13,7 +13,6 @@ import tn.esprit.petopia_backend.entities.community.PostType;
 import tn.esprit.petopia_backend.entities.user.User;
 import tn.esprit.petopia_backend.services.community.CloudinaryService;
 import tn.esprit.petopia_backend.services.community.IPostService;
-import tn.esprit.petopia_backend.services.community.PostModerationService;
 
 import java.io.IOException;
 import java.time.LocalDateTime;

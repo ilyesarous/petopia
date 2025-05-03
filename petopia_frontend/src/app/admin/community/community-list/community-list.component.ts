@@ -76,7 +76,6 @@ showDeleteSuccess: boolean = false;
     const query = this.searchQuery.toLowerCase();
   
     this.filteredPosts = this.posts.filter(post =>
-      post.title?.toLowerCase().includes(query) ||
       post.content?.toLowerCase().includes(query) ||
       post.postType?.toLowerCase().includes(query) ||
       post.user?.name?.toLowerCase().includes(query)

@@ -114,7 +114,7 @@ public class PetService {
     // New method with blocked user filtering
     public List<Pet> getPetsByStatusWithBlockFilter(PetStatus status, Integer userId) {
         // Fetch all pets with the given status
-        List<Pet> pets = petRepository.findByStatus(status);
+        List<Pet> pets = petRepository.findByStatusAndUser(status);
 
         // Get IDs of users blocked by the current user
         List<Integer> blockedUserIds = blockedUserService.getBlockedUserIds(userId);
