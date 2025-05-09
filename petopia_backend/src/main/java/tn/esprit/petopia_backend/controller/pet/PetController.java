@@ -58,9 +58,12 @@ public class PetController {
             String imageUrl = cloudinaryService.uploadImage(image);
             petData.setPetImage(imageUrl);
 
+            /*
             Map<String, String> prediction = flaskService.detectPetSpeciesAndBreed(image);
-            petData.setSpecies(Species.valueOf(prediction.get("prediction")));
-            petData.setBreed(prediction.get("breed"));
+
+             */
+            petData.setSpecies(Species.DOG);
+            petData.setBreed("berger");
 
             Pet savedPet = petService.addPet(petData);
 
