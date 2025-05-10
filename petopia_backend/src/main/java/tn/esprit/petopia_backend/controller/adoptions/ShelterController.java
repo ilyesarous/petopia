@@ -15,7 +15,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/shelters")
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "http://angular-service:4200")
 
 public class ShelterController {
 

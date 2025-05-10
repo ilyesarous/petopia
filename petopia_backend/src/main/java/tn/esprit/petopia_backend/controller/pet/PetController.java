@@ -27,7 +27,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "http://angular-service:4200")
 public class PetController {
 
     @Autowired

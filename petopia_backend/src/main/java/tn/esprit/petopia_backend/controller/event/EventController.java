@@ -22,7 +22,7 @@ import java.util.Optional;
 @RestController
 //@RequestMapping("/admin/events")
 @RequestMapping("/events")
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "http://angular-service:4200")
 public class EventController {
 
     @Autowired

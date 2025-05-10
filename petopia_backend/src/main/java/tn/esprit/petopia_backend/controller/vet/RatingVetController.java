@@ -9,7 +9,7 @@ import tn.esprit.petopia_backend.services.vet.IRating_VetService;
 import java.util.List;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "http://angular-service:4200")
 public class RatingVetController {
 
     @Autowired

@@ -14,7 +14,7 @@ import java.util.Map;
 
 @Service
 public class FlaskService {
-    private final String flaskApiUrl = "http://localhost:5000/predict";
+    private final String flaskApiUrl = "http://angular-service:5000/predict";
 
     public Map<String, String> detectPetSpeciesAndBreed(MultipartFile image) throws IOException {
         HttpHeaders headers = new HttpHeaders();

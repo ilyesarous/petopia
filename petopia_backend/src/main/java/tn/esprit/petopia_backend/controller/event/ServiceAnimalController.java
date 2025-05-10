@@ -18,7 +18,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/ServiceAnimal")
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "http://angular-service:4200")
 public class ServiceAnimalController {
 
     @Autowired

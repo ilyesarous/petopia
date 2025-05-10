@@ -60,7 +60,7 @@ public class ReclamationService {
 
     public Map<String, Integer> getStatsFromPython() {
         RestTemplate restTemplate = new RestTemplate();
-        String pythonUrl = "http://localhost:5000/reclamations/stats";
+        String pythonUrl = "http://angular-service:5000/reclamations/stats";
         ResponseEntity<Map> response = restTemplate.getForEntity(pythonUrl, Map.class);
         return response.getBody();
     }

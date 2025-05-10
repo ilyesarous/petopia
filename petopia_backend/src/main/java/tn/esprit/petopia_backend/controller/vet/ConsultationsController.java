@@ -14,7 +14,7 @@ import java.util.Map;
 
 @RestController
 //@RequestMapping("/user/Consultations") //njidd kelmett auth
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "http://angular-service:4200")
 public class ConsultationsController {
 
     @Autowired
