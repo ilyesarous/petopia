@@ -8,7 +8,7 @@ import { Notification } from 'src/app/models/vet/notification';
 })
 export class NotificationService {
 
-  private apiUrl = 'http://localhost:8082/petopia/auth/Notification';
+  private apiUrl = 'http://spring-service:7000/petopia/auth/Notification';
 
   constructor(private http: HttpClient) { }
 
@@ -39,5 +39,5 @@ export class NotificationService {
   addNotification(notification: any): Observable<Notification> {
     return this.http.post<Notification>(`${this.apiUrl}/addNotification`, notification);
   }
-  
+
 }

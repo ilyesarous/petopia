@@ -13,7 +13,7 @@ export class WebsocketService {
   private petCodeSubject = new Subject<number>();
 
 
-  private baseUrl = 'http://localhost:8082/petopia';
+  private baseUrl = 'http://spring-service:7000/petopia';
 
 
   constructor(private router: Router) { }
@@ -21,7 +21,7 @@ export class WebsocketService {
   connect() {
     const socket = new SockJS(`${this.baseUrl}/ws`);
     this.stompClient = Stomp.over(socket);
-    
+
     this.stompClient.connect({}, () => {
       this.stompClient.subscribe('/topic/pet-code', (message: any) => {
         const content = JSON.parse(message.body);

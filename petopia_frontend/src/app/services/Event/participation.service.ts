@@ -9,13 +9,13 @@ import { of } from 'rxjs';
   providedIn: 'root'
 })
 export class ParticipationService {
-  private baseUrl = 'http://localhost:8082/petopia/participations';
+  private baseUrl = 'http://spring-service:7000/petopia/participations';
 
   constructor(private http: HttpClient) {}
-  
+
     // Token d'authentification
   token: string = localStorage.getItem('token') || '';
-  
+
     private getAuthHeaders(): HttpHeaders {
       return new HttpHeaders({
         // 'Content-Type': 'application/json',
@@ -30,14 +30,14 @@ export class ParticipationService {
 
   getParticipationById(id: number): Observable<Participation[]> {
     // console.log("***************"+id);
-    
+
     return this.http.get<Participation[]>(`${this.baseUrl}/display/${id}`, {
       headers: this.getAuthHeaders()});
   }
 
   getParticipationEventById(eventId: number): Observable<Participation[]> {
     return this.http.get<Participation[]>(
-      `${this.baseUrl}/displayPartiByEvent/${eventId}`, 
+      `${this.baseUrl}/displayPartiByEvent/${eventId}`,
       { headers: this.getAuthHeaders() }
     ).pipe(
       catchError(error => {
@@ -94,8 +94,8 @@ confirmParticipation(participationId: number): Observable<any> {
   // // Modifiez la méthode addParticipation pour retourner la participation avec le temps restant
   // addParticipation(participation: Participation): Observable<Participation> {
   //   return this.http.post<Participation>(
-  //     `${this.baseUrl}/addParticipation`, 
-  //     participation, 
+  //     `${this.baseUrl}/addParticipation`,
+  //     participation,
   //     { headers: this.getAuthHeaders() }
   //   ).pipe(
   //     map((response: any) => { // Added type annotation here
@@ -110,6 +110,6 @@ confirmParticipation(participationId: number): Observable<any> {
   //   );
   // }
 
- 
+
 }
 

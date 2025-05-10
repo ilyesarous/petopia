@@ -7,7 +7,7 @@ import { Reaction } from '../../models/community/reaction';
   providedIn: 'root'
 })
 export class ReactionService {
-  private baseUrl = 'http://localhost:8082/petopia/reactions';
+  private baseUrl = 'http://spring-service:7000/petopia/reactions';
 
   constructor(private http: HttpClient) {}
 
@@ -35,5 +35,5 @@ export class ReactionService {
   getReactionById(id: number): Observable<Reaction> {
     return this.http.get<Reaction>(`${this.baseUrl}/${id}`);
   }
-  
+
 }

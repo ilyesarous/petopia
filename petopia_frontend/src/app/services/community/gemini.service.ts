@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class GeminiService {
-  private baseUrl = 'http://localhost:8082/petopia/ai';
+  private baseUrl = 'http://spring-service:7000/petopia/ai';
 
   constructor(private http: HttpClient) {}
 

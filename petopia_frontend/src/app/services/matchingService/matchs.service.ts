@@ -9,7 +9,7 @@ import { FriendWithPets } from 'src/app/models/matching/friend-with-pets';
   providedIn: 'root'
 })
 export class MatchsService {
-  private apiUrl = 'http://localhost:8082/petopia';
+  private apiUrl = 'http://spring-service:7000/petopia';
   private staticToken = localStorage.getItem('token');
 
   constructor(private http: HttpClient) {}

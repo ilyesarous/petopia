@@ -8,8 +8,8 @@ import { Feedback } from 'src/app/models/product/feedback';
 })
 export class FeedbackService {
   constructor(private http: HttpClient) {}
-  private url = 'http://localhost:8082/petopia/user/feedback';
-  private url1 = 'http://localhost:8082/petopia/partner/feedback';
+  private url = 'http://spring-service:7000/petopia/user/feedback';
+  private url1 = 'http://spring-service:7000/petopia/partner/feedback';
   token: string = localStorage.getItem('token') || '';
   userId = localStorage.getItem('userId')
     ? parseInt(localStorage.getItem('userId')!)

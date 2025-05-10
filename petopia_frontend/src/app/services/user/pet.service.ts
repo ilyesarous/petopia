@@ -7,10 +7,10 @@ import {Observable, throwError} from 'rxjs';
 })
 export class PetService {
 
-  private apiUrl = 'http://localhost:8082/petopia/user/pet';
-  private apiUrlAdmin = 'http://localhost:8082/petopia/admin/pet';
-  private apiUrll = 'http://localhost:8082/petopia/pet';
-  private apiowner = 'http://localhost:8082/petopia/pet/owner'
+  private apiUrl = 'http://spring-service:7000/petopia/user/pet';
+  private apiUrlAdmin = 'http://spring-service:7000/petopia/admin/pet';
+  private apiUrll = 'http://spring-service:7000/petopia/pet';
+  private apiowner = 'http://spring-service:7000/petopia/pet/owner'
 
   constructor(private http: HttpClient) { }
 

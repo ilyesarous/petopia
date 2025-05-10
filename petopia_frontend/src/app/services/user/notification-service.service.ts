@@ -25,7 +25,7 @@ export class NotificationService {
   }
 
   private initializeWebSocketConnection() {
-    const serverUrl = 'http://localhost:8082/petopia/ws';
+    const serverUrl = 'http://spring-service:7000/petopia/ws';
     const ws = new SockJS(serverUrl);
     this.stompClient = new Client({
       webSocketFactory: () => ws,

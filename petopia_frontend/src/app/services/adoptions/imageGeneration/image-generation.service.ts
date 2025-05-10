@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class ImageGenerationService {
-  private apiUrl = 'http://localhost:5002/api'; 
+  private apiUrl = 'http://spring-service:7000/api';
 
   constructor(private http: HttpClient) {}
 
@@ -31,7 +31,7 @@ export class ImageGenerationService {
       { image_base64: base64 }
     );
   }
-  
-  
-  
+
+
+
 }

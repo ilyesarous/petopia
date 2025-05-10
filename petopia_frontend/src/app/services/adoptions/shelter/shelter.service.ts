@@ -6,54 +6,54 @@ import { Shelter } from 'src/app/models/adoption/shelter/Shelter';
   providedIn: 'root'
 })
 export class ShelterService {
-  private apiUrl = 'http://localhost:8082/petopia/shelters';
- 
-  
+  private apiUrl = 'http://spring-service:7000/petopia/shelters';
+
+
 
     constructor(private http: HttpClient) {}
 
     createShelter(shelter: Shelter, logoFile: File | null): Observable<Shelter> {
       const formData = new FormData();
-      formData.append('shelter', JSON.stringify(shelter)); 
+      formData.append('shelter', JSON.stringify(shelter));
       if (logoFile) {
         formData.append('logoFile', logoFile, logoFile.name);
       }
-  
+
       const headers = new HttpHeaders();
-  
+
       return this.http.post<Shelter>(`${this.apiUrl}/addShelter`, formData, { headers });
     }
-  
+
     updateShelter(shelter: Shelter, logoFile: File | null): Observable<Shelter> {
       const formData = new FormData();
-      formData.append('shelter', JSON.stringify(shelter)); 
+      formData.append('shelter', JSON.stringify(shelter));
       if (logoFile) {
         formData.append('logoFile', logoFile, logoFile.name);
       }
-  
+
       const headers = new HttpHeaders();
-  
+
       return this.http.put<Shelter>(`${this.apiUrl}/updateShelter/${shelter.id_shelter}`, formData, { headers });
     }
-  
+
     deleteShelter(id: number): Observable<string> {
       return this.http.delete(`${this.apiUrl}/deleteShelter/${id}`, {
         responseType: 'text'
       });
     }
-    
-  
+
+
     getShelterById(id: number): Observable<Shelter> {
       return this.http.get<Shelter>(`${this.apiUrl}/getShelter/${id}`);
     }
-  
+
     getAllShelters(): Observable<Shelter[]> {
       return this.http.get<Shelter[]>(`${this.apiUrl}/getAllShelters`);
     }
-  
+
     getShelterByUserId(userId: number): Observable<Shelter> {
       return this.http.get<Shelter>(`${this.apiUrl}/user/${userId}`);
     }
   }
-  
+
 

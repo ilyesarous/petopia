@@ -8,7 +8,7 @@ import { Product } from 'src/app/models/product/Product';
 })
 export class CartService {
   constructor(private http: HttpClient) {}
-  url: string = 'http://localhost:8082/petopia/user/';
+  url: string = 'http://spring-service:7000/petopia/user/';
   token: string = localStorage.getItem('token') || '';
 
   private getAuthHeaders(): HttpHeaders {
@@ -23,7 +23,7 @@ export class CartService {
   //     headers: this.getAuthHeaders(),
   //   });
   // }
-  
+
   getCartByUserId(userId: number): Observable<any> {
     return this.http.get<any>(this.url + 'cart/' + userId, {
       headers: this.getAuthHeaders(),

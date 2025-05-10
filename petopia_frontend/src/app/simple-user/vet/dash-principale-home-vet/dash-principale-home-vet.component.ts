@@ -6,7 +6,7 @@ import { ConsultationService } from 'src/app/services/vet/consultations/consulta
 import { Consultation } from 'src/app/models/vet/consultation';
 import { DomSanitizer } from '@angular/platform-browser';
 import { StripePaymentService } from 'src/app/services/vet/payment/stripe-payment.service';
-import {Pet} from "src/app/models/pet/Pet"; 
+import {Pet} from "src/app/models/pet/Pet";
 
 
 @Component({
@@ -41,7 +41,7 @@ export class DashPrincipaleHomeVetComponent implements OnInit {
   }
 
   loadVetRevenue(): void {
-    const vetId = localStorage.getItem('userId'); 
+    const vetId = localStorage.getItem('userId');
     if (vetId) {
       this.stripePaymentService.getVetRevenue(+vetId).subscribe(
         (revenue) => {
@@ -57,7 +57,7 @@ export class DashPrincipaleHomeVetComponent implements OnInit {
 
   loadConsultations(): void {
     const vetId = localStorage.getItem('userId');
-    
+
     if (!vetId || isNaN(Number(vetId))) {
         console.error('Invalid vet ID');
         return;
@@ -66,17 +66,17 @@ export class DashPrincipaleHomeVetComponent implements OnInit {
     this.consultationService.getAllConsultations().subscribe({
         next: (consultations) => {
             const today = new Date().toISOString().split('T')[0];
-            
+
             // Filtrer les consultations d'aujourd'hui pour ce vétérinaire
             this.todayAppointments = consultations.filter(c => {
-                return c.consultation_date.startsWith(today) && 
+                return c.consultation_date.startsWith(today) &&
                        c.uservet?.id_user === Number(vetId);
             });
-            
+
             // Mettre à jour les variables d'état
             this.totalAppointments = this.todayAppointments.length;
             this.hasAppointmentsToday = this.totalAppointments > 0;
-            
+
             console.log('Today appointments for vet:', this.todayAppointments);
         },
         error: (err) => {
@@ -105,18 +105,18 @@ export class DashPrincipaleHomeVetComponent implements OnInit {
   }
 
   redirectToUrlDogBreedRecognition() {
-    window.location.href = 'http://localhost:8501';
+    window.location.href = 'http://spring-service:8501';
   }
 
   loadUniquePets(): void {
     this.loadingPets = true;
     const vetId = localStorage.getItem('userId');
-    
+
     if (vetId && !isNaN(Number(vetId))) {
       this.consultationService.getUniquePetsForVet(Number(vetId)).subscribe({
         next: (pets) => {
           this.uniquePets = pets;
-          this.totalPatients = pets.length; 
+          this.totalPatients = pets.length;
           this.loadingPets = false;
           console.log('Unique pets loaded:', pets);
         },

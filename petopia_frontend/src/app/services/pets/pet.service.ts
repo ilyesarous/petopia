@@ -8,7 +8,7 @@ import { Observable } from 'rxjs';
 })
 export class PetService {
 
-  private apiUrl = 'http://localhost:8082/petopia';
+  private apiUrl = 'http://spring-service:7000/petopia';
 
   constructor(private http: HttpClient) {}
 

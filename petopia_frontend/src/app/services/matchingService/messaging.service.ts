@@ -8,7 +8,7 @@ import { ChatMessage } from 'src/app/models/matching/chat-message';
   providedIn: 'root'
 })
 export class MessagingService {
-  private apiUrl = 'http://localhost:8082/petopia/user/matches';
+  private apiUrl = 'http://spring-service:7000/petopia/user/matches';
 
   constructor(private http: HttpClient) {}
 

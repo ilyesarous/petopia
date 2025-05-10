@@ -7,10 +7,10 @@ import { AdoptionCertificate } from 'src/app/models/adoption/adoption/AdoptionCe
   providedIn: 'root'
 })
 export class CertificateService {
-    private apiUrl = 'http://localhost:8082/petopia/adoptionCertificates';
-  
+    private apiUrl = 'http://spring-service:7000/petopia/adoptionCertificates';
+
     constructor(private http: HttpClient) {}
-  
+
     // Create a certificate and sign as shelter
     createCertificate(adoptionId: number, payload: {
       pet_id_pet: number,
@@ -19,17 +19,17 @@ export class CertificateService {
     }): Observable<any> {
       return this.http.post(`${this.apiUrl}/addAdoptionCertificates/${adoptionId}`, payload);
     }
-    
-    
+
+
     signAsShelter(certificateId: number, base64Signature: string): Observable<any> {
       return this.http.put(`${this.apiUrl}/shelterSignCertificate/${certificateId}`, {
         shelter_signature: base64Signature
       });
     }
-    
-    
-    
-  
+
+
+
+
     // User adds their signature to an existing certificate
     signAsUser(certificateId: number, base64Signature: string): Observable<AdoptionCertificate> {
       return this.http.put<AdoptionCertificate>(
@@ -37,23 +37,23 @@ export class CertificateService {
         { user_signature: base64Signature }
       );
     }
-    
-  
+
+
     // Get single certificate by its ID
     getCertificateById(id: number): Observable<AdoptionCertificate> {
       return this.http.get<AdoptionCertificate>(`${this.apiUrl}/getAdoptionCertificate/${id}`);
     }
-  
+
     // Get all certificates for a user
     getCertificatesByUserId(userId: number): Observable<AdoptionCertificate[]> {
       return this.http.get<AdoptionCertificate[]>(`${this.apiUrl}/user/${userId}`);
     }
-  
+
     // Get all certificates for a shelter
     getCertificatesByShelterId(shelterId: number): Observable<AdoptionCertificate[]> {
       return this.http.get<AdoptionCertificate[]>(`${this.apiUrl}/shelter/${shelterId}`);
     }
-  
+
     // Download a PDF version of the certificate
     downloadCertificate(id: number): Observable<Blob> {
       return this.http.get(`${this.apiUrl}/certificate/download/${id}`, {
@@ -76,7 +76,7 @@ export class CertificateService {
       timestamp: string;
     }): Observable<any> {
       return this.http.post(`${this.apiUrl}/shelterSignWithPKI`, payload, {
-        responseType: 'text' as 'json'  
+        responseType: 'text' as 'json'
       });
     }
     signAsUserPKI(payload: {
@@ -87,8 +87,8 @@ export class CertificateService {
       timestamp: string;
     }): Observable<any> {
       return this.http.post(`${this.apiUrl}/userSignWithPKI`, payload, {
-        responseType: 'text' as 'json'  
+        responseType: 'text' as 'json'
       });
     }
-    
+
   }

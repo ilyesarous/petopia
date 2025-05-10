@@ -144,7 +144,7 @@ export class AdoptPetComponent implements OnInit {
       reader.readAsDataURL(file);
     });
   }
-  
+
   verifyCinImage(): Promise<boolean> {
     if (!this.selectedFile || !this.userName) {
       console.warn("⚠️ verifyCinImage aborted: Missing file or username.");
@@ -153,7 +153,7 @@ export class AdoptPetComponent implements OnInit {
 
     return this.convertFileToBase64(this.selectedFile).then((base64Image) => {
       console.log("📡 Sending verification request to Flask API...");
-      return fetch('http://localhost:5002/api/verify_person', {
+      return fetch('http://spring-service:5002/api/verify_person', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({

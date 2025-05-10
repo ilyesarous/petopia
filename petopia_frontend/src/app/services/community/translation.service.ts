@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class TranslationService {
-  private translateUrl = 'http://localhost:8082/petopia/translate';
+  private translateUrl = 'http://spring-service:7000/petopia/translate';
 
   constructor(private http: HttpClient) {}
 
@@ -15,11 +15,11 @@ export class TranslationService {
     const params = new URLSearchParams();
     params.set('text', text);
     params.set('target', targetLang);
-  
+
     return this.http.get(this.translateUrl + `?text=${encodeURIComponent(text)}&target=${targetLang}`, {
       responseType: 'text'
     });
       }
-  
+
 }
 

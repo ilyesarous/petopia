@@ -8,7 +8,7 @@ import { Post } from '../../models/community/post';
 })
 export class PostService {
   // Nouvelle URL de base tenant compte du port 8082 et du contexte /petopia
-  private baseUrl = 'http://localhost:8082/petopia/posts';
+  private baseUrl = 'http://spring-service:7000/petopia/posts';
 
   constructor(private http: HttpClient) {}
 
@@ -18,7 +18,7 @@ export class PostService {
   createPost(post: Post, formData: FormData): Observable<Post> {
     return this.http.post<Post>(`${this.baseUrl}/add`, formData);
   }
-  
+
 
   getPostById(id: number): Observable<Post> {
     return this.http.get<Post>(`${this.baseUrl}/${id}`);
@@ -27,10 +27,10 @@ export class PostService {
   updatePost(postId: number, formData: FormData): Observable<Post> {
     return this.http.put<Post>(`${this.baseUrl}/update/${postId}`, formData);
   }
-  
+
 
   deletePost(id: number): Observable<string> {
     return this.http.delete(`${this.baseUrl}/delete/${id}`, { responseType: 'text' });
   }
-  
+
 }

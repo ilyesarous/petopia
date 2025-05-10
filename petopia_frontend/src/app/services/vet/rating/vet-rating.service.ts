@@ -7,7 +7,7 @@ import { RatingVet } from 'src/app/models/vet/rating-vet';
   providedIn: 'root'
 })
 export class VetRatingService {
-  private apiUrl = 'http://localhost:8082/petopia/auth/ratingVet';
+  private apiUrl = 'http://spring-service:7000/petopia/auth/ratingVet';
 
   constructor(private http: HttpClient) { }
 
@@ -17,7 +17,7 @@ export class VetRatingService {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${token}`,
-        'Cache-Control': 'no-cache' 
+        'Cache-Control': 'no-cache'
       }),
       withCredentials: true
     };
@@ -31,8 +31,8 @@ export class VetRatingService {
     }
 
     return this.http.post<RatingVet>(
-      `${this.apiUrl}/addRatingVet`, 
-      rating, 
+      `${this.apiUrl}/addRatingVet`,
+      rating,
       this.getAuthHeaders()
     );
   }

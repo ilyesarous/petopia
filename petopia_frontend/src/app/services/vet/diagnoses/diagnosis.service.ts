@@ -8,7 +8,7 @@ import { Diagnosis } from 'src/app/models/vet/diagnosis';
 })
 export class DiagnosisService {
 
-  private apiUrl = 'http://localhost:8082/petopia/auth/Diagnosis';
+  private apiUrl = 'http://spring-service:7000/petopia/auth/Diagnosis';
 
   constructor(private http: HttpClient) { }
 
@@ -35,7 +35,7 @@ updateDiagnosis(diagnosis: any): Observable<any> {
     headers: { 'Content-Type': 'application/json' }
   });
 }
-  
+
   deleteDiagnosis(idDiagnosis: number): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/deleteDiagnosis/${idDiagnosis}`);
   }

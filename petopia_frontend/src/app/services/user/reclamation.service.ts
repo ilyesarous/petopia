@@ -8,7 +8,7 @@ import {catchError} from "rxjs/operators";
 })
 export class ReclamationService {
 
-  private apiUrl = 'http://localhost:8082/petopia/reclamation';
+  private apiUrl = 'http://spring-service:7000/petopia/reclamation';
 
   constructor(private http: HttpClient) { }
 

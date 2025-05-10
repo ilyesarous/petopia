@@ -3,14 +3,14 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Consultation } from 'src/app/models/vet/consultation';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import {Pet} from "src/app/models/pet/Pet"; 
+import {Pet} from "src/app/models/pet/Pet";
 
 @Injectable({
   providedIn: 'root'
 })
 export class ConsultationService {
 
-  private apiUrl = 'http://localhost:8082/petopia/auth/Consultations';
+  private apiUrl = 'http://spring-service:7000/petopia/auth/Consultations';
 
   private httpOptions = {
     headers: new HttpHeaders({
@@ -32,7 +32,7 @@ export class ConsultationService {
 
   updateConsultationStatus(id: number, status: string): Observable<any> {
     return this.http.put(
-      `${this.apiUrl}/updateConsultationsStatus/${id}`, 
+      `${this.apiUrl}/updateConsultationsStatus/${id}`,
       { statusT: status },
       this.httpOptions
     );

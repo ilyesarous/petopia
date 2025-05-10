@@ -18,9 +18,9 @@ export class AuthService {
   role = this.roleSubject.asObservable();
 
 
-  private baseUrl = 'http://localhost:8082/petopia/auth';
-  private baseUrlAdmin = 'http://localhost:8082/petopia/user';
-  private baseUrlAdmin1 = 'http://localhost:8082/petopia/admin';
+  private baseUrl = 'http://spring-service:7000/petopia/auth';
+  private baseUrlAdmin = 'http://spring-service:7000/petopia/user';
+  private baseUrlAdmin1 = 'http://spring-service:7000/petopia/admin';
 
 
   constructor(private http: HttpClient) {}
@@ -84,7 +84,7 @@ export class AuthService {
       'Authorization': `Bearer ${token}`
     });
 
-    return this.http.get(`http://localhost:8082/petopia/user/get-user/${userId}`, { headers });
+    return this.http.get(`http://spring-service:7000/petopia/user/get-user/${userId}`, { headers });
   }
 
   logout(): void {

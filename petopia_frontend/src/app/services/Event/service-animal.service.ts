@@ -9,25 +9,25 @@ import { Router } from '@angular/router';
   providedIn: 'root' // Makes the service available application-wide
 })
 export class ServiceAnimalService {
-  private apiUrl = 'http://localhost:8082/petopia/ServiceAnimal';
+  private apiUrl = 'http://spring-service:7000/petopia/ServiceAnimal';
 
     private serviceSubject = new BehaviorSubject<any[]>([]);  // État partagé des événements
-  
-  
+
+
   // Token d'authentification
   token: string = localStorage.getItem('token') || '';
-  
+
   private getAuthHeaders(): HttpHeaders {
     this.token = localStorage.getItem('token') || ''; // Refresh token from storage
     console.log('Current token:', this.token);
-    
+
     if (!this.token) {
       console.error('No token found in localStorage');
       // Redirect to login or handle missing token
       this.router.navigate(['/login']); // You'll need to inject Router
       throw new Error('Authentication required');
     }
-    
+
     return new HttpHeaders({
       'Content-Type': 'application/json',
       'Authorization': `Bearer ${this.token}`,
@@ -61,7 +61,7 @@ export class ServiceAnimalService {
 //   ...serviceAnimal,
 //   startDate: this.formatDate(serviceAnimal.startDate),
 //   endDate: this.formatDate(serviceAnimal.endDate)
-  
+
 // };
 
 // // Append all service animal data as JSON
@@ -74,7 +74,7 @@ export class ServiceAnimalService {
 //     return this.http.post<ServiceAnimal>(
 //       `${this.apiUrl}/addServiceAnimal`, formData,  { headers: new HttpHeaders({'Authorization': `Bearer ${this.token}`}) }).pipe(
 //       tap(() => this.loadServiceAnimals()), // Reload service animals after creation
-    
+
 //     );
 //   }
 
@@ -90,19 +90,19 @@ createServiceAnimal(serviceAnimal: any, logoFile?: File): Observable<any> {
 
   // Append all service animal data as JSON
   formData.append('serviceAnimal', JSON.stringify(formattedData));
-  
+
   // Append logo file if provided (note the parameter name matches the backend)
   if (logoFile) {
       formData.append('logoFile', logoFile);
   }
 
   return this.http.post<ServiceAnimal>(
-      `${this.apiUrl}/addServiceAnimal`, 
-      formData,  
-      { 
+      `${this.apiUrl}/addServiceAnimal`,
+      formData,
+      {
           headers: new HttpHeaders({
               'Authorization': `Bearer ${this.token}`
-          }) 
+          })
       }
   ).pipe(
       tap(() => this.loadServiceAnimals()) // Reload service animals after creation
@@ -117,8 +117,8 @@ this.serviceSubject.next(serviceAnimals);});  // Update the service animals in t
   // Update an existing service animal
   updateServiceAnimal(id: number, serviceAnimal: ServiceAnimal): Observable<ServiceAnimal> {
     return this.http.put<ServiceAnimal>(
-      `${this.apiUrl}/updateServiceAnimal/${id}`, 
-      serviceAnimal, 
+      `${this.apiUrl}/updateServiceAnimal/${id}`,
+      serviceAnimal,
       {
         headers: this.getAuthHeaders()
       }
@@ -128,7 +128,7 @@ this.serviceSubject.next(serviceAnimals);});  // Update the service animals in t
   // Delete a service animal
   deleteServiceAnimal(id: number): Observable<void> {
     return this.http.delete<void>(
-      `${this.apiUrl}/deletServiceAnimal/${id}`, 
+      `${this.apiUrl}/deletServiceAnimal/${id}`,
       {
         headers: this.getAuthHeaders()
       }
@@ -156,7 +156,7 @@ this.serviceSubject.next(serviceAnimals);});  // Update the service animals in t
 
   //   return `${this.apiUrl}/image/${encodeURIComponent(cleanPath)}`;
   // }
-  
+
   // getImage(imagePath: string): Observable<Blob> {
   //   if (!imagePath) {
   //     return throwError(() => new Error('No image path provided'));
@@ -166,6 +166,6 @@ this.serviceSubject.next(serviceAnimals);});  // Update the service animals in t
   //     responseType: 'blob'
   //   });
   // }
-  
-  
+
+
 }

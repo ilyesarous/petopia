@@ -8,12 +8,12 @@ import { Event } from 'src/app/models/EventModule/appevent'; // Assurez-vous que
   providedIn: 'root'
 })
 export class EventService {
-  private apiUrl = 'http://localhost:8082/petopia/events'; 
+  private apiUrl = 'http://spring-service:7000/petopia/events';
 
 
   private eventsSubject = new BehaviorSubject<any[]>([]);  // État partagé des événements
   events$ = this.eventsSubject.asObservable();  // Observable public
-  
+
   constructor(private http: HttpClient) {}
 
   private getAuthHeaders(): HttpHeaders {
@@ -28,7 +28,7 @@ export class EventService {
     getEvents(): Observable<any[]> {
       return this.http.get<any[]>(`${this.apiUrl}/getEtudiants`, { headers: this.getAuthHeaders() });
     }
-  
+
 
   // Récupérer un événement par ID
   getEventById(id: number): Observable<any> {
@@ -57,8 +57,8 @@ export class EventService {
   // }
 // In EventService
 updateEvent(id: number, event: any): Observable<any> {
-  return this.http.put<any>(`${this.apiUrl}/updateEvent/${id}`, event, { 
-    headers: this.getAuthHeaders() 
+  return this.http.put<any>(`${this.apiUrl}/updateEvent/${id}`, event, {
+    headers: this.getAuthHeaders()
   }).pipe(
     tap(updatedEvent => {
       // Update the BehaviorSubject
@@ -77,11 +77,11 @@ updateEvent(id: number, event: any): Observable<any> {
     return this.http.delete<void>(`${this.apiUrl}/deleteEvent/${id}` , { headers: this.getAuthHeaders() });
   }
 
-  
+
 // Dans event.service.ts
 decrementPlaces(idEvent: number): Observable<any> {
-  return this.http.put<any>(`${this.apiUrl}/decrementPlaces/${idEvent}`, null, { 
-    headers: this.getAuthHeaders() 
+  return this.http.put<any>(`${this.apiUrl}/decrementPlaces/${idEvent}`, null, {
+    headers: this.getAuthHeaders()
   }).pipe(
     tap(updatedEvent => {
       const currentEvents = this.eventsSubject.value;
@@ -100,7 +100,7 @@ decrementPlaces(idEvent: number): Observable<any> {
 
 filterEvents(filters: any): Observable<Event[]> {
   let params = new HttpParams();
-  
+
   if (filters.name) params = params.append('name', filters.name);
   if (filters.lieu) params = params.append('lieu', filters.lieu);
   if (filters.startDate) params = params.append('startDate', filters.startDate.toISOString());
@@ -110,9 +110,9 @@ filterEvents(filters: any): Observable<Event[]> {
   if (filters.minPrice) params = params.append('minPrice', filters.minPrice.toString());
   if (filters.maxPrice) params = params.append('maxPrice', filters.maxPrice.toString());
 
-  return this.http.get<Event[]>(`${this.apiUrl}/filter`, { 
+  return this.http.get<Event[]>(`${this.apiUrl}/filter`, {
     headers: this.getAuthHeaders(),
-    params 
+    params
   }).pipe(
     tap(events => this.eventsSubject.next(events))
   );

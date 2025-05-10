@@ -9,9 +9,9 @@ export class QrCodeVetService {
   constructor(private http: HttpClient) {}
 
   getVetQrCode(vetId: number) {
-    return this.http.get(`http://localhost:8082/petopia/auth/api/vet/qrcode/${vetId}`, { 
-      responseType: 'blob' 
+    return this.http.get(`http://spring-service:7000/petopia/auth/api/vet/qrcode/${vetId}`, {
+      responseType: 'blob'
     });
   }
-  
+
 }

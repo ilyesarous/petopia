@@ -8,7 +8,7 @@ import { Component } from '@angular/core';
 export class AppDogBreedRecognitionRedirectButtonComponent {
 
   redirectToUrl() {
-    window.location.href = 'http://localhost:8501';
+    window.location.href = 'http://spring-service:8501';
   }
 
 }

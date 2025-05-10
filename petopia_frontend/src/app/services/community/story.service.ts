@@ -7,7 +7,7 @@ import { Story } from '../../models/community/story';
   providedIn: 'root'
 })
 export class StoryService {
-  private baseUrl = 'http://localhost:8082/petopia/stories';
+  private baseUrl = 'http://spring-service:7000/petopia/stories';
 
   constructor(private http: HttpClient) {}
 
@@ -21,7 +21,7 @@ export class StoryService {
   createStory(userId: number, formData: FormData): Observable<Story> {
     return this.http.post<Story>(`${this.baseUrl}/add/${userId}`, formData);
   }
-  
+
 
   getStoryById(id: number): Observable<Story> {
     return this.http.get<Story>(`${this.baseUrl}/${id}`);

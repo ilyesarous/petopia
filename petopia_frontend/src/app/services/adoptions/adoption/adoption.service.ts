@@ -8,7 +8,7 @@ import { Adoption } from 'src/app/models/adoption/adoption/Adoption';
 })
 export class AdoptionService {
 
-  private apiUrl = 'http://localhost:8082/petopia/adoptions';
+  private apiUrl = 'http://spring-service:7000/petopia/adoptions';
 
   constructor(private http: HttpClient) {}
 
@@ -16,10 +16,10 @@ export class AdoptionService {
     const formData = new FormData();
     formData.append('cinImage', cinImage);
     formData.append('adoptionData', JSON.stringify(adoptionData));
-  
+
     return this.http.post<Adoption>(`${this.apiUrl}/addAdoption`, formData);
   }
-  
+
 
   updateAdoption(id: number, adoption: Adoption): Observable<Adoption> {
     return this.http.put<Adoption>(`${this.apiUrl}/updateAdoption/${id}`, adoption);

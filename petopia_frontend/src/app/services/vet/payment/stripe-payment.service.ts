@@ -11,7 +11,7 @@ import { Router } from '@angular/router';
 })
 export class StripePaymentService {
 
-  private apiUrl = 'http://localhost:8082/petopia/auth/api/payment';
+  private apiUrl = 'http://spring-service:7000/petopia/auth/api/payment';
   private defaultPaymentDetails = {
     amount: 50,
     description: 'Veterinary services payment'
@@ -32,7 +32,7 @@ createCheckoutSessionWithVet(paymentRequest: any): Observable<any> {
   return this.http.post(
     `${this.apiUrl}/create-checkout-session`,
     paymentRequest,
-    { 
+    {
       headers: new HttpHeaders({'Content-Type': 'application/json'}),
       withCredentials: false
     }
@@ -44,7 +44,7 @@ createCheckoutSessionWithVet(paymentRequest: any): Observable<any> {
   return this.http.post(
     `${this.apiUrl}/create-checkout-session-Event`,
     paymentRequest,
-    { 
+    {
       headers: new HttpHeaders({'Content-Type': 'application/json'}),
       withCredentials: false
     }
@@ -72,18 +72,18 @@ async redirectToCheckout(sessionId: string) {
 }
 
 showPaymentStatus(
-  status: 'success' | 'cancel', 
-  paymentDetails?: {amount: number, description: string}, 
+  status: 'success' | 'cancel',
+  paymentDetails?: {amount: number, description: string},
   isEventPayment: boolean = false
 ): void {
-  const details = paymentDetails || 
+  const details = paymentDetails ||
                  (isEventPayment ? this.defaultEventPaymentDetails : this.defaultPaymentDetails);
-  
+
   const targetRoute = isEventPayment ? 'participations' : 'vet/dash-principale-user';
-  
+
   this.dialog.open(PaymentStatusPopupComponent, {
     width: '400px',
-    data: { 
+    data: {
       status,
       amount: details.amount,
       description: details.description
@@ -94,11 +94,11 @@ showPaymentStatus(
 }
 createCheckoutSessionWithShop(paymentRequest: any): Observable<any> {
   console.log("paymentRequest: "+paymentRequest);
-  
+
   return this.http.post(
     `${this.apiUrl}/create-checkout-session-shop`,
     paymentRequest,
-    { 
+    {
       headers: new HttpHeaders({'Content-Type': 'application/json'}),
       withCredentials: false
     }
@@ -128,12 +128,12 @@ async redirectToCheckoutShop(sessionId: string) {
   showPaymentStatusShop(status: 'success' | 'cancel', paymentDetails?: {amount: number, description: string}): void {
     // Utilise les détails fournis ou les valeurs par défaut
     const details = paymentDetails;
-    
+
     this.router.navigate(['cart'], {
       queryParams: { payment_status: status }
     }).then(() => {
       console.log(details);
-      
+
     });
   }
 
@@ -163,14 +163,14 @@ async redirectToCheckoutShop(sessionId: string) {
   checkEventPaymentStatus(): void {
     const urlTree = this.router.parseUrl(this.router.url);
     const status = urlTree.queryParams['payment_status'];
-    
+
     if (status) {
       if (status === 'success') {
         this.showPaymentStatus('success', undefined, true);
       } else if (status === 'cancel') {
         this.showPaymentStatus('cancel', undefined, true);
       }
-      
+
       // Clean up the URL by removing the query params
       this.router.navigate([], {
         queryParams: {},

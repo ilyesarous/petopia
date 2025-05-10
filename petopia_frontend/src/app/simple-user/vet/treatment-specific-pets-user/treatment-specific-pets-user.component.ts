@@ -86,7 +86,7 @@ export class TreatmentSpecificPetsUserComponent implements OnInit {
   diagnosisTypes: string[] = ['all', 'Preventive', 'Maintenance', 'Emergency', 'Diagnostic'];
 
   constructor(
-    private diagnosisService: DiagnosisService, 
+    private diagnosisService: DiagnosisService,
     private route: ActivatedRoute,
     private petGrowthService: PetGrowthsService
   ) { }
@@ -104,8 +104,8 @@ export class TreatmentSpecificPetsUserComponent implements OnInit {
       (diagnosis) => {
         this.selectedDiagnosis = diagnosis;
         // Utilisez le bon endpoint avec le bon port (8082)
-        this.qrCodeUrl = `http://localhost:8082/petopia/auth/Diagnosis/diagnosis/qrcode/${diagnosis.idDiagnosis}-QRCODE.png`;
-        
+        this.qrCodeUrl = `http://spring-service:7000/petopia/auth/Diagnosis/diagnosis/qrcode/${diagnosis.idDiagnosis}-QRCODE.png`;
+
         // Ajoutez un timestamp pour éviter le cache
         this.qrCodeUrl += '?t=' + new Date().getTime();
       },
@@ -191,7 +191,7 @@ export class TreatmentSpecificPetsUserComponent implements OnInit {
   }
 
   private initWeightChart(): void {
-    const dates = this.petGrowths.map(g => 
+    const dates = this.petGrowths.map(g =>
       new Date(g.measurement_date).toLocaleDateString()
     );
     const weights = this.petGrowths.map(g => g.weight);
@@ -307,7 +307,7 @@ export class TreatmentSpecificPetsUserComponent implements OnInit {
           const data = w.globals.initialSeries[seriesIndex].data[dataPointIndex];
           const date = new Date(data.x).toLocaleDateString();
           return `
-            <div class="apexcharts-tooltip-custom" 
+            <div class="apexcharts-tooltip-custom"
                  style="background: ${this.colorPalette.yellow}; color: #fff; padding: 5px 10px; border-radius: 5px;">
               <span>Date: ${date}</span><br/>
               <span>Height: ${data.y} cm</span>
