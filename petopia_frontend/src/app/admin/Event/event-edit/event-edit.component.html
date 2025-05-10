@@ -1,9 +1,0 @@
-<form (ngSubmit)="onSubmit()" *ngIf="event">
-    <input type="text" [(ngModel)]="event.nameEvent" name="nameEvent" required />
-    <textarea [(ngModel)]="event.descriptionEvent" name="descriptionEvent"></textarea>
-    <input type="date" [(ngModel)]="event.dateEvent" name="dateEvent" />
-    <input type="lieu" [(ngModel)]="event.lieuEvent" name="lieuEvent" />
-
-    <button type="submit">Mettre à jour</button>
-  </form>
-  

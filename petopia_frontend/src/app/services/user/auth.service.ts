@@ -84,7 +84,7 @@ export class AuthService {
       'Authorization': `Bearer ${token}`
     });
 
-    return this.http.get(`http://spring-service:7000/petopia/user/get-user/${userId}`, { headers });
+    return this.http.get(`http://localhost:7000/petopia/user/get-user/${userId}`, { headers });
   }
 
   logout(): void {

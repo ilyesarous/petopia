@@ -41,30 +41,8 @@ export class NavbarComponent implements OnInit {
 
   pages = [
     { id: 1, name: 'Home', link: '/home' },
-    { id: 2, name: 'Store', link: '/products' },
-    { id: 3, name: 'Community', link: '/community' },
-    { id: 4, name: 'Events', link: '/events' },
-    { id: 5, name: 'Vet', link: '/vet/dash-principale-user' },
-    {id: 6, name: 'Adoption', link: 'adoption'},
-    {id: 7, name: 'Matching', link: 'matchy'},
   ];
 
-  shelterPages = [
-    {id: 0, name: 'Home', link: 'shelter/home'},
-     {id:1 , name: 'MyPets', link: 'shelter/pets'},
-     {id:2 , name: 'Adoption Requests', link: 'shelter/adoption-requests'}
-  ];
-
-  partnerPages = [
-    {id: 0, name: 'Home', link: 'partner/home'}
-  ]
-
-  VETpages = [
-    { id: 1, name: 'Vet Dashboard', link: '/vet' },
-    { id: 2, name: 'Locations', link: '/vet/location' },
-    { id: 3, name: 'Vet Info', link: 'vet/info-specific-vet/:id' },
-    { id: 4, name: 'ratings', link: 'vet/info-rating-vet' },
-  ];
   constructor(private authService: AuthService, private router: Router) {}
 
 
