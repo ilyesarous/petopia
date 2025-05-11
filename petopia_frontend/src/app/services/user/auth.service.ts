@@ -18,9 +18,9 @@ export class AuthService {
   role = this.roleSubject.asObservable();
 
 
-  private baseUrl = 'http://spring-service:7000/petopia/auth';
-  private baseUrlAdmin = 'http://spring-service:7000/petopia/user';
-  private baseUrlAdmin1 = 'http://spring-service:7000/petopia/admin';
+  private baseUrl = 'http://petopia.local:31158/petopia/auth';
+  private baseUrlAdmin = 'http://petopia.local:31158/petopia/user';
+  private baseUrlAdmin1 = 'http://petopia.local:31158/petopia/admin';
 
 
   constructor(private http: HttpClient) {}
