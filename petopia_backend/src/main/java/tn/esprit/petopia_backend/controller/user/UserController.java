@@ -23,7 +23,7 @@ import tn.esprit.petopia_backend.services.user.VerificationCodeService;
 import java.util.*;
 
 @RestController
-@CrossOrigin(origins = "http://angular-service:4200")
+@CrossOrigin(origins = "http://petopia.local:31159")
 public class UserController {
     @Autowired
     private EmailService emailService;
