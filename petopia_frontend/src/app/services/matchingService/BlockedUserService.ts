@@ -8,7 +8,7 @@ import { ReqRes } from 'src/app/models/matching/ReqRes';
   providedIn: 'root'
 })
 export class BlockedUserService {
-  private apiUrl = 'http://localhost:8082/petopia/api/blocked-users';
+  private apiUrl = 'http://petopia.local:31158/petopia/api/blocked-users';
 
   constructor(private http: HttpClient) {}
 

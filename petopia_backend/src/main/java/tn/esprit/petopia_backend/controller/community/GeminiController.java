@@ -6,7 +6,7 @@ import tn.esprit.petopia_backend.services.community.GeminiService;
 
 @RestController
 @RequestMapping("/ai")
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "http://petopia.local:31159")
 public class GeminiController {
 
     private final GeminiService geminiService;

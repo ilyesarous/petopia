@@ -16,7 +16,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/participations")
-@CrossOrigin(origins = "http://localhost:4200") // front Angular
+@CrossOrigin(origins = "http://petopia.local:31159") // front Angular
 
 public class ParticipationController {
     @Autowired

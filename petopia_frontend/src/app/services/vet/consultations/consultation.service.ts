@@ -10,7 +10,7 @@ import {Pet} from "src/app/models/pet/Pet";
 })
 export class ConsultationService {
 
-  private apiUrl = 'http://localhost:8082/petopia/auth/Consultations';
+  private apiUrl = 'http://petopia.local:31158/petopia/auth/Consultations';
 
   private httpOptions = {
     headers: new HttpHeaders({

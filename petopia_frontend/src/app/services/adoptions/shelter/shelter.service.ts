@@ -6,7 +6,7 @@ import { Shelter } from 'src/app/models/adoption/shelter/Shelter';
   providedIn: 'root'
 })
 export class ShelterService {
-  private apiUrl = 'http://localhost:8082/petopia/shelters';
+  private apiUrl = 'http://petopia.local:31158/petopia/shelters';
  
   
 

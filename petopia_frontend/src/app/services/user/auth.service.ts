@@ -18,9 +18,9 @@ export class AuthService {
   role = this.roleSubject.asObservable();
 
 
-  private baseUrl = 'http://localhost:8082/petopia/auth';
-  private baseUrlAdmin = 'http://localhost:8082/petopia/user';
-  private baseUrlAdmin1 = 'http://localhost:8082/petopia/admin';
+  private baseUrl = 'http://petopia.local:31158/petopia/auth';
+  private baseUrlAdmin = 'http://petopia.local:31158/petopia/user';
+  private baseUrlAdmin1 = 'http://petopia.local:31158/petopia/admin';
 
 
   constructor(private http: HttpClient) {}
@@ -84,7 +84,7 @@ export class AuthService {
       'Authorization': `Bearer ${token}`
     });
 
-    return this.http.get(`http://localhost:8082/petopia/user/get-user/${userId}`, { headers });
+    return this.http.get(`http://petopia.local:31158/petopia/user/get-user/${userId}`, { headers });
   }
 
   logout(): void {

@@ -51,7 +51,7 @@ this.setupSSEListener();
  }
 
  private setupSSEListener(): void {
-  const eventSource = new EventSource(`http://localhost:8082/api/participations/updates`);
+  const eventSource = new EventSource(`http://petopia.local:31158/api/participations/updates`);
   
   eventSource.addEventListener('participation_updated', (event) => {
     const updatedParticipation = JSON.parse(event.data);

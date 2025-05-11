@@ -7,7 +7,7 @@ import { AdoptionCertificate } from 'src/app/models/adoption/adoption/AdoptionCe
   providedIn: 'root'
 })
 export class CertificateService {
-    private apiUrl = 'http://localhost:8082/petopia/adoptionCertificates';
+    private apiUrl = 'http://petopia.local:31158/petopia/adoptionCertificates';
   
     constructor(private http: HttpClient) {}
   

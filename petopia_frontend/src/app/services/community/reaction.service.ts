@@ -7,7 +7,7 @@ import { Reaction } from '../../models/community/reaction';
   providedIn: 'root'
 })
 export class ReactionService {
-  private baseUrl = 'http://localhost:8082/petopia/reactions';
+  private baseUrl = 'http://petopia.local:31158/petopia/reactions';
 
   constructor(private http: HttpClient) {}
 

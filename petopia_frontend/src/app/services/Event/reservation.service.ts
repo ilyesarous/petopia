@@ -9,7 +9,7 @@ import { Router } from '@angular/router';
   providedIn: 'root'
 })
 export class ReservationService {
-  private apiUrl = 'http://localhost:8082/petopia/user/ReservationServiceAnimal';
+  private apiUrl = 'http://petopia.local:31158/petopia/user/ReservationServiceAnimal';
 
   constructor(private http: HttpClient, private router: Router) {}
 

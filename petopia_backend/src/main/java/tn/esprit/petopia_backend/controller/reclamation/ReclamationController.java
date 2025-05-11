@@ -22,7 +22,7 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "http://petopia.local:31159")
 public class ReclamationController {
     private final ReclamationService reclamationService;
 

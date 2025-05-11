@@ -8,7 +8,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class OpenAIService {
-  private apiUrl = 'http://localhost:8082/petopia/api/openai/suggest-event';
+  private apiUrl = 'http://petopia.local:31158/petopia/api/openai/suggest-event';
 
   constructor(private http: HttpClient) { }
 
@@ -19,14 +19,14 @@ export class OpenAIService {
   // Add to openai.service.ts
 generatePetAd(serviceRequest: string): Observable<string> {
   return this.http.post(
-    'http://localhost:8082/petopia/api/openai/generate-ad',
+    'http://petopia.local:31158/petopia/api/openai/generate-ad',
     { serviceRequest },
     { responseType: 'text' as const }
   );
 }
 generateEventImage(eventDescription: string): Observable<string> {
   return this.http.post(
-    'http://localhost:8082/petopia/api/openai/generate-event-image',
+    'http://petopia.local:31158/petopia/api/openai/generate-event-image',
     { eventDescription },
     { 
       responseType: 'text' as const,

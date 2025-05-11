@@ -9,7 +9,7 @@ import { of } from 'rxjs';
   providedIn: 'root'
 })
 export class ParticipationService {
-  private baseUrl = 'http://localhost:8082/petopia/participations';
+  private baseUrl = 'http://petopia.local:31158/petopia/participations';
 
   constructor(private http: HttpClient) {}
   

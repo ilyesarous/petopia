@@ -9,7 +9,7 @@ import { Router } from '@angular/router';
   providedIn: 'root' // Makes the service available application-wide
 })
 export class ServiceAnimalService {
-  private apiUrl = 'http://localhost:8082/petopia/ServiceAnimal';
+  private apiUrl = 'http://petopia.local:31158/petopia/ServiceAnimal';
 
     private serviceSubject = new BehaviorSubject<any[]>([]);  // État partagé des événements
   

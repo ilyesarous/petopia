@@ -7,7 +7,7 @@ import { RatingVet } from 'src/app/models/vet/rating-vet';
   providedIn: 'root'
 })
 export class VetRatingService {
-  private apiUrl = 'http://localhost:8082/petopia/auth/ratingVet';
+  private apiUrl = 'http://petopia.local:31158/petopia/auth/ratingVet';
 
   constructor(private http: HttpClient) { }
 

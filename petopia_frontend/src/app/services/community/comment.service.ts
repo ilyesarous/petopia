@@ -8,7 +8,7 @@ import { Comment } from '../../models/community/comment';
 })
 export class CommentService {
   // The full URL to your backend API
-  private baseUrl = 'http://localhost:8082/petopia/comments';
+  private baseUrl = 'http://petopia.local:31158/petopia/comments';
 
   constructor(private http: HttpClient) {}
 

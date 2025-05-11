@@ -8,7 +8,7 @@ import { Notification } from 'src/app/models/vet/notification';
 })
 export class NotificationService {
 
-  private apiUrl = 'http://localhost:8082/petopia/auth/Notification';
+  private apiUrl = 'http://petopia.local:31158/petopia/auth/Notification';
 
   constructor(private http: HttpClient) { }
 

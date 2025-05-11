@@ -11,7 +11,7 @@ import { Router } from '@angular/router';
 })
 export class StripePaymentService {
 
-  private apiUrl = 'http://localhost:8082/petopia/auth/api/payment';
+  private apiUrl = 'http://petopia.local:31158/petopia/auth/api/payment';
   private defaultPaymentDetails = {
     amount: 50,
     description: 'Veterinary services payment'

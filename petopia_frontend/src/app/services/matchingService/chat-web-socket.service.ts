@@ -33,7 +33,7 @@ export class ChatWebSocketService {
     try {
       this.stompClient = new Client({
         webSocketFactory: () => {
-          const url = 'http://localhost:8082/petopia/ws';
+          const url = 'http://petopia.local:31158/petopia/ws';
           console.log('Creating SockJS connection to', url);
           return new SockJS(url);
         },

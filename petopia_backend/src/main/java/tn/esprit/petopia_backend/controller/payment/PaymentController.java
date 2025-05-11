@@ -53,8 +53,8 @@ public class PaymentController {
         SessionCreateParams params = SessionCreateParams.builder()
                 .addPaymentMethodType(SessionCreateParams.PaymentMethodType.CARD)
                 .setMode(SessionCreateParams.Mode.PAYMENT)
-                .setSuccessUrl("http://localhost:8082/petopia/auth/api/payment/success")
-                .setCancelUrl("http://localhost:8082/petopia/auth/api/payment/cancel")
+                .setSuccessUrl("http://petopia.local:31158/petopia/auth/api/payment/success")
+                .setCancelUrl("http://petopia.local:31158/petopia/auth/api/payment/cancel")
                 .addLineItem(
                         SessionCreateParams.LineItem.builder()
                                 .setPriceData(
@@ -102,8 +102,8 @@ public class PaymentController {
         SessionCreateParams params = SessionCreateParams.builder()
                 .addPaymentMethodType(SessionCreateParams.PaymentMethodType.CARD)
                 .setMode(SessionCreateParams.Mode.PAYMENT)
-                .setSuccessUrl("http://localhost:8082/petopia/auth/api/payment/successShop")
-                .setCancelUrl("http://localhost:8082/petopia/auth/api/payment/cancelShop")
+                .setSuccessUrl("http://petopia.local:31158/petopia/auth/api/payment/successShop")
+                .setCancelUrl("http://petopia.local:31158/petopia/auth/api/payment/cancelShop")
                 .addLineItem(
                         SessionCreateParams.LineItem.builder()
                                 .setPriceData(
@@ -136,24 +136,24 @@ public class PaymentController {
 
     @GetMapping("/success")
     public RedirectView getSuccessVet() {
-        String redirectUrl = "http://localhost:4200/vet/dash-principale-user?payment_status=success";
+        String redirectUrl = "http://petopia.local:31159/vet/dash-principale-user?payment_status=success";
         return new RedirectView(redirectUrl);
     }
 
     @GetMapping("/cancel")
     public RedirectView cancelVet() {
-        String redirectUrl = "http://localhost:4200/vet/dash-principale-user?payment_status=cancel";
+        String redirectUrl = "http://petopia.local:31159/vet/dash-principale-user?payment_status=cancel";
         return new RedirectView(redirectUrl);
     }
 
     @GetMapping("/successShop")
     public RedirectView getSuccessShop() {
-        String redirectUrl = "http://localhost:4200/cart?payment_status=success";
+        String redirectUrl = "http://petopia.local:31159/cart?payment_status=success";
         return new RedirectView(redirectUrl);
     }
     @GetMapping("/cancelShop")
     public RedirectView cancelShop() {
-        String redirectUrl = "http://localhost:4200/cart?payment_status=cancel";
+        String redirectUrl = "http://petopia.local:31159/cart?payment_status=cancel";
         return new RedirectView(redirectUrl);
     }
 
@@ -189,8 +189,8 @@ public class PaymentController {
         SessionCreateParams params = SessionCreateParams.builder()
                 .addPaymentMethodType(SessionCreateParams.PaymentMethodType.CARD)
                 .setMode(SessionCreateParams.Mode.PAYMENT)
-                .setSuccessUrl("http://localhost:8082/petopia/auth/api/payment/successEvent")
-                .setCancelUrl("http://localhost:8082/petopia/auth/api/payment/cancelEvent")
+                .setSuccessUrl("http://petopia.local:31158/petopia/auth/api/payment/successEvent")
+                .setCancelUrl("http://petopia.local:31158/petopia/auth/api/payment/cancelEvent")
                 .addLineItem(
                         SessionCreateParams.LineItem.builder()
                                 .setPriceData(
@@ -222,13 +222,13 @@ public class PaymentController {
 
     @GetMapping("/successEvent")
     public RedirectView getSuccessEvent() {
-        String redirectUrl = "http://localhost:4200/participations?payment_status=success";
+        String redirectUrl = "http://petopia.local:31159/participations?payment_status=success";
         return new RedirectView(redirectUrl);
     }
 
     @GetMapping("/cancelEvent")
     public RedirectView cancelEvent() {
-        String redirectUrl = "http://localhost:4200/participations?payment_status=cancel";
+        String redirectUrl = "http://petopia.local:31159/participations?payment_status=cancel";
         return new RedirectView(redirectUrl);
     }
 }

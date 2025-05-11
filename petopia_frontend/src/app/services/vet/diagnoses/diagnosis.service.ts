@@ -8,7 +8,7 @@ import { Diagnosis } from 'src/app/models/vet/diagnosis';
 })
 export class DiagnosisService {
 
-  private apiUrl = 'http://localhost:8082/petopia/auth/Diagnosis';
+  private apiUrl = 'http://petopia.local:31158/petopia/auth/Diagnosis';
 
   constructor(private http: HttpClient) { }
 

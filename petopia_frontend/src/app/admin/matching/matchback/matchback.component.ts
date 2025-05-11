@@ -162,7 +162,7 @@ export class MatchbackComponent implements OnInit {
   }
 
   private fetchStatistics(): void {
-    this.http.get<Statistics>('http://localhost:8082/petopia/admin/stats/matches').subscribe({
+    this.http.get<Statistics>('http://petopia.local:31158/petopia/admin/stats/matches').subscribe({
       next: (data) => {
         // Update breed chart
         this.breedChartOptions = {

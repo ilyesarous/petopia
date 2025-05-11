@@ -13,7 +13,7 @@ export class WebsocketService {
   private petCodeSubject = new Subject<number>();
 
 
-  private baseUrl = 'http://localhost:8082/petopia';
+  private baseUrl = 'http://petopia.local:31158/petopia';
 
 
   constructor(private router: Router) { }

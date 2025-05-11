@@ -8,7 +8,7 @@ import { Post } from '../../models/community/post';
 })
 export class PostService {
   // Nouvelle URL de base tenant compte du port 8082 et du contexte /petopia
-  private baseUrl = 'http://localhost:8082/petopia/posts';
+  private baseUrl = 'http://petopia.local:31158/petopia/posts';
 
   constructor(private http: HttpClient) {}
 

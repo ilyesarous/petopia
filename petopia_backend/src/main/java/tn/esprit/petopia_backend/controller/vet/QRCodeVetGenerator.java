@@ -19,7 +19,7 @@ public class QRCodeVetGenerator {
         // 1. Générer le QR code de base
         QRCodeWriter qrCodeWriter = new QRCodeWriter();
         BitMatrix bitMatrix = qrCodeWriter.encode(
-                "http://localhost:4200/vet/RatingVet/" + vetId,
+                "http://petopia.local:31159/vet/RatingVet/" + vetId,
                 BarcodeFormat.QR_CODE,
                 QR_WIDTH,
                 QR_HEIGHT

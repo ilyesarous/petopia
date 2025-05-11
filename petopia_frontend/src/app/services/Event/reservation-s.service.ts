@@ -4,14 +4,14 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { map, Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { Router } from '@angular/router';
-import { Reservation } from 'src/app/models/EventModule/serviceAnimal';
+import { Reservation } from 'src/app/models/EventModule/reservation';
 
 
 @Injectable({
   providedIn: 'root'
 })
 export class ReservationService {
-  private apiUrl = 'http://localhost:8082/petopia/user/ReservationServiceAnimal';
+  private apiUrl = 'http://petopia.local:31158/petopia/user/ReservationServiceAnimal';
 
 
 

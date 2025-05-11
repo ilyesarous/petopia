@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class TranslationService {
-  private translateUrl = 'http://localhost:8082/petopia/translate';
+  private translateUrl = 'http://petopia.local:31158/petopia/translate';
 
   constructor(private http: HttpClient) {}
 

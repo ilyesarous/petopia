@@ -205,7 +205,7 @@ export class ParticipationListComponent implements OnInit {
 
   // Add this new method to listen for payment success
   private listenForPaymentSuccess(eventId: number, participation: Participation): void {
-    const eventSource = new EventSource(`http://localhost:8082/petopia/participations
+    const eventSource = new EventSource(`http://petopia.local:31158/petopia/participations
 /payments/status/${eventId}`);
 
     eventSource.addEventListener('payment_success', (event) => {

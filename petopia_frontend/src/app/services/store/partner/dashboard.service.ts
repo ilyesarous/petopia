@@ -19,7 +19,7 @@ interface stats {
 })
 export class DashboardService {
 
-  private apiUrl = 'http://localhost:8082/petopia/partner/dashboard';
+  private apiUrl = 'http://petopia.local:31158/petopia/partner/dashboard';
   token: string = localStorage.getItem('token') || '';
     private getAuthHeaders(): HttpHeaders {
       return new HttpHeaders({

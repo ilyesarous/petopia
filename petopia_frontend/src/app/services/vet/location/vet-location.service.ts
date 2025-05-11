@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
 })
 export class VetLocationService {
 
-  private apiUrl = 'http://localhost:8082/petopia/auth/api/vet-locations';
+  private apiUrl = 'http://petopia.local:31158/petopia/auth/api/vet-locations';
 
   constructor(private http: HttpClient) { }
 

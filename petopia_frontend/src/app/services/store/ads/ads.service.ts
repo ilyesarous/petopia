@@ -8,8 +8,8 @@ import { Observable } from 'rxjs';
 export class AdsService {
   constructor(private http: HttpClient) {}
 
-  url: string = 'http://localhost:8082/petopia/admin/ads';
-  url1: string = 'http://localhost:8082/petopia/user/ads';
+  url: string = 'http://petopia.local:31158/petopia/admin/ads';
+  url1: string = 'http://petopia.local:31158/petopia/user/ads';
 
   token: string = localStorage.getItem('token') || '';
   private getAuthHeaders(): HttpHeaders {

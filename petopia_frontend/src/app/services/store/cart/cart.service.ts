@@ -8,7 +8,7 @@ import { Product } from 'src/app/models/product/Product';
 })
 export class CartService {
   constructor(private http: HttpClient) {}
-  url: string = 'http://localhost:8082/petopia/user/';
+  url: string = 'http://petopia.local:31158/petopia/user/';
   token: string = localStorage.getItem('token') || '';
 
   private getAuthHeaders(): HttpHeaders {

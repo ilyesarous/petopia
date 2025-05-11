@@ -15,7 +15,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/shelters")
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "http://petopia.local:31159")
 
 public class ShelterController {
 

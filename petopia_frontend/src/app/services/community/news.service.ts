@@ -7,7 +7,7 @@ import { News } from 'src/app/models/community/news';
   providedIn: 'root'
 })
 export class NewsService {
-  private baseUrl = 'http://localhost:8082/petopia/news';
+  private baseUrl = 'http://petopia.local:31158/petopia/news';
 
   constructor(private http: HttpClient) {}
 

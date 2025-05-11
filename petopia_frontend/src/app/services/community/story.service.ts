@@ -7,7 +7,7 @@ import { Story } from '../../models/community/story';
   providedIn: 'root'
 })
 export class StoryService {
-  private baseUrl = 'http://localhost:8082/petopia/stories';
+  private baseUrl = 'http://petopia.local:31158/petopia/stories';
 
   constructor(private http: HttpClient) {}
 

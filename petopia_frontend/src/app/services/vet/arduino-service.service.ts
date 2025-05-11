@@ -8,7 +8,7 @@ import { Observable, Subject } from 'rxjs';
 })
 export class ArduinoServiceService {
 
-  private baseUrl = 'http://localhost:8082/petopia/auth/api/arduino';
+  private baseUrl = 'http://petopia.local:31158/petopia/auth/api/arduino';
   private petDetectedSubject = new Subject<any>();
 
   constructor(private http: HttpClient, private router: Router) {}

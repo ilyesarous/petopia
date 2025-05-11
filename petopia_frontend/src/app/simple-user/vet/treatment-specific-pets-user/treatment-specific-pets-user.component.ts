@@ -107,7 +107,7 @@ export class TreatmentSpecificPetsUserComponent implements OnInit {
       (diagnosis) => {
         this.selectedDiagnosis = diagnosis;
         // Utilisez le bon endpoint avec le bon port (8082)
-        this.qrCodeUrl = `http://localhost:8082/petopia/auth/Diagnosis/diagnosis/qrcode/${diagnosis.idDiagnosis}-QRCODE.png`;
+        this.qrCodeUrl = `http://petopia.local:31158/petopia/auth/Diagnosis/diagnosis/qrcode/${diagnosis.idDiagnosis}-QRCODE.png`;
         
         // Ajoutez un timestamp pour éviter le cache
         this.qrCodeUrl += '?t=' + new Date().getTime();

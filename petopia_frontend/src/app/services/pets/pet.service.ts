@@ -8,7 +8,7 @@ import { Observable } from 'rxjs';
 })
 export class PetService {
 
-  private apiUrl = 'http://localhost:8082/petopia';
+  private apiUrl = 'http://petopia.local:31158/petopia';
 
   constructor(private http: HttpClient) {}
 

@@ -9,7 +9,7 @@ export class QrCodeVetService {
   constructor(private http: HttpClient) {}
 
   getVetQrCode(vetId: number) {
-    return this.http.get(`http://localhost:8082/petopia/auth/api/vet/qrcode/${vetId}`, { 
+    return this.http.get(`http://petopia.local:31158/petopia/auth/api/vet/qrcode/${vetId}`, { 
       responseType: 'blob' 
     });
   }

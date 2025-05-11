@@ -8,8 +8,8 @@ import { Product } from 'src/app/models/product/Product';
 })
 export class ProductService {
   constructor(private http: HttpClient) {}
-  url: string = 'http://localhost:8082/petopia/user/';
-  url1: string = 'http://localhost:8082/petopia/partner/';
+  url: string = 'http://petopia.local:31158/petopia/user/';
+  url1: string = 'http://petopia.local:31158/petopia/partner/';
 
   token: string = localStorage.getItem('token') || '';
   private getAuthHeaders(): HttpHeaders {

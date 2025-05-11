@@ -8,7 +8,7 @@ import { Adoption } from 'src/app/models/adoption/adoption/Adoption';
 })
 export class AdoptionService {
 
-  private apiUrl = 'http://localhost:8082/petopia/adoptions';
+  private apiUrl = 'http://petopia.local:31158/petopia/adoptions';
 
   constructor(private http: HttpClient) {}
 

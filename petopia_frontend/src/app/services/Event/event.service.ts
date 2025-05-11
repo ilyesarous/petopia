@@ -8,7 +8,7 @@ import { Event } from 'src/app/models/EventModule/appevent'; // Assurez-vous que
   providedIn: 'root'
 })
 export class EventService {
-  private apiUrl = 'http://localhost:8082/petopia/events'; 
+  private apiUrl = 'http://petopia.local:31158/petopia/events'; 
 
 
   private eventsSubject = new BehaviorSubject<any[]>([]);  // État partagé des événements

@@ -9,9 +9,9 @@ export class BrandsService {
 
   constructor(private http: HttpClient) {}
   
-    url: string = 'http://localhost:8082/petopia/admin/brand';
-    url1: string = 'http://localhost:8082/petopia/partner/brand';
-    url2: string = 'http://localhost:8082/petopia/user/brand';
+    url: string = 'http://petopia.local:31158/petopia/admin/brand';
+    url1: string = 'http://petopia.local:31158/petopia/partner/brand';
+    url2: string = 'http://petopia.local:31158/petopia/user/brand';
   
     token: string = localStorage.getItem('token') || '';
     private getAuthHeaders(): HttpHeaders {

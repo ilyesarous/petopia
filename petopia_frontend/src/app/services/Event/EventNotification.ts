@@ -23,7 +23,7 @@ export class EventNotificationService {
   }
 
   private initializeWebSocketConnection() {
-    const serverUrl = 'http://localhost:8082/petopia/ws'; // Your backend WebSocket endpoint
+    const serverUrl = 'http://petopia.local:31158/petopia/ws'; // Your backend WebSocket endpoint
     const ws = new SockJS(serverUrl);
 
     this.stompClient = new Client({

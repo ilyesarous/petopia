@@ -8,7 +8,7 @@ import { PetGrowth } from 'src/app/models/vet/pet-growth';
 })
 export class PetGrowthsService {
 
-  private apiUrl = 'http://localhost:8082/petopia/auth/PetGrowth';
+  private apiUrl = 'http://petopia.local:31158/petopia/auth/PetGrowth';
 
   constructor(private http: HttpClient) { }
 

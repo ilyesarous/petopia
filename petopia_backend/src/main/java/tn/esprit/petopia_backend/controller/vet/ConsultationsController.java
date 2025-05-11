@@ -14,7 +14,7 @@ import java.util.Map;
 
 @RestController
 //@RequestMapping("/user/Consultations") //njidd kelmett auth
-@CrossOrigin(origins = "http://localhost:4200")
+@CrossOrigin(origins = "http://petopia.local:31159")
 public class ConsultationsController {
 
     @Autowired
